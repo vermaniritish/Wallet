@@ -23,7 +23,7 @@ Route::post('/order/{id}/edit', [OrdersController::class, 'edit'])
 
 Route::post('/order/{id}/select-staff', [OrdersController::class, 'selectStaff'])
         ->name('admin.orders.selectStaff');
-    
+
 Route::post('/order/bulkActions/{action}', [OrdersController::class, 'bulkActions'])
     ->name('admin.orders.bulkActions');
 
@@ -42,3 +42,9 @@ Route::post('/order/{id}/update-comments', [OrderCommentsController::class, 'edi
 Route::post('/order/{id}/delete-comment', [OrderCommentsController::class, 'delete'])->name('admin.orderComments.delete');
 
 Route::post('/orders/{id}/ship', [OrdersController::class, 'ship'])->name('admin.orders.ship');
+
+Route::get('/orders/export', [OrdersController::class, 'exportOrders'])
+    ->name('admin.orders.exportOrders');
+
+Route::post('/orders/export-data', [OrdersController::class, 'export'])
+    ->name('admin.orders.export');
