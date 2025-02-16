@@ -50,7 +50,7 @@
                                                 <td class="checkout__total--amount text-right">- £@{{calculate().discount}}</td>
                                             </tr>
                                             <tr class="checkout__total--items">
-                                                <td class="checkout__total--title text-left">GST (@{{gstTax}}%):</td>
+                                                <td class="checkout__total--title text-left">VAT (@{{gstTax}}%):</td>
                                                 <td class="checkout__total--amount text-right">£@{{calculate().tax}}</td>
                                             </tr>
                                             <tr class="checkout__total--items">

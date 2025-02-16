@@ -59,7 +59,7 @@
                                 <div class="customer__information">
                                     <div class="checkout__email--phone mb-12">
                                        <label>
-                                            <input class="checkout__input--field border-radius-5" v-model="checkout.phone_email" required placeholder="Email or mobile phone mumber"  type="text">
+                                            <input class="checkout__input--field border-radius-5" v-model="checkout.phone_email" required placeholder="Email or mobile phone number"  type="text">
                                        </label>
                                        <small v-if="errors && errors.phone_email == ``">This field is required.</small>
                                     </div>

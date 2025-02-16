@@ -9,8 +9,7 @@
 					</div>
 					<div class="col-lg-6 col-5 text-right">
 						<?php if(Permissions::hasPermission('products', 'create')): ?>
-						<a href="<?php echo route('admin.products.add') ?>" class="btn btn-neutral">
-						<i class="fas fa-plus"></i> New</a>
+						<a href="<?php echo route('admin.products.add') ?>" class="btn btn-neutral"><i class="fas fa-plus"></i> New</a>
 						<?php endif; ?>
 						@include('admin.products.filters')
 					</div>

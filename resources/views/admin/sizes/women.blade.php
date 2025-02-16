@@ -9,6 +9,7 @@
                     <div v-for="(men, index) in mens" :key="index" >
                         <div class=" mt-2 d-flex position-relative pe-0">
                             <input type="hidden" value="Female" name="type" >
+                            <input type="hidden"  name="id" v-if="men.id" :name="'mens[' + index + '][id]'" :value="men.id" >
                             <table class="row w-100 p-3" style="border: none">
                                 <tr>
                                 <td>
@@ -74,6 +75,18 @@
                                         @enderror
                                     </div>
                                 </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="7">
+                                        <div class="custom-control">
+                                            <label class="custom-toggle">
+                                                <input type="hidden" :name="'mens[' + index + '][vat]'" value="0" />
+                                                <input type="checkbox" v-model="men.vat" :name="'mens[' + index + '][vat]'" value="1" :checked="men.vat ? true : false">
+                                                <span class="custom-toggle-slider rounded-circle" data-label-off="OFF" data-label-on="ON"></span>
+                                            </label>
+                                            <label class="custom-control-label">Vat Applicable?</label>
+                                        </div>
+                                    </td>
                                 </tr>
                             </table>
                         </div>

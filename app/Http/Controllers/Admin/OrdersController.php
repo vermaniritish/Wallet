@@ -370,6 +370,39 @@ class OrdersController extends AppController
 		}
     }
 
+	function download(Request $request, $id)
+    {
+    	$page = Orders::get($id);
+		$where = ['order_products.order_id' => $id];
+		$listing = OrderProductRelation::getListing($request, $where);
+		
+    	if($page)
+    	{
+			$html = view(
+				"admin/orders/pdf", 
+				[
+					'page' => $page,
+					'listing' => $listing
+				]
+			)->render();
+			$mpdf = new \Mpdf\Mpdf([
+                'tempDir' => public_path('/uploads'),
+                'mode' => 'utf-8', 
+                'orientation' => 'P',
+                'format' => [210, 297],
+                'setAutoTopMargin' => true,
+                'margin_left' => 0,'margin_right' => 0,'margin_top' => 0,'margin_bottom' => 0,'margin_header' => 0,'margin_footer' => 0
+            ]);
+			$mpdf->showImageErrors = true;
+			$mpdf->WriteHTML($html);
+            $mpdf->Output('Order-'.$page->prefix_id.'.pdf','D');
+		}
+		else
+		{
+			abort(404);
+		}
+    }
+
     function edit(Request $request, $id)
     {
     	if(!Permissions::hasPermission('orders', 'update'))
@@ -621,6 +654,22 @@ class OrdersController extends AppController
 		$order = Orders::find($id);
 		if($order){
 			$updated = $order->updateStatusAndLogHistory($field, $request->get('flag'));
+			$phone = preg_replace('/\D/', '', $order->customer_phone);
+			if(!$phone && $order->customer && $order->customer->phonenumber)
+			{
+				$phone = preg_replace('/\D/', '', $order->customer->phonenumber);
+			}
+			if($phone){
+				$sent = \App\Libraries\SMSGateway::send($phone, str_replace('{order_id}', $order->prefix_id , Orders::getStatuses($order->status)['sms_message']));
+			}
+
+			$codes = [
+				'{order_id}' => $order->prefix_id,
+				'{subject}' => Orders::getStatuses($order->status)['message'] . ' - ' . $order->prefix_id, 
+				'{status_message}' => str_replace('{order_id}', $order->prefix_id , Orders::getStatuses($order->status)['sms_message']), 
+			];
+			$email = $order->email ? $order->email : ($order->customer ? $order->customer->phonenumber : null);
+			General::sendTemplateEmail($email, 'order-status-change', $codes);
 		}
 		if ($updated) {
 			return Response()->json([
@@ -776,6 +825,7 @@ class OrdersController extends AppController
 
 			$order = Orders::find($id);
 			
+			$address = substr($order->address, 0, 40);
 			$xml = <<<EOL
 			<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:v14="http://www.parcelforce.net/ws/ship/v14">
    <soapenv:Header/>
@@ -806,7 +856,7 @@ class OrdersController extends AppController
                </v14:Notifications>
             </v14:RecipientContact>
             <v14:RecipientAddress>
-               <v14:AddressLine1>{$order->address}</v14:AddressLine1>
+               <v14:AddressLine1>{$address}</v14:AddressLine1>
                <v14:AddressLine2>{$order->area}</v14:AddressLine2>
                <v14:AddressLine3></v14:AddressLine3>
                <v14:Town>{$order->city}</v14:Town>
@@ -849,16 +899,25 @@ EOL;
 			$xml_label = simplexml_load_string($xml_shipment_info);
 			$json_label = json_encode($xml_label);
 			$jsonArrayLabel = json_decode($json_label, TRUE);
-
 			if( isset($jsonArrayLabel['CompletedShipmentInfo']['CompletedShipments']['CompletedShipment']['ShipmentNumber']) && $jsonArrayLabel['CompletedShipmentInfo']['CompletedShipments']['CompletedShipment']['ShipmentNumber'] )
 			{
+				$trackingNumber = $jsonArrayLabel['CompletedShipmentInfo']['CompletedShipments']['CompletedShipment']['ShipmentNumber'];
 				$order->status = count($request->get('ship')) >= $request->get('total') ? 'shipped' : 'partial_shipped';
 				$order->save();
 
 				OrderProductRelation::whereIn('id', $request->get('ship'))->update([
-					'shipment_tracking' => $jsonArrayLabel['CompletedShipmentInfo']['CompletedShipments']['CompletedShipment']['ShipmentNumber']
+					'shipment_tracking' => $trackingNumber
 				]);
 				
+				$message = "Your order $order->prefix_id is completed and dispatched. Please track your order with $trackingNumber on this link [tracking link]. Thank you. <a href=\"https://www.pindersworkwear.com\">pindersworkwear.com</a>";
+				$phone = preg_replace('/\D/', '', $order->customer_phone);
+				if(!$phone && $order->customer && $order->customer->phonenumber)
+				{
+					$phone = preg_replace('/\D/', '', $order->customer->phonenumber);
+				}
+				if($phone){
+					$sent = \App\Libraries\SMSGateway::send($phone, $message);
+				}
 				return Response()->json([
 					'status' => true,
 					'message' => count($request->get('ship')) . " items shipped successfully."

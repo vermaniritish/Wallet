@@ -2,6 +2,7 @@ let men = new Vue({
     el: '#men',
     data: {
         mens: [{ 
+            id: null,
             size_type: '',
             from_cm: '',
             to_cm: '',
@@ -9,6 +10,7 @@ let men = new Vue({
             waist: '',
             hip: '',
             length: '',
+            vat: 0,
         }
     ]
     },
@@ -24,6 +26,7 @@ let men = new Vue({
         },
         addForm() {
             this.mens.push({ 
+                id: null,
                 size_type: '',
                 from_cm: '',
                 to_cm: '',
@@ -31,6 +34,7 @@ let men = new Vue({
                 waist: '',
                 hip: '',
                 length: '',
+                vat: 1
             });
         }
     }
@@ -39,6 +43,7 @@ let women = new Vue({
     el: '#women',
     data: {
         mens: [{ 
+            id: null,
             size_type: '',
             from_cm: '',
             to_cm: '',
@@ -46,6 +51,7 @@ let women = new Vue({
             waist: '',
             hip: '',
             length: '',
+            vat: 0
         }
     ]
     },
@@ -61,6 +67,7 @@ let women = new Vue({
         },
         addForm() {
             this.mens.push({ 
+                id: null,
                 size_type: '',
                 from_cm: '',
                 to_cm: '',
@@ -68,6 +75,7 @@ let women = new Vue({
                 waist: '',
                 hip: '',
                 length: '',
+                vat: 1
             });
         }
     }
@@ -76,6 +84,7 @@ let unisex = new Vue({
     el: '#uni',
     data: {
         mens: [{ 
+            id: null,
             size_type: '',
             from_cm: '',
             to_cm: '',
@@ -83,6 +92,7 @@ let unisex = new Vue({
             waist: '',
             hip: '',
             length: '',
+            vat: 0
         }
     ]
     },
@@ -98,6 +108,7 @@ let unisex = new Vue({
         },
         addForm() {
             this.mens.push({ 
+                id: null,
                 size_type: '',
                 from_cm: '',
                 to_cm: '',
@@ -105,6 +116,7 @@ let unisex = new Vue({
                 waist: '',
                 hip: '',
                 length: '',
+                vat: 1
             });
         }
     }
@@ -114,6 +126,7 @@ let kids = new Vue({
     el: '#kidkid',
     data: {
         mens: [{ 
+            id: null,
             size_type: '',
             from_cm: '',
             to_cm: '',
@@ -121,6 +134,7 @@ let kids = new Vue({
             waist: '',
             hip: '',
             length: '',
+            vat: 0
         }]
     },
     mounted: function() {
@@ -135,6 +149,7 @@ let kids = new Vue({
         },
         addForm() {
             this.mens.push({ 
+                id: null,
                 size_type: '',
                 from_cm: '',
                 to_cm: '',
@@ -142,6 +157,7 @@ let kids = new Vue({
                 waist: '',
                 hip: '',
                 length: '',
+                vat: 1
             });
         }
     }

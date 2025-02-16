@@ -20,6 +20,7 @@ use App\Models\API\ProductCategories;
 use App\Models\Admin\OrderProductRelation;
 use App\Models\Admin\Orders;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 
 class HomeController extends BaseController
 {
@@ -47,11 +48,25 @@ class HomeController extends BaseController
 			if(!$product) {
 				abort('404');
 			}
-            $product->sizes = ProductSizeRelation::select(['product_sizes.*', 'products.title as title', 'products.slug', 'products.image', 'colours.title as color'])
+            $product->sizes = ProductSizeRelation::select(['product_sizes.*', 'sizes.vat', 'products.title as title', 'products.slug', 'products.image', 'colours.title as color'])
+			->leftJoin('sizes', 'sizes.id', '=', 'product_sizes.size_id')
             ->leftJoin('products', 'products.id', '=', 'product_sizes.product_id')
             ->leftJoin('colours', 'colours.id', '=', 'product_sizes.color_id')
-            ->where('product_id', $product->id)->get();
-            $similarProducts = Products::where('id', '!=', $product->id)->where('category_id', $product->category_id)->where('status', 1)->orderByRaw('rand()')->limit(4)->get();
+            ->where('product_id', $product->id)->where('product_sizes.status', 1)->get();
+            $similarProducts = Products::select(
+				[
+					'products.id',
+					'products.title',
+					'products.slug',
+					'products.price',
+					'products.phonenumber',
+					'products.image',
+					'products.max_price',
+					'products.price',
+					'products.gender',
+					DB::raw('(Select sale_price from product_sizes where product_sizes.product_id = products.id order by sale_price desc limit 1) as sale_price')
+				]
+			)->where('id', '!=', $product->id)->where('category_id', $product->category_id)->where('status', 1)->orderByRaw('rand()')->limit(4)->get();
             return view('frontend.products.detail', [
                 'product' => $product,
                 'similarProducts' => $similarProducts,
@@ -77,7 +92,7 @@ class HomeController extends BaseController
                 'category' => $category,
                 'subCategory' => $subCategory,
                 'brands' => $brands,
-                'categories' => $categories
+                'categories' => $categories,
             ]);
         }
     }
@@ -119,7 +134,19 @@ class HomeController extends BaseController
 
     function search(Request $request)
     {
-        return redirect('/' . $request->get('category') . '?search=' . $request->get('search'));
+		$brands = $category = $categories = [];
+		if($request->get('category')):
+        	$category = ProductCategories::select(['id','title', 'slug', 'description', 'image'])->where('slug', 'LIKE', $request->get('category'))->where('status', 1)->limit(1)->first();
+			$categories = ProductSubCategories::select(['title', 'slug', 'description', 'image'])->where('category_id', $category->id)->where('status', 1)->get();
+			$brands = Brands::select(['id', 'title', 'slug'])->where('status', 1)->orderBy('title', 'asc')->get();
+		endif;
+		return view('frontend.products.index', [
+			'searchPage' => true,
+			'category' => $category,
+			'subCategory' => null,
+			'brands' => $brands,
+			'categories' => $categories
+		]);
     }
 
     function contactUs(Request $request)

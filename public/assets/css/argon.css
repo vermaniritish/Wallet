@@ -30245,3 +30245,4 @@ ul.tagit input[type="text"] {
     border: 1px solid #11cdef;
     box-shadow: 0px 0px 8px 1px #11cdef;
 }
+.cke_notifications_area{display: none;}

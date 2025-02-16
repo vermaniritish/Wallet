@@ -8,62 +8,59 @@
             <div class="col">
                 
                 <div class="product__details--media">
-                    <div class="product__media--preview swiper">
-                        <div class="swiper-wrapper">
-                            @foreach($product->image as $image)
-                            <div class="swiper-slide">
-                                <div class="product__media--preview__items">
-                                    <a class="product__media--preview__items--link glightbox" data-gallery="product-media-preview" href="{{ url($image['large']) }}"><img class="product__media--preview__items--img" src="{{ url($image['large'])}}" alt="product-media-img"></a>
-                                    <div class="product__media--view__icon">
-                                        <a class="product__media--view__icon--link glightbox" href="{{ url($image['large']) }}" data-gallery="product-media-preview">
-                                            <svg class="product__media--view__icon--svg" xmlns="http://www.w3.org/2000/svg" width="22.51" height="22.443" viewBox="0 0 512 512"><path d="M221.09 64a157.09 157.09 0 10157.09 157.09A157.1 157.1 0 00221.09 64z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"></path><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="32" d="M338.29 338.29L448 448"></path></svg>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                            @endforeach
-                            @foreach($product->color_images as $colorId => $i)
-                                <?php $image = FileSystem::getAllSizeImages($i['path']) ?>
-                                <div class="swiper-slide">
-                                    <div class="product__media--preview__items">
-                                        <a class="product__media--preview__items--link glightbox" data-color-id="{{ $colorId }}" data-gallery="product-media-preview" href="{{ url($image['large']) }}"><img class="product__media--preview__items--img" src="{{ url($image['large'])}}" alt="product-media-img"></a>
-                                        <div class="product__media--view__icon">
-                                            <a class="product__media--view__icon--link glightbox" href="{{ url($image['large']) }}" data-gallery="product-media-preview">
-                                                <svg class="product__media--view__icon--svg" xmlns="http://www.w3.org/2000/svg" width="22.51" height="22.443" viewBox="0 0 512 512"><path d="M221.09 64a157.09 157.09 0 10157.09 157.09A157.1 157.1 0 00221.09 64z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"></path><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="32" d="M338.29 338.29L448 448"></path></svg>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            @endforeach
+                    <?php $images = array_merge($product->image, $product->color_images); ?>
+                    <!-- Primary Slider Start-->
+                    <div id="primary_slider">
+                        <div class="splide__track">
+                            <ul class="splide__list">
+                                @foreach($product->image as $i)
+                                <?php $image = isset($i['path']) && $i['path'] ? FileSystem::getAllSizeImages($i['path']) : $i;?>
+                                <li class="splide__slide">
+                                    <img src="{{ url($image['large']) }}">
+                                </li>
+                                @endforeach
+                                @foreach($product->color_images as $i)
+                                <?php $image = isset($i['path']) && $i['path'] ? FileSystem::getAllSizeImages($i['path']) : $i;?>
+                                <li class="splide__slide">
+                                    <img src="{{ url($image['large']) }}">
+                                </li>
+                                @endforeach
+                            </ul>
                         </div>
                     </div>
-                    <div class="product__media--nav swiper">
-                        <div class="swiper-wrapper">
-                            @foreach($product->image as $image)
-                            <div class="swiper-slide">
-                                <div class="product__media--nav__items">
-                                    <img class="product__media--nav__items--img" src="{{ url($image['small']) }}" alt="product-nav-img">
-                                </div>
-                            </div>
-                            @endforeach
-                            @foreach($product->color_images as $colorId => $i)
-                            <?php $image = FileSystem::getAllSizeImages($i['path']) ?>
-                            <div class="swiper-slide">
-                                <div class="product__media--nav__items">
-                                    <img class="product__media--nav__items--img" src="{{ url($image['small']) }}" alt="product-nav-img">
-                                </div>
-                            </div>
-                            @endforeach
+                    <!-- Primary Slider End-->
+                    <!-- Thumbnal Slider Start-->
+                    <div id="thumbnail_slider">
+                        <div class="splide__track">
+                            <ul class="splide__list">
+                                @foreach($product->image as $colorId => $i)
+                                <?php $image = isset($i['path']) && $i['path'] ? FileSystem::getAllSizeImages($i['path']) : $i;?>
+                                <li class="splide__slide">
+                                    <img src="{{ url($image['small']) }}">
+                                </li>
+                                @endforeach
+                                @foreach($product->color_images as $colorId => $i)
+                                <?php $image = isset($i['path']) && $i['path'] ? FileSystem::getAllSizeImages($i['path']) : $i;?>
+                                <li class="splide__slide" data-item="{{ $colorId }}">
+                                    <img src="{{ url($image['small']) }}">
+                                </li>
+                                @endforeach
+                            </ul>
                         </div>
-                        <div class="swiper__nav--btn swiper-button-next"></div>
-                        <div class="swiper__nav--btn swiper-button-prev"></div>
                     </div>
+                    <!-- Thumbnal Slider End-->
                 </div>
             </div>   
             <div class="col">
                 <div class="product__details--info">
                     
-                        <h2 class="product__details--info__title mb-15">{{$product->title}}</h2>
+                        <h2 class="product__details--info__title mb-15">
+                            {{$product->title}}
+                            @if($product->sku_number)
+                            <br />
+                            <small style="font-size:13px;">Product Code: {{ $product->sku_number }}</small>
+                            @endif
+                        </h2>
                         <div class="product__details--info__price mb-10">
                             <span class="current__price">from {{_currency($product->price) }}</span>
                             @if($product->max_price > 0)
@@ -78,7 +75,7 @@
                             @include('frontend.products.sizes')
                             @include('frontend.products.logo_option')
                             <div class="product__variant--list mb-15">
-                                <button class="variant__buy--now__btn primary__btn" v-on:click="addToCart"><i class="fa fa-spin fa-spinner" v-if="adding && !buyNow"></i><i class="fa fa-check text-success" v-else-if="!buyNow && adding === false"></i> Add To Cart</button>
+                                <button class="variant__buy--now__btn primary__btn" v-on:click="addToCart(null)"><i class="fa fa-spin fa-spinner" v-if="adding && !buyNow"></i><i class="fa fa-check text-success" v-else-if="!buyNow && adding === false"></i> Add To Cart</button>
                                 <button class="variant__buy--now__btn primary__btn mt-4" v-on:click="addToCart('buy')"><i class="fa fa-spin fa-spinner" v-if="adding && buyNow"></i><i class="fa fa-check text-success" v-else-if="adding === false && buyNow"></i> <i v-else class="fa fa-shopping-bag"></i> Buy Now</button>
                             </div>
                             <div class="product__details--info__meta">

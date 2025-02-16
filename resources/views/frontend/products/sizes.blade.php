@@ -33,7 +33,7 @@
     <div class="productsizesbox">
         <div class="productsizesboxContainer">
 
-            <ul class="productsizesboxUL" data-loading="false" data-test-id="SizeList">
+            <ul class="productsizesboxUL" data-loading="false" data-test-id="SizeList" v-if="renderSizes().length > 0">
                 <li data-active="false" class="ProductSizes-newProductSizesItem-xII" data-test-id="ProductSize" v-for="s in renderSizes()">
                     <div class="productsizes" data-stock-status="InStock"><small>@{{ s.size_title }} </small></div>
                     <div class="productsizes-stockinfo1">
@@ -48,6 +48,7 @@
                     </div>
                 </li>												
             </ul>
+            <p class="text-danger" v-else>Out of Stock!</p>
         </div>
     </div>
     

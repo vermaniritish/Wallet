@@ -11,6 +11,9 @@ let order = new Vue({
         selectedGender: '',
         title: '',
         selectedColor: [],
+        
+        purchase_price: '',
+        margin: '',
         price: '',
         maxPrice: '',
         selectedBrand: [],
@@ -97,6 +100,11 @@ let order = new Vue({
                 colorId: id
             });
         },
+        calculatePrice: function() {
+            let p =((this.purchase_price/this.margin)*100);
+            this.price = Math.round(p);
+            
+        },
         initEditValues: function () {
             this.sizes = $('#availableSizes').text() ? JSON.parse($('#availableSizes').text()) : [];
             if ($('#edit-form').length > 0) {
@@ -109,6 +117,8 @@ let order = new Vue({
                 this.activeColor = this.selectedColor.length > 0 ? this.selectedColor[0] : null;
                 this.selectedGender = data.gender;
                 this.price = data.price;
+                this.purchase_price = data.purchase_price;
+                this.margin = data.margin;
                 this.maxPrice = data.max_price;
                 this.selectedBrand = data && data.brands && data.brands.length > 0 ? data.brands.map(brand => brand.id) : [];
                 this.selectedSizeIds = {};
@@ -121,6 +131,8 @@ let order = new Vue({
                 }
                 if (data && data.sizes && data.sizes.length > 0) 
                 {
+                    console.log(data.sizes);
+
                     data.sizes.forEach(size => {
                         if (!this.selectedSize[size.color_id]) {
                             this.selectedSize[size.color_id] = [];
@@ -132,6 +144,7 @@ let order = new Vue({
                             to_cm: size.to_cm,
                             price: parseFloat(size.price),
                             sale_price: size.sale_price && (size.sale_price*1) > 0 ? parseFloat(size.sale_price) : ``,
+                            status: size.status
                         });
                     });
                 }
@@ -160,6 +173,7 @@ let order = new Vue({
                                 to_cm: size.to_cm,
                                 price: this.price > 0 ? this.price : 0,
                                 sale_price: this.maxPrice > 0 ? this.maxPrice : ``,
+                                status: size.status
                             });
                         }
                     } 
@@ -170,9 +184,12 @@ let order = new Vue({
          
         removeSize(colorSelectedId, sizeIndex) 
         {
-            let selectedSizes = this.selectedSize[colorSelectedId];
+            let allSizes = {...this.selectedSize};
+            this.selectedSize = [];
+            let selectedSizes = allSizes[colorSelectedId];
             selectedSizes.splice(sizeIndex, 1);
-            this.$set(this.selectedSize, colorSelectedId, selectedSizes);
+            allSizes[colorSelectedId] = selectedSizes;
+            this.selectedSize = allSizes;
         },       
         updateSizes: async function() 
         {

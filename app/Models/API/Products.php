@@ -119,7 +119,8 @@ class Products extends AdminProducts
             'products.max_price',
             'products.price',
             'products.gender',
-            'product_categories.title as category'
+            'product_categories.title as category',
+            DB::raw('(Select sale_price from product_sizes where product_sizes.product_id = products.id order by sale_price desc limit 1) as sale_price')
         ];
 
 
@@ -134,20 +135,24 @@ class Products extends AdminProducts
 	    
 
         $pIds = [];
-        if($request->get('categories'))
+        if($request->get('categories') || $request->get('cId'))
         {
             $cats = $request->get('categories');
-            $cats = $cats ? explode(',', $cats) : [0];
-            $ids = ProductSubCategoryRelation::select(['product_id'])->leftJoin('sub_categories', 'sub_categories.id', '=', 'product_sub_category_relation.sub_category_id')
-                ->where(function($query) use ($cats) {
+            $cats = $cats ? explode(',', $cats) : [];
+            $ids = ProductSubCategoryRelation::select(['product_id'])
+                ->leftJoin('sub_categories', 'sub_categories.id', '=', 'product_sub_category_relation.sub_category_id')
+                ->where('sub_categories.category_id', $request->get('cId'));
+            if($cats) {
+                $ids->where(function($query) use ($cats) {
                     foreach($cats as $c){
                         $query->orWhere('sub_categories.slug', 'LIKE', $c);
                     }
 
                     return $query;
-                })
-                ->pluck('product_id')
-                ->toArray();
+                });
+            }
+
+            $ids = $ids->pluck('product_id')->toArray();
             $ids = !empty($ids) ? $ids : ['0'];
             $pIds = array_merge($pIds, $ids);
         }
@@ -156,11 +161,6 @@ class Products extends AdminProducts
         {
             $listing->where('products.price', '>=', $request->get('price_from'));
             $listing->where('products.max_price', '<=', $request->get('price_to'));
-            // $prices = [$request->get('price_from'), $request->get('price_to')];
-            // $listing->where(function($query) use($prices)  {
-            //     $query->orWhere('products.price', '>=', $prices[0]);
-            //     $query->orWhere('products.max_price', '<=', $prices[1]);
-            // });
         }
 
         if($request->get('gender'))
@@ -191,7 +191,8 @@ class Products extends AdminProducts
             $pIds = array_merge($pIds, $ids);
         }
 
-        if($request->get('search')) {
+        if($request->get('search'))
+        {
             $search = $request->get('search');
             $search = explode(' ', $search);
             $search = $search ? array_filter($search) : [];
@@ -253,6 +254,137 @@ class Products extends AdminProducts
 	    return $listing;
     }
 
+    public static function getCount(Request $request, $where = [], $gender = null)
+    {
+        $userId = ApiAuth::getLoginId();
+    	$orderBy = 'products.id';
+    	$direction = 'desc';
+    	$page = $request->get('page') ? $request->get('page') : 1;
+    	   
+        $select = [
+            DB::raw('count(products.id) as count')
+        ];
+
+    	$listing = Products::select($select)
+            ->leftJoin('product_categories', 'product_categories.id', '=', 'products.category_id');
+        
+        $pIds = [];
+        if($request->get('categories') || $request->get('cId'))
+        {
+            $cats = $request->get('categories');
+            $cats = $cats ? explode(',', $cats) : [];
+            $ids = ProductSubCategoryRelation::select(['product_id'])
+                ->leftJoin('sub_categories', 'sub_categories.id', '=', 'product_sub_category_relation.sub_category_id')
+                ->where('sub_categories.category_id', $request->get('cId'));
+            if($cats) {
+                $ids->where(function($query) use ($cats) {
+                    foreach($cats as $c){
+                        $query->orWhere('sub_categories.slug', 'LIKE', $c);
+                    }
+
+                    return $query;
+                });
+            }
+
+            $ids = $ids->pluck('product_id')->toArray();
+            $ids = !empty($ids) ? $ids : ['0'];
+            $pIds = array_merge($pIds, $ids);
+        }
+
+        if($request->get('price_from') && $request->get('price_to'))
+        {
+            $listing->where('products.price', '>=', $request->get('price_from'));
+            $listing->where('products.max_price', '<=', $request->get('price_to'));
+            // $prices = [$request->get('price_from'), $request->get('price_to')];
+            // $listing->where(function($query) use($prices)  {
+            //     $query->orWhere('products.price', '>=', $prices[0]);
+            //     $query->orWhere('products.max_price', '<=', $prices[1]);
+            // });
+        }
+
+        if($gender)
+        {
+            $genders = explode(',', $gender);
+            $listing->where(function($query) use($genders)  {
+                foreach($genders as $g) {
+                    $query->orWhere('gender', 'LIKE', $g);
+                }
+                return $query; 
+            });
+        }
+
+        if($request->get('brands'))
+        {
+            $cats = $request->get('brands');
+            $cats = $cats ? explode(',', $cats) : [0];
+            $ids = BrandProducts::select(['product_id'])->leftJoin('brands', 'brands.id', '=', 'brand_product.brand_id')
+                ->where(function($query) use ($cats) {
+                    foreach($cats as $c){
+                        $query->orWhere('brands.slug', 'LIKE', $c);
+                    }
+                    return $query;
+                })
+                ->pluck('product_id')
+                ->toArray();
+            $ids = !empty($ids) ? $ids : ['0'];
+            $pIds = array_merge($pIds, $ids);
+        }
+
+        if($request->get('search'))
+        {
+            $search = $request->get('search');
+            $search = explode(' ', $search);
+            $search = $search ? array_filter($search) : [];
+            if($search) {
+                $listing->where(function($query) use ($search) {
+                    foreach($search as $s)
+                    {
+                        $query->orWhereRaw('(products.title LIKE ? or products.short_description LIKE ? or product_categories.title LIKE ?)', ["%{$s}%","%{$s}%","%{$s}%"]);
+                    }
+                });
+            }
+        }
+
+        if($pIds) {
+            $where[] = 'products.id IN ('.implode(',', $pIds).')';
+        }
+
+        if(!empty($where))
+	    {
+	    	foreach($where as $query => $values)
+	    	{
+	    		if(is_array($values))
+                    $listing->whereRaw($query, $values);
+                elseif(!is_numeric($query))
+                    $listing->where($query, $values);
+                else
+                    $listing->whereRaw($values);
+	    	}
+	    }
+
+        switch ($request->get('sort')) {
+            case 'price_asc':
+                $listing->orderByRaw('products.price asc');
+            break;
+
+            case 'price_desc':
+                $listing->orderByRaw('products.price desc');
+            break;
+
+            case 'a_z':
+                $listing->orderByRaw('products.title asc');
+            break;
+            
+            default:
+                $listing->orderBy($orderBy, $direction);
+            break;
+        }
+
+        $listing = $listing->limit(1)->first();
+
+	    return $listing && $listing->count ? $listing->count : 0;
+    }
+
     /**
     * To search and get pagination listing
     * @param Request $request
@@ -281,6 +413,7 @@ class Products extends AdminProducts
             'users.image as user_image',
             DB::raw('(CASE WHEN products.sale_price is null or products.sale_price = 0 THEN products.price ELSE products.sale_price END) as price_order'),
             DB::raw('(SELECT AVG(TIMESTAMPDIFF(MINUTE, created, read_at)) as response_seconds from messages where to_id = products.user_id and read_at is not null) as respond'),
+            DB::raw('(Select sale_price from product_sizes where product_sizes.product_id = products.id order by sale_price desc limit 1) as sale_price'),
             'products.modified',
         ];
 

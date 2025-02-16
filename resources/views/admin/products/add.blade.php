@@ -136,6 +136,25 @@
 									</div>
 								</div>
 								<div class="row">
+									
+									<div class="col-lg-6">
+										<div class="form-group">
+											<label class="form-control-label" for="input-first-name">Purchase Price</label>
+											<input type="number" min="0" class="form-control" v-model="purchase_price" name="purchase_price" placeholder="Purchase Price" required value="{{ old('purchase_price') }}"  v-on:input="calculatePrice">
+											@error('price')
+												<small class="text-danger">{{ $message }}</small>
+											@enderror
+										</div>
+									</div>
+									<div class="col-lg-6">
+										<div class="form-group">
+											<label class="form-control-label" for="input-first-name">Margin (% Percentage)</label>
+											<input type="number" min="0" class="form-control" v-model="margin" name="margin" placeholder="10%" required value="{{ old('margin') }}" v-on:input="calculatePrice">
+											@error('price')
+												<small class="text-danger">{{ $message }}</small>
+											@enderror
+										</div>
+									</div>
 									<div class="col-lg-6">
 										<div class="form-group">
 											<label class="form-control-label" for="input-first-name">Price</label>
@@ -238,6 +257,7 @@
 														<th>Size (From - To)</th>
 														<th>Price</th>
 														<th>Sale Price</th>
+														<th>Status</th>
 														<th>Remove Item</th>
 													</tr>
 												</thead>
@@ -251,6 +271,14 @@
 														<td>@{{ size.from_cm }} - @{{ size.to_cm }} cm</td>
 														<td><input required type="number" v-model="size.price" min="0"></td>
 														<td><input type="number" v-model="size.sale_price" min="0"></td>
+														<td>
+															<div class="custom-control">
+																<label class="custom-toggle">
+																	<input type="checkbox" v-model="size.status">
+																	<span class="custom-toggle-slider rounded-circle" data-label-off="OFF" data-label-on="ON"></span>
+																</label>
+															</div>
+														</td>
 														<td><i class="fa fa-times" v-on:click="removeSize(colorSelectedId, sizeIndex)"></i></td>
 													</tr>
 												</tbody>

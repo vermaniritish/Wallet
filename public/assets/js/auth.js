@@ -13,7 +13,8 @@ var auth = new Vue({
     loginErrorMessages: null,
     registerErrorMessages: null,
     forgotErrorMessages: null,
-    forgotSuccessMessages: null
+    forgotSuccessMessages: null,
+    registered: false,
     },
     mounted: function() {
         this.mounting = false;
@@ -49,8 +50,7 @@ var auth = new Vue({
                 { 
                     document.getElementById('register-form').reset();
                     this.loading = false;
-                    set_notification('success', response.message);
-                    window.location.href = site_url;
+                    this.registered = true;
                 }else{
                     this.registerErrorMessages = response.message;
                 }

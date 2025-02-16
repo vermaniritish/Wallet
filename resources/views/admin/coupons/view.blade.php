@@ -9,7 +9,7 @@
 					</div>
 					<div class="col-lg-6 col-5 text-right">
 						<a href="<?php echo route('admin.coupons') ?>" class="btn btn-neutral"><i class="fa fa-arrow-left"></i> Back</a>
-						<a href="#" class="btn btn-neutral" target="_blank"><i class="fa fa-eye"></i> View Page</a>
+						<a href="<?php echo route('admin.coupon.download', ['id' => $page->id]) ?>" class="btn btn-neutral" target="_blank"><i class="fa fa-download"></i> Download</a>
 						<?php if(Permissions::hasPermission('coupons', 'update') || Permissions::hasPermission('coupons', 'delete')): ?>
 							<div class="dropdown" data-toggle="tooltip" data-title="More Actions">
 								<a class="btn btn-neutral" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -96,63 +96,6 @@
 				</div>
 			</div>
 			<div class="col-xl-4 order-xl-1">
-				<?php if($page->image): ?>
-				<div class="card">
-					<div class="card-body">
-						<img src="<?php echo url($page->image) ?>">
-					</div>
-				</div>
-				<?php endif; ?>
-				<div class="card">
-					<div class="card-header">
-						<div class="row align-items-center">
-							<div class="col">
-								<h3 class="mb-0">This Month Visits</h3>
-							</div>
-							<div class="col text-right">
-								<a href="#!" class="btn btn-sm py-2 px-3 btn-primary">See all</a>
-							</div>
-						</div>
-					</div>
-					<div class="table-responsive small-max-card-table">
-						<!-- Projects table -->
-						<table class="table align-items-center table-flush">
-							<thead class="thead-light">
-								<tr>
-									<th scope="col">Date</th>
-									<th scope="col">Visitors</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<th scope="row">
-										05-01-2021
-									</th>
-									<td>
-										340
-									</td>
-								</tr>
-								<tr>
-									<th scope="row">
-										05-01-2021
-									</th>
-									<td>
-										340
-									</td>
-								</tr>
-								<tr>
-									<th scope="row">
-										05-01-2021
-									</th>
-									<td>
-										340
-									</td>
-								</tr>
-							</tbody>
-						</table>
-					</div>
-				</div>
-
 				<div class="card">
 					<div class="card-header">
 						<div class="row align-items-center">

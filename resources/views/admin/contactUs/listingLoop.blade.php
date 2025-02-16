@@ -14,13 +14,16 @@
 		</span>
 	</td>
 	<td>
-		<?php echo $row->first_name . ' '. $row->last_name?>
+		<?php echo $row->firstname . ' '. $row->lastname?>
 	</td>
 	<td>
-		<?php echo $row->phonenumber ?>
+		<?php echo $row->number ?>
 	</td>
 	<td>
 		<?php echo $row->email ?>
+	</td>
+	<td>
+		<?php echo $row->created ?>
 	</td>
 	<td class="text-right">
 	<?php if(Permissions::hasPermission('contact_us', 'update') || Permissions::hasPermission('contact_us', 'delete')): ?>

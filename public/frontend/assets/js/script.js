@@ -338,43 +338,44 @@ var swiper = new Swiper(".quickview__swiper--activation", {
   },
 });
 
+var primarySlider = null;
 window.productSlider = function() {
-  // product details media swiper activation
-  var swiper = new Swiper(".product__media--nav", {
-    loop: true,
-    spaceBetween: 10,
-    slidesPerView: 5,
-    freeMode: true,
-    watchSlidesProgress: true,
-    breakpoints: {
-      768: {
-        slidesPerView: 5,
-      },
-      480: {
-        slidesPerView: 4,
-      },
-      320: {
-        slidesPerView: 3,
-      },
-      200: {
-        slidesPerView: 2,
-      },
-      0: {
-        slidesPerView: 1,
-      },
-    },
-    navigation: {
-      nextEl: ".swiper-button-next",
-      prevEl: ".swiper-button-prev",
-    },
-  });
-  var swiper2 = new Swiper(".product__media--preview", {
-    loop: true,
-    spaceBetween: 10,
-    thumbs: {
-      swiper: swiper,
-    },
-  });
+      // Primary slider.
+    primarySlider = new Splide('#primary_slider', {
+      type: 'fade',
+      heightRatio: 0.5,
+      fixedHeight: 580,
+      pagination: false,
+      arrows: false,
+      cover: true,
+    });
+
+    // Thumbnails slider.
+    var thumbnailSlider = new Splide('#thumbnail_slider', {
+      rewind: true,
+      fixedWidth: 90,
+      fixedHeight: 90,
+      isNavigation: true,
+      gap: 10,
+      focus: 'center',
+      pagination: false,
+      cover: true,
+      breakpoints: {
+          '600': {
+              fixedWidth: 66,
+              fixedHeight: 40,
+          }
+      }
+    }).mount();
+
+    // sync the thumbnails slider as a target of primary slider.
+    primarySlider.sync(thumbnailSlider).mount();
+
+    // Sync thumbnail slider with primary slider
+    thumbnailSlider.on('click', function (event) {
+      var index = event.index;
+      primarySlider.go(index);
+    });
 }
 
 // tab activation

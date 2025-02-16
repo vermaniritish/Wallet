@@ -4,7 +4,7 @@ $categories = ProductCategories::select(['title', 'slug'])->where('status', 1)->
 ?>
 <form class="d-flex header__search--form" action="{{ url('/search')}}">
     <div class="header__select--categories select">
-        <select class="header__select--inner" required name="category">
+        <select class="header__select--inner" name="category">
             <option selected value="">All Categories</option>
             @foreach ($categories as $c)
             <option {{ isset($_GET['category']) && $_GET['category'] == $c->slug ? 'selected' : ''}} value="{{$c->slug}}">{{$c->title}}</option>

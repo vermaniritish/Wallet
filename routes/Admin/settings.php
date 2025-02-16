@@ -25,3 +25,9 @@ Route::get('/settings/footer-links', '\App\Http\Controllers\Admin\SettingsContro
     
 Route::post('/settings/footer-links', '\App\Http\Controllers\Admin\SettingsController@footerLinks')
     ->name('admin.settings.footerLinks');
+
+Route::post('/settings/freeDelivery', '\App\Http\Controllers\Admin\SettingsController@freeDelivery')
+    ->name('admin.settings.freeDelivery');
+
+    Route::post('/settings/freeLogo', '\App\Http\Controllers\Admin\SettingsController@freeLogo')
+    ->name('admin.settings.freeLogo');

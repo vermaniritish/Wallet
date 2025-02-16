@@ -332,4 +332,34 @@ class CouponsController extends AppController
 	        ], 200);	
     	}
     }
+
+	function download(Request $request, $id)
+    {
+    	$page = Coupons::get($id);
+		
+    	if($page)
+    	{
+			$html = view(
+				"admin/coupons/pdf", 
+				[
+					'page' => $page
+				]
+			)->render();
+			$mpdf = new \Mpdf\Mpdf([
+                'tempDir' => public_path('/uploads'),
+                'mode' => 'utf-8', 
+                'orientation' => 'P',
+                'format' => [210, 297],
+                'setAutoTopMargin' => true,
+                'margin_left' => 0,'margin_right' => 0,'margin_top' => 0,'margin_bottom' => 0,'margin_header' => 0,'margin_footer' => 0
+            ]);
+			$mpdf->showImageErrors = true;
+			$mpdf->WriteHTML($html);
+            $mpdf->Output('Coupon-'.$page->id.'.pdf','D');
+		}
+		else
+		{
+			abort(404);
+		}
+    }
 }

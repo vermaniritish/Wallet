@@ -50,7 +50,7 @@
 								<div class="col-lg-12">
 									<div class="form-group">
 										<label class="form-control-label">Description</label>
-										<textarea rows="6" class="form-control guardian-notes" placeholder="Enter your answer" name="description">{{ old('description', $page->description) }}</textarea>
+										<textarea rows="6" class="form-control" id="editor1" placeholder="Enter your answer" name="description">{{ old('description', $page->description) }}</textarea>
 										@error('description')
 											<small class="text-danger">{{ $message }}</small>
 										@enderror

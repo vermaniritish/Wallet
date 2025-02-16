@@ -12,12 +12,17 @@
                                             </div>
                                             <div class="product__description">
                                                 <h3 class="product__description--name h4"><a :href="'/' + c.slug">@{{c.title}}</a></h3>
-                                                <span class="product__description--variant">COLOR: @{{c.color}}</span>
+                                                <small class="">COLOR: @{{c.color}}</small>
+                                                <small class="">SIZE: @{{c.size_title}}</small><br />
+                                                <small style="color:#ee2761" v-html="renderLogoInfo(c)"></small>
                                             </div>
                                         </div>
                                     </td>
                                     <td class="cart__table--body__list">
                                         <span class="cart__price">£@{{c.quantity && c.quantity > 0 ? (c.quantity*c.price).toFixed(2) : ``}}</span>
+                                    </td>
+                                    <td>
+                                        <a href="javascript:;" v-on:click="remove(c.id)"><i class="fa fa-times text-danger"></i></a>
                                     </td>
                                 </tr>
                             </tbody>
@@ -31,24 +36,35 @@
                                     <td class="checkout__total--title text-left">Product Costs </td>
                                     <td class="checkout__total--amount text-right">£@{{calculate().product_cost}}</td>
                                 </tr>
-								<tr class="checkout__total--items">
+								<tr class="checkout__total--items" v-if="calculate().logo_cost > 0">
                                     <td class="checkout__total--title text-left">Costs To Add Logo </td>
                                     <td class="checkout__total--amount text-right">£@{{calculate().logo_cost}}</td>
                                 </tr>
-								<tr class="checkout__total--items">
+                                <tr class="checkout__total--items" v-if="calculate().logo_discount > 0">
+                                    <td class="checkout__total--title text-left">Logo Discount <small v-if="calculate().applied_logo_discount > 0" style="color:#ee2761">@{{ `(${calculate().applied_logo_discount} logo(s))`}}</small>:</td>
+                                    <td class="checkout__total--amount text-right"><b style="color:#ee2761">- £@{{calculate().logo_discount}}</b></td>
+                                </tr>
+								<tr class="checkout__total--items" v-if="calculate().oneTimeCost > 0">
                                     <td class="checkout__total--title text-left">One Time Setup Fees </td>
                                     <td class="checkout__total--amount text-right">£@{{calculate().oneTimeCost}}</td>
                                 </tr>
+                                <tr class="">
+                                    <td colspan="2"><hr /></td>
+                                </tr>
                                 <tr class="checkout__total--items">
-                                    <td class="checkout__total--title text-left">Total (ex. VAT):</td>
+                                    <td class="checkout__total--title text-left">Subtotal:</td>
                                     <td class="checkout__total--amount text-right">£@{{calculate().subtotal}}</td>
                                 </tr>
 								<tr class="checkout__total--items"  v-if="calculate().discount > 0">
                                     <td class="checkout__total--title text-left">Discount</td>
-                                    <td class="checkout__total--amount text-right">- £@{{calculate().discount}}</td>
+                                    <td class="checkout__total--amount text-right"><b style="color:#ee2761">- £@{{calculate().discount}}</b></td>
+                                </tr>
+                                <tr class="checkout__total--items"  v-if="freeDelivery()">
+                                    <td class="checkout__total--title text-left">Delivery</td>
+                                    <td class="checkout__total--amount text-right"><b style="color:#ee2761">Free</b></td>
                                 </tr>
                                 <tr class="checkout__total--items">
-                                    <td class="checkout__total--title text-left">GST (@{{gstTax}}%):</td>
+                                    <td class="checkout__total--title text-left">VAT (@{{gstTax}}%):</td>
                                     <td class="checkout__total--amount text-right">£@{{calculate().tax}}</td>
                                 </tr>
                             </tbody>

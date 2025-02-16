@@ -78,7 +78,7 @@
                                         </td>
                                         <td class="account__table--body__child--items">
                                             
-                                            <a href="{{ route('invoice', ['id' => $o->prefix_id]) }}" class="btn" data-toggle="tooltip" data-title="Download Invoice"><i class="fa fa-download"></i></a>
+                                            <a href="{{ route('admin.orders.download', ['id' => $o->id]) }}" class="btn" data-toggle="tooltip" data-title="Download Invoice"><i class="fa fa-download"></i></a>
                                             <div class="dropdown">
                                                 <button class="btn btn-warning dropdown-toggle" type="button" data-toggle="dropdown">Click on Me
                                                 <span class="caret"></span></button>

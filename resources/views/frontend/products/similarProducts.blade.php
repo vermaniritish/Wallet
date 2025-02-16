@@ -15,6 +15,11 @@
                                     <img class="product__items--img {{ ($k < 1 ? 'product__primary--img' : 'product__secondary--img') }}" src="{{ isset($image['small']) && $image['small'] ? $image['small'] : '' }}" alt="product-img">
                                 <?php endforeach; ?>
                             </a>
+                            @if($p->sale_price > 0)
+                            <div class="product__badge">
+                                <span class="product__badge--items sale">Sale</span>
+                            </div>
+                            @endif
                         </div>
                         <div class="product__items--content">
                             <span class="product__items--content__subtitle">{{$p->categories ? $p->categories->title : ''}}, {{$p->gender ? str_replace(',', ', ', $p->gender) : ''}} </span>

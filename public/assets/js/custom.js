@@ -855,25 +855,31 @@ $('body').on('click', '.upload-image-section .fileRemover', function() {
         var isMultiple = !$(this).hasClass('single-cross');
         var that = $(this);
         var path = $(this).attr('data-path');
-        $.ajax({
-            url: admin_url + '/actions/removeFile',
-            type: "post",
-            data: {
-                "_token": csrf_token(),
-                "file": path,
-                "relation": relation,
-                "id": id
-            },
-            success: function(resp) {
-                that.parent().remove();
-                if(!isMultiple)
-                {
-                    uploadSection.removeClass('d-none');
-                    showSection.addClass('d-none');
-                    progerssBar.css('width', 0);
+        if(relation && id)
+        {
+            $.ajax({
+                url: admin_url + '/actions/removeFile',
+                type: "post",
+                data: {
+                    "_token": csrf_token(),
+                    "file": path,
+                    "relation": relation,
+                    "id": id
+                },
+                success: function(resp) {
+                    that.parent().remove();
+                    if(!isMultiple)
+                    {
+                        uploadSection.removeClass('d-none');
+                        showSection.addClass('d-none');
+                        progerssBar.css('width', 0);
+                    }
                 }
-            }
-        });
+            });
+        }
+        else{
+            $(this).parents('.upload-image-section').find('textarea').val('');
+        }
     }
 });
 
@@ -1121,3 +1127,63 @@ $('#ship-products').on('click', async function() {
         set_notification('error', 'Please select atleast one product to ship.');
     }
 });
+
+let offerCases = function() {
+    if($('#case-2:checked, #case-3:checked').is(':checked') && $('#case-2:checked, #case-3:checked').val() == 'case-3')
+    {
+        $('#case-2-offers').addClass('d-none');
+        $('#case-2-offers [required]').val('').attr('required', '');
+        $('#case-3-offers').removeClass('d-none');
+        $('#case-3-offers [required]').attr('required', 'required');
+    }
+    else
+    {
+        $('#case-3-offers').addClass('d-none');
+        $('#case-3-offers [required]').val('').attr('required', '');
+        $('#case-2-offers').removeClass('d-none');
+        $('#case-2-offers [required]').attr('required', 'required');
+    }
+}
+
+if($('#case-2, #case-3').length)
+{
+    $('#case-2, #case-3').on('change', offerCases);
+    offerCases();
+}
+
+if($('.delivery-fields').length)
+{
+    let df = function() {
+        if($('input[name=free_delivery]').is(':checked'))
+        {
+            $('.delivery-fields').removeClass('d-none');
+            $('.delivery-fields input[name=min_cart_price]').attr('required', 'required');
+        }
+        else
+        {
+            $('.delivery-fields').addClass('d-none');
+            $('.delivery-fields input[name=min_cart_price]').attr('required', '');            
+        }
+    }
+    $('input[name=free_delivery]').on('change', df)
+    df();
+}
+
+if($('.free-logo-fields').length)
+    {
+        let fl = function() {
+            if($('input[name=free_logo]').is(':checked'))
+            {
+                $('.free-logo-fields').removeClass('d-none');
+                $('.free-logo-fields input[name=min_cart_price]').attr('required', 'required');
+            }
+            else
+            {
+                $('.free-logo-fields').addClass('d-none');
+                $('.free-logo-fields input[name=min_cart_price]').attr('required', '');
+                
+            }
+        }
+        $('input[name=free_logo]').on('change', fl)
+        fl();
+    }

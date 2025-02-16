@@ -10,6 +10,8 @@ use App\Traits\LogsCauserInfo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
+use Illuminate\Support\Facades\DB;
+
 
 class Orders extends AppModel
 {
@@ -68,7 +70,7 @@ class Orders extends AppModel
     public function products()
     {
         return $this->belongsToMany(Products::class, 'order_products', 'order_id', 'product_id')
-            ->withPivot('product_title', 'quantity','amount','product_description');
+            ->withPivot('product_title', 'sku_number', 'quantity','amount','product_description');
     }
 
     /**
@@ -108,16 +110,36 @@ class Orders extends AppModel
     public static function getStatuses($status = null)
     {
         $statuses = [
-            'pending' => ['label' => 'Pending', 'styles' => 'background-color: #ffa07a; color: #cc0000;', 'message' => 'Your order is pending to accept.'],
-            'accepted' => ['label' => 'Accepted', 'styles' => 'background-color: #ccffcc; color: #006600;', 'message' => 'Your order is accepted.'],
-            'partial_shipped' => ['label' => 'Partial Shipped', 'styles' => 'background-color: #ccffcc; color: #006600;', 'message' => 'Your order is shipped partially.'],
-            'shipped' => ['label' => 'Shipped', 'styles' => 'background-color: #ccffcc; color: #006600;', 'message' => 'Your order is shipped.'],
-            'on_the_way' => ['label' => 'Dispached', 'styles' => 'background-color: #cce5ff; color: #004080;', 'message' => 'Professional is assigned for your order and dispached.'],
-            'reached_at_location' => ['label' => 'Reached at Location', 'styles' => 'background-color: #cce5ff; color: #004080;', 'message' => 'Professions is reached at location.'],
-            'in_progress' => ['label' => 'In Progress', 'styles' => 'background-color: #ffffcc; color: #996600;', 'message' => 'Your order is in progress.'],
-            'completed' => ['label' => 'Completed', 'styles' => 'background-color: #d9ead3; color: #006600;', 'message' => 'Your order is in completed.'],
-            'cancel' => ['label' => 'Cancel', 'styles' => 'background-color: #dc3545; color: #FFF;', 'message' => 'This order is cancelled.'],
-            'cancel_by_client' => ['label' => 'Cancel by client', 'styles' => 'background-color: #dc3545; color: #FFF;', 'message' => 'This order is cancelled.'],
+            'pending' => ['label' => 'Pending', 'styles' => 'background-color: #ffa07a; color: #cc0000;', 'message' => 'Your order is pending to accept.', 
+            'sms_message' => 'Your order {order_id} is pending to accept.'
+        ],
+            'accepted' => ['label' => 'Accepted', 'styles' => 'background-color: #ccffcc; color: #006600;', 'message' => 'Your order is accepted.', 
+            'sms_message' => 'Your order {order_id} is accepted.'
+        ],
+            'in_progress' => ['label' => 'In Progress', 'styles' => 'background-color: #ffffcc; color: #996600;', 'message' => 'Your order is in progress.', 
+            'sms_message' => 'Your order {order_id} is in progress.'
+        ],
+            'partial_shipped' => ['label' => 'Partial Shipped', 'styles' => 'background-color: #ccffcc; color: #006600;', 'message' => 'Your order is shipped partially.', 
+            'sms_message' => 'Your order {order_id} is shipped partially.'
+        ],
+            'shipped' => ['label' => 'Shipped', 'styles' => 'background-color: #ccffcc; color: #006600;', 'message' => 'Your order is shipped.', 
+            'sms_message' => 'Your order {order_id} is shipped.'
+        ],
+            'on_the_way' => ['label' => 'Dispached', 'styles' => 'background-color: #cce5ff; color: #004080;', 'message' => 'Your order is dispached.', 
+            'sms_message' => 'Your order {order_id} is dispached.'
+        ],
+            'reached_at_location' => ['label' => 'Reached at Location', 'styles' => 'background-color: #cce5ff; color: #004080;', 'message' => 'Professions is reached at location.', 
+            'sms_message' => 'Your order {order_id} is reached at location.'
+        ],
+            'completed' => ['label' => 'Completed', 'styles' => 'background-color: #d9ead3; color: #006600;', 'message' => 'Your order is in completed.', 
+            'sms_message' => 'Your order {order_id} is in completed.'
+        ],
+            'cancel' => ['label' => 'Cancel', 'styles' => 'background-color: #dc3545; color: #FFF;', 'message' => 'This order is cancelled.', 
+            'sms_message' => 'This order {order_id} is cancelled.'
+        ],
+            'cancel_by_client' => ['label' => 'Cancel by client', 'styles' => 'background-color: #dc3545; color: #FFF;', 'message' => 'This order is cancelled.', 
+            'sms_message' => 'This order {order_id} is cancelled.'
+        ],
         ];
         return $status && $statuses[$status] ? $statuses[$status] : $statuses;
     }

@@ -99,27 +99,27 @@
 										<i class="fas fa-sort" data-field="contact_us.id" data-sort="asc"></i>
 										<?php endif; ?>
 									</th>
-									<th class="sort" width="26.6%">
+									<th class="sort" width="18%">
 										Name
-										<?php if(isset($_GET['sort']) && $_GET['sort'] == 'contact_us.first_name' && isset($_GET['direction']) && $_GET['direction'] == 'asc'): ?>
-										<i class="fas fa-sort-down active" data-field="contact_us.first_name" data-sort="asc"></i>
-										<?php elseif(isset($_GET['sort']) && $_GET['sort'] == 'contact_us.first_name' && isset($_GET['direction']) && $_GET['direction'] == 'desc'): ?>
-										<i class="fas fa-sort-up active" data-field="contact_us.first_name" data-sort="desc"></i>
+										<?php if(isset($_GET['sort']) && $_GET['sort'] == 'contact_us.firstname' && isset($_GET['direction']) && $_GET['direction'] == 'asc'): ?>
+										<i class="fas fa-sort-down active" data-field="contact_us.firstname" data-sort="asc"></i>
+										<?php elseif(isset($_GET['sort']) && $_GET['sort'] == 'contact_us.firstname' && isset($_GET['direction']) && $_GET['direction'] == 'desc'): ?>
+										<i class="fas fa-sort-up active" data-field="contact_us.firstname" data-sort="desc"></i>
 										<?php else: ?>
-										<i class="fas fa-sort" data-field="contact_us.first_name"></i>
+										<i class="fas fa-sort" data-field="contact_us.firstname"></i>
 										<?php endif; ?>
 									</th>
-									<th class="sort" width="26.6%">
+									<th class="sort" width="18%">
 										Phone Number
-										<?php if(isset($_GET['sort']) && $_GET['sort'] == 'contact_us.phonenumber' && isset($_GET['direction']) && $_GET['direction'] == 'asc'): ?>
-										<i class="fas fa-sort-down active" data-field="contact_us.phonenumber" data-sort="asc"></i>
-										<?php elseif(isset($_GET['sort']) && $_GET['sort'] == 'contact_us.phonenumber' && isset($_GET['direction']) && $_GET['direction'] == 'desc'): ?>
-										<i class="fas fa-sort-up active" data-field="contact_us.phonenumber" data-sort="desc"></i>
+										<?php if(isset($_GET['sort']) && $_GET['sort'] == 'contact_us.number' && isset($_GET['direction']) && $_GET['direction'] == 'asc'): ?>
+										<i class="fas fa-sort-down active" data-field="contact_us.number" data-sort="asc"></i>
+										<?php elseif(isset($_GET['sort']) && $_GET['sort'] == 'contact_us.number' && isset($_GET['direction']) && $_GET['direction'] == 'desc'): ?>
+										<i class="fas fa-sort-up active" data-field="contact_us.number" data-sort="desc"></i>
 										<?php else: ?>
-										<i class="fas fa-sort" data-field="contact_us.phonenumber"></i>
+										<i class="fas fa-sort" data-field="contact_us.number"></i>
 										<?php endif; ?>
 									</th>
-									<th class="sort" width="26.6%">
+									<th class="sort" width="18%">
 										Email
 										<?php if(isset($_GET['sort']) && $_GET['sort'] == 'contact_us.email' && isset($_GET['direction']) && $_GET['direction'] == 'asc'): ?>
 										<i class="fas fa-sort-down active" data-field="contact_us.email" data-sort="asc"></i>
@@ -127,6 +127,16 @@
 										<i class="fas fa-sort-up active" data-field="contact_us.email" data-sort="desc"></i>
 										<?php else: ?>
 										<i class="fas fa-sort" data-field="contact_us.email"></i>
+										<?php endif; ?>
+									</th>
+									<th class="sort" width="18%">
+										Created on
+										<?php if(isset($_GET['sort']) && $_GET['sort'] == 'contact_us.created' && isset($_GET['direction']) && $_GET['direction'] == 'asc'): ?>
+										<i class="fas fa-sort-down active" data-field="contact_us.created" data-sort="asc"></i>
+										<?php elseif(isset($_GET['sort']) && $_GET['sort'] == 'contact_us.created' && isset($_GET['direction']) && $_GET['direction'] == 'desc'): ?>
+										<i class="fas fa-sort-up active" data-field="contact_us.created" data-sort="desc"></i>
+										<?php else: ?>
+										<i class="fas fa-sort" data-field="contact_us.created"></i>
 										<?php endif; ?>
 									</th>
 									<th width="5%">

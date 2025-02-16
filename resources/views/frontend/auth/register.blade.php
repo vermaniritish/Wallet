@@ -1,11 +1,19 @@
 <div class="col">
     <div class="account__login register">
-        <div class="account__login--header mb-25">
+        <div class="account__login--header mb-25"  v-if="!registered">
             <h2 class="account__login--header__title h3 mb-10">Create an Account</h2>
             <p class="account__login--header__desc">Register here if you are a new customer</p>
         </div>
         <div class="account__login--inner">
-            <form id="register-form">
+            <div class="row" v-if="registered">
+                <div class="col-md-12 text-center">
+                    <img src="http://209.97.176.208/assets/img/pinkcheck.png" class="a" style="
+                        max-width: 128px;
+                        margin-bottom: 30px;
+                    "> <p class="h3 text-center mb-3">Welcome to Pinders Workwear.</p> <p class="text-center my-4">Confirmation email has been sent, please check your email and confirm/activate your account.</p> <p class="text-center my-4">Thankyou for Registration.</p>
+                </div>
+            </div>
+            <form v-else id="register-form" >
                 <input required class="account__login--input" name="first_name" placeholder="First Name" type="text">
                 <input required class="account__login--input" name="email" placeholder="Email Addres" type="email">
                 <div class="input-group account__login--input">
@@ -22,7 +30,7 @@
                     <input class="checkout__checkbox--input" id="check2" type="checkbox">
                     <span class="checkout__checkbox--checkmark"></span>
                     <label class="checkout__checkbox--label login__remember--label" for="check2">
-                        I have read and agree to the <a href="{{ url('/terms-conditions') }}">terms & conditions</a></label>
+                        I have read and agree to the <a target="_blank" href="{{ url('/terms-conditions') }}">terms & conditions</a></label>
                 </div>
             </form>
         </div>

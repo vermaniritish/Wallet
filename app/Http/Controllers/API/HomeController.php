@@ -24,6 +24,7 @@ use App\Models\API\Products;
 use App\Models\API\ApiAuth;
 use App\Models\API\UsersMatches;
 use App\Models\API\ProductCategories;
+use App\Models\Admin\Offers;
 use App\Models\Admin\ProductCategoryRelation;
 use App\Models\Admin\SearchKeywords;
 use Illuminate\Support\Facades\DB;
@@ -51,7 +52,13 @@ class HomeController extends AppController
 			'counter' => $products->perPage(),
 			'count' => $products->total(),
 			'maxPage' => ceil($products->total()/$products->perPage()),
-			'paginationMessage' => "Showing {$products->firstItem()} - {$products->lastItem()} of {$products->total()} results"
+			'paginationMessage' => "Showing {$products->firstItem()} - {$products->lastItem()} of {$products->total()} results",
+			'count' => $request->get('page') && $request->get('page') < 2 ? [
+				'menCount' => Products::getCount($request, $where, "Male"),
+				'womenCount' => Products::getCount($request, $where, "Female"),
+				'kidsCount' => Products::getCount($request, $where, "Kids"),
+				'unisexCount' => Products::getCount($request, $where, "Unisex"),
+			]: null
 
 		]);
 	}
@@ -156,8 +163,7 @@ class HomeController extends AppController
 			{
 				Orders::where('id', $request->get('orderId'))->where('status', 'pending')->where('paid', 0)->limit(1)->orderBy('id', 'desc')->delete();
 			}
-
-			if($order->save()) 
+			if($order->save())
 			{
 				$order->prefix_id = Settings::get('order_prefix') + $order->id;
 				$order->save();
@@ -165,12 +171,11 @@ class HomeController extends AppController
 				$products = [];
 				$discount = 0;
 				$subtotal = 0;
-				$logoCost = 0;
-				$oneTimeCost = Settings::get('one_time_setup_cost');
 				$margin = 0;
 				$includeTravelCharges = 0;
 				foreach($data['cart'] as $c)
 				{
+					$logo = isset($c['logo']) && $c['logo'] ? $c['logo'] : [];
 					$products[] = [
 						'order_id' => $order->id,
 						'product_id' => $c['product_id'],
@@ -181,21 +186,33 @@ class HomeController extends AppController
 						'product_description' => $c['size_title'] . ' ' . $c['from_cm'] . ' - ' . $c['to_cm']."\nChest:" . (isset($c['chest']) && $c['chest'] ? $c['chest'] : '') ."Waist: ".(isset($c['waist']) && $c['waist'] ? $c['waist'] : '')." Hip:".(isset($c['hip']) && $c['hip'] ? $c['hip'] : ''),
 						'amount' => $c['price'],
 						'quantity' => $c['quantity'],
-						'logo_data' => isset($c['logo']) && $c['logo'] ? json_encode($c['logo']) : null
+						'logo_data' => json_encode($logo)
 					];
-					$logoCost += isset($c['logo']['price']) && $c['logo']['price'] > 0 ? ($c['logo']['price']*$c['quantity'])  : 0;
-					$subtotal += $c['quantity'] * $c['price'];
+
+					$subtotal += $this->offerPrice($c)['price'];
 				}
 
 				if($products)
 				{
 					OrderProductRelation::insert($products);
+					$logoDetailing = $this->calculateLogoCost($data['cart']);
+					$oneTimeCost = $logoDetailing['haveLogo'] ? Settings::get('one_time_setup_cost') : 0;
 					
-					$link = url('/admin/order/'.$order->id.'/view');
-					$subtotal += $logoCost;
-					$subtotal += $oneTimeCost;
+					/* Delivery Case */
+					$order->free_delivery = false;
+					$order->delivery_cost = 0;
+					$freeDelivery = Settings::get('free_delivery');
+					$freeDelivery = $freeDelivery ? json_decode($freeDelivery, true) : null;
+					$order->free_delivery = $freeDelivery && $subtotal >= $freeDelivery['min_cart_price'] ? 1 : 0;
+					$order->delivery_cost = 0;
+					/* Delivery Case */
 
-					$order->logo_cost = $logoCost;
+					$subtotal += $logoDetailing['cost']-$logoDetailing['logoDiscount'];
+					$subtotal += $oneTimeCost;
+					
+					$order->logo_cost = $logoDetailing['cost'];
+					$order->logo_discount = $logoDetailing['logoDiscount'];
+					$order->logo_discount_applied = $logoDetailing['appliedDiscount'];
 					$order->one_time_cost = $oneTimeCost;
 					$order->subtotal = $subtotal;
 					$order->tax_percentage = Settings::get('gst');
@@ -210,26 +227,12 @@ class HomeController extends AppController
 					$order->tax_percentage = Settings::get('gst');
 					$order->tax = (($subtotal - $discount) * $order->tax_percentage) / 100;
 					$order->total_amount = ($subtotal - $discount) + $order->tax;
+					
 					$order->save();
-					// $pros = [];
-					// $listing = OrderProductRelation::getListing($request, ['order_products.order_id' => $order->id]);
-					// if($listing->count() > 0)
-					// foreach($listing->items() as $k => $row):
-					// 	$pros[] = "o {$row->product_title} | *Qty: {$row->quantity}* | *Time: ".(_t($row->duration_of_service))."*";
-					// endforeach;
-					// $textMessage = "A new service assigned to " . ($order->staff ? $order->staff->first_name . " ".$order->staff->last_name : '') . " \nId: *{$order->prefix_id}*\nCustomer Name: *{$order->customer_name} - " . ($order->customer ? $order->customer->phonenumber : '') . "*\nAddress: *".implode(', ', array_filter([$order->address]))."*\nBooking Time: *"._d($order->booking_date)." | " . _time($order->booking_time) ."*\n".($order->latitude && $order->longitude ? "Locations:\nhttps://maps.google.com/maps?q={$order->latitude},{$order->longitude}&z=17&hl=en" : "")."\n----------------------------\n".implode("\n", $pros);
+					
+					$this->sendEmail($request, $order->id);
 
-					// $codes = [
-					// 	'{order_id}' => $order->prefix_id,
-					// 	'{order_information}' => nl2br($textMessage),
-					// 	'{order_button}' => '<br /><br /><a href="'.$link.'" target="_blank" style="padding:30px;background:pink;">View Order</a>'
-					// ];
-
-					// General::sendTemplateEmail(
-					// 	'amitaverma736@gmail.com',
-					// 	'order-placed',
-					// 	$codes
-					// );
+					
 				}
 
 				return Response()->json([
@@ -253,6 +256,176 @@ class HomeController extends AppController
                     'clear' => true,
                     'message' =>  current( current( $validator->errors()->getMessages() ) )
                 ]);
+		}
+	}
+
+	function addToCart(Request $request)
+    {
+        $data = $request->toArray();
+		$cart = $data['cart'];
+		foreach($cart as $k => $c)
+		{
+			$offer = Offers::select(['type', 'quantity', 'offer_total_price', 'free_logo'])
+				->where('product_id', $c['product_id'])
+				->whereRaw('FIND_IN_SET(?, colors)', [$c['color_id']])
+				->whereRaw('FIND_IN_SET(?, sizes)', [$c['size_title']])
+				->where('status', 1)
+				->orderBy('offers.type', 'asc')
+				->get();
+			$cart[$k]['offer'] = $offer ? $offer : null;	
+		}
+		return Response()
+			->json([
+				'status' => true,
+				'cart' => array_values($cart)
+			]);
+    }
+
+	protected function offerPrice($item)
+	{
+		if(isset($item['offer']) && $item['offer'])
+		{
+			foreach($item['offer'] as $offer)
+			{
+				if($offer['type'] == 'case-2')
+				{
+					if(($offer['offer_total_price']*1) > 0 && $item['quantity'] == $offer['quantity'])
+					{
+						return ['price' => $offer['offer_total_price']*1, 'freeLogo' => 0, 'haveOffer' => true ];
+					}
+				}
+				
+				if($offer['type'] == 'case-3')
+				{
+					if($item['quantity'] == $offer['quantity'])
+					{
+						return ['price' => $item['quantity']*$item['price'], 'freeLogo' => ($offer['free_logo']*1), 'haveOffer' => false ];
+					}
+				}
+			}
+		}
+		
+		return ['price' => $item['quantity']*$item['price'], 'freeLogo'=> 0, 'haveOffer'=> false ];
+	}
+
+	protected function calculateLogoCost($cart)
+	{
+		$cost = 0;
+		$haveLogo = 0;
+		$appliedDiscount = 0;
+		$logoDiscount = 0;
+		foreach($cart as $c)
+		{
+			$freeLogo = $this->offerPrice($c)['freeLogo'];
+			if($c['logo'])
+			{
+				foreach($c['logo'] as $item)
+				{
+					if( ($item['image'] || $item['text']) && !$item['already_uploaded'] && $item['category'] != 'None' )
+					{
+						$haveLogo += ($c['quantity']*1);
+					}
+
+					if($item && $item['category'] != 'None' && isset($item['price']) && ($item['price']*1) > 0)
+					{
+						$cost += $item['price']*$c['quantity'];
+
+						if($freeLogo > 0)
+						{
+							$discountQty = $c['quantity'] > $freeLogo ? $freeLogo : $c['quantity'];
+							$appliedDiscount += $discountQty;
+							$logoDiscount += $item['price']*$discountQty;
+						}
+					}
+				}
+			}
+		}
+		if($appliedDiscount < 1 && $haveLogo > 0)
+		{
+			$freeLogoDiscount = Settings::get('free_logo_discount');
+			$subtotal = 0;
+			$prices = [];
+
+			foreach($cart as $item)
+			{
+				foreach($item['logo'] as $lItem)
+				{
+					for($i = 0; $i < ($item['quantity']*1); $i++)
+					{
+						$prices[] = $lItem['price'];
+					}
+				}
+				
+
+				$subtotal += $this->offerPrice($item)['price'];
+			}
+			
+			$discount = $freeLogoDiscount ? json_decode($freeLogoDiscount, true) : null;
+			if($discount && ($subtotal*1) >= ($discount['min_cart_price']*1) && count($prices) >= $discount['quantity'])
+			{
+				sort($prices);
+				$topPrices = array_slice($prices, 0, $discount['quantity']);
+				$logoDiscount = array_reduce($topPrices, function($acc, $price) {
+					return $acc + $price;
+				}, 0);
+				$appliedDiscount = $discount['quantity'];
+			}
+		}
+		return [
+			'cost' => $cost,
+			'haveLogo' => $haveLogo > 0 ? true : false,
+			'logoDiscount' => $logoDiscount,
+			'appliedDiscount' => $appliedDiscount
+		];
+	}
+
+	function sendEmail($request, $id)
+	{
+		$page = Orders::get($id);
+		$where = ['order_products.order_id' => $page->id];
+		$listing = OrderProductRelation::getListing($request, $where);
+		$html = view(
+			"admin/orders/pdf", 
+			[
+				'page' => $page,
+				'listing' => $listing
+			]
+		)->render();
+		$mpdf = new \Mpdf\Mpdf([
+			'tempDir' => public_path('/uploads'),
+			'mode' => 'utf-8', 
+			'orientation' => 'P',
+			'format' => [210, 297],
+			'setAutoTopMargin' => true,
+			'margin_left' => 0,'margin_right' => 0,'margin_top' => 0,'margin_bottom' => 0,'margin_header' => 0,'margin_footer' => 0
+		]);
+		$mpdf->showImageErrors = true;
+		$mpdf->WriteHTML($html);
+		$path = '/uploads/orders/Order-'.$page->prefix_id.'.pdf';
+		$mpdf->Output(public_path($path), 'F');
+
+		$codes = [
+			'{order_id}' => $page->prefix_id,
+		];
+		if($page->customer_email)
+		{
+			General::sendTemplateEmail(
+				$page->customer_email,
+				'order-placed',
+				$codes,
+				file_exists(public_path($path)) ? [$path] : null
+			);	
+		}
+
+		$notify = Settings::get('admin_notification_email');
+		if($notify)
+		{
+			General::sendTemplateEmail(
+				$notify,
+				'order-placed',
+				$codes,
+				file_exists(public_path($path)) ? [$path] : null
+			);
 		}
 	}
 }

@@ -27,22 +27,22 @@
                                 <h4 class="widget__title h4">Gender</h4>
                                 <ul class="widget__form--check">
                                     <li class="widget__form--check__list">
-                                        <label class="widget__form--check__label" for="check1">Men (20)</label>
+                                        <label class="widget__form--check__label" for="check1">Men @{{ counts.menCount ? `(${counts.menCount})` : `` }}</label>
                                         <input class="widget__form--check__input" id="check1" v-on:change="genderFilter('Male')" type="checkbox">
                                         <span class="widget__form--checkmark"></span>
                                     </li>
                                     <li class="widget__form--check__list">
-                                        <label class="widget__form--check__label" for="check2">Women (15)</label>
+                                        <label class="widget__form--check__label" for="check2">Women @{{ counts.womenCount ? `(${counts.womenCount})` : `` }}</label>
                                         <input class="widget__form--check__input" id="check2"  v-on:change="genderFilter('Female')" type="checkbox">
                                         <span class="widget__form--checkmark"></span>
                                     </li>
                                     <li class="widget__form--check__list">
-                                        <label class="widget__form--check__label" for="check3">Kids (10)</label>
+                                        <label class="widget__form--check__label" for="check3">Kids @{{ counts.kidsCount ? `(${counts.kidsCount})` : `` }}</label>
                                         <input class="widget__form--check__input" id="check3"  v-on:change="genderFilter('Kids')" type="checkbox">
                                         <span class="widget__form--checkmark"></span>
                                     </li>
                                     <li class="widget__form--check__list">
-                                        <label class="widget__form--check__label" for="check4">Unisex (25)</label>
+                                        <label class="widget__form--check__label" for="check4">Unisex @{{ counts.unisexCount ? `(${counts.unisexCount})` : `` }}</label>
                                         <input class="widget__form--check__input" id="check4"  v-on:change="genderFilter('Unisex')" type="checkbox">
                                         <span class="widget__form--checkmark"></span>
                                     </li>

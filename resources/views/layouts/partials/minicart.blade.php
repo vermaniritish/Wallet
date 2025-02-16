@@ -22,7 +22,11 @@
                 </h3>
                 <span class="color__variant"><b>Color:</b> @{{c.color}}</span><br />
                 <span class="color__variant"><b>Size:</b> @{{c.size_title}}</span>
-                <div class="minicart__price">
+                <div class="minicart__price" v-if="offerPrice(c).haveOffer">
+                    <span class="current__price">£@{{ (offerPrice(c).price) }}</span>
+                    <span class="old__price">£@{{c.price}}</span>
+                </div>
+                <div class="minicart__price" v-else>
                     <span class="current__price">£@{{c.price}}</span>
                     <span class="old__price" v-if="c.sale_price && (c.sale_price*1) > 0">£@{{c.sale_price}}</span>
                 </div>
@@ -49,24 +53,35 @@
                 <span>Product Costs:</span>
                 <span><b>£@{{calculate().product_cost}}</b></span>
             </div>
-            <div class="minicart__amount_list d-flex justify-content-between">
+            <div class="minicart__amount_list d-flex justify-content-between" v-if="calculate().logo_cost > 0">
                 <span>Costs To Add Logo:</span>
                 <span><b>£@{{calculate().logo_cost}}</b></span>
             </div>
-            <div class="minicart__amount_list d-flex justify-content-between">
+            <div class="minicart__amount_list d-flex justify-content-between" v-if="calculate().logo_discount > 0">
+                <span class="discount-highlight">Logo Discount <small v-if="calculate().applied_logo_discount > 0" style="color:#ee2761">@{{ `(${calculate().applied_logo_discount} logo(s))`}}</small>:</span>
+                <span class="discount-highlight"><b style="color:#ee2761">- £@{{calculate().logo_discount}}</b></span>
+            </div>
+            <div class="minicart__amount_list d-flex justify-content-between" v-if="calculate().oneTimeCost > 0">
                 <span>One Time Setup Fees:</span>
                 <span><b>£@{{calculate().oneTimeCost}}</b></span>
             </div>
+            <hr class="minicart__amount p-0">
             <div class="minicart__amount_list d-flex justify-content-between">
-                <span>Total (ex. VAT):</span>
+                <span>Subtotal:</span>
                 <span><b>£@{{ calculate().subtotal }}</b></span>
             </div>
         <div class="minicart__amount_list d-flex justify-content-between" v-if="calculate().discount > 0">
             <span>Discount:</span>
-            <span><b>- £@{{calculate().discount}}</b></span>
+            <span><b style="color:#ee2761">- £@{{calculate().discount}}</b></span>
         </div>
-        <div class="minicart__amount_list d-flex justify-content-between" v-if="calculate().tax > 0">
-            <span>GST (@{{gstTax}}%):</span>
+
+        <div class="minicart__amount_list d-flex justify-content-between" v-if="freeDelivery()">
+            <span>Delivery:</span>
+            <span><b style="color:#ee2761">Free</b></span>
+        </div>
+        
+        <div class="minicart__amount_list d-flex justify-content-between">
+            <span>VAT (@{{gstTax}}%):</span>
             <span><b>£@{{calculate().tax}}</b></span>
         </div>
         <div class="minicart__amount_list d-flex justify-content-between">

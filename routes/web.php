@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\PayPalController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\OrdersController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -38,6 +40,7 @@ Route::prefix('admin')->middleware(['adminAuth'])->group(function () {
 	include "Admin/sliders.php";
 	include "Admin/contactUs.php";
 	include "Admin/logoPrices.php";
+	include "Admin/offers.php";
 });
 
 Route::middleware(['guest'])->group(function () {
@@ -51,6 +54,9 @@ Route::middleware(['guest'])->group(function () {
 	include "Admin/auth.php";
 	include "Frontend/auth.php";
 	include "Frontend/home.php";
+	
+	Route::get('/admin/order/{id}/download', [OrdersController::class, 'download'])
+    ->name('admin.orders.download');
 	
 });
 // Frontend Routes

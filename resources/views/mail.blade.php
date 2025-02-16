@@ -13,9 +13,9 @@ $logo = Settings::get('logo');
     <title><?php echo $companyName; ?></title>
     <style>
         body {
-            font-family: sans-serif;
+            font-family: Helvetica, Arial, sans-serif;
             margin: 0;
-            background-color: #eee;
+            padding: 0;
         }
     </style>
 
@@ -24,42 +24,29 @@ $logo = Settings::get('logo');
 <body>
 
     <div>
-        <center style="background-color: #eee; ">
-            <table style="width: 660px; margin: 0 auto; background-color: #eee; font-family: sans-serif;">
-                <tbody>
+        <center>
+            
+            <div style="max-width: 600px; margin: auto; padding: 30px; border: 1px solid #eee; box-shadow: 0 0 10px rgba(0, 0, 0, .15); line-height: 20px; font-family: Helvetica, Arial, sans-serif; color: #2F3751;">
+                <table cellpadding="0" cellspacing="0" style="width: 100%; line-height: inherit; text-align: left;font-size: 14.5px">
                     <tr>
-                        <td>
-                            <h2 style="font-weight: 800; font-size: 36px;text-align: center; margin: 30px 0 20px;">
-                                <?php if($logo): ?>
-                                    <img src="<?php echo url($logo) ?>" style="max-width: 200px; max-height: 200px;">
-                                <?php else: ?>
-                                    <?php echo $companyName ?>
-                                <?php endif; ?>
-                                
-                                
-                            </h2>
+                        <td colspan="6" style="padding-bottom: 20px;">
+                            <?php if($logo): ?>
+                                <img src="<?php echo url($logo) ?>" style="max-width: 250px; max-height: 250px;"  alt="<?php echo $companyName ?>" >
+                            <?php else: ?>
+                                <?php echo $companyName ?>
+                            <?php endif; ?><br/><br/>
                         </td>
+                        
                     </tr>
                     <tr>
-                        <td style="background-color: #fff; border-radius: 16px; text-align: center; padding: 60px 40px;">
+                        <td colspan="6" style="padding-bottom: 20px;">
                             <?php echo $content ?>
                         </td>
                     </tr>
                     <tr>
-                        <td style="text-align: center; padding: 25px 10px;">
-                            <p style="color: #737373; font-size: 12px; font-weight: 400; margin: 0; line-height: 20px;">
-                                <?php echo $companyName ?>
-                            </p>
-                            <p style="color: #737373; font-size: 12px; font-weight: 400; margin: 0; line-height: 20px;">
-                                ©<?php echo date('Y') ?> Oyetoy Limited
-                            </p>
-                            <p style="color: #737373; font-size: 12px; font-weight: 400; margin: 0; line-height: 20px;">
-                                <a href="https://oyetoy.com/profile" target="_blank" style="color: #737373">Click here to manage your notification preference</a> 
-                            </p>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+                        <td colspan="6" style="font-size: 12px;text-align:center;background-color:#f7eddd;">Thank you, <b>Pinders Schoolwear Ltd.</b></td></tr>
+                </table>
+            </div>
         </center>
     </div>
 

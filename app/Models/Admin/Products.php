@@ -234,7 +234,7 @@ class Products extends AppModel
                     $query->select(['id', 'first_name', 'last_name', 'status']);
                 },
                 'sizes' => function($query) {
-                    $query->select(['sizes.id', 'sizes.size_title', 'sizes.from_cm',  'sizes.to_cm', 'price','sale_price','color_id']);
+                    $query->select(['sizes.id', 'sizes.size_title', 'sizes.from_cm',  'sizes.to_cm', 'price','sale_price','color_id', 'product_sizes.status']);
                 },
                 'colors' => function($query) {
                     $query->select(['colours.id', 'colours.title', 'colours.color_code']);
@@ -481,6 +481,7 @@ class Products extends AppModel
                     $relation->price = isset($sizeData['price']) ? $sizeData['price'] : null;
                     $relation->sale_price = isset($sizeData['sale_price']) ? $sizeData['sale_price'] : null;
                     $relation->color_id = $colorId; 
+                    $relation->status = isset($sizeData['status']) ? $sizeData['status'] : 0; 
                     $relation->save();
                 }
             }

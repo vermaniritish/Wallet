@@ -358,4 +358,87 @@ class SettingsController extends AppController
 
 		return view("admin/settings/footerLinks", []);
 	}
+
+	function freeDelivery(Request $request)
+    {
+		if(!Permissions::hasPermission('offers', 'update'))
+    	{
+    		$request->session()->flash('error', 'Permission denied.');
+    		return redirect()->back();
+    	}
+
+    	if($request->isMethod('post'))
+    	{
+    		$data = $request->toArray();
+    		$validator = Validator::make(
+	            $request->toArray(),
+	            [
+					'free_delivery' => 'required',
+					'min_cart_price' => [Rule::requiredIf(fn () => $request->free_delivery > 0), 'nullable', 'numeric', 'min:1'],
+	            ]
+	        );
+	        if(!$validator->fails())
+	        {
+	        	unset($data['_token']);
+	        	Settings::put('free_delivery', $request->free_delivery ? json_encode([
+					'min_cart_price' => $request->min_cart_price
+				]) : null);
+	
+        		$request->session()->flash('success', 'Free delivery offer updated.');
+        		return redirect()->back();
+			}
+			else
+			{
+				$request->session()->flash('error', current( current( $validator->errors()->getMessages() ) ));
+			    return redirect()->back()->withErrors($validator)->withInput();
+			}
+		}
+		else
+		{
+			abort(404);
+		}
+	}
+
+	function freeLogo(Request $request)
+    {
+		if(!Permissions::hasPermission('offers', 'update'))
+    	{
+    		$request->session()->flash('error', 'Permission denied.');
+    		return redirect()->back();
+    	}
+
+    	if($request->isMethod('post'))
+    	{
+    		$data = $request->toArray();
+    		$validator = Validator::make(
+	            $request->toArray(),
+	            [
+					'free_logo' => 'required',
+					'quantity' => [Rule::requiredIf(fn () => $request->quantity > 0), 'nullable', 'min:1'],
+					'min_cart_price' => [Rule::requiredIf(fn () => $request->free_logo > 0), 'nullable', 'numeric', 'min:1'],
+	            ]
+	        );
+
+	        if(!$validator->fails())
+	        {
+	        	unset($data['_token']);
+	        	Settings::put('free_logo_discount', $request->free_logo ? json_encode([
+					'min_cart_price' => $request->min_cart_price,
+					'quantity' => $request->quantity
+				]) : null);
+	
+        		$request->session()->flash('success', 'Free delivery offer updated.');
+        		return redirect()->back();
+			}
+			else
+			{
+				$request->session()->flash('error', current( current( $validator->errors()->getMessages() ) ));
+			    return redirect()->back()->withErrors($validator)->withInput();
+			}
+		}
+		else
+		{
+			abort(404);
+		}
+	}
 }

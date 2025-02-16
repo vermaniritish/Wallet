@@ -101,6 +101,7 @@
                     </a>
                 </li>
                 <?php endif; ?>
+                
                 <?php if(Permissions::hasPermission('product_categories', 'listing')): ?>
                 <li class="nav-item">
                     <a class="nav-link<?php echo ($activeCategories ? ' active' : '') ?>" href="<?php echo route('admin.products.categories') ?>">
@@ -123,6 +124,15 @@
                 <?php endif; ?>
             </ul>
         </li>
+        <?php endif; ?>
+        <?php if(Permissions::hasPermission('offers', 'view')): ?>
+            <?php $active = strpos(request()->route()->getAction()['as'], 'admin.contactUs') > -1; ?>
+            <li class="nav-item">
+                <a class="nav-link<?php echo ($active ? ' active' : '') ?>" href="<?php echo route('admin.offers') ?>">
+                    <i class="fas fa-badge-percent text-black"></i>
+                    <span class="nav-link-text">Offers</span>
+                </a>
+            </li>
         <?php endif; ?>
         <?php if(Permissions::hasPermission('brands', 'listing')): ?>
             <?php $active = strpos(request()->route()->getAction()['as'], 'admin.brands') > -1; ?>

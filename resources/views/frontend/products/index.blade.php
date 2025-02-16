@@ -1,6 +1,7 @@
 @extends('layouts.frontendlayout')
 @section('content')
 <div id="product-listing-vue">
+    <pre class="d-none" id="careoryId">{{ $category ? $category->id : '' }}</pre>
         <div class="offcanvas__filter--sidebar widget__area">
             <button type="button" class="offcanvas__filter--close" data-offcanvas>
                 <svg class="minicart__close--icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M368 368L144 144M368 144L144 368"></path></svg> <span class="offcanvas__filter--close__text">Close</span>
@@ -79,7 +80,7 @@
                                                         <a class="product__items--link" :href="'/'+product.slug">
                                                             <img v-for="(image, k) in product.image" :class="`product__items--img`+ (k > 0 ? ` product__secondary--img` : ` product__primary--img` )" :src="image && image.small ? image.small : (site_url + '/assets/img/product/product8.png')" alt="product-img">
                                                         </a>
-                                                        <div class="product__badge">
+                                                        <div class="product__badge" v-if="(product.sale_price*1) > 0">
                                                             <span class="product__badge--items sale">Sale</span>
                                                         </div>
                                                     </div>
@@ -111,7 +112,8 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <p v-else>No records are available. Please adjust your filters criteria!</p>
+
+                                            <div class="col mb-30" v-if="empty"><div>No records are available. Please adjust your filters criteria!</p></div></div>
                                         </div>
                                     </div>
                                 </div>

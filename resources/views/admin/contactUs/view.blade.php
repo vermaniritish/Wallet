@@ -59,11 +59,11 @@
 								</tr>
 								<tr>
 									<th>Name</th>
-									<td><?php echo $page->first_name . ' '. $page->last_name ?></td>
+									<td><?php echo $page->firstname . ' '. $page->lastname ?></td>
 								</tr>
 								<tr>
 									<th>Phone Number</th>
-									<td><?php echo $page->phonenumber ?></td>
+									<td><?php echo $page->number ?></td>
 								</tr>
 								<tr>
 									<th>Email</th>
@@ -101,14 +101,6 @@
 						<!-- Projects table -->
 						<table class="table align-items-center table-flush">
 							<tbody>
-								<tr>
-									<th scope="row">
-										Created By
-									</th>
-									<td>
-										<?php echo isset($page->owner) ? $page->owner->first_name . ' ' . $page->owner->last_name : "-" ?>
-									</td>
-								</tr>
 								<tr>
 									<th scope="row">
 										Created On

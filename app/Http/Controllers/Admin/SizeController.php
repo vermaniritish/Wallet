@@ -41,10 +41,10 @@ class SizeController extends AppController
     		return redirect()->route('admin.dashboard');
     	}
 
-		$male = Sizes::where('type','Male')->select(['type','id','size_title','from_cm','to_cm','chest','waist','hip','length'])->get();
-		$female = Sizes::where('type','Female')->select(['type','id','size_title','from_cm','to_cm','chest','waist','hip','length'])->get();
-		$unisex = Sizes::where('type','Unisex')->select(['type','id','size_title','from_cm','to_cm','chest','waist','hip','length'])->get();
-		$kids = Sizes::where('type','Kids')->select(['type','id','size_title','from_cm','to_cm','chest','waist','hip','length'])->get();
+		$male = Sizes::where('type','Male')->select(['type','id','size_title','from_cm','to_cm','chest','waist','hip','length', 'vat'])->get();
+		$female = Sizes::where('type','Female')->select(['type','id','size_title','from_cm','to_cm','chest','waist','hip','length', 'vat'])->get();
+		$unisex = Sizes::where('type','Unisex')->select(['type','id','size_title','from_cm','to_cm','chest','waist','hip','length', 'vat'])->get();
+		$kids = Sizes::where('type','Kids')->select(['type','id','size_title','from_cm','to_cm','chest','waist','hip','length', 'vat'])->get();
     	$where = [];
 		$filters = $this->filters($request);
 		return view(
@@ -97,20 +97,16 @@ class SizeController extends AppController
     		unset($data['_token']);
 			if (!empty($data)) {
 				$validator = Validator::make($request->all(), [
-					'type' => ['required', Rule::in(['Male','Female','Unisex', 'Kids'])],
-					'mens.*.size_title' => ['distinct','required','string','max:255'], 
-					'mens.*.from_cm' => 'nullable|numeric|min:0',
-					'mens.*.to_cm' => 'nullable|numeric|min:0',
-					'mens.*.chest' => 'nullable|numeric|min:0',
-					'mens.*.waist' => 'nullable|numeric|min:0',
-					'mens.*.hip' => 'nullable|numeric|min:0',
-					'mens.*.length' => 'nullable|numeric|min:0',
+					'type' => ['required', Rule::in(['Male','Female','Unisex', 'Kids'])]
 				]);
 				if(!$validator->fails())
 				{
-					Sizes::where('type',$data['type'])->delete();
 					foreach ($request->mens as $item) {
-							$item['type'] = $data['type'];
+						$sizeId = Sizes::select(['id'])->where('id',$item['id'])->limit(1)->pluck('id')->first();
+						$item['type'] = $data['type'];
+						if($sizeId)
+							Sizes::modify($sizeId, $item);
+						else
 							Sizes::create($item);
 					}
 					$request->session()->flash('success', 'Size created successfully.');

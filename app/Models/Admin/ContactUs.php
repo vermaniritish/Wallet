@@ -201,4 +201,24 @@ class ContactUs extends AppModel
 	    }
 
     }
+
+    public static function create($data)
+    {
+    	$product = new ContactUs();
+
+    	foreach($data as $k => $v)
+    	{
+    		$product->{$k} = $v;
+    	}
+    	$product->created = date('Y-m-d H:i:s');
+    	$product->modified = date('Y-m-d H:i:s');
+	    if($product->save())
+	    {
+	    	return $product;
+	    }
+	    else
+	    {
+	    	return null;
+	    }
+    }
 }

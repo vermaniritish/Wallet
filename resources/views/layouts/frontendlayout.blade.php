@@ -5,7 +5,7 @@ $logo = Settings::get('logo');
 $companyName = Settings::get('company_name');
 $googleKey = Settings::get('google_api_key');
 $gstTax = Settings::get('gst');
-$version = '1.3';
+$version = '1.7';
 ?>
 <!doctype html>
 <html lang="zxx">
@@ -29,9 +29,10 @@ $version = '1.3';
     <link rel="stylesheet" href="{{ url('frontend/assets/css/vendor/bootstrap.min.css') }}">
 
     <!-- Custom Style CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@1.2.0/dist/css/splide.min.css">
     <link rel="stylesheet" href="{{ url('frontend/assets/css/style.css') }}">
     <link rel="stylesheet" href="{{ url('frontend/assets/css/dev.css') }}">
-
+    
     <!-- Vue js -->
     <style>
         ul#brands-block {
@@ -107,6 +108,8 @@ $version = '1.3';
         var current_full_url = "<?php echo url()->full(); ?>";
         var previous_url = "<?php echo url()->previous(); ?>";
         var oneTimeProductCost = "<?php echo Settings::get('one_time_setup_cost') ?>";
+        var freeLogoDiscount = <?php $d = Settings::get('free_logo_discount'); echo $d ? $d : 'null' ?>;
+        var freeDelivery = <?php $d = Settings::get('free_delivery'); echo $d ? $d : 'null' ?>;
         var csrf_token = function() {
             return "<?php echo csrf_token(); ?>";
         }
@@ -124,7 +127,9 @@ $version = '1.3';
 	<script src="{{ url('frontend/assets/js/vendor/jquery.validate.min.js') }}"></script>
 	<script src="{{ url('frontend/assets/js/vendor/vue.js') }}"></script>
     <script src="<?php echo url('assets/vendor/jquery-scroll-lock/dist/jquery-scrollLock.min.js') ?>"></script>
-    <script src="{{ url('frontend/assets/js/vendor/bootstrap.min.js" defer="defer') }}"></script>
+    <script src="{{ url('frontend/assets/js/vendor/bootstrap.min.js') }}"></script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@1.2.0/dist/js/splide.min.js"></script>
     <script src="{{ url('frontend/assets/js/plugins/swiper-bundle.min.js') }}"></script>
     <script src="{{ url('frontend/assets/js/plugins/glightbox.min.js') }}"></script>
     <script src="{{ url('frontend/assets/js/plugins/jquery.fancybox.min.js') }}"></script>
@@ -134,7 +139,7 @@ $version = '1.3';
     <script src="{{ url('frontend/assets/js/script.js') }}"></script>
     <script src="<?php echo url('assets/js/auth.js') ?>"></script>
     <script src="{{ url('frontend/assets/js/product-listing.js') }}"></script>
-    <script src="https://www.paypal.com/sdk/js?client-id=AUv8rrc_P-EbP2E0mpb49BV7rFt3Usr-vdUZO8VGOnjRehGHBXkSzchr37SYF2GNdQFYSp72jh5QUhzG&currency=GBP"></script>
+    <script src="https://www.paypal.com/sdk/js?client-id=AcHH3SOCSzLpPXioPVl5m15be29_PrHru6j0v6aVpcQdx9padzQ3EXfXVPkBStFVx-7FZZ4ZJzDNKxKh&currency=GBP"></script>
     <script>
         paypal.Buttons({
             createOrder: async function(data, actions) {

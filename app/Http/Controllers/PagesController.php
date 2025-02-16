@@ -77,11 +77,11 @@ class PagesController extends BaseController
     {
         $user = Users::find($request->session()->get('user')->id);
         $orders = Orders::where('customer_id', $user->id)->select([
-            'orders.id', 'prefix_id', 'created', 'status', 'total_amount', 'paid',
+            'orders.id', 'orders.prefix_id', 'orders.created', 'orders.status', 'orders.total_amount', 'orders.paid',
             DB::raw('GROUP_CONCAT(order_products.shipment_tracking) as shipment')
         ])
         ->join('order_products', 'order_products.order_id', '=', 'orders.id')
-        ->orderBy('id', 'desc')->get();
+        ->orderBy('id', 'desc')->groupBy('orders.id')->limit(3000)->get();
         return view('frontend.account.orders', [
             'user' => $user,
             'orders' => $orders
@@ -111,7 +111,7 @@ class PagesController extends BaseController
                 {
                     $user = Users::find($user->id);
                     $request->session()->put('user', $user);
-                    $request->session()->flash( 'success', "Profile saved." );
+                    $request->session()->flash( 'success', "Your profile has been updated. Thank You!" );
     		        return redirect()->back();
                 }
                 else
@@ -172,7 +172,7 @@ class PagesController extends BaseController
                     {
                         General::sendTemplateEmail($adminEmail, 'admin-contact-us-request-received', $adminData);
                     }
-	        		$request->session()->flash('success', 'Contact Us request send successfully.');
+	        		$request->session()->flash('success', 'Thankyou for contacting us. We will get back to you soon.');
     		        return redirect()->route('contactUs');
 	        	}
 	        	else
@@ -209,7 +209,7 @@ class PagesController extends BaseController
             ]);
                 
             $mpdf->WriteHTML($html);
-            $mpdf->Output('Order-'.$order->prefix_id.'.pdf', \Mpdf\Output\Destination::DOWNLOAD);
+            $mpdf->Output('Order-'.$order->prefix_id.'.pdf', 'D');
         }
         else
         {

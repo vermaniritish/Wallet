@@ -51,17 +51,17 @@ class AuthController extends Controller {
 				$user = Users::create($data);
 				if($user)
 				{
-					// $verificationUrl = route('home', ['token' => $data['token']]);
+					$verificationUrl = route('home', ['token' => $data['token']]);
 					$codes = [
 						'{name}' => $user->first_name . ' ' . $user->last_name,
 						'{email}' => $user->email,
-						// '{verification_link}' => General::urlToAnchor($verificationUrl)
+						'{verification_link}' => General::urlToAnchor($verificationUrl)
 					];
 					$emails = [$data['email']];
 					General::sendTemplateEmail($emails, 'registration', $codes);
 					return response()->json([
 						'status' => true,
-						'message' => trans('REGISTER_SUCCESSFULL'),
+						'message' => 'Welcome to Pinders Workwear. Thank You!',
 						'email' => $user->email,
 						'user_id' => $user->id
 					], Response::HTTP_OK);
@@ -174,22 +174,14 @@ class AuthController extends Controller {
 						'{recovery_link}' => General::urlToAnchor(route('user.otpVerify', ['hash' => $user->token]))
 					];
 
-					try
-					{
-						General::sendTemplateEmail(
-							$user->email, 
-							'user-forgot-password',
-							$codes
-						);
-					}
-					catch(\Exception $e)
-					{
-						
-					}
-
+					General::sendTemplateEmail(
+						$user->email, 
+						'user-forgot-password',
+						$codes
+					);
 					return Response()->json([
 						'status' => true,
-						'message' => 'We have sent you a recovery link on your email. Please follow the email.'
+						'message' => 'Email has been sent to Reset your Password. Thank You!'
 					], Response::HTTP_OK);	
 				}	
 				else

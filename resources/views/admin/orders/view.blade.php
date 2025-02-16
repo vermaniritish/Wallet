@@ -15,6 +15,7 @@ use App\Models\Admin\Settings;
 					</div>
 					<div class="col-lg-6 col-5 text-right">
 						<a href="<?php echo route('admin.orders') ?>" class="btn btn-neutral"><i class="fa fa-arrow-left"></i> Back</a>
+						<a href="<?php echo route('admin.orders.download', ['id' => $page->id]) ?>" class="btn btn-neutral"><i class="fa fa-download"></i> Donwload Invoice</a>
 					</div>
 				</div>
 			</div>
@@ -164,19 +165,25 @@ use App\Models\Admin\Settings;
 							<tbody>
 								<tr>
 									<th>Product Costs</th>
-									<td><?php echo $currency.' '.($page->subtotal - $page->logo_cost - $page->one_time_cost) ?></td>
+									<td><?php echo $currency.($page->subtotal + $page->logo_discount - $page->logo_cost - $page->one_time_cost) ?></td>
 								</tr>
 								<tr>
 									<th>Costs To Add Logo</th>
-									<td><?php echo $currency.' '.$page->logo_cost ?></td>
+									<td><?php echo $currency.$page->logo_cost ?></td>
 								</tr>
+								@if($page->logo_discount_applied > 0)
+								<tr>
+									<th>Logo Discount ({{$page->logo_discount_applied}} logo(s)):</th>
+									<td class="text-danger"> - <?php echo $currency.$page->logo_discount ?></td>
+								</tr>
+								@endif
 								<tr>
 									<th>One Time Setup Fees</th>
-									<td><?php echo $currency.' '.$page->one_time_cost ?></td>
+									<td><?php echo $currency.$page->one_time_cost ?></td>
 								</tr>
-								<tr>
+								<tr class="bg-lighter">
 									<th>Subtotal</th>
-									<td><?php echo $currency.' '.$page->subtotal ?></td>
+									<td><?php echo $currency.$page->subtotal ?></td>
 								</tr>
 								<tr>
 									<th>
@@ -187,13 +194,13 @@ use App\Models\Admin\Settings;
 											<span class="badge badge-primary">{{ $coupon['coupon_code'] }}</span>
 										<?php endif; ?>
 									</th>
-									<td>- <?php echo $currency.' '.$page->discount ?></td>
+									<td class="text-danger">- <?php echo $currency.$page->discount ?></td>
 								</tr>
 								<tr>
-									<th>GST ({{$page->tax_percentage}}%)</th>
+									<th>VAT ({{$page->tax_percentage}}%)</th>
 									<td><?php echo $page->tax ? _currency($page->tax) : _currency(0) ?></td>
 								</tr>
-								<tr>
+								<tr class="bg-lighter">
 									<th>Total Amount</th>
 									<td class="text-lg"><?php echo $page->total_amount ? _currency($page->total_amount) : _currency(0) ?></td>
 								</tr>

@@ -24,3 +24,6 @@ Route::post('/coupon/bulkActions/{action}', [CouponsController::class, 'bulkActi
 
 Route::get('/coupon/{id}/delete', [CouponsController::class, 'delete'])
     ->name('admin.coupons.delete');
+
+Route::get('/coupon/{id}/download', [CouponsController::class, 'download'])
+    ->name('admin.coupon.download');

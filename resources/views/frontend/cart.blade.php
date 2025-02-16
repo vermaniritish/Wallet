@@ -31,7 +31,8 @@
                                                         <div class="cart__content">
                                                             <h4 class="cart__content--title"><a :href="'/' + c.slug">@{{ c.title }}</a></h4>
                                                             <span class="cart__content--variant">COLOR: @{{c.color}}</span>
-                                                            <span class="cart__content--variant">WEIGHT: @{{c.size_title}}</span>
+                                                            <span class="cart__content--variant">SIZE: @{{c.size_title}}</span>
+                                                            <span class="cart__content--variant" style="color:#ee2761" v-html="renderLogoInfo(c)"></span>
                                                         </div>
                                                     </div>
                                                 </td>
@@ -88,24 +89,35 @@
                                                     <td class="cart__summary--total__title text-left">Product Costs</td>
                                                     <td class="cart__summary--amount text-right">£@{{calculate().product_cost}}</td>
                                                 </tr>
-                                                <tr class="cart__summary--total__list">
+                                                <tr class="cart__summary--total__list" v-if="calculate().logo_cost > 0">
                                                     <td class="cart__summary--total__title text-left">Costs To Add Logo</td>
                                                     <td class="cart__summary--amount text-right">£@{{calculate().logo_cost}}</td>
                                                 </tr>
-                                                <tr class="cart__summary--total__list">
+                                                <tr class="cart__summary--total__list" v-if="calculate().logo_discount > 0">
+                                                    <td class="cart__summary--total__title text-left">Logo Discount <small v-if="calculate().applied_logo_discount > 0" style="color:#ee2761">@{{ `(${calculate().applied_logo_discount} logo(s))`}}</small>:</td>
+                                                    <td class="cart__summary--amount text-right"><b style="color:#ee2761">- £@{{calculate().logo_discount}}</b></td>
+                                                </tr>
+                                                <tr class="cart__summary--total__list" v-if="calculate().oneTimeCost > 0">
                                                     <td class="cart__summary--total__title text-left">One Time Setup Fees</td>
                                                     <td class="cart__summary--amount text-right">£@{{calculate().oneTimeCost}}</td>
                                                 </tr>
+                                                <tr class="">
+                                                    <td colspan="2"><hr /></td>
+                                                </tr>
                                                 <tr class="cart__summary--total__list">
-                                                    <td class="cart__summary--total__title text-left">Total (ex. VAT):</td>
+                                                    <td class="cart__summary--total__title text-left">Subtotal: </td>
                                                     <td class="cart__summary--amount text-right">£@{{calculate().subtotal}}</td>
                                                 </tr>
                                                 <tr class="cart__summary--total__list"  v-if="calculate().discount > 0">
                                                     <td class="cart__summary--total__title text-left">DISCOUNT</td>
-                                                    <td class="cart__summary--amount text-right">- £@{{calculate().discount}}</td>
+                                                    <td class="cart__summary--amount text-right"><b style="color:#ee2761">- £@{{calculate().discount}}</b></td>
                                                 </tr>
-                                                <tr class="cart__summary--total__list" v-if="calculate().tax > 0">
-                                                    <td class="cart__summary--total__title text-left">GST (@{{gstTax}}%):</td>
+                                                <tr class="cart__summary--total__list"  v-if="freeDelivery()">
+                                                    <td class="cart__summary--total__title text-left">Delivery</td>
+                                                    <td class="cart__summary--amount text-right"><b style="color:#ee2761">Free</b></td>
+                                                </tr>
+                                                <tr class="cart__summary--total__list">
+                                                    <td class="cart__summary--total__title text-left">VAT (@{{gstTax}}%):</td>
                                                     <td class="cart__summary--amount text-right">£@{{calculate().tax}}</td>
                                                 </tr>
                                                 <tr class="cart__summary--total__list">
@@ -118,7 +130,7 @@
                                     <div class="cart__summary--footer">
                                         <p class="cart__summary--footer__desc">Shipping & taxes calculated at checkout</p>
                                         <ul class="d-flex justify-content-between">
-                                            <li><button class="cart__summary--footer__btn primary__btn cart" type="submit">Update Cart</button></li>
+                                            <!-- <li><button class="cart__summary--footer__btn primary__btn cart" type="submit">Update Cart</button></li> -->
                                             <li><a class="cart__summary--footer__btn primary__btn checkout" href="{{url('/checkout')}}">Check Out</a></li>
                                         </ul>
                                     </div>
