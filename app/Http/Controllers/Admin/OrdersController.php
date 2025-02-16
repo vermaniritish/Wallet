@@ -916,6 +916,10 @@ EOL;
             $query->whereIn('orders.status', $data['statuses']);
         }
 
+        if (!empty($data['invoice_no'])) {
+            $query->where('orders.id', $data['invoice_no']);
+        }
+
         if (!empty($data['categories'])) {
             $query->whereIn('products.category_id', $data['categories']);
         }
