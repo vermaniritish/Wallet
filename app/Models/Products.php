@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Admin\OrderProductRelation;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Brands;
@@ -11,10 +12,10 @@ class Products extends Model
     use HasFactory;
 
     /**
-    * The table associated with the model.
-    *
-    * @var string
-    */
+     * The table associated with the model.
+     *
+     * @var string
+     */
     protected $table = 'products';
 
     /**
@@ -61,6 +62,12 @@ class Products extends Model
         ];
     }
 
+    public function orderProducts()
+    {
+        return $this->hasMany(OrderProductRelation::class, 'product_id'); // Adjust 'product_id' as necessary
+    }
+
+
     /**
      * Define a one-to-one relationship.
      *
@@ -70,5 +77,4 @@ class Products extends Model
     {
         return $this->hasOne(Brands::class, 'id', 'brand_id');
     }
-
 }

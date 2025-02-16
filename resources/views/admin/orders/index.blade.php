@@ -8,14 +8,17 @@
 						<h6 class="h2 text-white d-inline-block mb-0">Manage Orders</h6>
 					</div>
 					<div class="col-lg-6 col-5 text-right">
-						
+						<!-- <a href="<?php echo route('admin.orders.add') ?>" target="_blank"  class="btn btn-neutral">
+						<i class="fas fa-plus"></i> New</a> -->
+                        <a href="{{route('admin.orders.exportOrders')}}"  class="btn btn-neutral">
+                            <i class="fas fa-file-export"></i> Export</a>
 						@include('admin.orders.filters')
 					</div>
 				</div>
 			</div>
 			<form id="filterForm" action="{{ route('admin.orders') }}" method="get">
 				<input type="hidden" name="status" id="statusInput" value="">
-			</form>	
+			</form>
 			<div class="row">
 				<div class="col-md-12 mb-3">
 					<ul class="nav nav-pills">
@@ -63,8 +66,8 @@
 									<div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
 										<?php if(Permissions::hasPermission('orders', 'update')): ?>
 											<?php foreach ($status as $statusKey => $statusData): ?>
-													<a 
-														class="dropdown-item" 
+													<a
+														class="dropdown-item"
 														href="javascript:;"
 														onclick="bulk_actions('<?php echo route('admin.orders.bulkActions', ['action' => $statusKey]) ?>');"
 													>
@@ -106,9 +109,9 @@
 											<?php endforeach; ?>
 										<?php endif; ?>
 										<?php if(Permissions::hasPermission('orders', 'delete')): ?>
-											<a 
-												href="javascript:void(0);" 
-												class="waves-effect waves-block dropdown-item text-danger" 
+											<a
+												href="javascript:void(0);"
+												class="waves-effect waves-block dropdown-item text-danger"
 												onclick="bulk_actions('<?php echo route('admin.orders.bulkActions', ['action' => 'delete']) ?>', 'delete');">
 													<i class="fas fa-times text-danger"></i>
 													<span class="status text-danger">Delete</span>
