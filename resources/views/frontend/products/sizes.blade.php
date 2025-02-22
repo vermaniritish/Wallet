@@ -12,7 +12,8 @@
             @if($c->image)
             <img class="variant__color--value__img" src="{{url($c->image)}}" alt="variant-color-img">
             @else
-            <span style="background-color: {{$c->color_code}}"></span>
+                <?php $codes = explode(',',$c->color_code); ?>
+                <span style="{{ count($codes) > 1 ? 'radial-gradient('.$c->color_code.')' : 'background-color:' .$c->color_code }}"></span>
             @endif
         </label>
         <?php endforeach; ?>

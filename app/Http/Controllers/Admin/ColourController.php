@@ -150,8 +150,7 @@ class ColourController extends AppController
 					'image' => ['nullable'],
 				],
 				[
-					'color_code.required' => 'The colour code is required.',
-					'color_code.unique' => 'The colour code must be unique.',
+					'color_code.required' => 'The colour code is required.'
 				]
 	        );
 	        if(!$validator->fails())
@@ -219,12 +218,11 @@ class ColourController extends AppController
 		            $request->toArray(),
 					[
 						'title' => ['required', 'string', 'max:255', Rule::unique('colours','title')->ignore($id)->whereNull('deleted_at'),],
-						'color_code' => ['required','regex:/^#[a-fA-F0-9]{6}$/', Rule::unique('colours','color_code')->ignore($id)->whereNull('deleted_at'), ],
+						'color_code' => ['required'],
 						'image' => ['nullable'],
 					],
 					[
 						'color_code.required' => 'The colour code is required.',
-						'color_code.regex' => 'The colour code must be in the format #RRGGBB (e.g., #FF0000 for red).',
 					]
 		        );
 

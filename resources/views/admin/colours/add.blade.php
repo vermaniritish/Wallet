@@ -55,7 +55,7 @@
 							</div>
 							<div class="col-md-6">
 								<div class="form-group">
-									<label class="form-control-label" for="input-first-name">HEX Code</label>
+									<label class="form-control-label" for="input-first-name">HEX Codes</label>
 									<input type="text" class="form-control" name="color_code" required placeholder="Colour Code" value="{{ old('color_code') }}">
 									@error('color_code')
 										<small class="text-danger">{{ $message }}</small>
