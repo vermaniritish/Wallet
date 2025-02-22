@@ -38,7 +38,7 @@
 		<?php echo _dt($row->created) ?>
 	</td>
 	<td class="text-right">
-		<?php if(Permissions::hasPermission('sub_categories', 'update') || Permissions::hasPermission('sub_categories', 'delete')): ?>
+		<?php if(Permissions::hasPermission('product_categories', 'update') || Permissions::hasPermission('product_categories', 'delete')): ?>
 			<div class="dropdown">
 				<a class="btn btn-sm btn-icon-only text-warning" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 					<i class="fas fa-ellipsis-v"></i>
@@ -48,7 +48,7 @@
 						<i class="fas fa-eye text-yellow"></i>
 						<span class="status">View</span>
 					</a>
-					<?php if(Permissions::hasPermission('sub_categories', 'update')): ?>
+					<?php if(Permissions::hasPermission('product_categories', 'update')): ?>
 					<div class="dropdown-divider"></div>
 					<a class="dropdown-item" href="<?php echo route('admin.products.subCategories.edit', ['id' => $row->id]) ?>">
 						<i class="fas fa-pencil-alt text-info"></i>
@@ -56,7 +56,7 @@
 					</a>
 					<?php endif; ?>
 					
-					<?php if(Permissions::hasPermission('sub_categories', 'delete')): ?>
+					<?php if(Permissions::hasPermission('product_categories', 'delete')): ?>
 					<div class="dropdown-divider"></div>
 					<a 
 						class="dropdown-item _delete" 

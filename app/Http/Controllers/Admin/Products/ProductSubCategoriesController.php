@@ -32,7 +32,7 @@ class ProductSubCategoriesController extends AppController
 
     function index(Request $request)
     {
-    	if(!Permissions::hasPermission('sub_categories', 'listing'))
+    	if(!Permissions::hasPermission('product_categories', 'listing'))
     	{
     		$request->session()->flash('error', 'Permission denied.');
     		return redirect()->route('admin.dashboard');
@@ -132,7 +132,7 @@ class ProductSubCategoriesController extends AppController
 
     function add(Request $request)
     {
-    	if(!Permissions::hasPermission('sub_categories', 'create'))
+    	if(!Permissions::hasPermission('product_categories', 'create'))
     	{
     		$request->session()->flash('error', 'Permission denied.');
     		return redirect()->route('admin.dashboard');
@@ -196,7 +196,7 @@ class ProductSubCategoriesController extends AppController
 
     function edit(Request $request, $id)
     {
-    	if(!Permissions::hasPermission('sub_categories', 'update'))
+    	if(!Permissions::hasPermission('product_categories', 'update'))
     	{
     		$request->session()->flash('error', 'Permission denied.');
     		return redirect()->route('admin.dashboard');
@@ -283,7 +283,7 @@ class ProductSubCategoriesController extends AppController
 
 	function view(Request $request, $id)
     {
-    	if(!Permissions::hasPermission('sub_categories', 'listing'))
+    	if(!Permissions::hasPermission('product_categories', 'listing'))
     	{
     		$request->session()->flash('error', 'Permission denied.');
     		return redirect()->route('admin.dashboard');
@@ -304,7 +304,7 @@ class ProductSubCategoriesController extends AppController
 
     function delete(Request $request, $id)
     {
-    	if(!Permissions::hasPermission('sub_categories', 'delete'))
+    	if(!Permissions::hasPermission('product_categories', 'delete'))
     	{
     		$request->session()->flash('error', 'Permission denied.');
     		return redirect()->route('admin.dashboard');
@@ -320,7 +320,7 @@ class ProductSubCategoriesController extends AppController
 
     function bulkActions(Request $request, $action)
     {
-    	if( ($action != 'delete' && !Permissions::hasPermission('sub_categories', 'update')) || ($action == 'delete' && !Permissions::hasPermission('sub_categories', 'delete')) ) 
+    	if( ($action != 'delete' && !Permissions::hasPermission('product_categories', 'update')) || ($action == 'delete' && !Permissions::hasPermission('product_categories', 'delete')) ) 
     	{
     		$request->session()->flash('error', 'Permission denied.');
     		return redirect()->route('admin.dashboard');

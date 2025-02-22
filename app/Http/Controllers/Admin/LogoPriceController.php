@@ -30,7 +30,7 @@ class LogoPriceController extends AppController
 
     function index(Request $request)
     {
-    	if(!Permissions::hasPermission('logo_prices', 'listing'))
+    	if(!Permissions::hasPermission('logo_prices', 'update'))
     	{
     		$request->session()->flash('error', 'Permission denied.');
     		return redirect()->route('admin.dashboard');
@@ -72,7 +72,7 @@ class LogoPriceController extends AppController
 
     function add(Request $request)
     {
-    	if(!Permissions::hasPermission('logo_prices', 'create'))
+    	if(!Permissions::hasPermission('logo_prices', 'update'))
     	{
     		$request->session()->flash('error', 'Permission denied.');
     		return redirect()->route('admin.dashboard');

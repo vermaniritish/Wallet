@@ -123,6 +123,7 @@ var productDetail = new Vue({
             if(this.adding) return false;
             this.buyNow = buyNow ? true : false;
             this.editLogo = false;
+            $('body').removeClass('overflow-hidden');
             this.adding = true;
             this.cart = this.sizes.filter((item) => {
                 return (item.quantity && (item.quantity*1) > 0)
@@ -162,6 +163,7 @@ var productDetail = new Vue({
         async openLogoModal() 
         {
             this.editLogo = true;
+            $('body').addClass('overflow-hidden');
             let response = await fetch(site_url + `/api/products/fetch-logo-prices`);
             response = await response.json();
             if(response && response.status)
@@ -247,6 +249,7 @@ var productListing = new Vue({
     // Mount Vue instance to the div with id="app"
     el: '#product-listing-vue',
     data: {
+        salePage: false,
         listing: [],
         sort_by: null,
         page: 1,
@@ -284,7 +287,7 @@ var productListing = new Vue({
             let categoryId = $('#careoryId').text().trim();
             this.fetching = true;
             this.empty = false; 
-            let response = await fetch(site_url + `/api/products/listing?${this.search ? `search=${this.search}&` : '&'}brands=${this.filters.brands ? this.filters.brands.join(',') : ``}&cId=${categoryId}&categories=${this.filters.categories ? this.filters.categories.join(',') : ``}&gender=${this.filters.gender ? this.filters.gender.join(',') : ``}&price_from=${this.filters.fromPrice ? this.filters.fromPrice : ``}&price_to=${this.filters.toPrice ? this.filters.toPrice : ``}&page=${this.page}&sort=${this.sort_by ? this.sort_by : ``}`);
+            let response = await fetch(site_url + `/api/products/listing?salePage=${this.salePage ? `1` : ``}${this.search ? `&search=${this.search}` : ''}&brands=${this.filters.brands ? this.filters.brands.join(',') : ``}&cId=${categoryId}&categories=${this.filters.categories ? this.filters.categories.join(',') : ``}&gender=${this.filters.gender ? this.filters.gender.join(',') : ``}&price_from=${this.filters.fromPrice ? this.filters.fromPrice : ``}&price_to=${this.filters.toPrice ? this.filters.toPrice : ``}&page=${this.page}&sort=${this.sort_by ? this.sort_by : ``}`);
             response = await response.json();
             if(response && response.status)
             {
@@ -384,7 +387,11 @@ var productListing = new Vue({
     mounted: function() {
         console.log(window.location.pathname);
         let pathname = window.location.pathname.split('/');
-        if(window.location.pathname.indexOf('/search') > -1)
+        if(window.location.pathname.indexOf('/sale') > -1)
+        {
+            this.salePage = true;
+        }
+        else if(window.location.pathname.indexOf('/search') > -1)
         {
             const urlParams = new URLSearchParams(window.location.search);
             this.search = urlParams.get('search').trim();

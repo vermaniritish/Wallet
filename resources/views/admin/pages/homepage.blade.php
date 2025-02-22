@@ -122,11 +122,37 @@
 						<hr class="my-4" />
 						<h6 class="heading-small text-muted mb-4">Deals of the day information</h6>
                         <div class="pl-lg-4">
+							<?php $enable  = HomePage::get('deal_day_enable'); ?>	
+							<div class="row">	
+								<div class="col-md-12 py-2">	
+									<div class="custom-control">
+										<label class="custom-toggle">
+											<input type="hidden" name="deal_day_enable" value="0">
+											<input type="checkbox" id="dealEnalbe" value="1" name="deal_day_enable" {{ $enable ? 'checked=""' : '' }}>
+											<span class="custom-toggle-slider rounded-circle" data-label-off="No" data-label-on="Yes"></span>
+										</label>
+										<label class="custom-control-label">Active/Inactive</label>
+									</div>
+								</div>
+							</div>
 							@include('admin.pages.bannerarea', ['key' => 'deal_day', 'imagesize' => '1531*500', 'subheading' => true])
 						</div>
 						<hr class="my-4" />
 						<h6 class="heading-small text-muted mb-4">Our Best Seller</h6>
                         <div class="pl-lg-4">
+							<?php $enable  = HomePage::get('best_seller_enable'); ?>	
+							<div class="row">	
+								<div class="col-md-12 py-2">	
+									<div class="custom-control">
+										<label class="custom-toggle">
+											<input type="hidden" name="best_seller_enable" value="0">
+											<input type="checkbox" id="dealEnalbe" value="1" name="best_seller_enable" {{ $enable ? 'checked=""' : '' }}>
+											<span class="custom-toggle-slider rounded-circle" data-label-off="No" data-label-on="Yes"></span>
+										</label>
+										<label class="custom-control-label">Active/Inactive</label>
+									</div>
+								</div>
+							</div>
 							<div class="row">
 								<div class="col-sm-8">
 									@php
@@ -148,6 +174,19 @@
 						<hr class="my-4" />
 						<h6 class="heading-small text-muted mb-4">50*50 Blocks information</h6>
                         <div class="pl-lg-4">
+							<?php $enable  = HomePage::get('left_right_grid_enable'); ?>	
+							<div class="row">	
+								<div class="col-md-12 py-2">	
+									<div class="custom-control">
+										<label class="custom-toggle">
+											<input type="hidden" name="left_right_grid_enable" value="0">
+											<input type="checkbox" id="dealEnalbe" value="1" name="left_right_grid_enable" {{ $enable ? 'checked=""' : '' }}>
+											<span class="custom-toggle-slider rounded-circle" data-label-off="No" data-label-on="Yes"></span>
+										</label>
+										<label class="custom-control-label">Active/Inactive</label>
+									</div>
+								</div>
+							</div>
 							<div class="row">
 								<div class="col-md-6">
 									@include('admin.pages.bannerarea', ['key' => 'left_grid', 'imagesize' => '753*283'])
@@ -160,6 +199,19 @@
 						<hr class="my-4" />
 						<h6 class="heading-small text-muted mb-4">Bottom banner information</h6>
                         <div class="pl-lg-4">
+							<?php $enable  = HomePage::get('bottom_banner_enable'); ?>	
+							<div class="row">	
+								<div class="col-md-12 py-2">	
+									<div class="custom-control">
+										<label class="custom-toggle">
+											<input type="hidden" name="bottom_banner_enable" value="0">
+											<input type="checkbox" id="dealEnalbe" value="1" name="bottom_banner_enable" {{ $enable ? 'checked=""' : '' }}>
+											<span class="custom-toggle-slider rounded-circle" data-label-off="No" data-label-on="Yes"></span>
+										</label>
+										<label class="custom-control-label">Active/Inactive</label>
+									</div>
+								</div>
+							</div>
 							@include('admin.pages.bannerarea', ['key' => 'bottom_banner', 'imagesize' => '1535*400'])
 						</div>
 						<hr class="my-4" />

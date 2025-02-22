@@ -25,25 +25,25 @@
 											<ul class="imgradio">
 											  <li v-for="(p, pi) in logoOptions.positions">
 												<input type="radio" :name="`logop`+i+lKey+pi" :id="`logop`+i+lKey+pi" :value="p" v-model="lVal.postion" v-on:change="onChange(i, s, null, lKey)" />
-												<label :for="`logop`+i+lKey+pi"><img :src="`{{url('/frontend/assets/size-guides')}}/`+p.trim().toLowerCase().replace(/ /g, '-')+`.jpg`" /></label>
+												<label :for="`logop`+i+lKey+pi"><img :src="`{{url('/frontend/assets/size-guides')}}/`+p.trim().toLowerCase().replace(/ /g, '-').replace(/[^a-zA-Z0-9]/g, '-')+`.jpg`" /></label>
 											  </li>
 											</ul>
 										</div>
 									</div>
 									<div class="col-lg-9">
 										<span class="formhead">Choose Application Method.</span><br/>
-										<label class="variant__color--value2 red" title="None"  style="margin:0px;padding:0px;">
-											None
+										<label class="variant__color--value2 red d-none" title="None"  style="margin:0px;padding:0px;">
 											<input type="radio" :name="`logooption`+i+lKey" type="radio" v-on:input="onChange(i, s, 'None', lKey)" :checked="!lVal.category || lVal.category == 'None'">
+											None
 										</label>
-										<label v-if="logoOptions && logo" v-for="(c, k) in logoOptions.category"  class="variant__color--value2 red" :title="c"  style="margin:0px;padding:0px;">
-											@{{c}}
+										<label v-if="logoOptions && logo" v-for="(c, k) in logoOptions.category"  class="variant__color--value2 red" :title="c"  style="margin:0px;padding:0px;margin-right:10px;">
 											<input type="radio" :name="`logooption`+i+lKey" type="radio" v-on:input="onChange(i, s, c, lKey)" :checked="lVal.category == c">
+											@{{c}}
 										</label>
 
 										<div class="row" v-if="lVal.category != 'None'">
 											<div class="col-lg-12">
-												<label><input type="checkbox" v-model="lVal.already_uploaded"  /> Pinder already have a logo.</label><br />
+												<label class="m-0 p-0"><input type="checkbox" v-model="lVal.already_uploaded"  /> Pinder already have a logo.</label>
 											</div>
 											<div class="col-lg-5" v-if="!lVal.already_uploaded"><br/>
 												<div >

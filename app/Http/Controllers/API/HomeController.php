@@ -165,7 +165,7 @@ class HomeController extends AppController
 			}
 			if($order->save())
 			{
-				$order->prefix_id = Settings::get('order_prefix') + $order->id;
+				$order->prefix_id = 'PWW-'.(Settings::get('order_prefix') + $order->id);
 				$order->save();
 
 				$products = [];

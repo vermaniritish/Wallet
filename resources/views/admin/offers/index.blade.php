@@ -198,7 +198,9 @@ $freeLogo = $freeLogo ? json_decode($freeLogo, true) : null;
 										</div>
 									</div>
 									<div class="col-lg-12 text-right">
+										@if(Permissions::hasPermission('offers', 'update'))
 										<button type="submit" class="btn btn-primary">Submit</button>
+										@endif
 									</div>
 								</div>
 								</form>
@@ -246,7 +248,9 @@ $freeLogo = $freeLogo ? json_decode($freeLogo, true) : null;
 								</div>
 								<div class="row">
 									<div class="col-lg-12 text-right">
-										<button class="btn btn-primary">Submit</button>
+										@if(Permissions::hasPermission('offers', 'update'))
+										<button type="submit" class="btn btn-primary">Submit</button>
+										@endif
 									</div>
 								</div>
 								</form>

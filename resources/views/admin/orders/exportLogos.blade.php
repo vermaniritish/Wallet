@@ -5,7 +5,7 @@
             <div class="header-body">
                 <div class="row align-items-center py-4">
                     <div class="col-lg-6 col-7">
-                        <h6 class="h2 text-white d-inline-block mb-0">Orders Report</h6>
+                        <h6 class="h2 text-white d-inline-block mb-0">Logos Report</h6>
                     </div>
                     <div class="col-lg-6 col-5 text-right">
                         <a href="{{ route('admin.orders') }}" class="btn btn-neutral"><i class="ni ni-bold-left"></i> Back</a>
@@ -24,12 +24,12 @@
                     <div class="card-header">
                         <div class="row align-items-center">
                             <div class="col-8">
-                                <h3 class="mb-0">Use the filters to export report.</h3>
+                                <h3 class="mb-0">Use the filters to export logo report.</h3>
                             </div>
                         </div>
                     </div>
                     <div class="card-body">
-                        <form method="post" action="{{ route('admin.orders.export') }}" class="form-validation">
+                        <form method="post" action="{{ route('admin.report.exportLogo') }}" class="form-validation">
                             {{ csrf_field() }}
                             <div class="pl-lg-4">
                                 <!-- Selling Date -->
@@ -154,16 +154,6 @@
                                             @error('brands')
                                                 <small class="text-danger">{{ $message }}</small>
                                             @enderror
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div class="custom-control custom-radio custom-control-inline">
-                                            <input type="radio" id="type" name="without_logo" value="0" class="custom-control-input" checked>
-                                            <label class="custom-control-label" for="type">With Logo</label>
-                                        </div>
-                                        <div class="custom-control custom-radio custom-control-inline">
-                                            <input type="radio" id="nonactive" name="without_logo" value="1" class="custom-control-input">
-                                            <label class="custom-control-label" for="nonactive">Without Logo</label>
                                         </div>
                                     </div>
                                 </div>

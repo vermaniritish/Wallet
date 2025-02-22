@@ -253,7 +253,7 @@ class HomeController extends BaseController
 
 			if($order->save()) 
 			{
-				$order->prefix_id = Settings::get('order_prefix') + $order->id;
+				$order->prefix_id = 'PWW-'.(Settings::get('order_prefix') + $order->id);
 				$order->save();
 
 				$products = [];
@@ -263,9 +263,11 @@ class HomeController extends BaseController
 				$includeTravelCharges = 0;
 				foreach($data['cart'] as $c)
 				{
+					$brands = BrandProduct::select(['brand_id'])->where('product_id', $c['product_id'])->pluck('brand_id')->toArray();
 					$products[] = [
 						'order_id' => $order->id,
 						'product_id' => $c['product_id'],
+						'brands_id' => $brands ? implode(',',$brands) : null,
 						'size_id' => $c['id'],
 						'size_title' => $c['size_title'] . ' ' . $c['from_cm'] . ' - ' . $c['to_cm'],
 						'color' => $c['color'],
@@ -320,5 +322,15 @@ class HomeController extends BaseController
                     'message' => 'Something went wrong. Please try again.'
                 ]);
 		}
+	}
+
+	function sale(Request $request)
+	{
+		$brands = Brands::select(['id', 'title', 'slug'])->where('status', 1)->orderBy('title', 'asc')->get();
+		return view('frontend.products.index', [
+			'brands' => $brands,
+			'subCategory' => null,
+			'category' => null
+		]);
 	}
 }

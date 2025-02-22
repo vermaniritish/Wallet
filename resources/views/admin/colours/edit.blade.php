@@ -93,7 +93,7 @@
 							                	@include('admin.partials.previewFileRender', ['file' => old('image') ])
 							                </div>
 							                <div class="fixed-edit-section">
-							                	@include('admin.partials.previewFileRender', ['file' => $page->image, 'relationType' => 'brands.image', 'relationId' => $page->id ])
+							                	@include('admin.partials.previewFileRender', ['file' => $page->image, 'relationType' => 'colours.image', 'relationId' => $page->id ])
 							                </div>
 										</div>
 									</div>

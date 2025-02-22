@@ -158,14 +158,31 @@
 								<tr>
 									<td colspan="6" style="border-bottom: 2px solid #c7a162;"></td>
 								</tr>
+								@if($page->logo_cost > 0 || $page->logo_discount > 0 || $page->one_time_cost > 0)
 								<tr style="background: #f7eddd; border-bottom: 1px solid #c7a162; font-weight: bold;">
-									<td colspan="5" style="text-align:right;padding: 5px; ">Subtotal: </td>
+									<td colspan="5" style="text-align:right;padding: 5px; ">Product Costs: </td>
 
 									<td style="text-align:right;padding: 5px; ">
-									   <?php echo _currency($page->subtotal - $page->one_time_cost); ?>
+									   <?php echo _currency($page->subtotal + $page->logo_discount - $page->logo_cost - $page->one_time_cost) ?>
 									</td>
 								</tr>
-                                @if(count($logodata) > 0)
+								@endif
+                                @if($page->logo_cost > 0)
+								<tr style="background: #f7eddd; border-bottom: 1px solid #c7a162; font-weight: bold;">
+									<td colspan="5" style="text-align:right;padding: 5px; ">Costs To Add Logo </td>
+
+									<td style="text-align:right;padding: 5px; ">
+									   <?php echo _currency($page->logo_cost) ?>
+									</td>
+								</tr>
+                                @endif
+								@if($page->logo_discount > 0)
+								<tr style="background: #f7eddd; border-bottom: 1px solid #c7a162; font-weight: bold;">
+									<td colspan="5" style="text-align:right;padding: 5px; ">Logo Discount ({{$page->logo_discount_applied}} logo(s)):</td>
+									<td style="text-align:right;padding: 5px; "> - <?php echo _currency($page->logo_discount) ?></td>
+								</tr>
+								@endif
+								@if($page->one_time_cost > 0)
 								<tr style="background: #f7eddd; border-bottom: 1px solid #c7a162; font-weight: bold;">
 									<td colspan="5" style="text-align:right;padding: 5px; ">One Time Logo Setup Fees: </td>
 
@@ -174,13 +191,10 @@
 									</td>
 								</tr>
                                 @endif
-								<!-- <tr style="background: #f7eddd; border-bottom: 1px solid #c7a162; font-weight: bold;">
-									<td colspan="5" style="text-align:right;padding: 5px; ">Shipping & Handling: </td>
-
-									<td style="text-align:right;padding: 5px; ">
-									   &pound;[SHIPPING CHARGES]
-									</td>
-								</tr> -->
+								<tr style="background: #f7eddd; border-bottom: 1px solid #c7a162; font-weight: bold;">
+									<td colspan="5" style="text-align:right;padding: 5px; ">Subtotal</td>
+									<td style="text-align:right;padding: 5px; "><?php echo _currency($page->subtotal) ?></td>
+								</tr>
 								<tr style="background: #f7eddd; border-bottom: 1px solid #c7a162; font-weight: bold;">
                                     <td colspan="5" style="text-align:right;padding: 5px; ">
                                         Discount

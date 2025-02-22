@@ -1,5 +1,5 @@
 <?php use App\Models\Admin\HomePage; ?>
-<!-- Start banner section -->
+@if(HomePage::get('left_right_grid_enable'))
     <section class="banner__section section--padding pt-0">
         <div class="container-fluid">
             <div class="row row-cols-md-2 row-cols-1 mb--n28">
@@ -56,4 +56,4 @@
             </div>
         </div>
     </section>
-<!-- End banner section -->
+@endif

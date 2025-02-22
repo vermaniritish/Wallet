@@ -17,6 +17,9 @@ Route::post('/pages/home', '\App\Http\Controllers\Admin\PagesController@home')
 Route::get('/pages/{id}/view', '\App\Http\Controllers\Admin\PagesController@view')
     ->name('admin.pages.view');
 
+Route::get('/pages/menu', '\App\Http\Controllers\Admin\PagesController@menu')
+    ->name('admin.pages.menu');
+
 Route::get('/pages/{id}/edit', '\App\Http\Controllers\Admin\PagesController@edit')
     ->name('admin.pages.edit');
 

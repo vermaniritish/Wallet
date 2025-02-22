@@ -1,5 +1,5 @@
 <?php use App\Models\Admin\HomePage; ?>
-<!-- Start banner section -->
+@if(HomePage::get('bottom_banner_enable'))
     <section class="banner__section section--padding pt-0">
         <div class="container-fluid">
             <div class="row row-cols-1">
@@ -31,4 +31,4 @@
             </div>
         </div>
     </section>
-<!-- End banner section -->
+@endif

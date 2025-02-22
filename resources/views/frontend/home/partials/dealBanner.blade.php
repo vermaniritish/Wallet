@@ -1,5 +1,6 @@
 <?php use App\Models\Admin\HomePage; ?>
 <!-- Start deals banner section -->
+ @if(HomePage::get('deal_day_enable'))
     <section class="deals__banner--section section--padding pt-0">
         <div class="container-fluid">
                 <?php $image = HomePage::get('deal_day_image');?>
@@ -29,4 +30,5 @@
             </div>
         </div>
     </section>
+@endif
 <!-- End deals banner section -->

@@ -112,7 +112,7 @@
                     </a>
                 </li>
                 <?php endif; ?>
-                <?php if(Permissions::hasPermission('sub_categories', 'listing')): ?>
+                <?php if(Permissions::hasPermission('product_categories', 'listing')): ?>
                 <li class="nav-item">
                     <a class="nav-link<?php echo ($activeSubCategories  ? ' active' : '') ?>" href="<?php echo route('admin.products.subCategories') ?>">
                         <span class="badge badge-dot mr-4">
@@ -125,7 +125,7 @@
             </ul>
         </li>
         <?php endif; ?>
-        <?php if(Permissions::hasPermission('offers', 'view')): ?>
+        <?php if(Permissions::hasPermission('offers', 'listing')): ?>
             <?php $active = strpos(request()->route()->getAction()['as'], 'admin.contactUs') > -1; ?>
             <li class="nav-item">
                 <a class="nav-link<?php echo ($active ? ' active' : '') ?>" href="<?php echo route('admin.offers') ?>">
@@ -161,7 +161,7 @@
                 </a>
             </li>
         <?php endif; ?>
-        <?php if(Permissions::hasPermission('logo_prices', 'view')): ?>
+        <?php if(Permissions::hasPermission('logo_prices', 'update')): ?>
             <?php $active = strpos(request()->route()->getAction()['as'], 'admin.logoPrices') > -1; ?>
             <li class="nav-item">
                 <a class="nav-link<?php echo ($active ? ' active' : '') ?>" href="<?php echo route('admin.logoPrice') ?>">
@@ -188,7 +188,7 @@
                 </a>
             </li>
         <?php endif; ?>
-        <?php if(Permissions::hasPermission('sizes', 'listing')): ?>
+        <?php if(Permissions::hasPermission('sizes', 'update')): ?>
             <?php $active = strpos(request()->route()->getAction()['as'], 'admin.size') > -1; ?>
             <li class="nav-item">
                 <a class="nav-link<?php echo ($active ? ' active' : '') ?>" href="<?php echo route('admin.size') ?>">
@@ -215,7 +215,7 @@
                 </a>
             </li>
         <?php endif; ?>
-        <?php if(Permissions::hasPermission('contact_us', 'view')): ?>
+        <?php if(Permissions::hasPermission('contact_us', 'listing')): ?>
             <?php $active = strpos(request()->route()->getAction()['as'], 'admin.contactUs') > -1; ?>
             <li class="nav-item">
                 <a class="nav-link<?php echo ($active ? ' active' : '') ?>" href="<?php echo route('admin.contactUs') ?>">
@@ -223,6 +223,34 @@
                     <span class="nav-link-text">Contact Us</span>
                 </a>
             </li>
+        <?php endif; ?>
+        <?php if(Permissions::hasPermission('reports', 'listing')): ?>
+
+        <li class="nav-item">
+            <a class="nav-link" href="#reports" data-toggle="collapse">
+                <i class="fab fa-product-hunt text-pink"></i>
+                <span class="nav-link-text">Reports</span>
+            </a>
+            <ul class="list-unstyled submenu collapse" id="reports">
+                <li class="nav-item">
+                    <a class="nav-link" href="<?php echo route('admin.orders.exportOrders') ?>">
+                        <span class="badge badge-dot mr-4">
+                            <i class="bg-pink"></i>
+                            <span class="status">Orders Report</span>
+                        </span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="<?php echo route('admin.orders.exportLogos') ?>">
+                        <span class="badge badge-dot mr-4">
+                            <i class="bg-pink"></i>
+                            <span class="status">Logos Report</span>
+                        </span>
+                    </a>
+                </li>
+                
+            </ul>
+        </li>
         <?php endif; ?>
     </ul>
     <!-- Divider -->

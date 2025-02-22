@@ -301,6 +301,11 @@ class PagesController extends AppController
 
 	function home(Request $request)
     {
+		if(!Permissions::hasPermission('homepage', 'update'))
+    	{
+    		$request->session()->flash('error', 'Permission denied.');
+    		return redirect()->route('admin.dashboard');
+    	}
 
 		if($request->isMethod('post'))
 		{
@@ -384,4 +389,11 @@ class PagesController extends AppController
 	        ], 200);	
     	}
     }
+
+	function menu(Request $request)
+	{
+		$menu = HomePage::get('menu_header'); 
+    	$menu = $menu ? json_decode($menu) : [];
+		return view("admin/pages/menu", ['menu' => $menu]);
+	}
 }

@@ -35,7 +35,7 @@ class SizeController extends AppController
 
     function index(Request $request, $slug = null)
     {
-    	if(!Permissions::hasPermission('sizes', 'listing'))
+    	if(!Permissions::hasPermission('sizes', 'update'))
     	{
     		$request->session()->flash('error', 'Permission denied.');
     		return redirect()->route('admin.dashboard');
@@ -86,7 +86,7 @@ class SizeController extends AppController
 
     function add(Request $request)
     {
-    	if(!Permissions::hasPermission('sizes', 'create'))
+    	if(!Permissions::hasPermission('sizes', 'update'))
     	{
     		$request->session()->flash('error', 'Permission denied.');
     		return redirect()->route('admin.dashboard');
@@ -102,7 +102,10 @@ class SizeController extends AppController
 				if(!$validator->fails())
 				{
 					foreach ($request->mens as $item) {
-						$sizeId = Sizes::select(['id'])->where('id',$item['id'])->limit(1)->pluck('id')->first();
+						$sizeId = null;
+						if(isset($item['id']) && $item['id']) {
+							$sizeId = Sizes::select(['id'])->where('id',$item['id'])->limit(1)->pluck('id')->first();
+						}
 						$item['type'] = $data['type'];
 						if($sizeId)
 							Sizes::modify($sizeId, $item);

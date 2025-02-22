@@ -1,7 +1,7 @@
 @extends('layouts.frontendlayout')
 @section('content')
 <div id="product-listing-vue">
-    <pre class="d-none" id="careoryId">{{ $category ? $category->id : '' }}</pre>
+    <pre class="d-none" id="careoryId">{{ isset($category) && $category ? $category->id : '' }}</pre>
         <div class="offcanvas__filter--sidebar widget__area">
             <button type="button" class="offcanvas__filter--close" data-offcanvas>
                 <svg class="minicart__close--icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M368 368L144 144M368 144L144 368"></path></svg> <span class="offcanvas__filter--close__text">Close</span>
@@ -27,10 +27,14 @@
                         <div class="breadcrumb__content text-center" v-else>
                             <ul class="breadcrumb__content--menu d-flex justify-content-center">
                                 <li class="breadcrumb__content--menu__items mb-25 mt-15"><a href="{{url('/')}}">Home</a></li>
+                                @if($category && $category->slug)
 								<li class="breadcrumb__content--menu__items mb-25 mt-15"><a href="{{url('/' . ($category && $category->slug ? $category->slug : ''))}}">{{ $category && $category->title ? $category->title : '' }}</a></li>
                                 <?php if($subCategory): ?>
                                 <li class="breadcrumb__content--menu__items mb-25 mt-15"><span>{{ $subCategory && $subCategory->title ? $subCategory->title : '' }}</span></li>
                                 <?php endif; ?>
+                                @else
+                                <li class="breadcrumb__content--menu__items mb-25 mt-15"><span>Sale</span></li>
+                                @endif
                             </ul>
 							<h2 class="breadcrumb__content--title mb-15">{{ $subCategory ? $subCategory->title : ($category ? $category->title : '') }}</h2>
 							<p class="mt-15">{{ $subCategory ? $subCategory->description : ($category ? $category->description : '') }}</p>

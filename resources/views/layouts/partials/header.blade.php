@@ -129,10 +129,8 @@ $user = request()->session()->get('user');
                                 </li>
                                 @endforeach
                                 <li class="header__menu--items style3">
-                                    <a class="header__menu--link " href="/" style="color:#ee2761;">SALE </a>
+                                    <a class="header__menu--link " href="/sale" style="color:#ee2761;">SALE </a>
                                 </li>
-
-
                             </ul>
                         </nav>
                     </div>
@@ -315,7 +313,7 @@ $user = request()->session()->get('user');
                     </a>
                 </li>
                 <li class="offcanvas__stikcy--toolbar__list">
-                    <a class="offcanvas__stikcy--toolbar__btn" href="{{url('/')}}">
+                    <a class="offcanvas__stikcy--toolbar__btn" href="{{url('/sale')}}">
                         <span class="offcanvas__stikcy--toolbar__icon">
                             <svg fill="currentColor" xmlns="http://www.w3.org/2000/svg" width="18.51"
                                 height="17.443" viewBox="0 0 448 512">
@@ -342,7 +340,7 @@ $user = request()->session()->get('user');
                         <span class="offcanvas__stikcy--toolbar__label">Search</span>
                     </a>
                 </li>
-                <li class="offcanvas__stikcy--toolbar__list">
+                <!-- <li class="offcanvas__stikcy--toolbar__list">
                     <a class="offcanvas__stikcy--toolbar__btn minicart__open--btn" href="javascript:void(0)"
                         data-offcanvas>
                         <span class="offcanvas__stikcy--toolbar__icon">
@@ -356,7 +354,7 @@ $user = request()->session()->get('user');
                         <span class="offcanvas__stikcy--toolbar__label">Cart</span>
                         <span class="items__count" v-if="cartcount() > 0">@{{cartcount()}}</span>
                     </a>
-                </li>
+                </li> -->
 
             </ul>
         </div>

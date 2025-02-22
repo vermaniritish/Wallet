@@ -57,8 +57,10 @@
   line-height: 2rem;
 }
 .formhead{
-  margin-bottom:3px;
-  color:#ee2761;
+  color:#C69D5F;
+  font-size:12px;
+  text-transform:uppercase;
+  font-weight:500;
 }
 .popup .close {
   position: absolute;
@@ -95,16 +97,81 @@
 .popup label {
   display: inline-block;
 }
+.popupproductheading{
+  font-size: 14px !important;
+  color: #2F3751 !important;
+  font-weight: 600 !important;
+  line-height:17px !important;
+}
 
 @media screen and (max-width: 700px){
   .box{
-    width: 70%;
+    width: 90%;
   }
   .popup{
-    width: 70%;
+    width: 90%;
   }
+  .popupproductheading{
+  font-size: 11px !important;
+  line-height:14px !important;
+}
 }
 
+.imgradio{list-style-type: none;text-align: center;}
+input[type="radio"][id^="logop00"] {
+  display: none;
+}
+
+.popup label {
+  border: 1px solid #fff;
+  padding: 10px;
+  display: block;
+  position: relative;
+  margin: 10px;
+  cursor: pointer;
+}
+
+.popup label.variant__color--value2 {display:inline-block;font-size: 15px;}
+
+.popup label:before {
+  background-color: white;
+  color: white;
+  content: " ";
+  display: block;
+  border-radius: 50%;
+  border: 1px solid grey;
+  position: absolute;
+  top: -5px;
+  left: -5px;
+  width: 25px;
+  height: 25px;
+  text-align: center;
+  line-height: 28px;
+  transition-duration: 0.4s;
+  transform: scale(0);
+}
+
+label img {
+  height: 100px;
+  transition-duration: 0.2s;
+  transform-origin: 50% 50%;
+}
+
+.popup :checked + label {
+  border-color: #ddd;
+}
+
+.popup :checked + label:before {
+  content: "✓";
+  background-color: grey;
+  transform: scale(1);
+}
+
+.popup :checked + label img {
+  transform: scale(0.9);
+  box-shadow: 0 0 5px #333;
+  z-index: -1;
+}
 
 .thumbnail_slider {
   max-width: 700px;
@@ -134,4 +201,32 @@
   display: block;
   max-width: 100%;
   max-height: 100%;
+}
+.overflow-hidden{
+  overflow: hidden;
+}
+
+.sideitemspace.active {
+  color: #F96167;
+}
+
+@media screen and (max-width: 549px) {
+  .popup {
+      width: 100%;
+      margin: 0;
+      height: 100vh;
+  }
+  .popup .content {
+      height: 55vh;
+      overflow-y: auto;
+  }
+  ul.imgradio {
+      display: inline-block;
+  }
+  ul.imgradio li {
+      display: inline-block;
+  }
+  ul.imgradio li label{
+    margin-top: 0;
+  }
 }

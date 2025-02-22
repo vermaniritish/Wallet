@@ -1,7 +1,8 @@
 <?php 
 use App\Models\Admin\HomePage;
 use App\Models\API\Products;
- ?><!-- Start product section -->
+ ?>
+@if(HomePage::get('best_seller_enable'))
     <section class="product__section section--padding pt-0">
         <div class="container-fluid">
             <div class="section__heading text-center mb-50">
@@ -38,4 +39,4 @@ use App\Models\API\Products;
             </div>
         </div>
     </section>
-<!-- End product section -->
+@endif

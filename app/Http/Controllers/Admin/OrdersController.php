@@ -11,6 +11,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Admin\Permissions;
@@ -29,6 +30,9 @@ use App\Models\Admin\Orders;
 use App\Models\Admin\OrderStatusHistory;
 use App\Models\Admin\ProductCategories;
 use App\Models\Admin\Products;
+use App\Models\Admin\Colours;
+use App\Models\Admin\Sizes;
+use App\Models\Admin\Brands;
 use App\Models\Admin\Settings;
 use App\Models\Admin\Staff;
 use App\Models\Admin\Users;
@@ -943,4 +947,316 @@ EOL;
 			]);
 		}
 	} 
+
+    public function exportOrders()
+    {
+        // Retrieve unique SKU numbers
+        $skuNumbers = Products::select(['id', 'title', 'sku_number'])->orderBy('products.sku_number');
+
+        $statuses = Orders::getStatuses();
+		$categories = ProductCategories::select(['id', 'title'])->orderBy('title', 'asc')->get();
+		$brands = Brands::select(['id', 'title'])->orderBy('title', 'asc')->get();
+            
+        $sizes = Sizes::select(['id','size_title'])->orderBy('size_title')->get();
+		$colors = Colours::select(['id', 'title', 'code'])->orderBy('title')->get();
+
+        // Return the view with all necessary data
+        return view("admin/orders/export", [
+            'skuNumbers' => $skuNumbers,
+            'statuses' => $statuses,
+            'categories' => $categories,
+            'brands' => $brands,
+            'sizes' => $sizes,
+            'colors' => $colors,
+        ]);
+    }
+
+	public function exportLogos()
+    {
+        // Retrieve unique SKU numbers
+        $skuNumbers = Products::select(['id', 'title', 'sku_number'])->orderBy('products.sku_number');
+
+        $statuses = Orders::getStatuses();
+		$categories = ProductCategories::select(['id', 'title'])->orderBy('title', 'asc')->get();
+		$brands = Brands::select(['id', 'title'])->orderBy('title', 'asc')->get();
+            
+        $sizes = Sizes::select(['id','size_title'])->orderBy('size_title')->get();
+		$colors = Colours::select(['id', 'title', 'code'])->orderBy('title')->get();
+
+        // Return the view with all necessary data
+        return view("admin/orders/exportLogos", [
+            'skuNumbers' => $skuNumbers,
+            'statuses' => $statuses,
+            'categories' => $categories,
+            'brands' => $brands,
+            'sizes' => $sizes,
+            'colors' => $colors,
+        ]);
+    }
+
+    function export(Request $request)
+    {
+        $data = $request->toArray();
+
+        // Start building the query
+        $query = OrderProductRelation::join('products', 'order_products.product_id', '=', 'products.id')
+            ->join('orders', 'order_products.order_id', '=', 'orders.id')
+            ->join('product_categories', 'products.category_id', '=', 'product_categories.id')
+            ->leftJoin('brands', 'order_products.brands_id', '=', 'brands.id')
+            ->select([
+                'products.sku_number as sku',
+                'products.title as product_title',
+                'order_products.id as id',
+                'order_products.color',
+                'order_products.size_title as size',
+                'orders.created as selling_date',
+                'orders.prefix_id as invoiceID',
+                'orders.status',
+               'product_categories.title as category',
+               'brands.title as brand',
+                DB::raw("IFNULL(JSON_UNQUOTE(JSON_EXTRACT(order_products.logo_data, '$[0].category')), null) as logo"),
+				// 'products.purchase_price',
+				'order_products.quantity',
+				'order_products.amount as selling_price',
+				DB::raw('(order_products.quantity * order_products.amount) as sale_price'),
+				'order_products.logo_data',
+				DB::raw('(order_products.quantity * order_products.amount) as total_price'),
+            ]);
+
+        if (!empty($data['skuNumber'])) {
+            $query->whereIn('order_products.product_id', $data['skuNumber']);
+        }
+
+        if (!empty($data['colors'])) {
+            $c = $data['colors'];
+            $query->where(function($q) use ($c){
+				foreach($c as $v){
+					$q->orWhere('order_products.color', 'LIKE', $v);
+				}
+				return $q;
+			});
+        }
+
+        if (!empty($data['sizes'])) {
+            $query->whereIn('order_products.size_id', $data['sizes']);
+        }
+
+        if (!empty($data['statuses'])) {
+            $query->whereIn('orders.status', $data['statuses']);
+        }
+
+        if (!empty($data['categories'])) {
+            $query->whereIn('products.category_id', $data['categories']);
+        }
+
+        if (!empty($data['brands'])) {
+			$brands = $data['brands'];
+			$query->where(function($q) use ($brands) {
+				foreach($brands as $b)
+				{
+					$q->orWhereRaw('FIND_IN_SET(?, order_products.brands_id)', [$b]);
+				}
+				return $query;
+			});
+        }
+
+        if (!empty($data['selling_date_from']) && !empty($data['selling_date_to'])) {
+            $fromDate = min($data['selling_date_from'], $data['selling_date_to']);
+            $toDate = max($data['selling_date_from'], $data['selling_date_to']);
+            $query->whereBetween(DB::raw('DATE(orders.created)'), [$fromDate, $toDate]);
+        }
+
+		if(isset($data['without_logo']) && $data['without_logo'])
+		{
+
+			$query->whereRaw("(JSON_UNQUOTE(JSON_EXTRACT(order_products.logo_data, '$[0].category')) is null or JSON_UNQUOTE(JSON_EXTRACT(order_products.logo_data, '$[0].category')) = 'null')");
+		}
+
+        $listing = $query->orderBy('order_products.id', 'desc')->get();
+        // Set headers for CSV download
+        $headers = [
+            "Content-type"        => "text/csv",
+            "Content-Disposition" => "attachment; filename=orders_export.csv",
+            "Pragma"              => "no-cache",
+            "Cache-Control"       => "must-revalidate, post-check=0, pre-check=0",
+            "Expires"             => "0"
+        ];
+
+        // Generate CSV
+        $callback = function () use ($listing) {
+            $file = fopen('php://output', 'w');
+
+            // CSV Header
+            fputcsv($file, ['SKU', 'Name', 'Color', 'Size', 'Selling Date', 'Invoice No', 'Category', 'Brand','Logo','Status',
+                                    'Quantity', 'Selling Price', 'Sub Total', 'Logo Price', 'Total Price']);
+
+            foreach ($listing as $row) 
+			{
+				$logoPrice = null;
+				$logoData = $row->logo_data ? (substr($row->logo_data, 0, 1) == '{' ? json_decode('['.$row->logo_data.']') : json_decode($row->logo_data)) : null;
+				if($logoData)
+				{
+					foreach($logoData as $ld)
+					{
+						if(!($ld->text || $ld->image || $ld->category || $ld->postion)) continue;
+						if(isset($ld->price) && $ld->price > 0) {
+							$logoPrice += $ld->price * $row->quantity;
+						}
+					}
+				}
+                fputcsv($file, [
+                    $row->sku ?? '',
+                    $row->product_title ?? '',
+                    $row->color ?? '',
+                    $row->size ?? '',
+                    $row->selling_date ?? '',
+                    $row->invoiceID ?? '',
+                    isset($row->category) ? $row->category :'',
+                    // $row->invoice_no ?? '',
+                    $row->brand ?? '',
+                    isset($row->logo) ? $row->logo :'',
+                    Ucwords($row->status ?? ''),
+                    // number_format($row->purchase_price ?? 0, 2),
+                    number_format($row->quantity ?? 0, 2),
+                    number_format($row->selling_price ?? 0, 2),
+                    number_format($row->sale_price ?? 0, 2),
+                    $logoPrice ? number_format($logoPrice ?? 0, 2) : '',
+                    number_format($row->total_price+($logoPrice ? $logoPrice : 0) ?? 0, 2)
+                ]);
+            }
+            fclose($file);
+        };
+
+        return response()->stream($callback, 200, $headers);
+    }
+
+	function exportLogoReport(Request $request)
+    {
+        $data = $request->toArray();
+
+        // Start building the query
+        $query = OrderProductRelation::join('products', 'order_products.product_id', '=', 'products.id')
+            ->join('orders', 'order_products.order_id', '=', 'orders.id')
+            ->join('product_categories', 'products.category_id', '=', 'product_categories.id')
+            ->leftJoin('brands', 'order_products.brands_id', '=', 'brands.id')
+            ->select([
+                'products.sku_number as sku',
+                'products.title as product_title',
+                'order_products.id as id',
+                'order_products.color',
+                'order_products.size_title as size',
+                'orders.created as selling_date',
+                'orders.prefix_id as invoiceID',
+                'orders.status',
+               'product_categories.title as category',
+               'brands.title as brand',
+                DB::raw("IFNULL(JSON_UNQUOTE(JSON_EXTRACT(order_products.logo_data, '$[0].category')), null) as logo"),
+				// 'products.purchase_price',
+				'order_products.quantity',
+				'order_products.amount as selling_price',
+				DB::raw('(order_products.quantity * order_products.amount) as sale_price'),
+				'order_products.logo_data',
+				DB::raw('(order_products.quantity * order_products.amount) as total_price'),
+            ]);
+
+        if (!empty($data['skuNumber'])) {
+            $query->whereIn('order_products.product_id', $data['skuNumber']);
+        }
+
+        if (!empty($data['colors'])) {
+            $c = $data['colors'];
+            $query->where(function($q) use ($c){
+				foreach($c as $v){
+					$q->orWhere('order_products.color', 'LIKE', $v);
+				}
+				return $q;
+			});
+        }
+
+        if (!empty($data['sizes'])) {
+            $query->whereIn('order_products.size_id', $data['sizes']);
+        }
+
+        if (!empty($data['statuses'])) {
+            $query->whereIn('orders.status', $data['statuses']);
+        }
+
+        if (!empty($data['categories'])) {
+            $query->whereIn('products.category_id', $data['categories']);
+        }
+
+        if (!empty($data['brands'])) {
+			$brands = $data['brands'];
+			$query->where(function($q) use ($brands) {
+				foreach($brands as $b)
+				{
+					$q->orWhereRaw('FIND_IN_SET(?, order_products.brands_id)', [$b]);
+				}
+				return $query;
+			});
+        }
+
+        if (!empty($data['selling_date_from']) && !empty($data['selling_date_to'])) {
+            $fromDate = min($data['selling_date_from'], $data['selling_date_to']);
+            $toDate = max($data['selling_date_from'], $data['selling_date_to']);
+            $query->whereBetween(DB::raw('DATE(orders.created)'), [$fromDate, $toDate]);
+        }
+
+		$query->whereRaw("(JSON_UNQUOTE(JSON_EXTRACT(order_products.logo_data, '$[0].category')) is not null and JSON_UNQUOTE(JSON_EXTRACT(order_products.logo_data, '$[0].category')) != 'null')");
+
+		
+        $listing = $query->orderBy('order_products.id', 'desc')->get();
+
+        // Set headers for CSV download
+        $headers = [
+            "Content-type"        => "text/csv",
+            "Content-Disposition" => "attachment; filename=orders_export.csv",
+            "Pragma"              => "no-cache",
+            "Cache-Control"       => "must-revalidate, post-check=0, pre-check=0",
+            "Expires"             => "0"
+        ];
+
+        // Generate CSV
+        $callback = function () use ($listing) {
+            $file = fopen('php://output', 'w');
+
+            // CSV Header
+            fputcsv($file, ['SKU', 'Name', 'Color', 'Size', 'Selling Date', 'Invoice No', 'Category', 'Brand','Order Status', 'Logo Type', 'Logo Position',
+                                    'Quantity', 'Logo Price', 'Total Price']);
+
+            foreach ($listing as $row) 
+			{
+				$logoPrice = null;
+				$logoData = $row->logo_data ? (substr($row->logo_data, 0, 1) == '{' ? json_decode('['.$row->logo_data.']') : json_decode($row->logo_data)) : null;
+				if($logoData)
+				{
+					foreach($logoData as $ld)
+					{
+						if(!($ld->text || $ld->image || $ld->category || $ld->postion)) continue;
+						fputcsv($file, [
+							$row->sku ?? '',
+							$row->product_title ?? '',
+							$row->color ?? '',
+							$row->size ?? '',
+							$row->selling_date ?? '',
+							$row->invoiceID ?? '',
+							isset($row->category) ? $row->category :'',
+							// $row->invoice_no ?? '',
+							$row->brand ?? '',
+							Ucwords($row->status ?? ''),
+							$ld->category,
+							$ld->postion,
+							$row->quantity,
+							number_format($ld->price ?? 0, 2),
+							number_format(($row->quantity*$ld->price) ?? 0, 2)
+						]);
+					}
+				}
+                
+            }
+            fclose($file);
+        };
+
+        return response()->stream($callback, 200, $headers);
+    }
 }

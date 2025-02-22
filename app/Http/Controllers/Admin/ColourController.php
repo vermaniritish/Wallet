@@ -48,7 +48,8 @@ class ColourController extends AppController
     		$search = '%' . $search . '%';
     		$where['(
 				colours.id LIKE ? or
-				colours.color_code LIKE ?)'] = [$search, $search];
+				colours.title LIKE ? or
+				colours.color_code LIKE ?)'] = [$search,$search, $search];
     	}
 
     	if($request->get('created_on'))
@@ -145,12 +146,11 @@ class ColourController extends AppController
 	            $request->toArray(),
 				[
 					'title' => ['required', 'string', 'max:255', Rule::unique('colours','title')->whereNull('deleted_at'),],
-					'color_code' => ['required','regex:/^#[a-fA-F0-9]{6}$/', Rule::unique('colours','color_code')->whereNull('deleted_at'), ],
+					'color_code' => ['required'],
 					'image' => ['nullable'],
 				],
 				[
 					'color_code.required' => 'The colour code is required.',
-					'color_code.regex' => 'The colour code must be in the format #RRGGBB (e.g., #FF0000 for red).',
 					'color_code.unique' => 'The colour code must be unique.',
 				]
 	        );

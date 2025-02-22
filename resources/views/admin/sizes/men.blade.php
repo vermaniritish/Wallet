@@ -1,7 +1,7 @@
 <div id="men">
     <div class="card">
         <div class="card-body">
-            <form method="post" action="<?php echo route('admin.size.add') ?>" class="form-validation">
+            <form id="men-size-form" method="post" action="<?php echo route('admin.size.add') ?>" class="form-validation">
                 <!--!! CSRF FIELD !!-->
                 {{ @csrf_field() }}
                 <h6 class="heading-small text-muted mb-4">Male Size information</h6>
@@ -100,7 +100,7 @@
                     </div>
                 </div>
                 <hr class="my-4" />
-                <button href="#" class="btn btn-sm py-2 px-3 btn-primary float-right">
+                <button type="button" @click="validate" class="btn btn-sm py-2 px-3 btn-primary float-right">
                     <i class="fa fa-save"></i> Submit
                 </button>
             </form>

@@ -45,6 +45,12 @@ Route::post('/orders/{id}/ship', [OrdersController::class, 'ship'])->name('admin
 
 Route::get('/orders/export', [OrdersController::class, 'exportOrders'])
     ->name('admin.orders.exportOrders');
+Route::get('/orders/export/logos', [OrdersController::class, 'exportLogos'])
+    ->name('admin.orders.exportLogos');
 
 Route::post('/orders/export-data', [OrdersController::class, 'export'])
     ->name('admin.orders.export');
+
+
+Route::post('/orders/export-logos', [OrdersController::class, 'exportLogoReport'])
+    ->name('admin.report.exportLogo');

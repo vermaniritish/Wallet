@@ -117,7 +117,6 @@ class Products extends AdminProducts
             'products.phonenumber',
             'products.image',
             'products.max_price',
-            'products.price',
             'products.gender',
             'product_categories.title as category',
             DB::raw('(Select sale_price from product_sizes where product_sizes.product_id = products.id order by sale_price desc limit 1) as sale_price')
@@ -129,7 +128,7 @@ class Products extends AdminProducts
             $select[] = DB::raw("ROUND( SQRT( POW((69.1 * ((products.lat) - '".$request->get('latitude')."')), 2) + POW((53 * ((products.lng) - '".$request->get('longitude')."')), 2)), 1) AS distance");
         }
 
-    	$listing = Products::select($select)
+    	$listing = Products::distinct()->select($select)
             ->leftJoin('product_categories', 'product_categories.id', '=', 'products.category_id');
         
 	    
@@ -137,13 +136,16 @@ class Products extends AdminProducts
         $pIds = [];
         if($request->get('categories') || $request->get('cId'))
         {
+            $listing->join('product_sub_category_relation', 'product_sub_category_relation.product_id', '=', 'products.id')
+                ->leftJoin('sub_categories', 'sub_categories.id', '=', 'product_sub_category_relation.sub_category_id');
+            if($request->get('cId')) {
+                $listing->where('sub_categories.category_id', $request->get('cId'));
+            }
+
             $cats = $request->get('categories');
             $cats = $cats ? explode(',', $cats) : [];
-            $ids = ProductSubCategoryRelation::select(['product_id'])
-                ->leftJoin('sub_categories', 'sub_categories.id', '=', 'product_sub_category_relation.sub_category_id')
-                ->where('sub_categories.category_id', $request->get('cId'));
             if($cats) {
-                $ids->where(function($query) use ($cats) {
+                $listing->where(function($query) use ($cats) {
                     foreach($cats as $c){
                         $query->orWhere('sub_categories.slug', 'LIKE', $c);
                     }
@@ -152,15 +154,19 @@ class Products extends AdminProducts
                 });
             }
 
-            $ids = $ids->pluck('product_id')->toArray();
-            $ids = !empty($ids) ? $ids : ['0'];
-            $pIds = array_merge($pIds, $ids);
         }
 
         if($request->get('price_from') && $request->get('price_to'))
         {
-            $listing->where('products.price', '>=', $request->get('price_from'));
-            $listing->where('products.max_price', '<=', $request->get('price_to'));
+            $formPrice = $request->get('price_from'); 
+            $toPrice = $request->get('price_to'); 
+            $relation = ProductSizeRelation::distinct()->select(['product_id'])->whereBetween('price', [$formPrice, $toPrice])->pluck('product_id')->toArray();
+            if($relation) {
+                $listing->whereIn('products.id', $relation);
+            }
+            else {
+                $listing->whereIn('products.id', [-1]);
+            }
         }
 
         if($request->get('gender'))
@@ -240,6 +246,11 @@ class Products extends AdminProducts
                 $listing->orderBy($orderBy, $direction);
             break;
         }
+
+        if($request->get('salePage'))
+        {
+            $listing->havingRaw('(sale_price is not null and (sale_price*1)> 0)');
+        }
         
 
 	    // Put offset and limit in case of pagination
@@ -262,7 +273,8 @@ class Products extends AdminProducts
     	$page = $request->get('page') ? $request->get('page') : 1;
     	   
         $select = [
-            DB::raw('count(products.id) as count')
+            'products.id',
+            DB::raw('(Select sale_price from product_sizes where product_sizes.product_id = products.id order by sale_price desc limit 1) as sale_price')
         ];
 
     	$listing = Products::select($select)
@@ -271,13 +283,16 @@ class Products extends AdminProducts
         $pIds = [];
         if($request->get('categories') || $request->get('cId'))
         {
+            $listing->join('product_sub_category_relation', 'product_sub_category_relation.product_id', '=', 'products.id')
+                ->leftJoin('sub_categories', 'sub_categories.id', '=', 'product_sub_category_relation.sub_category_id');
+            if($request->get('cId')) {
+                $listing->where('sub_categories.category_id', $request->get('cId'));
+            }
+
             $cats = $request->get('categories');
             $cats = $cats ? explode(',', $cats) : [];
-            $ids = ProductSubCategoryRelation::select(['product_id'])
-                ->leftJoin('sub_categories', 'sub_categories.id', '=', 'product_sub_category_relation.sub_category_id')
-                ->where('sub_categories.category_id', $request->get('cId'));
             if($cats) {
-                $ids->where(function($query) use ($cats) {
+                $listing->where(function($query) use ($cats) {
                     foreach($cats as $c){
                         $query->orWhere('sub_categories.slug', 'LIKE', $c);
                     }
@@ -286,20 +301,19 @@ class Products extends AdminProducts
                 });
             }
 
-            $ids = $ids->pluck('product_id')->toArray();
-            $ids = !empty($ids) ? $ids : ['0'];
-            $pIds = array_merge($pIds, $ids);
         }
 
         if($request->get('price_from') && $request->get('price_to'))
         {
-            $listing->where('products.price', '>=', $request->get('price_from'));
-            $listing->where('products.max_price', '<=', $request->get('price_to'));
-            // $prices = [$request->get('price_from'), $request->get('price_to')];
-            // $listing->where(function($query) use($prices)  {
-            //     $query->orWhere('products.price', '>=', $prices[0]);
-            //     $query->orWhere('products.max_price', '<=', $prices[1]);
-            // });
+            $formPrice = $request->get('price_from'); 
+            $toPrice = $request->get('price_to'); 
+            $relation = ProductSizeRelation::distinct()->select(['product_id'])->whereBetween('price', [$formPrice, $toPrice])->pluck('product_id')->toArray();
+            if($relation) {
+                $listing->whereIn('products.id', $relation);
+            }
+            else {
+                $listing->whereIn('products.id', [-1]);
+            }
         }
 
         if($gender)
@@ -344,6 +358,10 @@ class Products extends AdminProducts
                 });
             }
         }
+        
+
+        $listing->havingRaw('(sale_price is not null and (sale_price*1)> 0)');
+
 
         if($pIds) {
             $where[] = 'products.id IN ('.implode(',', $pIds).')';
@@ -380,9 +398,9 @@ class Products extends AdminProducts
             break;
         }
 
-        $listing = $listing->limit(1)->first();
+        $listing = $listing->get();
 
-	    return $listing && $listing->count ? $listing->count : 0;
+	    return $listing ? $listing->count() : 0;
     }
 
     /**

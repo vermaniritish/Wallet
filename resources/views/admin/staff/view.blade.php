@@ -83,7 +83,7 @@ use App\Models\Admin\Settings;
 										<td><?php echo $page->email ?></td>
 									</tr>
 									<tr>
-										<th>Aadhar Card Number</th>
+										<th>ID Number</th>
 										<td><?php echo $page->aadhar_card_number ?></td>
 									</tr>
 								</tbody>

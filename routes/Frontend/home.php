@@ -55,6 +55,10 @@ Route::post('/newsletter-subscribe', '\App\Http\Controllers\HomeController@newsl
 Route::get('/search', '\App\Http\Controllers\HomeController@search')
     ->name('home.search');
 
+
+Route::get('/sale', '\App\Http\Controllers\HomeController@sale')
+    ->name('home.sale');
+
 Route::get('/{category}', '\App\Http\Controllers\HomeController@listing')
     ->name('home.listing');
 

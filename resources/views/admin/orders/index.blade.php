@@ -10,8 +10,6 @@
 					<div class="col-lg-6 col-5 text-right">
 						<!-- <a href="<?php echo route('admin.orders.add') ?>" target="_blank"  class="btn btn-neutral">
 						<i class="fas fa-plus"></i> New</a> -->
-                        <a href="{{route('admin.orders.exportOrders')}}"  class="btn btn-neutral">
-                            <i class="fas fa-file-export"></i> Export</a>
 						@include('admin.orders.filters')
 					</div>
 				</div>

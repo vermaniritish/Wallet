@@ -3,7 +3,7 @@ let men = new Vue({
     data: {
         mens: [{ 
             id: null,
-            size_type: '',
+            size_title: '',
             from_cm: '',
             to_cm: '',
             chest: '',
@@ -27,7 +27,7 @@ let men = new Vue({
         addForm() {
             this.mens.push({ 
                 id: null,
-                size_type: '',
+                size_title: '',
                 from_cm: '',
                 to_cm: '',
                 chest: '',
@@ -36,6 +36,21 @@ let men = new Vue({
                 length: '',
                 vat: 1
             });
+        },
+        validate() {
+            let data = [...this.mens];
+            const duplicates = data.filter((item, index, self) =>
+                index !== self.findIndex((t) => (
+                    t.size_title === item.size_title
+                ))
+            );            
+            if(duplicates && duplicates.length > 0)  {
+                set_notification('error', 'Duplicate entries are not allowed');
+                return false;
+            }
+            else {
+                $('#men-size-form').submit();
+            }
         }
     }
 });
@@ -44,7 +59,7 @@ let women = new Vue({
     data: {
         mens: [{ 
             id: null,
-            size_type: '',
+            size_title: '',
             from_cm: '',
             to_cm: '',
             chest: '',
@@ -68,7 +83,7 @@ let women = new Vue({
         addForm() {
             this.mens.push({ 
                 id: null,
-                size_type: '',
+                size_title: '',
                 from_cm: '',
                 to_cm: '',
                 chest: '',
@@ -77,6 +92,24 @@ let women = new Vue({
                 length: '',
                 vat: 1
             });
+        },
+        validate() {
+            let data = [...this.mens];
+            console.log(data);
+            const duplicates = data.filter((item, index, self) =>
+                index !== self.findIndex((t) => {
+                    console.log(t.title, item.title);
+                    return t.size_title === item.size_title;
+                })
+            );
+
+            if(duplicates && duplicates.length > 0)  {
+                set_notification('error', 'Duplicate entries are not allowed');
+                return false;
+            }
+            else {
+                $('#women-size-form').submit();
+            }
         }
     }
 });
@@ -85,7 +118,7 @@ let unisex = new Vue({
     data: {
         mens: [{ 
             id: null,
-            size_type: '',
+            size_title: '',
             from_cm: '',
             to_cm: '',
             chest: '',
@@ -109,7 +142,7 @@ let unisex = new Vue({
         addForm() {
             this.mens.push({ 
                 id: null,
-                size_type: '',
+                size_title: '',
                 from_cm: '',
                 to_cm: '',
                 chest: '',
@@ -118,6 +151,21 @@ let unisex = new Vue({
                 length: '',
                 vat: 1
             });
+        },
+        validate() {
+            let data = [...this.mens];
+            const duplicates = data.filter((item, index, self) =>
+                index !== self.findIndex((t) => (
+                    t.size_title === item.size_title
+                ))
+            );            
+            if(duplicates && duplicates.length > 0)  {
+                set_notification('error', 'Duplicate entries are not allowed');
+                return false;
+            }
+            else {
+                $('#unisex-size-form').submit();
+            }
         }
     }
 });
@@ -127,7 +175,7 @@ let kids = new Vue({
     data: {
         mens: [{ 
             id: null,
-            size_type: '',
+            size_title: '',
             from_cm: '',
             to_cm: '',
             chest: '',
@@ -150,7 +198,7 @@ let kids = new Vue({
         addForm() {
             this.mens.push({ 
                 id: null,
-                size_type: '',
+                size_title: '',
                 from_cm: '',
                 to_cm: '',
                 chest: '',
@@ -159,6 +207,21 @@ let kids = new Vue({
                 length: '',
                 vat: 1
             });
+        },
+        validate() {
+            let data = [...this.mens];
+            const duplicates = data.filter((item, index, self) =>
+                index !== self.findIndex((t) => (
+                    t.size_title === item.size_title
+                ))
+            );            
+            if(duplicates && duplicates.length > 0)  {
+                set_notification('error', 'Duplicate entries are not allowed');
+                return false;
+            }
+            else {
+                $('#kids-size-form').submit();
+            }
         }
     }
 });
