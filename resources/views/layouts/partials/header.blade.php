@@ -1,4 +1,4 @@
-<?php 
+<?php
 use App\Models\Admin\HomePage;
 use App\Models\Admin\Settings;
 use App\Models\Admin\ProductSubCategories;
@@ -58,7 +58,7 @@ $user = request()->session()->get('user');
                     <div class="header__account header__sticky--none">
                         <ul class="d-flex">
                             <li class="header__account--items">
-                            
+
                                 <a class="header__account--btn" href="{{ $user && $user->id ? url('/my-account') : url('/login') }}">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="26.51" height="23.443"
                                         viewBox="0 0 512 512">
@@ -102,13 +102,13 @@ $user = request()->session()->get('user');
                     <div class="header__menu d-none header__sticky--block d-lg-block">
                         <nav class="header__menu--navigation">
                             <ul class="d-flex">
-                                <?php $menu = HomePage::get('menu_header'); 
+                                <?php $menu = HomePage::get('menu_header');
                                     $menu = $menu ? json_decode($menu) : [];
                                 ?>
                                 @foreach($menu as $m)
                                     <?php $submenu = ProductSubCategories::where('category_id', $m->id)->get() ?>
                                 <li class="header__menu--items style3 pind">
-                                    
+
                                     <a class="header__menu--link " href="{{ url('/' . Str::slug($m->title)) }}">{{$m->title}}
                                         @if($submenu && $submenu->count() > 0)
                                         <svg class="menu__arrowdown--icon" xmlns="http://www.w3.org/2000/svg"
@@ -202,7 +202,7 @@ $user = request()->session()->get('user');
                     <div class="header__menu">
                         <nav class="header__menu--navigation">
                             <ul class="d-flex">
-                                <?php $menu = HomePage::get('menu_header'); 
+                                <?php $menu = HomePage::get('menu_header');
                                     $menu = $menu ? json_decode($menu) : [];
                                 ?>
                                 @foreach($menu as $m)
@@ -243,7 +243,7 @@ $user = request()->session()->get('user');
         <div class="offcanvas__header">
             <div class="offcanvas__inner">
                 <div class="offcanvas__logo">
-                    <a class="offcanvas__logo_link" href="index.html">
+                <a class="offcanvas__logo_link" href="index.html">
                         <img src="{{ url('frontend/assets/img/logo/logo-workwear.jpg') }}" alt="pinders"
                             width="158" height="36">
                     </a>
@@ -265,7 +265,7 @@ $user = request()->session()->get('user');
                             <?php endif; ?>
                         </li>
                         @endforeach
-                        
+
                         <li class="offcanvas__menu_li">
                             <a class="offcanvas__menu_item " href="/" style="color:#ee2761;">SALE </a>
                         </li>

@@ -7,8 +7,8 @@
                 <span class="nav-link-text">Dashboard</span>
             </a>
         </li>
-        <?php 
-        
+        <?php
+
         if(Permissions::hasPermission('pages', 'listing')): ?>
             <?php $active = strpos(request()->route()->getAction()['as'], 'admin.pages') > -1; ?>
             <li class="nav-item">
@@ -26,7 +26,7 @@
             </li>
         <?php endif;
         ?>
-        
+
 
         <?php /*if(Permissions::hasPermission('blogs', 'listing') || Permissions::hasPermission('blog_categories', 'listing')): ?>
         <?php $active = strpos(request()->route()->getAction()['as'], 'admin.blog') > -1; ?>
@@ -57,11 +57,11 @@
                     </a>
                 </li>
                 <?php endif; ?>
-            </ul>            
+            </ul>
         </li>
         <?php endif;*/ ?>
 
-        
+
         <?php if(Permissions::hasPermission('users', 'listing')): ?>
             <?php $active = strpos(request()->route()->getAction()['as'], 'admin.users') > -1; ?>
             <li class="nav-item">
@@ -101,7 +101,7 @@
                     </a>
                 </li>
                 <?php endif; ?>
-                
+
                 <?php if(Permissions::hasPermission('product_categories', 'listing')): ?>
                 <li class="nav-item">
                     <a class="nav-link<?php echo ($activeCategories ? ' active' : '') ?>" href="<?php echo route('admin.products.categories') ?>">
@@ -248,9 +248,19 @@
                         </span>
                     </a>
                 </li>
-                
+
             </ul>
         </li>
+        <?php endif; ?>
+
+        <?php if(Permissions::hasPermission('sliders', 'listing')): ?>
+            <?php $active = strpos(request()->route()->getAction()['as'], 'admin.menu.add') > -1; ?>
+            <li class="nav-item">
+                <a class="nav-link<?php echo ($active ? ' active' : '') ?>" href="<?php echo route('admin.menu.add') ?>">
+                    <i class="fas fa-ellipsis-h text-coffee"></i>
+                    <span class="nav-link-text">Menu</span>
+                </a>
+            </li>
         <?php endif; ?>
     </ul>
     <!-- Divider -->
@@ -312,7 +322,7 @@
                     </a>
                 </li> -->
             </ul>
-            
+
         </li>
         <?php $active = strpos(request()->route()->getAction()['as'], 'admin.settings') > -1; ?>
         <li class="nav-item">

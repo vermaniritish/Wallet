@@ -16,7 +16,7 @@ use App\Http\Controllers\Admin\OrdersController;
 |
 */
 
-Route::prefix('admin')->middleware(['adminAuth'])->group(function () {	
+Route::prefix('admin')->middleware(['adminAuth'])->group(function () {
 	include "Admin/dashboard.php";
 	include "Admin/searchSugessions.php";
 	include "Admin/admins.php";
@@ -41,6 +41,8 @@ Route::prefix('admin')->middleware(['adminAuth'])->group(function () {
 	include "Admin/contactUs.php";
 	include "Admin/logoPrices.php";
 	include "Admin/offers.php";
+    include "Admin/menu.php";
+
 });
 
 Route::middleware(['guest'])->group(function () {
@@ -54,14 +56,14 @@ Route::middleware(['guest'])->group(function () {
 	include "Admin/auth.php";
 	include "Frontend/auth.php";
 	include "Frontend/home.php";
-	
+
 	Route::get('/admin/order/{id}/download', [OrdersController::class, 'download'])
     ->name('admin.orders.download');
-	
+
 });
 // Frontend Routes
 // Route::middleware(['frontendauth'])->group(function () {
-	
+
 	// Auth Routes
 
 // });
