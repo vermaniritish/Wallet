@@ -63,13 +63,14 @@ class PayPalController extends Controller
                 	'{order_button}' => '<br /><br /><a href="'.url('/my-orders/'.$order->prefix_id).'" target="_blank" style="padding:30px;background:pink;">View Order</a>'
                 ];
 
-                General::sendTemplateEmail(
-                	$order->customer_email,
-                	'order-placed',
-                	$codes,
-                    [],
-                    Settings::get('admin_notification_email')
-                );
+                try
+                {
+                    $this->sendEmail($request, $order->id);
+                }
+                catch(\Exceeption $e)
+                {
+                    
+                }
             }
             return response()->json(['status' => true, 'id' => $order->prefix_id]);
         }
@@ -78,6 +79,56 @@ class PayPalController extends Controller
             return response()->json(['status' => false]);
         }
     }
+
+    function sendEmail($request, $id)
+	{
+		$page = Orders::get($id);
+		$where = ['order_products.order_id' => $page->id];
+		$listing = OrderProductRelation::getListing($request, $where);
+		$html = view(
+			"admin/orders/pdf", 
+			[
+				'page' => $page,
+				'listing' => $listing
+			]
+		)->render();
+		$mpdf = new \Mpdf\Mpdf([
+			'tempDir' => public_path('/uploads'),
+			'mode' => 'utf-8', 
+			'orientation' => 'P',
+			'format' => [210, 297],
+			'setAutoTopMargin' => true,
+			'margin_left' => 0,'margin_right' => 0,'margin_top' => 0,'margin_bottom' => 0,'margin_header' => 0,'margin_footer' => 0
+		]);
+		$mpdf->showImageErrors = true;
+		$mpdf->WriteHTML($html);
+		$path = '/uploads/orders/Order-'.$page->prefix_id.'.pdf';
+		$mpdf->Output(public_path($path), 'F');
+
+		$codes = [
+			'{order_id}' => $page->prefix_id,
+		];
+		if($page->customer_email)
+		{
+			General::sendTemplateEmail(
+				$page->customer_email,
+				'order-placed',
+				$codes,
+				file_exists(public_path($path)) ? [$path] : null
+			);	
+		}
+
+		$notify = Settings::get('admin_notification_email');
+		if($notify)
+		{
+			General::sendTemplateEmail(
+				$notify,
+				'order-placed',
+				$codes,
+				file_exists(public_path($path)) ? [$path] : null
+			);
+		}
+	}
 
     function successMsg(Request $request)
     {

@@ -101,8 +101,8 @@ let order = new Vue({
             });
         },
         calculatePrice: function() {
-            let p =((this.purchase_price/this.margin)*100);
-            this.price = Math.round(p);
+            let p = ((this.purchase_price/this.margin)*100);
+            this.price = p > 0 ? p.toFixed(2) : ``;
             
         },
         initEditValues: function () {

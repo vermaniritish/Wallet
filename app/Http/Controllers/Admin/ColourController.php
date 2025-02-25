@@ -229,7 +229,6 @@ class ColourController extends AppController
 		        if(!$validator->fails())
 		        {
 		        	unset($data['_token']);
-	        		
 		        	/** IN CASE OF SINGLE UPLOAD **/
 		        	if(isset($data['image']) && $data['image'])
 		        	{
@@ -251,7 +250,7 @@ class ColourController extends AppController
 		        		/** IN CASE OF SINGLE UPLOAD **/
 
 		        		$request->session()->flash('success', 'Colour updated successfully.');
-		        		return redirect()->route('admin.colours');
+		        		return redirect()->back();
 		        	}
 		        	else
 		        	{

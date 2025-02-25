@@ -210,6 +210,53 @@ use App\Models\Admin\Settings;
 				</div>
 			</div>
 			<div class="col-xl-5 order-xl-1">	
+			<div class="card">
+					<div class="card-header">
+						<div class="row align-items-center">
+							<div class="col">
+								<h3 class="mb-0">Payment Details</h3>
+							</div>
+						</div>
+					</div>
+					<div class="card-body p-0 m-0">
+						<table class="table align-items-center table-flush">
+							<tbody>
+								<?php $payDetails = json_decode($page->paypal_payment_data); ?>
+								<tr>
+									<th>Status</th>
+									@if($page->paid)
+									<td><span class="badge badge-success">Paid</span></td>
+									@else
+									<td><span class="badge badge-danger">Failed</span></td>
+									@endif
+								</tr>
+								<tr>
+									<th>Paypal Transaction No.</th>
+									<td><span>{{ $payDetails && $payDetails->id ? $payDetails->id : '' }}</span></td>
+								</tr>
+								<tr>
+									<th>Paypal Intent</th>
+									<td><span>{{ $payDetails && $payDetails->intent ? $payDetails->intent : '' }}</span></td>
+								</tr>
+								<tr>
+									<th>Paypal Status</th>
+									<td><span>{{ $payDetails && $payDetails->status ? $payDetails->status : '' }}</span></td>
+								</tr>
+								<tr>
+									<th>Paypal Response</th>
+									<td><code style="
+    max-width: 200px;
+    overflow: scroll;
+    display: block;
+    word-break: break-all;
+    text-wrap: auto;
+    height: 200px;
+">{{ $page->paypal_payment_data }}</code></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
 				<div class="card">
 					<div class="card-header">
 						<div class="row align-items-center">

@@ -5,15 +5,15 @@
         <legend class="product__variant--title mb-8">Color :</legend>
         <?php 
         foreach($product->colors as $c): ?>
+        <?php $codes = explode(',',$c->color_code); ?>
         <input id="color-red1" name="color" type="radio" checked>
-        <label :class="`variant__color--value` + (color == '{{$c->id}}' ? ' red active' : '')" for="color-red1" title="{{ $c->title }}" style="background-color: {{$c->color_code ? $c->color_code : '#FFF'}}"
+        <label :class="`variant__color--value` + (color == '{{$c->id}}' ? ' red active' : '')" for="color-red1" title="{{ $c->title }}" style="background-repeat: no-repeat;{{ (count($codes) > 1 ? 'background:linear-gradient('.$c->color_code.')' : 'background-color:' .$c->color_code) }}"
             v-on:click="selectColor({{$c->id}})"
         >
             @if($c->image)
             <img class="variant__color--value__img" src="{{url($c->image)}}" alt="variant-color-img">
             @else
-                <?php $codes = explode(',',$c->color_code); ?>
-                <span style="{{ count($codes) > 1 ? 'radial-gradient('.$c->color_code.')' : 'background-color:' .$c->color_code }}"></span>
+                <span style="background-repeat: no-repeat;{{ (count($codes) > 1 ? 'background:linear-gradient('.$c->color_code.')' : 'background-color:' .$c->color_code) }}"></span>
             @endif
         </label>
         <?php endforeach; ?>

@@ -76,7 +76,10 @@ class PagesController extends BaseController
     public function myOrders(Request $request) 
     {
         $user = Users::find($request->session()->get('user')->id);
-        $orders = Orders::where('customer_id', $user->id)->select([
+        $orders = Orders::where(function($query) use ($user) {
+            return $query->orWhere('customer_id', $user->id)
+                    ->orWhere('email', 'LIKE', $user->email);
+        })->select([
             'orders.id', 'orders.prefix_id', 'orders.created', 'orders.status', 'orders.total_amount', 'orders.paid',
             DB::raw('GROUP_CONCAT(order_products.shipment_tracking) as shipment')
         ])
