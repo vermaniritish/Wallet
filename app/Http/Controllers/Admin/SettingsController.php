@@ -3,8 +3,8 @@
  * Settings Class
  *
  * @package    SettingsController
- 
- 
+
+
  * @version    Release: 1.0.0
  * @since      Class available since Release 1.0.0
  */
@@ -62,19 +62,19 @@ class SettingsController extends AppController
 	        if(!$validator->fails())
 	        {
 	        	$logo = null;
-	        	if(isset($data['logo']) && $data['logo']) 
+	        	if(isset($data['logo']) && $data['logo'])
 	        	{
 	        		$logo = $data['logo'];
 	        	}
-	        	
+
 	        	$favicon = null;
-	        	if(isset($data['favicon']) && $data['favicon']) 
+	        	if(isset($data['favicon']) && $data['favicon'])
 	        	{
 	        		$favicon = $data['favicon'];
 	        	}
 
 
-	        	// if(isset($data['ignore_keywords']) && $data['ignore_keywords']) 
+	        	// if(isset($data['ignore_keywords']) && $data['ignore_keywords'])
 	        	// {
 	        	// 	$favicon = $data['favicon'];
 	        	// }
@@ -104,7 +104,7 @@ class SettingsController extends AppController
 		        		FileSystem::resizeImage($favicon, $originalName, '50*50');
 		        	}
 	        	}
-	        	
+
         		$request->session()->flash('success', 'Settings updated successfully.');
         		return redirect()->route('admin.settings');
 			}
@@ -144,7 +144,7 @@ class SettingsController extends AppController
 	        	foreach ($data as $key => $value) {
 	        		Settings::put($key, $value);
 	        	}
-	
+
         		$request->session()->flash('success', 'Recaptcha settings updated.');
         		return redirect()->route('admin.settings');
 			}
@@ -182,7 +182,7 @@ class SettingsController extends AppController
 	        if(!$validator->fails())
 	        {
 	        	unset($data['_token']);
-	        	
+
 	        	$password = null;
 	        	if(isset($data['smtp_password']) && $data['smtp_password'])
 	        	{
@@ -199,7 +199,7 @@ class SettingsController extends AppController
 	        		$password = General::encrypt($password);
 	        		Settings::put('smtp_password', $password);
 	        	}
-	
+
         		$request->session()->flash('success', 'Password updated successfully.');
         		return redirect()->route('admin.settings');
 			}
@@ -231,7 +231,7 @@ class SettingsController extends AppController
 	        if(!$validator->fails())
 	        {
 	        	unset($data['_token']);
-	        	
+
 	        	foreach ($data as $key => $value) {
 	        		Settings::put($key, $value);
 	        	}
@@ -294,7 +294,7 @@ class SettingsController extends AppController
 		        		FileSystem::resizeImage($banner, $originalName, '612*378');
 		        	}
 	        	}
-	        	
+
         		$request->session()->flash('success', 'Settings updated successfully.');
         		return redirect()->route('admin.settings.home');
 			}
@@ -354,7 +354,7 @@ class SettingsController extends AppController
 				return redirect()->back()->withInput();
 		    }
 		}
-		
+
 
 		return view("admin/settings/footerLinks", []);
 	}
@@ -383,7 +383,7 @@ class SettingsController extends AppController
 	        	Settings::put('free_delivery', $request->free_delivery ? json_encode([
 					'min_cart_price' => $request->min_cart_price
 				]) : null);
-	
+
         		$request->session()->flash('success', 'Free delivery offer updated.');
         		return redirect()->back();
 			}
@@ -426,7 +426,7 @@ class SettingsController extends AppController
 					'min_cart_price' => $request->min_cart_price,
 					'quantity' => $request->quantity
 				]) : null);
-	
+
         		$request->session()->flash('success', 'Free delivery offer updated.');
         		return redirect()->back();
 			}
@@ -441,4 +441,26 @@ class SettingsController extends AppController
 			abort(404);
 		}
 	}
+
+    public function oneTimeSetupCost(Request $request)
+    {
+        $data = $request->toArray();
+        $validator = Validator::make(
+            $request->toArray(),
+            [
+                'one_time_setup_cost' => 'required|numeric',
+            ]
+        );
+
+        if(!$validator->fails())
+        {
+            Settings::put('one_time_setup_cost',$data['one_time_setup_cost']);
+            $request->session()->flash('success', 'One time setup cost updated.');
+            return redirect()->back();
+
+        }else{
+            $request->session()->flash('error', current( current( $validator->errors()->getMessages() ) ));
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+    }
 }

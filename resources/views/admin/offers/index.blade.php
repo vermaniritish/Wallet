@@ -1,8 +1,8 @@
 <?php
 use App\Models\Admin\Settings;
-$freeDelivery = Settings::get('free_delivery'); 
+$freeDelivery = Settings::get('free_delivery');
 $freeDelivery = $freeDelivery ? json_decode($freeDelivery, true) : null;
-$freeLogo = Settings::get('free_logo_discount'); 
+$freeLogo = Settings::get('free_logo_discount');
 $freeLogo = $freeLogo ? json_decode($freeLogo, true) : null;
 ?>
 @extends('layouts.adminlayout')
@@ -17,7 +17,7 @@ $freeLogo = $freeLogo ? json_decode($freeLogo, true) : null;
 					<div class="col-lg-6 col-5 text-right">
 					<?php if(Permissions::hasPermission('offers', 'create')): ?>
 						<a href="<?php echo route('admin.offers.add') ?>" class="btn btn-neutral"><i class="fas fa-plus"></i> New</a>
-					<?php endif; ?>	
+					<?php endif; ?>
 					</div>
 				</div>
 			</div>
@@ -25,7 +25,6 @@ $freeLogo = $freeLogo ? json_decode($freeLogo, true) : null;
 	</div>
 	<!-- Page content -->
 	<div class="container-fluid mt--6">
-		
 		<div class="row">
 			<div class="col-md-7">
 				<div class="card listing-block">
@@ -50,8 +49,8 @@ $freeLogo = $freeLogo ? json_decode($freeLogo, true) : null;
 									</a>
 									<div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
 										<?php if(Permissions::hasPermission('offers', 'update')): ?>
-											<a 
-												class="dropdown-item" 
+											<a
+												class="dropdown-item"
 												href="javascript:;"
 												onclick="bulk_actions('<?php echo route('admin.offers.bulkActions', ['action' => 'active']) ?>', 'active');"
 											>
@@ -60,8 +59,8 @@ $freeLogo = $freeLogo ? json_decode($freeLogo, true) : null;
 													<span class="status">Active</span>
 												</span>
 											</a>
-											<a 
-												class="dropdown-item" 
+											<a
+												class="dropdown-item"
 												href="javascript:;"
 												onclick="bulk_actions('<?php echo route('admin.offers.bulkActions', ['action' => 'inactive']) ?>', 'inactive');"
 											>
@@ -73,9 +72,9 @@ $freeLogo = $freeLogo ? json_decode($freeLogo, true) : null;
 											<div class="dropdown-divider"></div>
 										<?php endif; ?>
 										<?php if(Permissions::hasPermission('offers', 'delete')): ?>
-											<a 
-												href="javascript:void(0);" 
-												class="waves-effect waves-block dropdown-item text-danger" 
+											<a
+												href="javascript:void(0);"
+												class="waves-effect waves-block dropdown-item text-danger"
 												onclick="bulk_actions('<?php echo route('admin.offers.bulkActions', ['action' => 'delete']) ?>', 'delete');">
 													<i class="fas fa-times text-danger"></i>
 													<span class="status text-danger">Delete</span>
@@ -162,6 +161,36 @@ $freeLogo = $freeLogo ? json_decode($freeLogo, true) : null;
 					</div>
 					<!-- Card footer -->
 				</div>
+                <div class="card listing-block">
+					<!--!! FLAST MESSAGES !!-->
+					@include('admin.partials.flash_messages')
+					<!-- Card header -->
+					<div class="card-header border-0">
+						{{-- <div class="heading">
+							<h3 class="mb-0 w-full">Manage one time setup cost</h3>
+						</div> --}}
+                        <h3 class="mb-0 w-full">Manage One Time Setup Cost</h3>
+					</div>
+                    <div class="card-body">
+                        <form action="{{ route('admin.settings.one-time-setup-cost') }}" method="post">
+                        {{ @csrf_field() }}
+                        <div class="row">
+                            <div class="col-lg-12 delivery-fields">
+                                <div class="form-group">
+                                    <label class="form-control-label" for="input-first-name">One Time Setup Cost</label>
+                                    <input type="number" class="form-control" name="one_time_setup_cost" required placeholder="15" value="{{ old('one_time_setup_cost', Settings::get('one_time_setup_cost')) }}">
+                                </div>
+                            </div>
+                            <div class="col-lg-12 text-right">
+                                @if(AdminAuth::isAdmin())
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                                @endif
+                            </div>
+                        </div>
+                        </form>
+                    </div>
+				</div>
+
 			</div>
 			<div class="col-md-5">
 				<div class="row">
