@@ -18,7 +18,7 @@ class SMSGateway
 		$jsonData = array(
 			'sender' => 'TheSMSWorks',
 			'destination' => $phoneNumber,
-			'content' => $message . "\n - Pinder\'s WorkWear"
+			'content' => $message . "\n - Pinder's WorkWear"
 		);
 
 		
