@@ -10,7 +10,27 @@ $(".tag-it-capital").tagit({
 });
 // $(".tag-it-capital").tagit();
 
+$('input[name="daterange"]').daterangepicker({
+    autoUpdateInput: false,
+    locale: {
+        format: 'DD/MM/YYYY', // Set date format
+        cancelLabel: 'Clear'
+    }
+});
 
+$('input[name="daterange"]').on('apply.daterangepicker', function(ev, picker) {
+    $(this).val(picker.startDate.format('DD/MM/YYYY') + ' - ' + picker.endDate.format('DD/MM/YYYY'));
+});
+
+$('input[name="daterange"]').on('cancel.daterangepicker', function(ev, picker) {
+    $(this).val('');
+});
+
+$('#print-orders').on('click', function() {
+    if(!confirm('Are you sure to the selected range orders?')) return false;
+    $(this).prop('disabled', true);
+    window.open(admin_url + '/orders/bulk-export?d=' + $('input[name="daterange"]').val());
+});
 
 $.validator.setDefaults({ 
     errorClass: 'text-danger',
@@ -1170,20 +1190,20 @@ if($('.delivery-fields').length)
 }
 
 if($('.free-logo-fields').length)
-    {
-        let fl = function() {
-            if($('input[name=free_logo]').is(':checked'))
-            {
-                $('.free-logo-fields').removeClass('d-none');
-                $('.free-logo-fields input[name=min_cart_price]').attr('required', 'required');
-            }
-            else
-            {
-                $('.free-logo-fields').addClass('d-none');
-                $('.free-logo-fields input[name=min_cart_price]').attr('required', '');
-                
-            }
+{
+    let fl = function() {
+        if($('input[name=free_logo]').is(':checked'))
+        {
+            $('.free-logo-fields').removeClass('d-none');
+            $('.free-logo-fields input[name=min_cart_price]').attr('required', 'required');
         }
-        $('input[name=free_logo]').on('change', fl)
-        fl();
+        else
+        {
+            $('.free-logo-fields').addClass('d-none');
+            $('.free-logo-fields input[name=min_cart_price]').attr('required', '');
+            
+        }
     }
+    $('input[name=free_logo]').on('change', fl)
+    fl();
+}

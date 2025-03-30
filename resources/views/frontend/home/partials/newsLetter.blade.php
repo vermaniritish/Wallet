@@ -1,5 +1,6 @@
 <?php use App\Models\Admin\Pages; 
-$page = Pages::where('slug', 'LIKE', 'newsletter')->limit(1)->first();
+$page = Pages::where('slug', 'LIKE', 'newsletter')->where('status', 1)->limit(1)->first();
+if($page):
 ?>
 <!-- Start News letter popup -->
     <div class="newsletter__popup" data-animation="slideInUp">
@@ -32,3 +33,4 @@ $page = Pages::where('slug', 'LIKE', 'newsletter')->limit(1)->first();
         </div>
     </div>
 <!-- End News letter popup -->
+<?php endif; ?>

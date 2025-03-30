@@ -108,7 +108,17 @@
 										<i class="fas fa-sort" data-field="products.id" data-sort="asc"></i>
 										<?php endif; ?>
 									</th>
-									<th class="sort" width="13.3%">
+									<th class="sort" width="8%">
+										SKU No.
+										<?php if(isset($_GET['sort']) && $_GET['sort'] == 'products.sku_number' && isset($_GET['direction']) && $_GET['direction'] == 'asc'): ?>
+										<i class="fas fa-sort-down active" data-field="products.sku_number" data-sort="asc"></i>
+										<?php elseif(isset($_GET['sort']) && $_GET['sort'] == 'products.sku_number' && isset($_GET['direction']) && $_GET['direction'] == 'desc'): ?>
+										<i class="fas fa-sort-up active" data-field="products.sku_number" data-sort="desc"></i>
+										<?php else: ?>
+										<i class="fas fa-sort" data-field="products.sku_number"></i>
+										<?php endif; ?>
+									</th>
+									<th class="sort" width="12%">
 										Title
 										<?php if(isset($_GET['sort']) && $_GET['sort'] == 'products.title' && isset($_GET['direction']) && $_GET['direction'] == 'asc'): ?>
 										<i class="fas fa-sort-down active" data-field="products.title" data-sort="asc"></i>
@@ -118,7 +128,7 @@
 										<i class="fas fa-sort" data-field="products.title"></i>
 										<?php endif; ?>
 									</th>								
-									<th class="sort" width="13.3%" >
+									<th class="sort" width="8%" >
 										Category
 										<?php if(isset($_GET['sort']) && $_GET['sort'] == 'products.address' && isset($_GET['direction']) && $_GET['direction'] == 'asc'): ?>
 										<i class="fas fa-sort-down active" data-field="products.address" data-sort="asc"></i>
@@ -128,7 +138,7 @@
 										<i class="fas fa-sort" data-field="products.address"></i>
 										<?php endif; ?>
 									</th>
-									<th class="sort" width="13.3%" >
+									<th class="sort" width="8%" >
 										Price
 										<?php if(isset($_GET['sort']) && $_GET['sort'] == 'products.price' && isset($_GET['direction']) && $_GET['direction'] == 'asc'): ?>
 										<i class="fas fa-sort-down active" data-field="products.price" data-sort="asc"></i>
@@ -138,7 +148,7 @@
 										<i class="fas fa-sort" data-field="products.price"></i>
 										<?php endif; ?>
 									</th>									
-									<th class="sort" width="13.3%" >
+									<th class="sort" width="8%" >
 										Status
 										<?php if(isset($_GET['sort']) && $_GET['sort'] == 'products.status' && isset($_GET['direction']) && $_GET['direction'] == 'asc'): ?>
 										<i class="fas fa-sort-down active" data-field="products.status" data-sort="asc"></i>

@@ -49,10 +49,10 @@
                                         <td colspan="11"><p class="text-center">No information available.</p></td>
                                     </tr>
 									<tr v-else v-for="(row, index) in embroideryRows" :key="index">
-										<td><input type="number" v-model="row.from_quantity" class="form-control" min="1" :name="'embroidered-logo[' + index + '][from_quantity]'"></td>
-										<td><input type="number" v-model="row.to_quantity" class="form-control" min="1" :name="'embroidered-logo[' + index + '][to_quantity]'"></td>
+										<td><input type="number" step=".01" v-model="row.from_quantity" class="form-control" min="1" :name="'embroidered-logo[' + index + '][from_quantity]'"></td>
+										<td><input type="number" step=".01" v-model="row.to_quantity" class="form-control" min="1" :name="'embroidered-logo[' + index + '][to_quantity]'"></td>
 										<td v-for="position in logoPositions" :key="position">
-											<input type="number" v-model="row.prices[position]" class="form-control" :name="'embroidered-logo[' + index + '][prices][' + position + ']'">
+											<input type="number" step=".01" v-model="row.prices[position]" class="form-control" :name="'embroidered-logo[' + index + '][prices][' + position + ']'">
 										</td>
 										<td class="text-center" >
 											<i v-on:click="removeRow('embroidered-logo', index)" class="fa fa-times"></i>
@@ -95,10 +95,10 @@
                                         <td colspan="11"><p class="text-center">No information available.</p></td>
                                     </tr>
 									<tr v-else v-for="(row, index) in printingRows" :key="index">
-										<td><input type="number" v-model="row.from_quantity" class="form-control" min="1" :name="'printed-logo[' + index + '][from_quantity]'"></td>
-										<td><input type="number" v-model="row.to_quantity" class="form-control" min="1" :name="'printed-logo[' + index + '][to_quantity]'"></td>
+										<td><input type="number" step=".01" v-model="row.from_quantity" class="form-control" min="1" :name="'printed-logo[' + index + '][from_quantity]'"></td>
+										<td><input type="number" step=".01" v-model="row.to_quantity" class="form-control" min="1" :name="'printed-logo[' + index + '][to_quantity]'"></td>
 										<td v-for="position in logoPositions" :key="position">
-											<input type="number" v-model="row.prices[position]" class="form-control" :name="'printed-logo[' + index + '][prices][' + position + ']'">
+											<input type="number" step=".01" v-model="row.prices[position]" class="form-control" :name="'printed-logo[' + index + '][prices][' + position + ']'">
 										</td>
 										<td class="text-center" >
 											<i v-on:click="removeRow('printed-logo', index)" class="fa fa-times"></i>

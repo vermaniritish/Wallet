@@ -335,16 +335,16 @@ class UsersController extends AppController
 					order_products.quantity LIKE ? or
 					order_products.amount LIKE ?)'] = [$search, $search, $search, $search];
 			}
-			$orderId = Orders::where('customer_id',$id)->pluck('id')->toArray();
-			$ids = implode(',',$orderId);
-			$where[] = "order_id in ({$ids})";
-			$listing = OrderProductRelation::getListing($request, $where);
-	    	if($request->ajax())
+			$listing = Orders::getListing($request, ['customer_id' => $id]);
+
+	    	
+			if($request->ajax())
 	    	{
 			    $html = view(
 					"admin/users/orderedProducts/listingLoop", 
 		    		[
-		    			'listing' => $listing
+		    			'listing' => $listing,
+						'status' => Orders::getStaticData()['status'],
 		    		]
 		    	)->render();
 
@@ -363,7 +363,8 @@ class UsersController extends AppController
 		    		"admin/users/view", 
 		    		[
 		    			'user' => $user,
-		    			'listing' => $listing
+		    			'listing' => $listing,
+						'status' => Orders::getStaticData()['status'],
 		    		]
 		    	);
 		    }

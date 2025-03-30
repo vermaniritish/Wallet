@@ -3,11 +3,15 @@
 	<div class="header bg-primary pb-6">
 		<div class="container-fluid">
 			<div class="header-body">
+				<h6 class="h2 text-white d-inline-block mb-0">Manage Orders</h6>
 				<div class="row align-items-center py-4">
-					<div class="col-lg-6 col-7">
-						<h6 class="h2 text-white d-inline-block mb-0">Manage Orders</h6>
+					<div class="col-lg-4 col-7">
+					<div class="d-flex flex-row gap-2">
+						<input class="form-control" type="text" name="daterange" value="<?php echo date('d/m/Y', strtotime('-7 days')) . ' - '.date('d/m/Y') ?>" placeholder="Please select date range to print." />
+						<button class="btn btn-neutral ml-2" id="print-orders">Print</button>
 					</div>
-					<div class="col-lg-6 col-5 text-right">
+					</div>
+					<div class="col-lg-8 col-5 text-right">
 						<!-- <a href="<?php echo route('admin.orders.add') ?>" target="_blank"  class="btn btn-neutral">
 						<i class="fas fa-plus"></i> New</a> -->
 						@include('admin.orders.filters')

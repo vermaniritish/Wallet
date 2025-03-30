@@ -110,65 +110,6 @@
                     </div>
 
                 </div>
-
-                <div class="card">
-                    <!--!! FLAST MESSAGES !!-->
-                    @include('admin.partials.flash_messages')
-                    <div class="card-header">
-                        <div class="row align-items-center">
-                            <div class="col-8">
-                                <h3 class="mb-0">Footer Menu</h3>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <form @submit.prevent="submitFooterForm">
-                            <h6 class="heading-small text-muted mb-4">Footer Menu Information</h6>
-                            <div class="pl-lg-4">
-                                <draggable v-model="footerItems" :options="{group:'footer'}">
-                                <div class="row" v-for="(item, index) in footerItems" :key="index">
-                                    <div class="col-lg-1 text-right">
-                                        <i class="drag-point fa fa-grip-vertical" style="background: linen;padding: 4px;cursor: grab;font-size: 16px;margin-top:10px;"></i>
-                                    </div>
-                                    <div class="col-lg-4">
-                                        <div class="form-group">
-                                            <label class="form-control-label" for="input-title">Title</label>
-                                            <input type="text" class="form-control" v-model="item.title" placeholder="Title">
-                                            <small class="text-danger" v-if="footerErrors[`footerItems.${index}`] && footerErrors[`footerItems.${index}`].title">
-                                                @{{ footerErrors[`footerItems.${index}`].title[0] }}
-                                            </small>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <div class="form-group">
-                                            <label class="form-control-label" for="input-link">Link</label>
-                                            <input type="text" class="form-control" v-model="item.link" placeholder="Link">
-                                            <small class="text-danger" v-if="footerErrors[`footerItems.${index}`] && footerErrors[`footerItems.${index}`].link">
-                                                @{{ footerErrors[`footerItems.${index}`].link[0] }}
-                                            </small>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-1 d-flex align-items-center">
-                                        <button type="button" class="btn btn-danger" @click="removeFooterItem(index)" style="margin-top: 0;">
-                                            <i class="fa fa-times"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                                <draggable/>
-                            </div>
-                            <button type="button" class="btn btn-sm py-2 px-3 btn-primary" @click="addFooterItem">
-                                <i class="fa fa-plus"></i> Add More
-                            </button>
-                            <hr class="my-4" />
-                            @if (Permissions::hasPermission('menu', 'create'))
-                                <button type="submit" class="btn btn-sm py-2 px-3 btn-success float-right">
-                                    <i class="fa fa-save"></i> Submit
-                                </button>
-                            @endif
-                        </form>
-                    </div>
-                </div>
-                </div>
             </div>
         </div>
     </div>

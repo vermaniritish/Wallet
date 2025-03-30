@@ -43,7 +43,7 @@
                                                     <div class="quantity__box">
                                                         <button type="button" class="quantity__value quickview__value--quantity decrease" aria-label="quantity value" value="Decrease Value" v-on:click="decrement(c.id)">-</button>
                                                         <label>
-                                                            <input type="number" class="quantity__number quickview__value--number" readonly :value="c.quantity && c.quantity > 0 ? c.quantity : ``"/>
+                                                            <input type="number" class="quantity__number quickview__value--number" v-on:input="manualQty" :data-id="c.id" :value="c.quantity && c.quantity > 0 ? c.quantity : ``"/>
                                                         </label>
                                                         <button type="button" class="quantity__value quickview__value--quantity increase" aria-label="quantity value" value="Increase Value" v-on:click="increment(c.id)">+</button>
                                                     </div>
@@ -87,30 +87,30 @@
                                             <tbody>
                                                 <tr class="cart__summary--total__list">
                                                     <td class="cart__summary--total__title text-left">Product Costs</td>
-                                                    <td class="cart__summary--amount text-right">£@{{calculate().product_cost}}</td>
+                                                    <td class="cart__summary--amount text-right">£@{{formatMoney(calculate().product_cost)}}</td>
                                                 </tr>
                                                 <tr class="cart__summary--total__list" v-if="calculate().logo_cost > 0">
                                                     <td class="cart__summary--total__title text-left">Costs To Add Logo</td>
-                                                    <td class="cart__summary--amount text-right">£@{{calculate().logo_cost}}</td>
+                                                    <td class="cart__summary--amount text-right">£@{{formatMoney(calculate().logo_cost)}}</td>
                                                 </tr>
                                                 <tr class="cart__summary--total__list" v-if="calculate().logo_discount > 0">
                                                     <td class="cart__summary--total__title text-left">Logo Discount <small v-if="calculate().applied_logo_discount > 0" style="color:#ee2761">@{{ `(${calculate().applied_logo_discount} logo(s))`}}</small>:</td>
-                                                    <td class="cart__summary--amount text-right"><b style="color:#ee2761">- £@{{calculate().logo_discount}}</b></td>
+                                                    <td class="cart__summary--amount text-right"><b style="color:#ee2761">- £@{{formatMoney(calculate().logo_discount)}}</b></td>
                                                 </tr>
                                                 <tr class="cart__summary--total__list" v-if="calculate().oneTimeCost > 0">
                                                     <td class="cart__summary--total__title text-left">One Time Setup Fees</td>
-                                                    <td class="cart__summary--amount text-right">£@{{calculate().oneTimeCost}}</td>
+                                                    <td class="cart__summary--amount text-right">£@{{formatMoney(calculate().oneTimeCost)}}</td>
                                                 </tr>
                                                 <tr class="">
                                                     <td colspan="2"><hr /></td>
                                                 </tr>
                                                 <tr class="cart__summary--total__list">
                                                     <td class="cart__summary--total__title text-left">Subtotal: </td>
-                                                    <td class="cart__summary--amount text-right">£@{{calculate().subtotal}}</td>
+                                                    <td class="cart__summary--amount text-right">£@{{formatMoney(calculate().subtotal)}}</td>
                                                 </tr>
                                                 <tr class="cart__summary--total__list"  v-if="calculate().discount > 0">
                                                     <td class="cart__summary--total__title text-left">DISCOUNT</td>
-                                                    <td class="cart__summary--amount text-right"><b style="color:#ee2761">- £@{{calculate().discount}}</b></td>
+                                                    <td class="cart__summary--amount text-right"><b style="color:#ee2761">- £@{{formatMoney(calculate().discount)}}</b></td>
                                                 </tr>
                                                 <tr class="cart__summary--total__list"  v-if="freeDelivery()">
                                                     <td class="cart__summary--total__title text-left">Delivery</td>
@@ -118,11 +118,11 @@
                                                 </tr>
                                                 <tr class="cart__summary--total__list">
                                                     <td class="cart__summary--total__title text-left">VAT (@{{gstTax}}%):</td>
-                                                    <td class="cart__summary--amount text-right">£@{{calculate().tax}}</td>
+                                                    <td class="cart__summary--amount text-right">£@{{formatMoney(calculate().tax)}}</td>
                                                 </tr>
                                                 <tr class="cart__summary--total__list">
                                                     <td class="cart__summary--total__title text-left">GRAND TOTAL</td>
-                                                    <td class="cart__summary--amount text-right">£@{{calculate().total}}</td>
+                                                    <td class="cart__summary--amount text-right">£@{{formatMoney(calculate().total)}}</td>
                                                 </tr>
                                             </tbody>
                                         </table>

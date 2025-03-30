@@ -35,7 +35,7 @@
                         <button type="button" class="quantity__value decrease" aria-label="quantity value"
                             value="" v-on:click="decrement(c.id)">-</button>
                         <label>
-                            <input type="number" class="quantity__number" readonly :value="c.quantity && c.quantity > 0 ? c.quantity : ``"/>
+                            <input type="number" class="quantity__number" v-on:input="manualQty" :data-id="c.id" :value="c.quantity && c.quantity > 0 ? c.quantity : ``"/>
                         </label>
                         <button type="button" class="quantity__value increase"
                             value="" v-on:click="increment(c.id)">+</button>
@@ -51,28 +51,28 @@
     <div class="minicart__amount">
             <div class="minicart__amount_list d-flex justify-content-between">
                 <span>Product Costs:</span>
-                <span><b>£@{{calculate().product_cost}}</b></span>
+                <span><b>£@{{formatMoney(calculate().product_cost)}}</b></span>
             </div>
             <div class="minicart__amount_list d-flex justify-content-between" v-if="calculate().logo_cost > 0">
                 <span>Costs To Add Logo:</span>
-                <span><b>£@{{calculate().logo_cost}}</b></span>
+                <span><b>£@{{formatMoney(calculate().logo_cost)}}</b></span>
             </div>
             <div class="minicart__amount_list d-flex justify-content-between" v-if="calculate().logo_discount > 0">
                 <span class="discount-highlight">Logo Discount <small v-if="calculate().applied_logo_discount > 0" style="color:#ee2761">@{{ `(${calculate().applied_logo_discount} logo(s))`}}</small>:</span>
-                <span class="discount-highlight"><b style="color:#ee2761">- £@{{calculate().logo_discount}}</b></span>
+                <span class="discount-highlight"><b style="color:#ee2761">- £@{{formatMoney(calculate().logo_discount)}}</b></span>
             </div>
             <div class="minicart__amount_list d-flex justify-content-between" v-if="calculate().oneTimeCost > 0">
                 <span>One Time Setup Fees:</span>
-                <span><b>£@{{calculate().oneTimeCost}}</b></span>
+                <span><b>£@{{formatMoney(calculate().oneTimeCost)}}</b></span>
             </div>
             <hr class="minicart__amount p-0">
             <div class="minicart__amount_list d-flex justify-content-between">
                 <span>Subtotal:</span>
-                <span><b>£@{{ calculate().subtotal }}</b></span>
+                <span><b>£@{{ formatMoney(calculate().subtotal) }}</b></span>
             </div>
         <div class="minicart__amount_list d-flex justify-content-between" v-if="calculate().discount > 0">
             <span>Discount:</span>
-            <span><b style="color:#ee2761">- £@{{calculate().discount}}</b></span>
+            <span><b style="color:#ee2761">- £@{{formatMoney(calculate().discount)}}</b></span>
         </div>
 
         <div class="minicart__amount_list d-flex justify-content-between" v-if="freeDelivery()">
@@ -82,11 +82,11 @@
         
         <div class="minicart__amount_list d-flex justify-content-between">
             <span>VAT (@{{gstTax}}%):</span>
-            <span><b>£@{{calculate().tax}}</b></span>
+            <span><b>£@{{formatMoney(calculate().tax)}}</b></span>
         </div>
         <div class="minicart__amount_list d-flex justify-content-between">
             <span>Total:</span>
-            <span><b>£@{{calculate().total}}</b></span>
+            <span><b>£@{{formatMoney(calculate().total)}}</b></span>
         </div>
     </div>
     <div class="minicart__conditions text-center">

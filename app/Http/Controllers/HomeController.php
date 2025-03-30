@@ -52,7 +52,8 @@ class HomeController extends BaseController
 			->leftJoin('sizes', 'sizes.id', '=', 'product_sizes.size_id')
             ->leftJoin('products', 'products.id', '=', 'product_sizes.product_id')
             ->leftJoin('colours', 'colours.id', '=', 'product_sizes.color_id')
-            ->where('product_id', $product->id)->where('product_sizes.status', 1)->get();
+            ->where('product_id', $product->id)->where('product_sizes.status', 1)
+			->orderBy('product_sizes.id', 'asc')->get();
             $similarProducts = Products::select(
 				[
 					'products.id',

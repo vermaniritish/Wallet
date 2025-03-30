@@ -100,7 +100,7 @@ class Products extends AdminProducts
     * @param $limit
     */
 
-    public static function getListing(Request $request, $where = [], $limit = 21)
+    public static function getListing(Request $request, $where = [], $limit = 20)
     {
         $userId = ApiAuth::getLoginId();
     	$orderBy = 'products.id';
@@ -112,6 +112,7 @@ class Products extends AdminProducts
         $select = [
             'products.id',
             'products.title',
+            'products.sku_number',
             'products.slug',
             'products.price',
             'products.phonenumber',
@@ -206,7 +207,7 @@ class Products extends AdminProducts
                 $listing->where(function($query) use ($search) {
                     foreach($search as $s)
                     {
-                        $query->orWhereRaw('(products.title LIKE ? or products.short_description LIKE ? or product_categories.title LIKE ?)', ["%{$s}%","%{$s}%","%{$s}%"]);
+                        $query->orWhereRaw('(products.sku_number LIKE ? or products.title LIKE ? or products.short_description LIKE ? or product_categories.title LIKE ?)', ["%{$s}%","%{$s}%","%{$s}%","%{$s}%"]);
                     }
                 });
             }

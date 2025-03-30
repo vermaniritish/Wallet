@@ -32,6 +32,7 @@ use App\Libraries\FileSystem;
 use App\Models\Admin\OrderProductRelation;
 use App\Models\Admin\Orders;
 use App\Models\Admin\Users;
+use App\Models\Admin\ProductSizeRelation;
 
 class HomeController extends AppController
 {
@@ -45,6 +46,10 @@ class HomeController extends AppController
 		$where = ['products.status' => 1];
 		$products = Products::getListing($request, $where);
 		$items = $products->items();
+		foreach($items as $k => $v)
+		{
+			$items[$k]->colors_count = ProductSizeRelation::select(['color_id'])->where('product_id', $v->id)->groupBy('color_id')->pluck('color_id')->toArray();
+		}
 		return Response()->json([
 			'status' => true,
 			'products' => $items,

@@ -344,7 +344,8 @@ class OrdersController extends AppController
 				$html = view(
 					"admin/orders/orderedProducts/listingLoop", 
 					[
-						'listing' => $listing
+						'listing' => $listing,
+						'status' => Orders::getStaticData()['status'],
 					]
 				)->render();
 	
@@ -399,12 +400,66 @@ class OrdersController extends AppController
             ]);
 			$mpdf->showImageErrors = true;
 			$mpdf->WriteHTML($html);
-            $mpdf->Output('Order-'.$page->prefix_id.'.pdf','D');
+            $mpdf->Output('Order-'.$page->prefix_id.'.pdf','I');
 		}
 		else
 		{
 			abort(404);
 		}
+    }
+
+	function bulkExport(Request $request)
+    {
+		if($request->get('d'))
+		{
+			$dates = explode('-', $request->get('d'));
+			if(count($dates) == 2)
+			{
+				$page = Orders::where('status', 'completed')
+					->where('created' , '>=', date( 'Y-m-d 00:00:00', strtotime( str_replace('/', '-', trim($dates[0]) ) ) ) )
+					->where('created' , '<=', date( 'Y-m-d 23:59:59', strtotime( str_replace('/', '-', trim($dates[1]) ) ) ))
+					->orderBy('id', 'asc')
+					->limit(5000)
+					->get();
+				$pdfHtml = '';
+				if($page->count() > 0)
+				{
+					$mpdf = new \Mpdf\Mpdf([
+						'tempDir' => __DIR__ . '/uploads',
+						'mode' => 'utf-8',
+						'orientation' => 'P',
+						'format' => [210, 297],
+						'setAutoTopMargin' => true,
+						'margin_left' => 10, 'margin_right' => 10, 'margin_top' => 10, 'margin_bottom' => 10
+					]);
+
+					
+					foreach($page as $index => $order)
+					{
+						$where = ['order_products.order_id' => $order->id];
+						$listing = OrderProductRelation::getListing($request, $where);
+						$html = view(
+							"admin/orders/pdf", 
+							[
+								'page' => $order,
+								'listing' => $listing
+							]
+						)->render();
+
+						if ($index > 0) {
+							$mpdf->AddPage(); // Add new page after the first one
+						}
+						$mpdf->WriteHTML($html);
+					}
+
+					
+					$mpdf->WriteHTML($html);
+					$mpdf->Output('Orders '.$request->get('d').'.pdf','I');
+				}
+			}
+			
+		}
+		abort(404);
     }
 
     function edit(Request $request, $id)
@@ -613,7 +668,7 @@ class OrdersController extends AppController
 				default:
 					$diaryPage = new Orders();
 					$statusLabel = Orders::getStaticData()['status'][$action]['label'];
-	
+					
 					if ($statusLabel !== null) {
 						foreach ($ids as $diaryPageId) {
 							Orders::modify($diaryPageId, [
@@ -621,6 +676,13 @@ class OrdersController extends AppController
 								'status_by' => AdminAuth::getLoginId(),
 							]);
 							$diaryPage->logStatusHistory($action, $diaryPageId);
+
+							$order = Orders::select(['id', 'customer_id', 'prefix_id', 'status'])->where('id', $diaryPageId)->limit(1)->first();
+							if($order)
+							{
+								
+								
+							}
 						}
 						$message = count($ids) . ' records status have been marked as ' . $statusLabel . '.';
 					} else {
@@ -658,6 +720,7 @@ class OrdersController extends AppController
 		$order = Orders::find($id);
 		if($order){
 			$updated = $order->updateStatusAndLogHistory($field, $request->get('flag'));
+			$order = Orders::find($id);
 			$phone = preg_replace('/\D/', '', $order->customer_phone);
 			if(!$phone && $order->customer && $order->customer->phonenumber)
 			{
@@ -957,7 +1020,7 @@ EOL;
 		$categories = ProductCategories::select(['id', 'title'])->orderBy('title', 'asc')->get();
 		$brands = Brands::select(['id', 'title'])->orderBy('title', 'asc')->get();
             
-        $sizes = Sizes::select(['id','size_title'])->orderBy('size_title')->get();
+        $sizes = Sizes::select(['id','size_title', 'type'])->orderBy('size_title')->get();
 		$colors = Colours::select(['id', 'title', 'code'])->orderBy('title')->get();
 
         // Return the view with all necessary data
@@ -1066,10 +1129,12 @@ EOL;
             $query->whereBetween(DB::raw('DATE(orders.created)'), [$fromDate, $toDate]);
         }
 
-		if(isset($data['without_logo']) && $data['without_logo'])
+		if($request->has('without_logo') && $data['without_logo'] != '')
 		{
-
-			$query->whereRaw("(JSON_UNQUOTE(JSON_EXTRACT(order_products.logo_data, '$[0].category')) is null or JSON_UNQUOTE(JSON_EXTRACT(order_products.logo_data, '$[0].category')) = 'null')");
+			if($data['without_logo'] == '1')
+				$query->whereRaw("(JSON_UNQUOTE(JSON_EXTRACT(order_products.logo_data, '$[0].category')) is null or JSON_UNQUOTE(JSON_EXTRACT(order_products.logo_data, '$[0].category')) = 'null')");
+			else
+				$query->whereRaw("(JSON_UNQUOTE(JSON_EXTRACT(order_products.logo_data, '$[0].category')) is not null and JSON_UNQUOTE(JSON_EXTRACT(order_products.logo_data, '$[0].category')) != 'null')");
 		}
 
         $listing = $query->orderBy('order_products.id', 'desc')->get();

@@ -34,30 +34,30 @@
                             <tbody class="checkout__total--body">
                                 <tr class="checkout__total--items">
                                     <td class="checkout__total--title text-left">Product Costs </td>
-                                    <td class="checkout__total--amount text-right">£@{{calculate().product_cost}}</td>
+                                    <td class="checkout__total--amount text-right">£@{{formatMoney(calculate().product_cost)}}</td>
                                 </tr>
 								<tr class="checkout__total--items" v-if="calculate().logo_cost > 0">
                                     <td class="checkout__total--title text-left">Costs To Add Logo </td>
-                                    <td class="checkout__total--amount text-right">£@{{calculate().logo_cost}}</td>
+                                    <td class="checkout__total--amount text-right">£@{{formatMoney(calculate().logo_cost)}}</td>
                                 </tr>
                                 <tr class="checkout__total--items" v-if="calculate().logo_discount > 0">
                                     <td class="checkout__total--title text-left">Logo Discount <small v-if="calculate().applied_logo_discount > 0" style="color:#ee2761">@{{ `(${calculate().applied_logo_discount} logo(s))`}}</small>:</td>
-                                    <td class="checkout__total--amount text-right"><b style="color:#ee2761">- £@{{calculate().logo_discount}}</b></td>
+                                    <td class="checkout__total--amount text-right"><b style="color:#ee2761">- £@{{formatMoney(calculate().logo_discount)}}</b></td>
                                 </tr>
 								<tr class="checkout__total--items" v-if="calculate().oneTimeCost > 0">
                                     <td class="checkout__total--title text-left">One Time Setup Fees </td>
-                                    <td class="checkout__total--amount text-right">£@{{calculate().oneTimeCost}}</td>
+                                    <td class="checkout__total--amount text-right">£@{{formatMoney(calculate().oneTimeCost)}}</td>
                                 </tr>
                                 <tr class="">
                                     <td colspan="2"><hr /></td>
                                 </tr>
                                 <tr class="checkout__total--items">
                                     <td class="checkout__total--title text-left">Subtotal:</td>
-                                    <td class="checkout__total--amount text-right">£@{{calculate().subtotal}}</td>
+                                    <td class="checkout__total--amount text-right">£@{{formatMoney(calculate().subtotal)}}</td>
                                 </tr>
 								<tr class="checkout__total--items"  v-if="calculate().discount > 0">
                                     <td class="checkout__total--title text-left">Discount</td>
-                                    <td class="checkout__total--amount text-right"><b style="color:#ee2761">- £@{{calculate().discount}}</b></td>
+                                    <td class="checkout__total--amount text-right"><b style="color:#ee2761">- £@{{formatMoney(calculate().discount)}}</b></td>
                                 </tr>
                                 <tr class="checkout__total--items"  v-if="freeDelivery()">
                                     <td class="checkout__total--title text-left">Delivery</td>
@@ -65,13 +65,13 @@
                                 </tr>
                                 <tr class="checkout__total--items">
                                     <td class="checkout__total--title text-left">VAT (@{{gstTax}}%):</td>
-                                    <td class="checkout__total--amount text-right">£@{{calculate().tax}}</td>
+                                    <td class="checkout__total--amount text-right">£@{{formatMoney(calculate().tax)}}</td>
                                 </tr>
                             </tbody>
                             <tfoot class="checkout__total--footer">
                                 <tr class="checkout__total--footer__items">
                                     <td class="checkout__total--footer__amount checkout__total--footer__list text-left" style="color: var(--secondary-color);">Total </td>
-                                    <td class="checkout__total--footer__amount checkout__total--footer__list text-right" style="color: var(--secondary-color);">£@{{calculate().total}}</td>
+                                    <td class="checkout__total--footer__amount checkout__total--footer__list text-right" style="color: var(--secondary-color);">£@{{formatMoney(calculate().total)}}</td>
                                 </tr>
                             </tfoot>
                         </table>

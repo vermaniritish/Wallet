@@ -10,7 +10,7 @@ class SMSGateway
 	public static function send($phoneNumber, $message)
 	{
 		$phoneNumber = preg_replace('/\D/', '', $phoneNumber);
-		if(!$phoneNumber) return null;
+		if(!$phoneNumber || !trim($message)) return null;
 
 		$Authorization = 'JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXkiOiJhZTE0MDdhMy1lMDg3LTQ3OTYtODhmYy0yZmQzMDY1NDkzY2UiLCJzZWNyZXQiOiJiODI5NDEyMmFhNWJkYjNhNjNhMWY4MjQ5NDE4YTQ0ZWUwYjY3YzQ5MGU2ZTFiMmJjMDExZWUwMzAwOTFhMDFmIiwiaWF0IjoxNjIwNzExMTg3LCJleHAiOjI0MDkxMTExODd9.u2ZnoWnL3SFEhHphX2oq9I7VVC_qp7qKPFgioQ0gXWw';
 

@@ -4,7 +4,7 @@
             <?php foreach($sliders as $s): ?>
             <div class="swiper-slide ">
                 @if($s->image)
-                <div class="hero__slider--items home1__slider--bg two" style="background: url({{ url($s->image) }})">
+                <div class="hero__slider--items home1__slider--bg two" style="background-image: url({{ url($s->image) }})">
                 @else
                 <div class="hero__slider--items home1__slider--bg two">
                 @endif

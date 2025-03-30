@@ -42,7 +42,7 @@ foreach ($headerMenu as $k => $v) {
         <div class="container-fluid">
             <div class="main__header--inner position__relative d-flex justify-content-between align-items-center">
                 <div class="offcanvas__header--menu__open ">
-                    <a class="offcanvas__header--menu__open--btn" href="javascript:void(0)" data-offcanvas>
+                    <a class="offcanvas__header--menu__open--btn" onclick="$('.offcanvas__header').toggleClass('open')" href="javascript:void(0)" data-offcanvas>
                         <svg xmlns="http://www.w3.org/2000/svg" class="ionicon offcanvas__header--menu__open--svg"
                             viewBox="0 0 512 512">
                             <path fill="currentColor" stroke="currentColor" stroke-linecap="round"
@@ -110,32 +110,7 @@ foreach ($headerMenu as $k => $v) {
                             <?php $menu = HomePage::get('menu_header');
                             $menu = $menu ? json_decode($menu) : [];
                             ?>
-                            {{-- @foreach ($menu as $m)
-                                <?php $submenu = ProductSubCategories::where('category_id', $m->id)->get(); ?>
-                                <li class="header__menu--items style3 pind">
-
-                                    <a class="header__menu--link "
-                                        href="{{ url('/' . Str::slug($m->title)) }}">{{ $m->title }}
-                                        @if ($submenu && $submenu->count() > 0)
-                                            <svg class="menu__arrowdown--icon" xmlns="http://www.w3.org/2000/svg"
-                                                width="12" height="7.41" viewBox="0 0 12 7.41">
-                                                <path d="M16.59,8.59,12,13.17,7.41,8.59,6,10l6,6,6-6Z"
-                                                    transform="translate(-6 -8.59)" fill="currentColor"
-                                                    opacity="0.7" />
-                                            </svg>
-                                        @endif
-                                    </a>
-                                    <?php if($submenu && $submenu->count() > 0): ?>
-                                    <ul class="header__sub--menu">
-                                        @foreach ($submenu as $s)
-                                            <li class="header__sub--menu__items"><a
-                                                    href="{{ url('/' . Str::slug($m->title)) . '/' . $s->slug }}"
-                                                    class="header__sub--menu__link">{{ $s->title }}</a></li>
-                                        @endforeach
-                                    </ul>
-                                    <?php endif; ?>
-                                </li>
-                            @endforeach --}}
+                            
                             @foreach ($headerMenu as $k => $menuItem)
                             <li class="header__menu--items">
                                 <a class="header__menu--link "
@@ -160,10 +135,7 @@ foreach ($headerMenu as $k => $v) {
                                     </ul>
                                 @endif
                             </li>
-                        @endforeach
-                            {{-- <li class="header__menu--items style3">
-                                <a class="header__menu--link " href="/sale" style="color:#ee2761;">SALE </a>
-                            </li> --}}
+                            @endforeach
                         </ul>
                     </nav>
                 </div>
@@ -310,25 +282,27 @@ foreach ($headerMenu as $k => $v) {
             </div>
             <nav class="offcanvas__menu">
                 <ul class="offcanvas__menu_ul">
-                    @foreach ($menu as $m)
-                        <?php $submenu = ProductSubCategories::where('category_id', $m->id)->get(); ?>
-                        <li class="offcanvas__menu_li">
-                            <a class="offcanvas__menu_item "
-                                href="{{ url('/' . Str::slug($m->title)) }}">{{ $m->title }} </a>
-                            <?php if($submenu && $submenu->count() > 0): ?>
+                    <?php $menu = HomePage::get('menu_header');
+                            $menu = $menu ? json_decode($menu) : [];
+                            ?>
+                            
+                    @foreach ($headerMenu as $k => $menuItem)
+                    <li class="offcanvas__menu_li">
+                        <a class="offcanvas__menu_item"
+                            href="{{ $menuItem->value }}">{{ $menuItem->key }}
+                        </a>
+                        @if (is_array($menuItem->megaMenu) && count($menuItem->megaMenu) > 0)
                             <ul class="offcanvas__sub_menu">
-                                @foreach ($submenu as $s)
-                                    <li class="offcanvas__sub_menu_li"><a
-                                            href="{{ url('/' . Str::slug($m->title)) . '/' . $s->slug }}"
-                                            class="offcanvas__sub_menu_item">{{ $s->title }}yy</a></li>
+                                @foreach ($menuItem->megaMenu as $s)
+                                    <li class="offcanvas__sub_menu_li">
+                                        <a href="{{ $s->link }}"
+                                            class="offcanvas__sub_menu_item">{{$s->title}}</a>
+                                        </li>
                                 @endforeach
                             </ul>
-                            <?php endif; ?>
-                        </li>
-                    @endforeach
-                    <li class="offcanvas__menu_li">
-                        <a class="offcanvas__menu_item " href="/" style="color:#ee2761;">SALE </a>
+                        @endif
                     </li>
+                    @endforeach
                 </ul>
                 <div class="offcanvas__account--items">
                     <a class="offcanvas__account--items__btn d-flex align-items-center" href="{{ url('/login') }}">

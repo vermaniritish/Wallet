@@ -201,6 +201,7 @@ label img {
   display: block;
   max-width: 100%;
   max-height: 100%;
+  
 }
 .overflow-hidden{
   overflow: hidden;
@@ -209,7 +210,14 @@ label img {
 .sideitemspace.active {
   color: #F96167;
 }
+.splide--fade>.splide__track>.splide__list>.splide__slide{
+  background: #FFF !important;
+  height: 420px !important;
+}
+.splide--fade>.splide__track>.splide__list>.splide__slide img{
 
+  display: block !important;
+}
 @media screen and (max-width: 549px) {
   .popup {
       width: 100%;

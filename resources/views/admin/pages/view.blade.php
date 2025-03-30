@@ -126,56 +126,6 @@
 					<div class="card-header">
 						<div class="row align-items-center">
 							<div class="col">
-								<h3 class="mb-0">This Month Visits</h3>
-							</div>
-							<div class="col text-right">
-								<a href="#!" class="btn btn-sm py-2 px-3 btn-primary">See all</a>
-							</div>
-						</div>
-					</div>
-					<div class="table-responsive small-max-card-table">
-						<!-- Projects table -->
-						<table class="table align-items-center table-flush">
-							<thead class="thead-light">
-								<tr>
-									<th scope="col">Date</th>
-									<th scope="col">Visitors</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<th scope="row">
-										05-01-2021
-									</th>
-									<td>
-										340
-									</td>
-								</tr>
-								<tr>
-									<th scope="row">
-										05-01-2021
-									</th>
-									<td>
-										340
-									</td>
-								</tr>
-								<tr>
-									<th scope="row">
-										05-01-2021
-									</th>
-									<td>
-										340
-									</td>
-								</tr>
-							</tbody>
-						</table>
-					</div>
-				</div>
-
-				<div class="card">
-					<div class="card-header">
-						<div class="row align-items-center">
-							<div class="col">
 								<h3 class="mb-0">Other Information</h3>
 							</div>
 						</div>

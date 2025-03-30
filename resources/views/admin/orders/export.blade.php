@@ -113,7 +113,7 @@
                                                 <option value="">Select Size</option>
                                                 @foreach ($sizes as $size)
                                                     <option value="{{ $size->id }}">
-                                                        {{ $size->size_title }}
+                                                        {{ $size->size_title }} - {{ $size->type}}
                                                     </option>
                                                 @endforeach
                                             </select>
@@ -158,7 +158,11 @@
                                     </div>
                                     <div class="col-md-12">
                                         <div class="custom-control custom-radio custom-control-inline">
-                                            <input type="radio" id="type" name="without_logo" value="0" class="custom-control-input" checked>
+                                            <input type="radio" id="all-types" name="without_logo" value="" class="custom-control-input" checked>
+                                            <label class="custom-control-label" for="all-types">All</label>
+                                        </div>
+                                        <div class="custom-control custom-radio custom-control-inline">
+                                            <input type="radio" id="type" name="without_logo" value="0" class="custom-control-input">
                                             <label class="custom-control-label" for="type">With Logo</label>
                                         </div>
                                         <div class="custom-control custom-radio custom-control-inline">

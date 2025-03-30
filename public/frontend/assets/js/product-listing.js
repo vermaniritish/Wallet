@@ -32,6 +32,7 @@ var productDetail = new Vue({
         editLogo: false,
         sizes: [],
         color: null,
+        colorTitle: null,
         selectedSizes: {},
         uploading: null,
         buyNow: false,
@@ -51,8 +52,10 @@ var productDetail = new Vue({
         
     },
     methods: {
-        selectColor(id) {
+       
+        selectColor(id, title) {
             this.color = id;
+            this.colorTitle = title;
             if(primarySlider)
             primarySlider.go($('#thumbnail_slider-list li[data-item="'+id+'"]').index());
         },
@@ -67,6 +70,15 @@ var productDetail = new Vue({
         renderAllAddedSizes() {
             // return this.sizes;
             return this.sizes.filter((i) => ((i.quantity*1) > 0) );
+        },
+        manualQty(e) {
+            console.log(e, e.target.value);
+            let qty = e.target.value;
+            let dataId = e.target.getAttribute("data-id");
+            let index = this.sizes.findIndex((v) => v.id == dataId);
+            let s = [...this.sizes];
+            s[index].quantity = qty;
+            this.sizes = JSON.parse(JSON.stringify(s));
         },
         increment(id) {
             let index = this.sizes.findIndex((v) => v.id == id);
@@ -259,6 +271,7 @@ var productListing = new Vue({
         priceError: false,
         paginationMessage: ``,
         empty: false,
+        searchPage: false,
         search: ``,
         filters: {
             gender: [],
@@ -394,7 +407,11 @@ var productListing = new Vue({
         else if(window.location.pathname.indexOf('/search') > -1)
         {
             const urlParams = new URLSearchParams(window.location.search);
-            this.search = urlParams.get('search').trim();
+            this.search = urlParams.get('search') ? urlParams.get('search').trim() : '';
+            this.searchPage = true;
+            let brand = urlParams.get('brand') ? urlParams.get('brand').trim() : '';
+            if(brand)
+            this.filters = {brands : [brand]};
         }
         if(pathname.length > 2) {
             this.filters.categories.push(pathname[2]);
@@ -414,6 +431,9 @@ var minicart = new Vue({
         gstTax: ``
     },
     methods: {
+        formatMoney(m) {
+          return (m*1).toFixed(2);  
+        },
         cartcount(){
             let cart = localStorage.getItem('cart');
             cart = cart ? JSON.parse(cart) : [];
@@ -427,6 +447,16 @@ var minicart = new Vue({
                 this.cart = cart;
                 
             }
+        },
+        manualQty(e) {
+            console.log(e, e.target.value);
+            let qty = e.target.value;
+            let dataId = e.target.getAttribute("data-id");
+            let index = this.cart.findIndex((v) => v.id == dataId);
+            let s = [...this.cart];
+            s[index].quantity = qty;
+            this.cart = s;
+            this.store();
         },
         increment(id) {
             let index = this.cart.findIndex((v) => v.id == id);
@@ -636,6 +666,9 @@ var minicart = new Vue({
         oneTimeCost: (oneTimeProductCost*1) > 0 ? (oneTimeProductCost*1) : 0,
     },
     methods: {
+        formatMoney(m) {
+            return (m*1).toFixed(2);
+        },
         cartcount(){
             let cart = localStorage.getItem('cart');
             cart = cart ? JSON.parse(cart) : [];
@@ -666,7 +699,17 @@ var minicart = new Vue({
                 }
             }
 
-            return (amount > 0) ? (`Price for ` + `${(totalLogos + (totalLogos > 1 ? ` logos are ` : ` logo is `))} <strong>£${amount}</strong>`) : '';
+            return (amount > 0) ? (`Price for ` + `${(totalLogos + (totalLogos > 1 ? ` logos are ` : ` logo is `))} <strong>£${amount.toFixed(2)}</strong>`) : '';
+        },
+        manualQty(e) {
+            console.log(e, e.target.value);
+            let qty = e.target.value;
+            let dataId = e.target.getAttribute("data-id");
+            let index = this.cart.findIndex((v) => v.id == dataId);
+            let s = [...this.cart];
+            s[index].quantity = qty;
+            this.cart = s;
+            this.store();
         },
         increment(id) {
             let index = this.cart.findIndex((v) => v.id == id);
@@ -924,6 +967,9 @@ checkoutPage = new Vue({
         oneTimeCost: (oneTimeProductCost*1) > 0 ? (oneTimeProductCost*1) : 0,
     },
     methods: {
+        formatMoney(m) {
+            return (m*1).toFixed(2);
+        },
         cartcount(){
             let cart = localStorage.getItem('cart');
             cart = cart ? JSON.parse(cart) : [];
@@ -958,7 +1004,17 @@ checkoutPage = new Vue({
                 }
             }
 
-            return (amount > 0) ? (`Price for ` + `${(totalLogos + (totalLogos > 1 ? ` logos are ` : ` logo is `))} <strong>£${amount}</strong>`) : '';
+            return (amount > 0) ? (`Price for ` + `${(totalLogos + (totalLogos > 1 ? ` logos are ` : ` logo is `))} <strong>£${amount.toFixed(2)}</strong>`) : '';
+        },
+        manualQty(e) {
+            console.log(e, e.target.value);
+            let qty = e.target.value;
+            let dataId = e.target.getAttribute("data-id");
+            let index = this.cart.findIndex((v) => v.id == dataId);
+            let s = [...this.cart];
+            s[index].quantity = qty;
+            this.cart = s;
+            this.store();
         },
         increment(id) {
             let index = this.cart.findIndex((v) => v.id == id);

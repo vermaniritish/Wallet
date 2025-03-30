@@ -5,7 +5,7 @@ $logo = Settings::get('logo');
 $companyName = Settings::get('company_name');
 $googleKey = Settings::get('google_api_key');
 $gstTax = Settings::get('gst');
-$version = '1.7';
+$version = '2.2';
 ?>
 <!doctype html>
 <html lang="zxx">
@@ -13,7 +13,7 @@ $version = '1.7';
 <head>
     <meta charset="utf-8">
     <title>Pinders Work Wear</title>
-    <meta name="description" content="Morden Bootstrap HTML5 Template">
+    <meta name="description" content="Comfortable and durable workwear for all-day performance.">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" type="image/x-icon" href="{{ url('frontend/assets/img/favicon.ico') }}">
 
@@ -30,8 +30,8 @@ $version = '1.7';
 
     <!-- Custom Style CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@1.2.0/dist/css/splide.min.css">
-    <link rel="stylesheet" href="{{ url('frontend/assets/css/style.css') }}">
-    <link rel="stylesheet" href="{{ url('frontend/assets/css/dev.css') }}">
+    <link rel="stylesheet" href="{{ url('frontend/assets/css/style.css?v=' . $version) }}">
+    <link rel="stylesheet" href="{{ url('frontend/assets/css/dev.css?v=' . $version) }}">
     
     <!-- Vue js -->
     <style>
@@ -138,7 +138,7 @@ $version = '1.7';
     <script src="<?php echo url('assets/js/jquery.form.min.js') ?>"></script>
     <script src="{{ url('frontend/assets/js/script.js') }}"></script>
     <script src="<?php echo url('assets/js/auth.js') ?>"></script>
-    <script src="{{ url('frontend/assets/js/product-listing.js') }}"></script>
+    <script src="{{ url('frontend/assets/js/product-listing.js?v='.$version) }}"></script>
     <script src="https://www.paypal.com/sdk/js?client-id=AcHH3SOCSzLpPXioPVl5m15be29_PrHru6j0v6aVpcQdx9padzQ3EXfXVPkBStFVx-7FZZ4ZJzDNKxKh&currency=GBP"></script>
     <script>
         paypal.Buttons({

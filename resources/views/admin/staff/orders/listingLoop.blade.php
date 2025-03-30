@@ -1,23 +1,14 @@
 <?php
-
-use App\Models\Admin\OrderProductRelation;
+use App\Models\Admin\Settings;
+$currency = Settings::get('currency_symbol'); 
 
  foreach($listing->items() as $k => $row): ?>
 <tr>
 	<td>
-		<a href="<?php echo route('admin.orders.view', ['id' => $row->id]) ?>"><?php echo $row->id; ?></a>
+		<a href="<?php echo route('admin.orders.view', ['id' => $row->id]) ?>"><?php echo $row->prefix_id; ?></a>
 	</td>
 	<td>
-		@foreach ($row->products as $index => $product)
-			<?php $product = OrderProductRelation::whereOrderId($row->id)->whereProductId($product->id)->first();?>
-			{{ $product->product_title }}
-			<i title="Amount: {{$currency}} {{ $product->amount }}, Quantity: {{ $product->quantity }}">
-				| Amount: {{$currency}} {{ $product->amount }} | Quantity: {{ $product->quantity }}
-			</i>
-			@if (!$loop->last)
-				<br>
-			@endif
-		@endforeach
+		{{$currency}} {{$row->total_amount }}
 	</td>
 	<td>
 		<?php $statusData = $status[$row->status] ?? null; ?>
@@ -31,9 +22,6 @@ use App\Models\Admin\OrderProductRelation;
 	</td>
     <td>
 	{{ _dt($row->created) }}
-	</td>
-	<td style="font-size: 16px; font-weight: bold;">
-		{{$currency}} {{$row->total_amount }}
 	</td>
 </tr>
 <?php endforeach; ?>

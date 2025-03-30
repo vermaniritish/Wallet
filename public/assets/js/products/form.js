@@ -51,12 +51,15 @@ let order = new Vue({
             this.dragValues = {colorSelectedId, sizeIndex}
         },
         drop(colorSelectedId, sizeIndex) {
+            console.log(colorSelectedId, sizeIndex, this.dragValues.sizeIndex);
             $('#sortable tr').css('background-color', '#FFF');
             this.dropValues = {colorSelectedId, sizeIndex};
-            let sizes = this.selectedSize[colorSelectedId];
+            let selectedSizes = JSON.parse(JSON.stringify(this.selectedSize));
+            let sizes = selectedSizes[colorSelectedId];
             let removedItem = sizes.splice(this.dragValues.sizeIndex, 1)[0];
             sizes.splice(sizeIndex, 0, removedItem);
-            this.$set(this.selectedSize, colorSelectedId, sizes);
+            this.selectedSize  = selectedSizes;
+            // this.$set(this.selectedSize, colorSelectedId, sizes);
         },
         initTagIt: function () {
             $(".tag").tagit();
@@ -160,7 +163,8 @@ let order = new Vue({
                 // if (!this.selectedSize.hasOwnProperty(colorSelectedId)) {
                 //     this.$set(this.selectedSize, colorSelectedId, []);
                 // }
-                let selectedSizes = this.selectedSize[colorSelectedId] && this.selectedSize[colorSelectedId].length > 0 ? this.selectedSize[colorSelectedId] : [];
+                let original = JSON.parse(JSON.stringify(this.selectedSize));
+                let selectedSizes = original[colorSelectedId] && original[colorSelectedId].length > 0 ? original[colorSelectedId] : [];
                 for (let sizeId of this.defaultSizes) {
                     let size = this.sizes.find(size => size.id === sizeId);
                     if (size) {
@@ -178,7 +182,9 @@ let order = new Vue({
                         }
                     } 
                 }
-                this.$set(this.selectedSize, colorSelectedId, selectedSizes);
+                original[colorSelectedId] = selectedSizes;
+                this.selectedSize = original;
+                this.$set(original, colorSelectedId, selectedSizes);
             }
         },
          
@@ -234,8 +240,10 @@ let order = new Vue({
                     if(response && response.status)
                     {
                         this.loading = false;
+                        set_notification('success', response.message);
+
                         setTimeout(function () {
-                            window.location.href = (admin_url + '/products/' + response.id + '/view');
+                            // window.location.href = (admin_url + '/products/' + response.id + '/view');
                         }, 200)
                     }else{
                         this.loading = false;

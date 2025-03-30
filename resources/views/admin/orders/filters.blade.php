@@ -1,3 +1,4 @@
+
 <div class="dropdown filter-dropdown">
 	<a class="btn btn-neutral dropdown-btn" href="#" <?php echo (isset($_GET) && !empty($_GET) ? 'data-title="Filters are active" data-toggle="tooltip"' : '') ?>>
 		<?php if(isset($_GET) && !empty($_GET)): ?>
@@ -7,6 +8,7 @@
 	</a>
 	<div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
 		<form action="<?php echo route('admin.orders') ?>" id="filters-form">
+			<input type="hidden" name="status" value="{{ isset($_GET['status']) && $_GET['status'] ? $_GET['status'] : '' }}" />
 			<a href="javascript:;" class="float-right px-2 closeit"><i class="fa fa-times-circle"></i></a>
 			<div class="dropdown-item">
 				<div class="row">

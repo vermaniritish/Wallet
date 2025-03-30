@@ -54,3 +54,7 @@ Route::post('/orders/export-data', [OrdersController::class, 'export'])
 
 Route::post('/orders/export-logos', [OrdersController::class, 'exportLogoReport'])
     ->name('admin.report.exportLogo');
+
+
+Route::get('/orders/bulk-export', [OrdersController::class, 'bulkExport'])
+    ->name('admin.ordes.bulkExport');

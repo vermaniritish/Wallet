@@ -111,7 +111,7 @@ class Orders extends AppModel
     {
         $statuses = [
             'pending' => ['label' => 'Pending', 'styles' => 'background-color: #ffa07a; color: #cc0000;', 'message' => 'Your order is pending to accept.', 
-            'sms_message' => 'Your order {order_id} is pending to accept.'
+            'sms_message' => ''
         ],
             'accepted' => ['label' => 'Accepted', 'styles' => 'background-color: #ccffcc; color: #006600;', 'message' => 'Your order is accepted.', 
             'sms_message' => 'Your order {order_id} is accepted.'
@@ -120,19 +120,19 @@ class Orders extends AppModel
             'sms_message' => 'Your order {order_id} is in progress.'
         ],
             'partial_shipped' => ['label' => 'Partial Shipped', 'styles' => 'background-color: #ccffcc; color: #006600;', 'message' => 'Your order is shipped partially.', 
-            'sms_message' => 'Your order {order_id} is shipped partially.'
+            'sms_message' => ''
         ],
             'shipped' => ['label' => 'Shipped', 'styles' => 'background-color: #ccffcc; color: #006600;', 'message' => 'Your order is shipped.', 
-            'sms_message' => 'Your order {order_id} is shipped.'
+            'sms_message' => ''
         ],
             'on_the_way' => ['label' => 'Dispached', 'styles' => 'background-color: #cce5ff; color: #004080;', 'message' => 'Your order is dispached.', 
             'sms_message' => 'Your order {order_id} is dispached.'
         ],
-            'reached_at_location' => ['label' => 'Reached at Location', 'styles' => 'background-color: #cce5ff; color: #004080;', 'message' => 'Professions is reached at location.', 
-            'sms_message' => 'Your order {order_id} is reached at location.'
+            'reached_at_location' => ['label' => 'Reached at Location', 'styles' => 'background-color: #cce5ff; color: #004080;', 'message' => 'Professionls is reached at location.', 
+            'sms_message' => ''
         ],
             'completed' => ['label' => 'Completed', 'styles' => 'background-color: #d9ead3; color: #006600;', 'message' => 'Your order is in completed.', 
-            'sms_message' => 'Your order {order_id} is in completed.'
+            'sms_message' => 'Your order {order_id} is completed.'
         ],
             'cancel' => ['label' => 'Cancel', 'styles' => 'background-color: #dc3545; color: #FFF;', 'message' => 'This order is cancelled.', 
             'sms_message' => 'This order {order_id} is cancelled.'
@@ -242,7 +242,7 @@ class Orders extends AppModel
         $orderBy = $request->get('sort') ? $request->get('sort') : 'orders.id';
         $direction = $request->get('direction') ? $request->get('direction') : 'desc';
         $page = $request->get('page') ? $request->get('page') : 1;
-        $limit = self::$paginationLimit;
+        $limit = 100;
         $offset = ($page - 1) * $limit;
         
         $listing = Orders::select([

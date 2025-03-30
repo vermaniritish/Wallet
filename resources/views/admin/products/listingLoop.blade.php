@@ -18,6 +18,9 @@
 		</span>
 	</td>
 	<td>
+		<?php echo $row->sku_number ?>
+	</td>
+	<td>
 		<?php echo $row->title ?>
 	</td>
 	<td>

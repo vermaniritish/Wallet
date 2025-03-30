@@ -117,8 +117,8 @@
 											data-type="image"
 											data-multiple="false"
 											data-path="sliders"
-											data-resize-large="70*18"
-											data-resize-small="70*18"
+											data-resize-large="1920*753"
+											data-resize-small="192*74"
 										>
 											<div class="upload-section">
 												<div class="button-ref mb-3">
@@ -126,6 +126,7 @@
 										                <span class="btn-inner--icon"><i class="fas fa-upload"></i></span>
 										                <span class="btn-inner--text">Upload Image</span>
 									              	</button>
+													<p><small>Recomeded Size: 1920*753</small></p>
 									            </div>
 									            <!-- PROGRESS BAR -->
 												<div class="progress d-none">

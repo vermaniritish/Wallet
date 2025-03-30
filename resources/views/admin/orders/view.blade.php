@@ -15,7 +15,7 @@ use App\Models\Admin\Settings;
 					</div>
 					<div class="col-lg-6 col-5 text-right">
 						<a href="<?php echo route('admin.orders') ?>" class="btn btn-neutral"><i class="fa fa-arrow-left"></i> Back</a>
-						<a href="<?php echo route('admin.orders.download', ['id' => $page->id]) ?>" class="btn btn-neutral"><i class="fa fa-download"></i> Donwload Invoice</a>
+						<a href="<?php echo route('admin.orders.download', ['id' => $page->id]) ?>" target="_blank" class="btn btn-neutral"><i class="fa fa-download"></i> Donwload Invoice</a>
 					</div>
 				</div>
 			</div>
@@ -224,10 +224,12 @@ use App\Models\Admin\Settings;
 								<?php $payDetails = json_decode($page->paypal_payment_data); ?>
 								<tr>
 									<th>Status</th>
-									@if($page->paid)
+									@if($page->paid && $payDetails)
 									<td><span class="badge badge-success">Paid</span></td>
-									@else
+									@elseif($payDetails)
 									<td><span class="badge badge-danger">Failed</span></td>
+									@else
+									<td><span class="badge badge-warning">Pending</span></td>
 									@endif
 								</tr>
 								<tr>

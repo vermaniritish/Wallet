@@ -66,6 +66,18 @@ class PayPalController extends Controller
                 try
                 {
                     $this->sendEmail($request, $order->id);
+
+                    $phone = preg_replace('/\D/', '', $order->customer_phone);
+                    if(!$phone && $order->customer && $order->customer->phonenumber)
+                    {
+                        $phone = preg_replace('/\D/', '', $order->customer->phonenumber);
+                    }
+                    if($phone){
+                        $sent = \App\Libraries\SMSGateway::send(
+                            $phone,  
+                            "Thank you for ordering with Pinder's Workwear. Your order no. is {$order->prefix_id}. Please check you Invoice at \n " . route('admin.orders.download', ['id' => $order->id])
+                        );
+                    }
                 }
                 catch(\Exceeption $e)
                 {
