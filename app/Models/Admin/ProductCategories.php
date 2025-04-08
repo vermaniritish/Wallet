@@ -148,23 +148,21 @@ class ProductCategories extends AppModel
     */
     public static function getAllCategorySubCategory($ids = [])
     {
-        $listing = ProductCategories::select([
+        $listing = ProductSubCategories::select([
                 'id',
-                'parent_id',
+                'category_id',
                 'title',
                 'slug'
-            ])
-            ->whereNotNull('parent_id');
+            ]);
         if($ids)
         {
             $listing->whereIn('id', $ids);
         }
 
         $subCategories = $listing->get();
-
         $finalSubCategories = [];
         foreach ($subCategories as $key => $value) {
-            $finalSubCategories[$value->parent_id][] = $value;
+            $finalSubCategories[$value->category_id][] = $value;
         }
 
         $listing = ProductCategories::select([

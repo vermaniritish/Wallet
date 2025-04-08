@@ -68,11 +68,21 @@ class HomeController extends BaseController
 					DB::raw('(Select sale_price from product_sizes where product_sizes.product_id = products.id order by sale_price desc limit 1) as sale_price')
 				]
 			)->where('id', '!=', $product->id)->where('category_id', $product->category_id)->where('status', 1)->orderByRaw('rand()')->limit(4)->get();
+
+			if($product && $product->printed_logo && $product->embroidered_logo)
+				$logooption = ["Printed Logo","Embroidered Logo"];
+			if($product && $product->printed_logo)
+				$logooption = ["Printed Logo"];
+			elseif($product && $product->embroidered_logo)
+				$logooption = ["Embroidered Logo"];
+			else
+				$logooption = null;
+
             return view('frontend.products.detail', [
                 'product' => $product,
                 'similarProducts' => $similarProducts,
                 'logoOptions' => [
-                    'category' => json_decode(Settings::get('logo_options')),
+                    'category' => $logooption,
                     'positions' => json_decode(Settings::get('logo_positions')),
                 ]
             ]);

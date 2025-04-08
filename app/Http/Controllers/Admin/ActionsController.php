@@ -18,6 +18,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Admin\Settings;
 use App\Models\Admin\Blogs;
+use App\Models\Admin\LogoPrices;
 use App\Models\Admin\Permissions;
 use App\Models\Admin\AdminAuth;
 use App\Libraries\General;
@@ -294,4 +295,13 @@ class ActionsController extends AppController
 		    ]);
 	    }
     }
+
+	function logoPrices(Request $request)
+	{
+		$logoprices = LogoPrices::get();
+		return Response()->json([
+			'status' => 'success',
+			'logoprices' => $logoprices
+		]);
+	}
 }

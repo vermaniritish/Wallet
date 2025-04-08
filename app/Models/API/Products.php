@@ -120,7 +120,7 @@ class Products extends AdminProducts
             'products.max_price',
             'products.gender',
             'product_categories.title as category',
-            DB::raw('(Select sale_price from product_sizes where product_sizes.product_id = products.id order by sale_price desc limit 1) as sale_price')
+            DB::raw('(Select sale_price from product_sizes where product_sizes.status = 1 and product_sizes.product_id = products.id order by sale_price desc limit 1) as sale_price')
         ];
 
 

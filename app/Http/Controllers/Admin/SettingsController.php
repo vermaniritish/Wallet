@@ -449,12 +449,14 @@ class SettingsController extends AppController
             $request->toArray(),
             [
                 'one_time_setup_cost' => 'required|numeric',
+                'one_time_setup_cost_text' => 'required|numeric',
             ]
         );
 
         if(!$validator->fails())
         {
             Settings::put('one_time_setup_cost',$data['one_time_setup_cost']);
+            Settings::put('one_time_setup_cost_text',$data['one_time_setup_cost_text']);
             $request->session()->flash('success', 'One time setup cost updated.');
             return redirect()->back();
 

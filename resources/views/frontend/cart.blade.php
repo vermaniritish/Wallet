@@ -98,7 +98,10 @@
                                                     <td class="cart__summary--amount text-right"><b style="color:#ee2761">- £@{{formatMoney(calculate().logo_discount)}}</b></td>
                                                 </tr>
                                                 <tr class="cart__summary--total__list" v-if="calculate().oneTimeCost > 0">
-                                                    <td class="cart__summary--total__title text-left">One Time Setup Fees</td>
+                                                    <td class="cart__summary--total__title text-left">
+                                                        One Time Setup Fees
+                                                        <div v-html="renderOneTimeFeeHtml()"></div>
+                                                    </td>
                                                     <td class="cart__summary--amount text-right">£@{{formatMoney(calculate().oneTimeCost)}}</td>
                                                 </tr>
                                                 <tr class="">

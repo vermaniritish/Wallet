@@ -35,6 +35,7 @@ use App\Models\Admin\Brands;
 use App\Models\Admin\Colours;
 use App\Models\Admin\ProductSizeRelation;
 use App\Models\Admin\ProductSubCategories;
+use App\Models\Admin\ProductSubCategoryRelation;
 use App\Models\Admin\Sizes;
 
 class ProductsController extends AppController
@@ -82,14 +83,14 @@ class ProductsController extends AppController
 
     	if($request->get('category'))
     	{
-    		$ids = ProductCategoryRelation::distinct()->whereIn('category_id', $request->get('category'))->pluck('product_id')->toArray();
+    		$ids = ProductSubCategoryRelation::distinct()->whereIn('sub_category_id', $request->get('category'))->pluck('product_id')->toArray();
     		$ids = !empty($ids) ? implode(',', $ids) : '0';
     		$where[] = 'products.id IN ('.$ids.')';
     	}
 
-		if($request->get('brands'))
+		if($request->get('brand'))
     	{
-    		$ids = BrandProducts::distinct()->whereIn('brand_id', $request->get('brands'))->pluck('product_id')->toArray();
+    		$ids = BrandProducts::distinct()->whereIn('brand_id', $request->get('brand'))->pluck('product_id')->toArray();
     		$ids = !empty($ids) ? implode(',', $ids) : '0';
     		$where[] = 'products.id IN ('.$ids.')';
     	}
@@ -135,7 +136,6 @@ class ProductsController extends AppController
 	    			'listing' => $listing,
 	    			'categories' => $filters['categories'],
 					'brands' => $filters['brands'],
-	    			'shops' => $filters['shops']
 	    		]
 	    	);
 	    }
@@ -143,24 +143,14 @@ class ProductsController extends AppController
 
     function filters()
     {
-    	$catIds = ProductCategoryRelation::distinct()->pluck('category_id')->toArray();
+    	$catIds = ProductSubCategoryRelation::distinct()
+		->groupBy('product_sub_category_relation.sub_category_id')
+		->pluck('product_sub_category_relation.sub_category_id')->toArray();
     	$categories = [];
     	if($catIds)
     	{
 			$categories = ProductCategories::getAllCategorySubCategory($catIds);
 		}
-    	$shops = Shops::getAll(
-    		[
-    			'shops.id',
-    			'shops.name',
-    			'shops.status',
-    			'users.first_name',
-    			'users.last_name'
-    		],
-    		[
-    		],
-    		'concat(shops.name) desc'
-    	);
     
 		$brands = Brands::getAll(
 			[
@@ -174,7 +164,6 @@ class ProductsController extends AppController
 
     	return [
     		'categories' => $categories,
-    		'shops' => $shops,
 			'brands' => $brands
     	];
     }

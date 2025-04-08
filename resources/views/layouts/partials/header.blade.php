@@ -274,7 +274,7 @@ foreach ($headerMenu as $k => $v) {
     <div class="offcanvas__header">
         <div class="offcanvas__inner">
             <div class="offcanvas__logo">
-                <a class="offcanvas__logo_link" href="index.html">
+                <a class="offcanvas__logo_link" href="{{url('/')}}">
                     <img src="{{ url('frontend/assets/img/logo/logo-workwear.jpg') }}" alt="pinders" width="158"
                         height="36">
                 </a>
@@ -289,7 +289,7 @@ foreach ($headerMenu as $k => $v) {
                     @foreach ($headerMenu as $k => $menuItem)
                     <li class="offcanvas__menu_li">
                         <a class="offcanvas__menu_item"
-                            href="{{ $menuItem->value }}">{{ $menuItem->key }}
+                            href="{{ (is_array($menuItem->megaMenu) && count($menuItem->megaMenu) > 0) ? 'javascript:;' : $menuItem->value }}">{{ $menuItem->key }}
                         </a>
                         @if (is_array($menuItem->megaMenu) && count($menuItem->megaMenu) > 0)
                             <ul class="offcanvas__sub_menu">

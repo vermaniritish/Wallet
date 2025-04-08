@@ -73,7 +73,9 @@
                         <p class="product__details--info__desc mb-15">{{ $product->short_description }}</p>
                         <div class="product__variant">
                             @include('frontend.products.sizes')
+                            @if($product->embroidered_logo || $product->printed_logo)
                             @include('frontend.products.logo_option')
+                            @endif
                             <div class="product__variant--list mb-15">
                                 <button class="variant__buy--now__btn primary__btn" v-on:click="addToCart(null)"><i class="fa fa-spin fa-spinner" v-if="adding && !buyNow"></i><i class="fa fa-check text-success" v-else-if="!buyNow && adding === false"></i> Add To Cart</button>
                                 <button class="variant__buy--now__btn primary__btn mt-4" v-on:click="addToCart('buy')"><i class="fa fa-spin fa-spinner" v-if="adding && buyNow"></i><i class="fa fa-check text-success" v-else-if="adding === false && buyNow"></i> <i v-else class="fa fa-shopping-bag"></i> Buy Now</button>
@@ -167,7 +169,7 @@
 
 <!-- Start product section -->
 @include('frontend.products.similarProducts', ['products' => $similarProducts, 'title' => 'You may also like'])
-@include('frontend.products.personlizedModal')
+@include('frontend.products.personlizedModal', ['product' => $product])
 <!-- End product section -->
 </div>
 @endsection

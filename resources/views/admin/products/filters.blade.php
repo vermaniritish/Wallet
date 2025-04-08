@@ -13,15 +13,19 @@
 				<div class="row">
 					<div class="col-md-12">
 						<label class="form-control-label">Category</label>
-						<select class="form-control" name="category[]" multiple>
-					      	<?php foreach($categories as $c): ?>
-					      		<option 
-					      			value="<?php echo $c->id ?>"
-					      			<?php echo isset($_GET['category']) && in_array($c->id, $_GET['category'])  ? 'selected' : '' ?>
-					      		>
-					      			<?php echo $c->title ?>	
-					      		</option>
-					  		<?php endforeach; ?>
+						<select class="form-control" id="p-category" name="category[]" multiple>
+							<?php foreach($categories as $s): if(!$s->sub_categories) continue;?>
+							<optgroup label="{{$s->title}}">
+								<?php foreach($s->sub_categories as $c):?>
+									<option 
+										value="<?php echo $c->id ?>"
+										<?php echo isset($_GET['category']) && in_array($c->id, $_GET['category'])  ? 'selected' : '' ?>
+									>
+										<?php echo $c->title ?>	
+									</option>
+								<?php endforeach; ?>
+							</optgroup>
+							<?php endforeach; ?>
 				    	</select>
 					</div>
 				</div>

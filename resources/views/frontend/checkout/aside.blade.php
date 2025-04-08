@@ -45,7 +45,7 @@
                                     <td class="checkout__total--amount text-right"><b style="color:#ee2761">- £@{{formatMoney(calculate().logo_discount)}}</b></td>
                                 </tr>
 								<tr class="checkout__total--items" v-if="calculate().oneTimeCost > 0">
-                                    <td class="checkout__total--title text-left">One Time Setup Fees </td>
+                                    <td class="checkout__total--title text-left">One Time Setup Fees <div v-html="renderOneTimeFeeHtml()"></div></td>
                                     <td class="checkout__total--amount text-right">£@{{formatMoney(calculate().oneTimeCost)}}</td>
                                 </tr>
                                 <tr class="">

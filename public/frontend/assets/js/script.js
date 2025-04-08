@@ -1045,3 +1045,11 @@ $('#change-password').validate();
 $('.dropdown.custom-dropdown button').on('click', function() {
     $(this).parent().toggleClass('open');
 })
+
+$('body').on('click', '.offcanvas__menu_item, .offcanvas__sub_menu_toggle', function() {
+  $(this).siblings('.offcanvas__sub_menu').toggleClass('d-block');
+});
+
+$('body').on('click', '.offcanvas__close--btn', function() {
+  $('.offcanvas__header').removeClass('open');
+})

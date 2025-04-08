@@ -23,6 +23,37 @@ window.offerPrice = function(item) {
     
     return {price: item.quantity*item.price, freeLogo: 0, haveOffer: false };
 }
+const oneTimeProductCost = function(cart) {
+    let obj = oneTimeProductObject(cart);
+    let imageCost = obj.image;
+    let txtCost = obj.text;
+    return (imageCost !== null ? imageCost*1 : 0)+(txtCost !== null ? txtCost*1 : 0);
+}
+const oneTimeProductObject = function(cart) {
+    let imageCost = null;
+    let txtCost = null;
+    if(cart && cart.length > 0)
+    {
+        for(let c of cart)
+        {
+            for(let l of c.logo)
+            {
+                console.log(l);
+                if(l.postion && l.category && (c.quantity*1 > 0) && l.image && l.image.trim() && imageCost == null) {
+                    imageCost = oneTimeLogoCost;
+                }
+                if(l.postion && l.category && (c.quantity*1 > 0) && l.text && l.text.trim() && txtCost == null) {
+                    txtCost = oneTimeLogoTxtCost;
+                }
+                    
+            }
+        }
+    }
+    return {
+        image: (imageCost !== null ? imageCost*1 : 0),
+        text: (txtCost !== null ? txtCost*1 : 0)
+    }
+}
 if($('#product-page').length)
 var productDetail = new Vue({
     el: '#product-page',
@@ -183,6 +214,10 @@ var productDetail = new Vue({
                 this.logoPrices = response.prices;
             }
         },
+        closeModal() {
+            this.editLogo = false;
+            $('body').removeClass('overflow-hidden');
+        },
         addMoreLogo(k) 
         {
             let sizes = {...this.sizes[k]};
@@ -247,7 +282,7 @@ var productDetail = new Vue({
             sizes[i].quantity = exist && exist.length > 0 && exist[0].quantity ? exist[0].quantity : 0;
         }
         this.sizes = sizes;
-        this.logoOptions = JSON.parse($('#logo-options').text().trim());
+        this.logoOptions = $('#logo-options').text().trim() ? JSON.parse($('#logo-options').text().trim()) : [];
         if(!this.color && this.sizes.length > 0) {
             this.color = this.sizes[0].color_id;
         }
@@ -424,13 +459,23 @@ if($('#header').length)
 var minicart = new Vue({
     el: '#header',
     data: {
-        oneTimeCost: (oneTimeProductCost*1) > 0 ? (oneTimeProductCost*1) : 0,
+        oneTimeCost: 0,
         open: false,
         agree: false,
+        logoPricesDynamix: [],
         cart: [],
         gstTax: ``
     },
     methods: {
+        async fetchLogoPrices(){
+            if(this.logoPricesDynamix && this.logoPricesDynamix.length < 1){
+                let res = await fetch(site_url+'/api/actions/logo-prices');
+                res = await res.json();
+                this.logoPricesDynamix = res.logoprices;
+            }
+
+            return this.logoPricesDynamix;
+        },
         formatMoney(m) {
           return (m*1).toFixed(2);  
         },
@@ -444,8 +489,7 @@ var minicart = new Vue({
             if(this.open) {
                 let cart = localStorage.getItem('cart');
                 cart = cart ? JSON.parse(cart) : [];
-                this.cart = cart;
-                
+                this.cart = this.handleLogoPrices(cart);
             }
         },
         manualQty(e) {
@@ -455,7 +499,7 @@ var minicart = new Vue({
             let index = this.cart.findIndex((v) => v.id == dataId);
             let s = [...this.cart];
             s[index].quantity = qty;
-            this.cart = s;
+            this.cart = this.handleLogoPrices(s);
             this.store();
         },
         increment(id) {
@@ -468,7 +512,7 @@ var minicart = new Vue({
             else {
                 s[index].quantity = 1;
             }
-            this.cart = s;
+            this.cart = this.handleLogoPrices(s);
             this.store();
         },
         decrement(id) {
@@ -481,14 +525,37 @@ var minicart = new Vue({
             else {
                 s[index].quantity = 0;
             }
-            this.cart = s;
+            this.cart = this.handleLogoPrices(s);
             this.store();
+        },
+        handleLogoPrices(s){
+            for(let i in s)
+            {
+                for(let k in s[i].logo)
+                {
+                    if(typeof s[i].logo[k].price !== 'undefined')
+                    {
+                        let exist = this.logoPricesDynamix.filter((item) => {
+                            return item.option == (s[i].logo[k].category).toLowerCase().replace(/\s+/g , '-')
+                            && item.position == (s[i].logo[k].postion).toLowerCase().replace(/\s+/g , '-')
+                            && (s[i].quantity*1) >= (item.from_quantity*1) && (s[i].quantity*1) <= (item.to_quantity*1)
+                        });
+                        console.log(exist);
+                        if(exist && exist.length > 0 && exist[0].price)
+                        {
+                            s[i].logo[k].price = exist[0].price;
+                        }
+                    }
+                }
+            }
+            this.oneTimeCost = oneTimeProductCost(s);
+            return s;
         },
         remove(id) {
             let index = this.cart.findIndex((v) => v.id == id);
             let s = [...this.cart];
             s.splice(index, 1);
-            this.cart = s;
+            this.cart = this.handleLogoPrices(s);
             this.store();
         },
         store() {
@@ -649,6 +716,7 @@ var minicart = new Vue({
     },
     mounted: function() {
         this.gstTax = gstTax();
+        this.fetchLogoPrices();
     }
 });
 
@@ -663,7 +731,8 @@ var minicart = new Vue({
         appliedCoupon: null,
         couponError: ``,
         gstTax: ``,
-        oneTimeCost: (oneTimeProductCost*1) > 0 ? (oneTimeProductCost*1) : 0,
+        oneTimeCost: 0,
+        logoPricesDynamix: []
     },
     methods: {
         formatMoney(m) {
@@ -677,7 +746,7 @@ var minicart = new Vue({
         initcart() {
             let cart = localStorage.getItem('cart');
             cart = cart ? JSON.parse(cart) : [];
-            this.cart = cart;
+            this.cart = this.handleLogoPrices(cart);
 
             let coupon = localStorage.getItem('coupon');
             coupon = coupon ? JSON.parse(coupon) : null;
@@ -701,6 +770,20 @@ var minicart = new Vue({
 
             return (amount > 0) ? (`Price for ` + `${(totalLogos + (totalLogos > 1 ? ` logos are ` : ` logo is `))} <strong>£${amount.toFixed(2)}</strong>`) : '';
         },
+        renderOneTimeFeeHtml() {
+            if(this.cart && this.cart.length > 0)
+            {
+                let obj = oneTimeProductObject(this.cart);
+                console.log(`obj`, obj);
+                if(obj && obj.image !== null && obj.text !== null && obj.image > 0 && obj.text > 0){
+                    return `<div class="d-flex flex-row justify-content-between gap-4">
+                    <span class="cart__content--variant" style="color: rgb(238, 39, 97);">For Logo <strong>£${obj.image.toFixed(2)}</strong></span>
+                        <span class="cart__content--variant" style="color: rgb(238, 39, 97);">For Text <strong>£${obj.text.toFixed(2)}</strong></span>
+                    </div>`
+                }
+            }
+            return ``;
+        },
         manualQty(e) {
             console.log(e, e.target.value);
             let qty = e.target.value;
@@ -708,7 +791,7 @@ var minicart = new Vue({
             let index = this.cart.findIndex((v) => v.id == dataId);
             let s = [...this.cart];
             s[index].quantity = qty;
-            this.cart = s;
+            this.cart = this.handleLogoPrices(s);
             this.store();
         },
         increment(id) {
@@ -721,7 +804,7 @@ var minicart = new Vue({
             else {
                 s[index].quantity = 1;
             }
-            this.cart = s;
+            this.cart = this.handleLogoPrices(s);
             this.store();
         },
         decrement(id) {
@@ -734,14 +817,37 @@ var minicart = new Vue({
             else {
                 s[index].quantity = 0;
             }
-            this.cart = s;
+            this.cart = this.handleLogoPrices(s);
             this.store();
+        },
+        handleLogoPrices(s) {
+            for(let i in s)
+            {
+                for(let k in s[i].logo)
+                {
+                    if(typeof s[i].logo[k].price !== 'undefined')
+                    {
+                        let exist = this.logoPricesDynamix.filter((item) => {
+                            return item.option == (s[i].logo[k].category).toLowerCase().replace(/\s+/g , '-')
+                            && item.position == (s[i].logo[k].postion).toLowerCase().replace(/\s+/g , '-')
+                            && (s[i].quantity*1) >= (item.from_quantity*1) && (s[i].quantity*1) <= (item.to_quantity*1)
+                        });
+                        console.log(exist);
+                        if(exist && exist.length > 0 && exist[0].price)
+                        {
+                            s[i].logo[k].price = exist[0].price;
+                        }
+                    }
+                }
+            }
+            this.oneTimeCost = oneTimeProductCost(s);
+            return s;
         },
         remove(id) {
             let index = this.cart.findIndex((v) => v.id == id);
             let s = [...this.cart];
             s.splice(index, 1);
-            this.cart = s;
+            this.cart = this.handleLogoPrices(s);
             this.store();
         },
         store() {
@@ -931,8 +1037,9 @@ var minicart = new Vue({
             localStorage.removeItem('coupon');
         }
     },
-    mounted: function() {
+    mounted: async function() {
         this.gstTax = gstTax();
+        this.logoPricesDynamix = await minicart.fetchLogoPrices();
         this.initcart();
     }
 });
@@ -945,6 +1052,7 @@ checkoutPage = new Vue({
         orderPlaced: null,
         errors: {},
         saving: false,
+        logoPricesDynamix: [],
         checkout:{
             phone_email: ``,
             first_name:``,
@@ -964,7 +1072,7 @@ checkoutPage = new Vue({
         appliedCoupon: null,
         couponError: ``,
         gstTax: ``,
-        oneTimeCost: (oneTimeProductCost*1) > 0 ? (oneTimeProductCost*1) : 0,
+        oneTimeCost: (oneTimeProductCost()*1) > 0 ? (oneTimeProductCost()*1) : 0,
     },
     methods: {
         formatMoney(m) {
@@ -982,7 +1090,7 @@ checkoutPage = new Vue({
             {
                 window.location.href = site_url + '/';
             }
-            this.cart = cart;
+            this.cart = this.handleLogoPrices(cart);
 
             let coupon = localStorage.getItem('coupon');
             coupon = coupon ? JSON.parse(coupon) : null;
@@ -1006,6 +1114,20 @@ checkoutPage = new Vue({
 
             return (amount > 0) ? (`Price for ` + `${(totalLogos + (totalLogos > 1 ? ` logos are ` : ` logo is `))} <strong>£${amount.toFixed(2)}</strong>`) : '';
         },
+        renderOneTimeFeeHtml() {
+            if(this.cart && this.cart.length > 0)
+            {
+                let obj = oneTimeProductObject(this.cart);
+                console.log(`obj`, obj);
+                if(obj && obj.image !== null && obj.text !== null && obj.image > 0 && obj.text > 0){
+                    return `<div class="d-flex flex-row gap-4">
+                    <span class="cart__content--variant" style="color: rgb(238, 39, 97);">For Logo <strong>£${obj.image.toFixed(2)}</strong></span>
+                        <span class="cart__content--variant" style="color: rgb(238, 39, 97);">For Text <strong>£${obj.text.toFixed(2)}</strong></span>
+                    </div>`
+                }
+            }
+            return ``;
+        },
         manualQty(e) {
             console.log(e, e.target.value);
             let qty = e.target.value;
@@ -1013,7 +1135,7 @@ checkoutPage = new Vue({
             let index = this.cart.findIndex((v) => v.id == dataId);
             let s = [...this.cart];
             s[index].quantity = qty;
-            this.cart = s;
+            this.cart = this.handleLogoPrices(s);
             this.store();
         },
         increment(id) {
@@ -1026,7 +1148,7 @@ checkoutPage = new Vue({
             else {
                 s[index].quantity = 1;
             }
-            this.cart = s;
+            this.cart = this.handleLogoPrices(s);
             this.store();
         },
         decrement(id) {
@@ -1039,14 +1161,37 @@ checkoutPage = new Vue({
             else {
                 s[index].quantity = 0;
             }
-            this.cart = s;
+            this.cart = this.handleLogoPrices(s);
             this.store();
+        },
+        handleLogoPrices(s){
+            for(let i in s)
+            {
+                for(let k in s[i].logo)
+                {
+                    if(typeof s[i].logo[k].price !== 'undefined')
+                    {
+                        let exist = this.logoPricesDynamix.filter((item) => {
+                            return item.option == (s[i].logo[k].category).toLowerCase().replace(/\s+/g , '-')
+                            && item.position == (s[i].logo[k].postion).toLowerCase().replace(/\s+/g , '-')
+                            && (s[i].quantity*1) >= (item.from_quantity*1) && (s[i].quantity*1) <= (item.to_quantity*1)
+                        });
+                        console.log(exist);
+                        if(exist && exist.length > 0 && exist[0].price)
+                        {
+                            s[i].logo[k].price = exist[0].price;
+                        }
+                    }
+                }
+            }
+            this.oneTimeCost = oneTimeProductCost(s);
+            return s;
         },
         remove(id) {
             let index = this.cart.findIndex((v) => v.id == id);
             let s = [...this.cart];
             s.splice(index, 1);
-            this.cart = s;
+            this.cart = this.handleLogoPrices(s);
             this.store();
         },
         store() {
@@ -1295,8 +1440,9 @@ checkoutPage = new Vue({
             }
         }
     },
-    mounted: function() {
+    mounted: async function() {
         this.gstTax = gstTax();
+        this.logoPricesDynamix = await minicart.fetchLogoPrices();
         this.initcart();
         let addressInfo = localStorage.getItem('addressInfo');
         if(addressInfo) {

@@ -5,7 +5,7 @@ $logo = Settings::get('logo');
 $companyName = Settings::get('company_name');
 $googleKey = Settings::get('google_api_key');
 $gstTax = Settings::get('gst');
-$version = '2.2';
+$version = '2.4';
 ?>
 <!doctype html>
 <html lang="zxx">
@@ -107,7 +107,8 @@ $version = '2.2';
         var current_url = "<?php echo url()->current(); ?>";
         var current_full_url = "<?php echo url()->full(); ?>";
         var previous_url = "<?php echo url()->previous(); ?>";
-        var oneTimeProductCost = "<?php echo Settings::get('one_time_setup_cost') ?>";
+        var oneTimeLogoCost = "<?php echo Settings::get('one_time_setup_cost') ?>";
+        var oneTimeLogoTxtCost = "<?php echo Settings::get('one_time_setup_cost_text') ?>";
         var freeLogoDiscount = <?php $d = Settings::get('free_logo_discount'); echo $d ? $d : 'null' ?>;
         var freeDelivery = <?php $d = Settings::get('free_delivery'); echo $d ? $d : 'null' ?>;
         var csrf_token = function() {

@@ -324,6 +324,7 @@
 									<div class="col-lg-6">
 										<div class="form-group">
 											<!-- FILE OR IMAGE UPLOAD. FOLDER PATH SET HERE in data-path AND CHANGE THE data-multiple TO TRUE SEE MAGIC  -->
+											<label>Upload Banner.</label>
 											<div 
 												class="upload-image-section"
 												data-type="image"
@@ -401,6 +402,7 @@
 											@enderror
 										</div>
 									</div>
+									
 									<div class="col-lg-6">
 										<div class="form-group">
 											<div class="custom-control">
@@ -410,6 +412,27 @@
 													<span class="custom-toggle-slider rounded-circle" data-label-off="No" data-label-on="Yes"></span>
 												</label>
 												<label class="custom-control-label">Do you want to publish this product ?</label>
+											</div>
+										</div>
+									</div>
+									<div class="col-lg-6">
+										<div class="form-group">
+											<label class="">Logo Options</label>
+											<div class="custom-control">
+												<label class="custom-toggle">
+													<input type="hidden" name="printed_logo" value="0">
+													<input type="checkbox" name="printed_logo" v-model="printed_logo" value="1" <?php echo (old('printed_logo') != '0' ? 'checked' : '') ?>>
+													<span class="custom-toggle-slider rounded-circle" data-label-off="No" data-label-on="Yes"></span>
+												</label>
+												<label class="custom-control-label">Printed Logo</label>
+											</div>
+											<div class="custom-control">
+												<label class="custom-toggle">
+													<input type="hidden" name="embroidered_logo" value="0">
+													<input type="checkbox" name="embroidered_logo" v-model="embroidered_logo" value="1" <?php echo (old('embroidered_logo') != '0' ? 'checked' : '') ?>>
+													<span class="custom-toggle-slider rounded-circle" data-label-off="No" data-label-on="Yes"></span>
+												</label>
+												<label class="custom-control-label">Embroidered Logo</label>
 											</div>
 										</div>
 									</div>

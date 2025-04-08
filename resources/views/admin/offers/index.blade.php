@@ -177,8 +177,12 @@ $freeLogo = $freeLogo ? json_decode($freeLogo, true) : null;
                         <div class="row">
                             <div class="col-lg-12 delivery-fields">
                                 <div class="form-group">
-                                    <label class="form-control-label" for="input-first-name">One Time Setup Cost</label>
-                                    <input type="number" class="form-control" name="one_time_setup_cost" required placeholder="15" value="{{ old('one_time_setup_cost', Settings::get('one_time_setup_cost')) }}">
+                                    <label class="form-control-label" for="input-first-name">Logo Image Setup Cost</label>
+                                    <input type="number" step=".01" class="form-control" name="one_time_setup_cost" required placeholder="15" value="{{ old('one_time_setup_cost', Settings::get('one_time_setup_cost')) }}">
+                                </div>
+								<div class="form-group">
+                                    <label class="form-control-label" for="input-first-name">Text Setup Cost</label>
+                                    <input type="number" step=".01" class="form-control" name="one_time_setup_cost_text" required placeholder="15" value="{{ old('one_time_setup_cost_text', Settings::get('one_time_setup_cost_text')) }}">
                                 </div>
                             </div>
                             <div class="col-lg-12 text-right">

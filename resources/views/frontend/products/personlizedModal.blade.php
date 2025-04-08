@@ -1,9 +1,9 @@
 <div id="popup1" :class="`overlay show` + (!editLogo ? ` d-none` : `` )">
 	<div class="popup">
 		<h2 style="color:#C69D5F;">Add Personalised Logo</h2>
-		<span>Note* - One Time £15 Setup Fees will be applicable apart from logo adding cost</span>
+		<!-- <span>Note* - One Time £15 Setup Fees will be applicable apart from logo adding cost</span> -->
 		<br/><br/>
-		<a class="close" href="#" v-on:click="editLogo = false">&times;</a>
+		<a class="close" href="#" v-on:click="closeModal">&times;</a>
 		<div class="content">
 			<div class="product__variant--list mb-20" >
 				<div class="accordion accordion-flush" id="accordionFlushExample">
