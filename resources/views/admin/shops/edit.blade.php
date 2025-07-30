@@ -78,6 +78,17 @@
 							<div class="row">
 								<div class="col-lg-12">
 									<div class="form-group">
+										<label class="form-control-label" for="input-social_links">Social Link</label>
+										<input type="text" id="input-social_links" class="form-control" placeholder="Social Link" name="social_links" value="<?php echo $shop->social_links ?>" >
+										@error('social_links')
+										    <small class="text-danger">{{ $message }}</small>
+										@enderror
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-lg-12">
+									<div class="form-group">
 										<label>Bio</label>
 										<textarea rows="4" class="form-control" placeholder="Bio" name="bio"><?php echo $shop->bio ?></textarea>
 										@error('bio')
@@ -135,6 +146,24 @@
 								    <small class="text-danger">{{ $message }}</small>
 								@enderror
 							</div>
+							<div class="form-group">
+							    <label class="form-control-label">Latitude</label>
+							    <input type="text" class="form-control" placeholder="e.g. 30.7333" name="lat" 
+							           value="{{ $shop->lat ?? old('lat') }}">
+							    @error('latitude')
+							        <small class="text-danger">{{ $message }}</small>
+							    @enderror
+							</div>
+
+							<div class="form-group">
+							    <label class="form-control-label">Longitude</label>
+							    <input type="text" class="form-control" placeholder="e.g. 76.7794" name="lng" 
+							           value="{{ $shop->lng ?? old('lng') }}">
+							    @error('lng')
+							        <small class="text-danger">{{ $message }}</small>
+							    @enderror
+							</div>
+
 							<div class="form-group">
 								<label class="form-control-label" for="input-postcode">Postcode</label>
 								<input type="text" id="input-postcode" class="form-control" required placeholder="Postcode" name="postcode"  value="<?php echo $shop->postcode ?>">

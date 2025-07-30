@@ -77,6 +77,17 @@
 							<div class="row">
 								<div class="col-lg-12">
 									<div class="form-group">
+										<label class="form-control-label" for="input-social_links">Social Link</label>
+										<input type="text" id="input-social_links" class="form-control" placeholder="Social Link" name="social_links"  value="{{ old('social_links') }}">
+										@error('social_links')
+										    <small class="text-danger">{{ $message }}</small>
+										@enderror
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-lg-12">
+									<div class="form-group">
 										<label class="form-control-label" for="input-bio">Bio</label>
 										<textarea id="input-bio" class="form-control" placeholder="Bio" name="bio">{{ old('bio') }}</textarea> 
 										@error('bio')
@@ -130,6 +141,23 @@
 								@error('address')
 								    <small class="text-danger">{{ $message }}</small>
 								@enderror
+							</div>
+							<div class="form-group">
+							    <label class="form-control-label">Latitude</label>
+							    <input type="text" class="form-control" placeholder="e.g. 30.7333" name="lat" 
+							           value="{{ old('lat') }}">
+							    @error('latitude')
+							        <small class="text-danger">{{ $message }}</small>
+							    @enderror
+							</div>
+
+							<div class="form-group">
+							    <label class="form-control-label">Longitude</label>
+							    <input type="text" class="form-control" placeholder="e.g. 76.7794" name="lng" 
+							           value="{{ old('lng') }}">
+							    @error('lng')
+							        <small class="text-danger">{{ $message }}</small>
+							    @enderror
 							</div>
 							<div class="form-group">
 								<label class="form-control-label" for="input-postcode">Postcode</label>

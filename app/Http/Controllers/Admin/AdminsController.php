@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Validator;
 use App\Models\Admin\Settings;
 use App\Models\Admin\Permissions;
 use App\Models\Admin\AdminAuth;
+use App\Models\Admin\Shops;
 use App\Libraries\General;
 use App\Models\Admin\Admins;
 use Illuminate\Validation\Rule;
@@ -157,6 +158,7 @@ class AdminsController extends AppController
 	        	unset($data['permissions']);
 	        	unset($data['_token']);
 	        	unset($data['send_password_email']);
+	        	$data['shop_id'] = json_encode($request->shop_id);
 
 	        	$admin = Admins::create($data);
 	        	if($admin)
@@ -202,9 +204,10 @@ class AdminsController extends AppController
 		    	return redirect()->back()->withErrors($validator)->withInput();
 		    }
 		}
-	    
+	    $shops = Shops::getAll(['shops.id','shops.name','shops.slug','shops.image']);
 	    return view("admin/admins/add", [
-	    			'permissions' => Permissions::all()
+	    			'permissions' => Permissions::all(),
+	    			'shops'       => $shops
 	    		]);
     }
 
@@ -266,6 +269,7 @@ class AdminsController extends AppController
 		        	unset($data['permissions']);
 		        	unset($data['_token']);
 		        	unset($data['send_password_email']);
+		        	$data['shop_id'] = json_encode($request->shop_id);
 
 		        	$admin = Admins::modify($id, $data);
 		        	if($admin)
@@ -311,11 +315,12 @@ class AdminsController extends AppController
 			    	return redirect()->back()->withErrors($validator)->withInput();
 			    }
 			}
-
+			$shops = Shops::getAll(['shops.id','shops.name','shops.slug','shops.image']);
 			return view("admin/admins/edit", [
 				'adminPermissions' => Permissions::getUserPermissions($admin->id),
     			'permissions' => Permissions::all(),
-    			'admin' => $admin
+    			'admin' => $admin,
+    			'shops' => $shops
     		]);
 		}
 		else

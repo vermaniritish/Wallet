@@ -75,6 +75,25 @@
 										@enderror
 									</div>
 								</div>
+								@php
+								    $selectedShops = isset($admin) ? json_decode($admin->shop_id, true) : old('shop_id', []);
+								@endphp
+								<div class="col-lg-6">
+								    <div class="form-group">
+								        <label class="form-control-label" for="shop-select">Select Shops</label>
+								        <select id="shop-select" class="form-control" name="shop_id[]" multiple>
+								            @foreach($shops as $shop)
+								                <option value="{{ $shop->id }}"
+								                    @if(is_array($selectedShops) && in_array($shop->id, $selectedShops)) selected @endif>
+								                    {{ $shop->name }}
+								                </option>
+								            @endforeach
+								        </select>
+								        @error('shop_id')
+								            <small class="text-danger">{{ $message }}</small>
+								        @enderror
+								    </div>
+								</div>
 							</div>
 							<div class="row">
 								<div class="col-lg-12">
