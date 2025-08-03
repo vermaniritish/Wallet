@@ -15,10 +15,8 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Sanctum\HasApiTokens;
 
-class Users extends Authenticatable implements MustVerifyEmail
-
+class Users extends Authenticatable
 {
-    use OtpVerification, Notifiable,HasApiTokens;
     protected $table = 'users';
     protected $primaryKey = 'id';
     public $timestamps = false;

@@ -29,9 +29,11 @@ class HomeController extends BaseController
         $token = $request->query('token');
         if ($token) {
             $user = Users::where('token', $token)->first();
-            if ($user && is_null($user->verified_at)) {
+            if ($user && !$user->verified_at) {
                 $user->verified_at = now(); 
                 $user->save();
+				$request->session()->flash('success', 'Your account is verified. Please login to continue.');
+				return redirect('/my-account');
             }
         }
         $sliders = Sliders::where('status',1)->get();
@@ -68,10 +70,9 @@ class HomeController extends BaseController
 					DB::raw('(Select sale_price from product_sizes where product_sizes.product_id = products.id order by sale_price desc limit 1) as sale_price')
 				]
 			)->where('id', '!=', $product->id)->where('category_id', $product->category_id)->where('status', 1)->orderByRaw('rand()')->limit(4)->get();
-
 			if($product && $product->printed_logo && $product->embroidered_logo)
 				$logooption = ["Printed Logo","Embroidered Logo"];
-			if($product && $product->printed_logo)
+			elseif($product && $product->printed_logo)
 				$logooption = ["Printed Logo"];
 			elseif($product && $product->embroidered_logo)
 				$logooption = ["Embroidered Logo"];

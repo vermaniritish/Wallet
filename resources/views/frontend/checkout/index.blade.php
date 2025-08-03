@@ -81,7 +81,7 @@
                                         <div class="col-lg-6 mb-12">
                                             <div class="checkout__input--list ">
                                                 <label>
-                                                    <input class="checkout__input--field border-radius-5" placeholder="First name (optional)"  type="text" v-model="checkout.first_name" required>
+                                                    <input class="checkout__input--field border-radius-5" placeholder="First name (optional)"  type="text" v-model="checkout.first_name">
                                                 </label>
                                                 <small v-if="errors && errors.first_name == ``">This field is required.</small>
                                             </div>
@@ -97,7 +97,7 @@
                                         <div class="col-12 mb-12">
                                             <div class="checkout__input--list">
                                                 <label>
-                                                    <input class="checkout__input--field border-radius-5" placeholder="Company (optional)"  type="text" v-model="checkout.company" required>
+                                                    <input class="checkout__input--field border-radius-5" placeholder="Company (optional)"  type="text" v-model="checkout.company">
                                                 </label>
                                                 <small v-if="errors && errors.company == ``">This field is required.</small>
                                             </div>
@@ -113,7 +113,7 @@
                                         <div class="col-12 mb-12">
                                             <div class="checkout__input--list">
                                                 <label>
-                                                    <input class="checkout__input--field border-radius-5" placeholder="Apartment, suite, etc. (optional)"  type="text" v-model="checkout.address2" required>
+                                                    <input class="checkout__input--field border-radius-5" placeholder="Apartment, suite, etc. (optional)"  type="text" v-model="checkout.address2">
                                                 </label>
                                                 <small v-if="errors && errors.address2 == ``">This field is required.</small>                                                
                                             </div>

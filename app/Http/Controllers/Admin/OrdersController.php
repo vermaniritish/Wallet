@@ -415,24 +415,21 @@ class OrdersController extends AppController
 			$dates = explode('-', $request->get('d'));
 			if(count($dates) == 2)
 			{
-				$page = Orders::where('status', 'completed')
-					->where('created' , '>=', date( 'Y-m-d 00:00:00', strtotime( str_replace('/', '-', trim($dates[0]) ) ) ) )
+				$page = Orders::where('created' , '>=', date( 'Y-m-d 00:00:00', strtotime( str_replace('/', '-', trim($dates[0]) ) ) ) )
 					->where('created' , '<=', date( 'Y-m-d 23:59:59', strtotime( str_replace('/', '-', trim($dates[1]) ) ) ))
 					->orderBy('id', 'asc')
-					->limit(5000)
-					->get();
+					->limit(5000)->get();
 				$pdfHtml = '';
 				if($page->count() > 0)
 				{
 					$mpdf = new \Mpdf\Mpdf([
-						'tempDir' => __DIR__ . '/uploads',
+						'tempDir' => public_path('/uploads/mpdf'),
 						'mode' => 'utf-8',
 						'orientation' => 'P',
 						'format' => [210, 297],
 						'setAutoTopMargin' => true,
 						'margin_left' => 10, 'margin_right' => 10, 'margin_top' => 10, 'margin_bottom' => 10
 					]);
-
 					
 					foreach($page as $index => $order)
 					{
@@ -447,13 +444,10 @@ class OrdersController extends AppController
 						)->render();
 
 						if ($index > 0) {
-							$mpdf->AddPage(); // Add new page after the first one
+							$mpdf->AddPage();
 						}
 						$mpdf->WriteHTML($html);
 					}
-
-					
-					$mpdf->WriteHTML($html);
 					$mpdf->Output('Orders '.$request->get('d').'.pdf','I');
 				}
 			}

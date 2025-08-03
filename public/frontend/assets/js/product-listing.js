@@ -239,9 +239,11 @@ var productDetail = new Vue({
                 category = category ? category : size.logo[logoKey].category;
                 const pos = size.logo[logoKey].postion;
                 logo.category = category;
+                console.log(pos, this.logoPrices);
                 if(category != 'None')
                 {
                     let logoPriceApply = this.logoPrices.filter((val) => {
+                        console.log(val.position, this.convertToSlug(pos), val.option, this.convertToSlug(category));
                         return val.position == this.convertToSlug(pos) && val.option == this.convertToSlug(category) && size.quantity >= val.from_quantity && size.quantity <= val.to_quantity;
                     });
                     logo.price = logoPriceApply && logoPriceApply.length > 0 ? (logoPriceApply[0].price*1) : 0;
@@ -257,10 +259,14 @@ var productDetail = new Vue({
             }
             size.logo[logoKey] = logo;
         },
-        convertToSlug(Text) {
-            return Text ? Text.toLowerCase()
-            .replace(/ /g, "-")
-            .replace(/[^\w-]+/g, "") : ``;
+        convertToSlug(text) {
+            return text ? text
+                .toLowerCase()
+                .normalize("NFD").replace(/[\u0300-\u036f]/g, "") // Remove accents
+                .replace(/[^a-z0-9]+/g, '-') // Replace non-alphanumeric with dash
+                .replace(/^-+|-+$/g, '')     // Trim dashes from start/end
+                .replace(/--+/g, '-')        // Replace multiple dashes with one
+                : '';
         }
     },
     mounted: function() 
@@ -1388,14 +1394,18 @@ checkoutPage = new Vue({
             if(this.saving) return false;
             let haveErrors = false;
 
+            let errs = {};
             let checkout = JSON.parse(JSON.stringify(this.checkout));
             for(let e in checkout) {
-                if($('#nologinsection').length < 1 && e === 'phone_email') {
+                if($('#nologinsection').length < 1 && ['phone_email'].includes(e)) {
+                    continue;
+                }
+                else if(['first_name', 'company','address2'].includes(e)) {
                     continue;
                 }
                 else if(checkout[e] === ``) {
+                    errs[e] = ``;
                     haveErrors = true;
-                    break;
                 }
             }
 
@@ -1436,7 +1446,7 @@ checkoutPage = new Vue({
             }
             else
             {
-                this.errors = checkout;
+                this.errors = errs;
             }
         }
     },

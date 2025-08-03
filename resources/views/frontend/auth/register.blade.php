@@ -4,13 +4,12 @@
             <h2 class="account__login--header__title h3 mb-10">Create an Account</h2>
             <p class="account__login--header__desc">Register here if you are a new customer</p>
         </div>
+		@include('admin.partials.flash_messages')
         <div class="account__login--inner">
             <div class="row" v-if="registered">
                 <div class="col-md-12 text-center">
-                    <img src="http://209.97.176.208/assets/img/pinkcheck.png" class="a" style="
-                        max-width: 128px;
-                        margin-bottom: 30px;
-                    "> <p class="h3 text-center mb-3">Welcome to Pinders Workwear.</p> <p class="text-center my-4">Confirmation email has been sent, please check your email and confirm/activate your account.</p> <p class="text-center my-4">Thankyou for Registration.</p>
+                    <i style="font-size:60px" class="my-4 fa fa-circle-check fa-check-circle text-success"></i>
+                    <p class="h3 text-center mb-3">Welcome to Pinders Workwear.</p> <p class="text-center my-4">Confirmation email has been sent, please check your email and confirm/activate your account.</p> <p class="text-center my-4">Thankyou for Registration.</p>
                 </div>
             </div>
             <form v-else id="register-form" >
