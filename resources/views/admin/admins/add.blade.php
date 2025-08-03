@@ -74,6 +74,23 @@
 										@enderror
 									</div>
 								</div>
+								<div class="col-lg-6">
+								    <div class="form-group">
+								        <label class="form-control-label" for="shop-select">Select Shops</label>
+								        <select id="shop-select" class="form-control" name="shop_id[]" multiple>
+								            @foreach($shops as $shop)
+								                <option value="{{ $shop->id }}" 
+								                    @if(is_array(old('shop_id')) && in_array($shop->id, old('shop_id'))) selected @endif>
+								                    {{ $shop->name }}
+								                </option>
+								            @endforeach
+								        </select>
+								        @error('shop_id')
+								            <small class="text-danger">{{ $message }}</small>
+								        @enderror
+								    </div>
+								</div>
+
 							</div>
 						</div>
 						<hr class="my-4" />

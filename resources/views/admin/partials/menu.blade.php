@@ -71,7 +71,7 @@
                 </a>
             </li>
         <?php endif; ?>
-        <?php /*if(Permissions::hasPermission('shops', 'listing')): ?>
+        <?php if(Permissions::hasPermission('shops', 'listing')): ?>
             <?php $active = strpos(request()->route()->getAction()['as'], 'admin.shops') > -1; ?>
             <li class="nav-item">
                 <a class="nav-link<?php echo ($active ? ' active' : '') ?>" href="<?php echo route('admin.shops') ?>">
@@ -79,7 +79,7 @@
                     <span class="nav-link-text">Shops</span>
                 </a>
             </li>
-        <?php endif; */?>
+        <?php endif;?>
         <?php if(Permissions::hasPermission('products', 'listing') || Permissions::hasPermission('product_categories', 'listing')): ?>
         <?php $active = strpos(request()->route()->getAction()['as'], 'admin.products') > -1; ?>
         <li class="nav-item">

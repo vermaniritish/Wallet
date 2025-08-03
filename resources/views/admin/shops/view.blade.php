@@ -67,6 +67,26 @@
 									</td>
 								</tr>
 								<tr>
+					                <th>Website</th>
+					                <td>
+					                    @if(!empty($shop->website))
+					                        <a href="{{ $shop->website }}" target="_blank">{{ $shop->website }}</a>
+					                    @else
+					                        <span class="text-muted">No website</span>
+					                    @endif
+					                </td>
+					            </tr>
+					            <tr>
+					                <th>Social Link</th>
+					                <td>
+					                    @if(!empty($shop->social_links))
+					                        <a href="{{ $shop->social_links }}" target="_blank">Social Link</a>
+					                    @else
+					                        <span class="text-muted">No social links</span>
+					                    @endif
+					                </td>
+					            </tr>
+								<tr>
 									<td colspan="2">
 										<?php echo $shop->bio ?>
 									</td>
