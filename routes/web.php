@@ -43,6 +43,7 @@ Route::prefix('admin')->middleware(['adminAuth'])->group(function () {
 	include "Admin/logoPrices.php";
 	include "Admin/offers.php";
     include "Admin/menu.php";
+    include "Admin/schools.php";
 
 });
 
