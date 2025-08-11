@@ -102,6 +102,17 @@ class Products extends AppModel
         return $this->belongsTo(Shops::class, 'shop_id', 'id');
     }
 
+
+    public function parent()
+    {
+        return $this->belongsTo(Products::class, 'parent_id', 'id');
+    }
+
+    public function school()
+    {
+        return $this->belongsTo(Schools::class, 'school_id', 'id');
+    }
+
     /**
     * Products -> Users belongsTO relation
     * 
@@ -139,9 +150,14 @@ class Products extends AppModel
     	$listing = Products::select([
 	    		'products.*',
                 'shop_owner.id as shop_owner_id',
+                'schools.name as school',
+                'schools.schooltype as school_type',
+                'parent.sku_number as parent_sku_number',
                 DB::raw('concat(shop_owner.first_name, " ", (CASE WHEN shop_owner.last_name is not null THEN shop_owner.last_name ELSE "" END)) as shop_owner_name'),
 	    	])
             ->leftJoin('users as shop_owner', 'shop_owner.id', '=', 'products.user_id')
+            ->leftJoin('schools as schools', 'schools.id', '=', 'products.school_id')
+            ->leftJoin('products as parent', 'parent.id', '=', 'products.parent_id')
 	    	->orderBy($orderBy, $direction);
 
 	    if(!empty($where))

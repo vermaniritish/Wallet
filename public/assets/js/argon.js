@@ -539,3 +539,8 @@ $('body').on('keyup', '#navbar-search-main input', function(){
         $('section').highlight( searchTerm );
     }
 });
+
+
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}

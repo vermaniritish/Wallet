@@ -7,19 +7,20 @@ let order = new Vue({
         selectedSize: {},
         selectedSizeIds: {},
         selectedCategory: null,
+        selectedSubCategory: null,
+        selectedProduct: null,
+        selectedColor: [],
         subCategories: [],
+        products: [],
+        schools: [],
         selectedGender: '',
         title: '',
-        selectedColor: [],
-        
         purchase_price: '',
         margin: '',
         price: '',
         maxPrice: '',
-        selectedBrand: [],
         loading: false,
         url: '',
-        selectedSubCategory: [],
         description: null,
         tags: null,
         sku_number: null,
@@ -36,7 +37,6 @@ let order = new Vue({
         this.initBasics();
         this.initTagIt();
         init_editor('#product-editor');
-        this.initEditValues();
         this.mounting = false;
         document.getElementById('product-form').classList.remove('d-none');
     },
@@ -110,13 +110,13 @@ let order = new Vue({
             this.price = p > 0 ? p.toFixed(2) : ``;
             
         },
-        initEditValues: function () {
+        initEditValues: async function () {
             this.sizes = $('#availableSizes').text() ? JSON.parse($('#availableSizes').text()) : [];
-            if ($('#edit-form').length > 0) {
-                let data = JSON.parse($('#edit-form').text());
-                this.url = admin_url + '/products/' + data.id + '/edit';
-                this.selectedSubCategory = data && data.sub_categories && data.sub_categories.length > 0 ? data.sub_categories.map(category => category.sub_category_id) : [];
-                this.selectedCategory = data.category_id;
+            let response = await fetch(admin_url + '/products/' + this.selectedProduct + '/fetch');
+            response = await response.json();
+            if(response && response.status)
+            {
+                let data = response.product;
                 this.title = data.title;
                 this.selectedColor = data && data.colors && data.colors.length > 0 ? data.colors.map(colors => colors.id.toString()) : [];
                 this.activeColor = this.selectedColor.length > 0 ? this.selectedColor[0] : null;
@@ -125,7 +125,6 @@ let order = new Vue({
                 this.purchase_price = data.purchase_price;
                 this.margin = data.margin;
                 this.maxPrice = data.max_price;
-                this.selectedBrand = data && data.brands && data.brands.length > 0 ? data.brands.map(brand => brand.id) : [];
                 this.selectedSizeIds = {};
                 this.short_description = data.short_description;
                 this.description = data.description;
@@ -133,9 +132,9 @@ let order = new Vue({
                 this.embroidered_logo = data.embroidered_logo;
                 this.printed_logo = data.printed_logo;
                 this.colorImages = data.color_images ? JSON.parse(data.color_images) : {};
-                if (this.description !== null) {
-                    put_editor_html('product-editor', this.description.trim());
-                }
+                // if (this.description !== null) {
+                //     put_editor_html('product-editor', this.description.trim());
+                // }
                 if (data && data.sizes && data.sizes.length > 0) 
                 {
                     console.log(data.sizes);
@@ -155,11 +154,9 @@ let order = new Vue({
                         });
                     });
                 }
-                
+                await sleep(400);
+                $('select').selectpicker('refresh');
             }
-            else {
-                this.url = admin_url + '/products/add';
-            };
         },
         updateSelectedSize(colorSelectedId) 
         {
@@ -228,13 +225,27 @@ let order = new Vue({
                 set_notification('error', response.message);
             }
         },
+        async updateProducts() {
+            await sleep(100);
+            let response = await fetch(admin_url + `/products/search?category=${this.selectedCategory}&subcategory=${this.selectedSubCategory}`);
+            response = await response.json();
+            if(response && response.status)
+            {
+                this.products = response.products;
+            }
+            else
+            {
+                this.products = [];
+            }
+            await sleep(400);
+            $('#productDropdown').selectpicker('refresh');
+        },
         submitForm: async function() {
             if (!this.loading) {
                 if ($('#product-form').valid()) {
                     this.loading = true;
                     let formData = new FormData(document.getElementById('product-form'));
                     formData.append('sizeData', JSON.stringify(this.selectedSize));
-                    formData.append('description', get_editor_html('product-editor'));
                     formData.append('color_images', JSON.stringify(this.colorImages));
                     let response = await fetch(this.url, {
                         method: 'POST',
@@ -247,7 +258,7 @@ let order = new Vue({
                         set_notification('success', response.message);
 
                         setTimeout(function () {
-                            window.location.href = (admin_url + '/products/' + response.id + '/view');
+                            window.location.href = (admin_url + '/uniforms/' + response.id + '/view');
                         }, 200)
                     }else{
                         this.loading = false;

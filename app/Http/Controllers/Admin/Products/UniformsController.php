@@ -1,16 +1,5 @@
 <?php
 
-/**
- * Products Class
- *
- * @package    ProductsController
- 
- 
- * @version    Release: 1.0.0
- * @since      Class available since Release 1.0.0
- */
-
-
 namespace App\Http\Controllers\Admin\Products;
 
 use Illuminate\Http\Request;
@@ -21,6 +10,7 @@ use App\Models\Admin\Permissions;
 use App\Models\Admin\AdminAuth;
 use App\Libraries\General;
 use App\Models\Admin\Products;
+use App\Models\Admin\Schools;
 use App\Models\Admin\ProductCategories;
 use App\Models\Admin\ProductCategoryRelation;
 use App\Models\Admin\Admins;
@@ -38,7 +28,7 @@ use App\Models\Admin\ProductSubCategories;
 use App\Models\Admin\ProductSubCategoryRelation;
 use App\Models\Admin\Sizes;
 
-class ProductsController extends AppController
+class UniformsController extends AppController
 {
 	function __construct()
 	{
@@ -47,7 +37,7 @@ class ProductsController extends AppController
 
     function index(Request $request)
     {
-    	if(!Permissions::hasPermission('products', 'listing'))
+    	if(!Permissions::hasPermission('uniforms', 'listing'))
     	{
     		$request->session()->flash('error', 'Permission denied.');
     		return redirect()->route('admin.dashboard');
@@ -58,18 +48,18 @@ class ProductsController extends AppController
     	{
     		$search = $request->get('search');
     		$search = '%' . $search . '%';
-    		$where['(products.title LIKE ? or shop_owner.first_name LIKE ? or shop_owner.last_name LIKE ? or products.address LIKE ? or products.postcode LIKE ?)'] = [$search, $search, $search, $search, $search];
+    		$where['(uniforms.title LIKE ? or shop_owner.first_name LIKE ? or shop_owner.last_name LIKE ? or uniforms.address LIKE ? or uniforms.postcode LIKE ?)'] = [$search, $search, $search, $search, $search];
     	}
 
     	if($request->get('created_on'))
     	{
     		$createdOn = $request->get('created_on');
     		if(isset($createdOn[0]) && !empty($createdOn[0]))
-    			$where['products.created >= ?'] = [
+    			$where['uniforms.created >= ?'] = [
     				date('Y-m-d 00:00:00', strtotime($createdOn[0]))
     			];
     		if(isset($createdOn[1]) && !empty($createdOn[1]))
-    			$where['products.created <= ?'] = [
+    			$where['uniforms.created <= ?'] = [
     				date('Y-m-d 23:59:59', strtotime($createdOn[1]))
     			];
     	}
@@ -78,42 +68,42 @@ class ProductsController extends AppController
     	// {
     	// 	$shops = $request->get('shop_id');
     	// 	$shops = $shops ? implode(',', $shops) : 0;
-    	// 	$where[] = 'products.shop_id IN ('.$shops.')';
+    	// 	$where[] = 'uniforms.shop_id IN ('.$shops.')';
     	// }
 
     	if($request->get('category'))
     	{
     		$ids = ProductSubCategoryRelation::distinct()->whereIn('sub_category_id', $request->get('category'))->pluck('product_id')->toArray();
     		$ids = !empty($ids) ? implode(',', $ids) : '0';
-    		$where[] = 'products.id IN ('.$ids.')';
+    		$where[] = 'uniforms.id IN ('.$ids.')';
     	}
 
 		if($request->get('brand'))
     	{
     		$ids = BrandProducts::distinct()->whereIn('brand_id', $request->get('brand'))->pluck('product_id')->toArray();
     		$ids = !empty($ids) ? implode(',', $ids) : '0';
-    		$where[] = 'products.id IN ('.$ids.')';
+    		$where[] = 'uniforms.id IN ('.$ids.')';
     	}
 
     	if($request->get('status'))
     	{
     		switch ($request->get('status')) {
     			case 'active':
-    				$where['products.status'] = 1;
+    				$where['uniforms.status'] = 1;
     			break;
     			case 'non_active':
-    				$where['products.status'] = 0;
+    				$where['uniforms.status'] = 0;
     			break;
     		}	
     	}
 
-		$where['products.is_uniform'] = 0;
+		$where['products.is_uniform'] = 1;
     	$listing = Products::getListing($request, $where);
 
     	if($request->ajax())
     	{
 		    $html = view(
-	    		"admin/products/listingLoop", 
+	    		"admin/uniforms/listingLoop", 
 	    		[
 	    			'listing' => $listing
 	    		]
@@ -132,7 +122,7 @@ class ProductsController extends AppController
 		{
 			$filters = $this->filters();
 	    	return view(
-	    		"admin/products/index", 
+	    		"admin/uniforms/index", 
 	    		[
 	    			'listing' => $listing,
 	    			'categories' => $filters['categories'],
@@ -171,7 +161,7 @@ class ProductsController extends AppController
 
     function view(Request $request, $id)
     {
-    	if(!Permissions::hasPermission('products', 'listing'))
+    	if(!Permissions::hasPermission('uniforms', 'listing'))
     	{
     		$request->session()->flash('error', 'Permission denied.');
     		return redirect()->route('admin.dashboard');
@@ -213,7 +203,7 @@ class ProductsController extends AppController
 			}
 			else
 			{
-				return view("admin/products/view", [
+				return view("admin/uniforms/view", [
 					'product' => $product,
 					'listing' => $listing
 				]);
@@ -227,7 +217,7 @@ class ProductsController extends AppController
 
     function add(Request $request)
     {
-    	if(!Permissions::hasPermission('products', 'create'))
+    	if(!Permissions::hasPermission('uniforms', 'create'))
     	{
     		$request->session()->flash('error', 'Permission denied.');
     		return redirect()->route('admin.dashboard');
@@ -236,6 +226,7 @@ class ProductsController extends AppController
     	if($request->isMethod('post'))
     	{
 			$data = $request->toArray();
+			
     		unset($data['_token']);
 			$sizeData = [];
 			$colors = [];
@@ -260,64 +251,62 @@ class ProductsController extends AppController
     		$validator = Validator::make(
 	            $data,
 	            [
-	                'title' => 'required',
+					'schools' => ['required'],
+					'product' => ['required', Rule::exists(Products::class,'id')],
 	                'description' => 'nullable',
 					'price' => ['required', 'numeric', 'min:0'],
 					'sale_price' => ['nullable', 'numeric', 'min:0'],
 	                'category' => ['required', Rule::exists(ProductCategories::class,'id')],
-	                'brand' => 'required',
 					'tags' => ['nullable', 'array'],
 					'tags.*' => ['string','max:20',],
 					'color_id' => ['nullable', 'array'],
 					'color_id.*' => ['distinct','required', Rule::exists(Colours::class,'id')],
-					'gender' => ['required', Rule::in(['Male','Female','Unisex'])],
-					'sku_number' => ['required', Rule::unique('products')],
+					'gender' => ['nullable', Rule::in(['Male','Female','Unisex'])],
 					'sizeData' => ['required', 'array']
 	            ]
 	        );
 
 	        if(!$validator->fails())
 	        {
+				$schools = $data['schools'];
+				$data['parent_id'] = $data['product'];
+				$data['category_id'] = $data['category'];
+				$data['is_uniform'] = 1;
+				unset($data['schools']);
+				unset($data['product']);
 				unset($data['size']);
 				unset($data['sizeData']);
 				unset($data['color_id']);
-	        	unset($data['brand']);
-	        	unset($data['sub_category']);
-		
-				$data['category_id'] = $data['category'];
+				unset($data['brand']);
+				unset($data['sub_category']);
+				unset($data['sku_number']);
 				unset($data['category']);
-	        	$product = Products::create($data);
-	        	if($product)
-	        	{
+				foreach($schools as $s)
+				{
+					$data['school_id'] = $s;
+					$product = Products::create($data);
 					if(!empty($colors))
-	        		{
+					{
 						Products::handleColors($product->id, $colors);
-	        		}
+					}
 					if (!empty($sizeData)) {
 						Products::handleSizes($product->id, $sizeData);
 					}
 					if(!empty($brands))
-	        		{
-	        			Products::handleBrands($product->id, $brands);
-	        		}
+					{
+						Products::handleBrands($product->id, $brands);
+					}
 					if(!empty($subCategory))
-	        		{
-	        			Products::handleSubCategory($product->id, $subCategory);
-	        		}
-					$request->session()->flash('success', "Product created successfully.");
-					return Response()->json([
-						'status' => true,
-						'message' => "Product created successfully.",
-						'id' => $product->id
-					]);
-	        	}
-	        	else
-	        	{
-					return Response()->json([
-						'status' => false,
-						'message' => 'Product could not be saved. Please try again.'
-					], 400);
-	        	}
+					{
+						Products::handleSubCategory($product->id, [$subCategory]);
+					}
+				}
+				$request->session()->flash('success', "Uniform created successfully.");
+				return Response()->json([
+					'status' => true,
+					'message' => "Uniform created successfully.",
+					'id' => $product->id
+				]);
 		    }
 		    else
 		    {
@@ -385,18 +374,20 @@ class ProductsController extends AppController
 				],
 	    		'sizes.size_title desc'
 	    	);
-	    return view("admin/products/add", [
+	    $schools = Schools::orderBy('name', 'asc')->get();
+		return view("admin/uniforms/add", [
 	    			'categories' => $categories,
 	    			'users' => $users,
 					'brands' => $brands,
 					'colors' => $colors,
-					'sizes' => $sizes
+					'sizes' => $sizes,
+					'schools' => $schools
 	    		]);
     }
 
     function edit(Request $request, $id)
     {
-    	if(!Permissions::hasPermission('products', 'update'))
+    	if(!Permissions::hasPermission('uniforms', 'update'))
     	{
     		$request->session()->flash('error', 'Permission denied.');
     		return redirect()->route('admin.dashboard');
@@ -441,7 +432,7 @@ class ProductsController extends AppController
 							'color_id' => ['nullable', 'array'],
 							'color_id.*' => ['required', Rule::exists(Colours::class,'id')],
 							'gender' => ['required', Rule::in(['Male','Female','Unisex','Kids'])],
-							'sku_number' => ['required', Rule::unique('products')->ignore($product->id)],
+							'sku_number' => ['required', Rule::unique('uniforms')->ignore($product->id)],
 							'sizeData' => ['required', 'array']
 		            	]
 		        );
@@ -565,7 +556,7 @@ class ProductsController extends AppController
 				],
 	    		'sizes.size_title desc'
 	    	);
-			return view("admin/products/add", [
+			return view("admin/uniforms/add", [
     			'product' => $product,
     			'categories' => $categories,
     			'users' => $users,
@@ -582,7 +573,7 @@ class ProductsController extends AppController
 
     function delete(Request $request, $id)
     {
-    	if(!Permissions::hasPermission('products', 'delete'))
+    	if(!Permissions::hasPermission('uniforms', 'delete'))
     	{
     		$request->session()->flash('error', 'Permission denied.');
     		return redirect()->route('admin.dashboard');
@@ -591,13 +582,13 @@ class ProductsController extends AppController
     	if(Products::remove($id))
     	{
     		$request->session()->flash('success', 'Product deleted successfully.');
-    		return redirect()->route('admin.products');
+    		return redirect()->route('admin.uniforms');
     	}
     }
 
     function bulkActions(Request $request, $action)
     {
-    	if( ($action != 'delete' && !Permissions::hasPermission('products', 'update')) || ($action == 'delete' && !Permissions::hasPermission('products', 'delete')) ) 
+    	if( ($action != 'delete' && !Permissions::hasPermission('uniforms', 'update')) || ($action == 'delete' && !Permissions::hasPermission('uniforms', 'delete')) ) 
     	{
     		$request->session()->flash('error', 'Permission denied.');
     		return redirect()->route('admin.dashboard');
@@ -656,27 +647,6 @@ class ProductsController extends AppController
 		return response()->json([
 			'status' => true,
 			'subCategory' => $subCategory,
-		]);
-	}
-
-	public function fetch($id)
-	{
-		$product = Products::get($id);
-		return response()->json([
-			'status' => true,
-			'product' => $product,
-		]);
-	}
-
-	public function search(Request $request)
-	{
-		$products = ProductSubCategoryRelation::leftJoin('products', 'product_sub_category_relation.product_id', '=', 'products.id')
-			->select(['products.id', 'products.title', 'products.sku_number'])
-			->where('sub_category_id', $request->get('subcategory'))
-			->get();
-		return response()->json([
-			'status' => true,
-			'products' => $products,
 		]);
 	}
 }

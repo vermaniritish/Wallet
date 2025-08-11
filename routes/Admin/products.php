@@ -8,6 +8,12 @@ Route::get('/products', '\App\Http\Controllers\Admin\Products\ProductsController
 Route::get('/products/add', '\App\Http\Controllers\Admin\Products\ProductsController@add')
     ->name('admin.products.add');
 
+Route::get('/products/search', '\App\Http\Controllers\Admin\Products\ProductsController@search')
+    ->name('admin.products.search');
+
+Route::get('/products/{id}/fetch', '\App\Http\Controllers\Admin\Products\ProductsController@fetch')
+    ->name('admin.products.fetch');
+
 Route::post('/products/add', '\App\Http\Controllers\Admin\Products\ProductsController@add')
     ->name('admin.products.add');
 

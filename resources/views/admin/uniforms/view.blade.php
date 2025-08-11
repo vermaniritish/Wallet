@@ -10,7 +10,7 @@ use App\Models\Admin\Settings;
 			<div class="header-body">
 				<div class="row align-items-center py-4">
 					<div class="col-lg-6 col-7">
-						<h6 class="h2 text-white d-inline-block mb-0">Manage Products</h6>
+						<h6 class="h2 text-white d-inline-block mb-0">Manage Uniforms</h6>
 					</div>
 					<div class="col-lg-6 col-5 text-right">
 						<a href="<?php echo route('admin.products') ?>" class="btn btn-neutral"><i class="fa fa-arrow-left"></i> Back</a>
@@ -53,7 +53,7 @@ use App\Models\Admin\Settings;
 					<div class="card-header">
 						<div class="row align-items-center">
 							<div class="col-8">
-								<h3 class="mb-0">Product Information</h3>
+								<h3 class="mb-0">Uniform Information</h3>
 							</div>
 						</div>
 					</div>
@@ -62,16 +62,20 @@ use App\Models\Admin\Settings;
 						<table class="table align-items-center table-flush view-table">
 							<tbody>
 								<tr>
-									<th style="width: 30%">Id</th>
+									<th width="30%">Id</th>
 									<td><?php echo $product->id ?></td>
+								</tr>
+								<tr>
+									<th>Product</th>
+								<td><a href="{{ route('admin.products.view', ['id' => $product->parent_id]) }}"><?php echo $product->parent->title ?></a></td>
 								</tr>
 								<tr>
 									<th>Title</th>
 									<td><?php echo $product->title ?></td>
 								</tr>
 								<tr>
-									<th>Gender Specific To</th>
-									<td><?php echo $product->gender ?></td>
+									<th>School</th>
+									<td><?php echo $product->school ? $product->school->name . ' - ' . $product->school->schooltype : '' ?></td>
 								</tr>
 								<tr>
 									<th>Color</th>
@@ -86,53 +90,12 @@ use App\Models\Admin\Settings;
 									</td>
 								</tr>
 								<tr>
-									<th>Category</th>
-									<td>
-										<?php 
-										if(isset($product->categories) && $product->categories ): 
-												echo '<span class="badge badge-warning">'.$product->categories->title.'</span> ';
-										endif; 
-										?>
-									</td>
-								</tr>
-								<tr>
-									<th>Sub Categories</th>
-									<td>
-										<?php 
-										if(isset($product->subCategories) && $product->subCategories ): 
-											foreach ($product->subCategories as $key => $pc):
-												echo '<span class="badge badge-warning">'.$pc['sub_category_title'].'</span> ';
-											endforeach;
-										endif; 
-										?>	
-									</td>
-								</tr>
-								<tr>
-									<th>Brands</th>
-									<td>
-										<?php 
-										if(isset($product->brands) && $product->brands ): 
-											foreach ($product->brands as $key => $pc):
-												echo '<span class="badge badge-warning">'.$pc['title'].'</span> ';
-											endforeach;
-										endif; 
-										?>	
-									</td>
-								</tr>
-								
-								<tr>
 									<th>SKU Number</th>
-									<td><?php echo $product->sku_number ?></td>
+									<td><?php echo $product->parent->sku_number ?></td>
 								</tr>
 								<tr>
 									<th>Price</th>
 									<td><?php echo $product->price ? _currency($product->price) : currency() ?></td>
-								</tr>
-								<tr>
-									<td colspan="2">
-										<h2>Description</h2>
-										<?php echo $product->description ?>
-									</td>
 								</tr>
 							</tbody>
 						</table>
@@ -142,7 +105,7 @@ use App\Models\Admin\Settings;
 					<div class="card-header">
 						<div class="row align-items-center">
 							<div class="col-md-8">
-								<h3 class="mb-0">Product Size's</h3>
+								<h3 class="mb-0">Uniform Size's</h3>
 							</div>
 							<div class="col-md-4">
 								<div class="input-group input-group-alternative input-group-merge">

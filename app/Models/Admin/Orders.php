@@ -110,6 +110,9 @@ class Orders extends AppModel
     public static function getStatuses($status = null)
     {
         $statuses = [
+            'draft' => ['label' => 'Draft', 'styles' => 'background-color: #ffa07a; color: #cc0000;', 'message' => 'Your order is in draft.', 
+            'sms_message' => ''
+        ],
             'pending' => ['label' => 'Pending', 'styles' => 'background-color: #ffa07a; color: #cc0000;', 'message' => 'Your order is pending to accept.', 
             'sms_message' => ''
         ],
