@@ -45,6 +45,14 @@ use App\Models\Admin\Settings;
 										<td><?php echo $page->prefix_id ?></td>
 									</tr>
 									<tr>
+										<th>Employee Auth Id</th>
+										<td><?php echo $page->employee_id ?></td>
+									</tr>
+									<tr>
+										<th>Store</th>
+										<td class="text-primary"><?php echo $page->shop->name ?></td>
+									</tr>
+									<tr>
 										<th>Customer Name</th>
 										<td>
 											<b><?php echo $page->company; ?></b><br />
@@ -126,6 +134,14 @@ use App\Models\Admin\Settings;
 										<th>Created On</th>
 										<td><?php echo _dt($page->created) ?></td>
 									</tr>
+									<tr>
+										<th>Completed Date</th>
+										<td><?php echo $page->completed_date ? _dt($page->completed_date) : '-' ?></td>
+									</tr>
+									<tr>
+										<th>Dispatch Date</th>
+										<td><?php echo $page->dispatch_date ? _dt($page->dispatch_date) : '-' ?></td>
+									</tr>
 								</tbody>
 							</table>
 						</div>
@@ -165,25 +181,15 @@ use App\Models\Admin\Settings;
 							<tbody>
 								<tr>
 									<th>Product Costs</th>
-									<td><?php echo $currency.($page->subtotal + $page->logo_discount - $page->logo_cost - $page->one_time_cost) ?></td>
+									<td><?php echo $currency.($page->subtotal) ?></td>
 								</tr>
 								<tr>
 									<th>Costs To Add Logo</th>
 									<td><?php echo $currency.$page->logo_cost ?></td>
 								</tr>
-								@if($page->logo_discount_applied > 0)
-								<tr>
-									<th>Logo Discount ({{$page->logo_discount_applied}} logo(s)):</th>
-									<td class="text-danger"> - <?php echo $currency.$page->logo_discount ?></td>
-								</tr>
-								@endif
-								<tr>
-									<th>One Time Setup Fees</th>
-									<td><?php echo $currency.$page->one_time_cost ?></td>
-								</tr>
 								<tr class="bg-lighter">
 									<th>Subtotal</th>
-									<td><?php echo $currency.$page->subtotal ?></td>
+									<td><?php echo $currency.$page->subtotal+$page->logo_cost ?></td>
 								</tr>
 								<tr>
 									<th>
@@ -191,18 +197,22 @@ use App\Models\Admin\Settings;
 										<?php 
 										$coupon = $page->coupon ? json_decode($page->coupon, true) : null;
 										if ($coupon): ?>
-											<span class="badge badge-primary">{{ $coupon['coupon_code'] }}</span>
+											<span class="badge badge-primary">{{ $coupon['title'] . ' - ' . $coupon['coupon_code'] }}</span>
 										<?php endif; ?>
 									</th>
-									<td class="text-danger">- <?php echo $currency.$page->discount ?></td>
+									<td class="text-success">- <?php echo $currency.$page->discount ?></td>
 								</tr>
 								<tr>
 									<th>VAT ({{$page->tax_percentage}}%)</th>
-									<td><?php echo $page->tax ? _currency($page->tax) : _currency(0) ?></td>
+									<td><?php echo $currency.( ($page->tax ? $page->tax : 0) + ($page->logo_tax ? $page->logo_tax : 0) ) ?></td>
+								</tr>
+								<tr>
+									<th>Shipping Charges</th>
+									<td><?php echo $currency.( ($page->delivery_cost ? $page->delivery_cost : 0) ) ?></td>
 								</tr>
 								<tr class="bg-lighter">
 									<th>Total Amount</th>
-									<td class="text-lg"><?php echo $page->total_amount ? _currency($page->total_amount) : _currency(0) ?></td>
+									<td class="text-lg"><?php echo $page->total_amount ? $currency.($page->total_amount) : _currency(0) ?></td>
 								</tr>
 							</tbody>
 						</table>
@@ -302,7 +312,7 @@ use App\Models\Admin\Settings;
 						</form>
 					</div>
 				</div>
-				<div class="card">
+				<div class="card d-none">
 					<div class="card-header">
 						<div class="row align-items-center">
 							<div class="col-9">

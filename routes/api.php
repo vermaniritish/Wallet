@@ -23,6 +23,8 @@ Route::middleware(['guest:api'])->group(function () {
     include "API/home.php";
     Route::get('/coupons', [CouponsController::class,'index'])
         ->name('api.coupons.index');
+
+    Route::post('/orders/{id}/ship', [\App\Http\Controllers\Admin\OrdersController::class, 'ship'])->name('admin.orders.ship');
 });
 
 Route::middleware(['apiAuth'])->group(function () {

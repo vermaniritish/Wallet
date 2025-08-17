@@ -52,6 +52,11 @@ class Orders extends AppModel
         return $this->belongsTo(User::class, 'customer_id', 'id');
     }
 
+    public function shop()
+    {
+        return $this->belongsTo(Shops::class, 'shop_id', 'id');
+    }
+
     /**
     * Order -> Admins belongsTO relation
     * 

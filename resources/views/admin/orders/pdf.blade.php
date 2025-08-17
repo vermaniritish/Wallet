@@ -85,50 +85,28 @@
 									<td style="width:55%;padding: 5px; vertical-align: top;">
                                         <?php echo $row->product_title ?> <?php echo $row->product && $row->product->sku_number ? ' - ' . $row->product->sku_number : '' ?>
 										@if($logodata)
-										<?php 
-										$existLogo = false;
-										foreach($logodata as $logo)
-										{
-											if(($logo->text || $logo->image || $logo->category || $logo->postion))
-											{
-												$existLogo = true;
-												break;
-											}
-										}
-										?>
-										@if($existLogo)
 										<br /><br />
 										<table style="border:1px solid #c7a162;width: 100%; line-height: inherit; text-align: left;font-size:12px;">
 											<tr style="background: #f7eddd; border-bottom: 1px solid #ddd; font-weight: bold;">
-												<td style="width:35%;padding: 5px; vertical-align: top;">Position</td>
-												<td style="width:35%;padding: 5px; vertical-align: top;">Logo</td>
-												<td style="width:30%;padding: 5px; vertical-align: top;">Price</td>
+												<th style="width:50%;padding: 5px; vertical-align: top;">Title</th>
+												<th style="width:15%;padding: 5px; vertical-align: top;">Cost</th>
+												<th style="width:15%;padding: 5px; vertical-align: top;">Qty</th>
+												<th style="width:15%;padding: 5px; vertical-align: top;">Total</th>
 											</tr>
 											@foreach($logodata as $logo)
-											<?php if(!($logo->text || $logo->image || $logo->category || $logo->postion)) continue; ?>
 											<tr style="border-bottom: 1px solid #ddd;">
-												<td style="width:35%; padding: 5px;vertical-align: top;">
-													<?php if(trim($logo->postion)):
-														$positionSlug = Str::slug($logo->postion);	
-													?>
-														<img src="{{public_path('frontend/assets/size-guides/'.$positionSlug.'.jpg')}}" alt="" style="max-width:100%;height: 90px;" /><br/>
-													<?php endif; ?>
-													<?php echo $logo->category ?>
+												<td>
+													{{ $logo->title }}<br /> {{ $logo->description }}
+													@if($logo->required)
+													<br /><small class="text-danger">This is required.</small>
+													@endif
 												</td>
-												<td style="width:35%; padding: 5px;vertical-align: top;">
-													<?php if(trim($logo->image)):?>
-														<img src="{{public_path($logo->image)}}" alt="" style="max-width:100%;height: 90px;" /><br/>
-													<?php else: ?>
-														<?php echo $logo->text ?>
-													<?php endif; ?>
-												</td>
-												<td style="width:30%; padding: 5px;vertical-align: top;">
-													Price for {{ $row->quantity }} {{$row->quantity > 1 ? 'logos are' : 'logo is' }} {{_currency($row->quantity* ($logo && isset($logo->price) && $logo->price ? $logo->price : 0))}}
-												</td>
+												<td>{{ _currency($logo->cost) }}</td>
+												<td>{{ $logo->quantity }}</td>
+												<td>{{ _currency($logo->total) }}</td>
 											</tr>
 											@endforeach
 										</table>	
-										@endif			
 										@endif			
 									</td>
 									<td style="width:10%;padding: 5px; vertical-align: top;">
@@ -163,37 +141,22 @@
 									<td colspan="5" style="text-align:right;padding: 5px; ">Product Costs: </td>
 
 									<td style="text-align:right;padding: 5px; ">
-									   <?php echo _currency($page->subtotal + $page->logo_discount - $page->logo_cost - $page->one_time_cost) ?>
+									   <?php echo _currency($page->subtotal) ?>
 									</td>
 								</tr>
 								@endif
                                 @if($page->logo_cost > 0)
 								<tr style="background: #f7eddd; border-bottom: 1px solid #c7a162; font-weight: bold;">
-									<td colspan="5" style="text-align:right;padding: 5px; ">Costs To Add Logo </td>
+									<td colspan="5" style="text-align:right;padding: 5px; ">Customization Cost</td>
 
 									<td style="text-align:right;padding: 5px; ">
 									   <?php echo _currency($page->logo_cost) ?>
 									</td>
 								</tr>
                                 @endif
-								@if($page->logo_discount > 0)
-								<tr style="background: #f7eddd; border-bottom: 1px solid #c7a162; font-weight: bold;">
-									<td colspan="5" style="text-align:right;padding: 5px; ">Logo Discount ({{$page->logo_discount_applied}} logo(s)):</td>
-									<td style="text-align:right;padding: 5px; "> - <?php echo _currency($page->logo_discount) ?></td>
-								</tr>
-								@endif
-								@if($page->one_time_cost > 0)
-								<tr style="background: #f7eddd; border-bottom: 1px solid #c7a162; font-weight: bold;">
-									<td colspan="5" style="text-align:right;padding: 5px; ">One Time Logo Setup Fees: </td>
-
-									<td style="text-align:right;padding: 5px; ">
-									   <?php echo _currency($page->one_time_cost) ?>
-									</td>
-								</tr>
-                                @endif
 								<tr style="background: #f7eddd; border-bottom: 1px solid #c7a162; font-weight: bold;">
 									<td colspan="5" style="text-align:right;padding: 5px; ">Subtotal</td>
-									<td style="text-align:right;padding: 5px; "><?php echo _currency($page->subtotal) ?></td>
+									<td style="text-align:right;padding: 5px; "><?php echo _currency($page->subtotal + $page->logo_cost) ?></td>
 								</tr>
 								<tr style="background: #f7eddd; border-bottom: 1px solid #c7a162; font-weight: bold;">
                                     <td colspan="5" style="text-align:right;padding: 5px; ">
@@ -205,14 +168,16 @@
                                         <?php endif; ?>
                                     </td>
 									<td style="text-align:right;padding: 5px; ">
-                                        <?php echo _currency($page->discount) ?>
+                                        - <?php echo _currency($page->discount) ?>
 									</td>
 								</tr>
 								<tr style="background: #f7eddd; border-bottom: 1px solid #c7a162; font-weight: bold;">
 									<td colspan="5" style="text-align:right;padding: 5px; ">Vat {{$page->tax_percentage}}%: </td>
-									<td style="text-align:right;padding: 5px; ">
-                                    <?php echo $page->tax ? _currency($page->tax) : _currency(0) ?>
-									</td>
+									<td style="text-align:right;padding: 5px; "><?php echo _currency( ($page->tax ? $page->tax : 0) + ($page->logo_tax ? $page->logo_tax : 0) ) ?></td>
+								</tr>
+								<tr style="background: #f7eddd; border-bottom: 1px solid #c7a162; font-weight: bold;">
+									<td colspan="5" style="text-align:right;padding: 5px; ">Shipping Charges: </td>
+									<td style="text-align:right;padding: 5px; "><?php echo _currency($page->delivery_cost) ?></td>
 								</tr>
 								<tr style="background: #f7eddd; border-bottom: 1px solid #c7a162; font-weight: bold;">
 									<td colspan="5" style="text-align:right;padding: 5px; ">Grand Total: </td>

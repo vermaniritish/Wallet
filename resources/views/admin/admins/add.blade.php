@@ -77,20 +77,28 @@
 								<div class="col-lg-6">
 								    <div class="form-group">
 								        <label class="form-control-label" for="shop-select">Select Shops</label>
-								        <select id="shop-select" class="form-control" name="shop_id[]" multiple>
+								        <select id="shop-select" class="form-control" name="shops[]" multiple>
 								            @foreach($shops as $shop)
 								                <option value="{{ $shop->id }}" 
-								                    @if(is_array(old('shop_id')) && in_array($shop->id, old('shop_id'))) selected @endif>
+								                    @if(is_array(old('shops')) && in_array($shop->id, old('shops'))) selected @endif>
 								                    {{ $shop->name }}
 								                </option>
 								            @endforeach
 								        </select>
-								        @error('shop_id')
+								        @error('shops')
 								            <small class="text-danger">{{ $message }}</small>
 								        @enderror
 								    </div>
 								</div>
-
+								<div class="col-lg-6">
+								    <div class="form-group">
+								        <label class="form-control-label" for="shop-select">Employee Auth Id</label>
+								        <input type="text" id="input-employee_id" class="form-control" placeholder="123" name="employee_id"  value="<?php echo old('employee_id') ?>">
+								        @error('employee_id')
+								            <small class="text-danger">{{ $message }}</small>
+								        @enderror
+								    </div>
+								</div>
 							</div>
 						</div>
 						<hr class="my-4" />

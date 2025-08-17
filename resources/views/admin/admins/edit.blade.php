@@ -76,12 +76,12 @@
 									</div>
 								</div>
 								@php
-								    $selectedShops = isset($admin) ? json_decode($admin->shop_id, true) : old('shop_id', []);
+								    $selectedShops = isset($admin) ? json_decode($admin->shops, true) : old('shops', []);
 								@endphp
 								<div class="col-lg-6">
 								    <div class="form-group">
 								        <label class="form-control-label" for="shop-select">Select Shops</label>
-								        <select id="shop-select" class="form-control" name="shop_id[]" multiple>
+								        <select id="shop-select" class="form-control" name="shops[]" multiple>
 								            @foreach($shops as $shop)
 								                <option value="{{ $shop->id }}"
 								                    @if(is_array($selectedShops) && in_array($shop->id, $selectedShops)) selected @endif>
@@ -89,7 +89,16 @@
 								                </option>
 								            @endforeach
 								        </select>
-								        @error('shop_id')
+								        @error('shops')
+								            <small class="text-danger">{{ $message }}</small>
+								        @enderror
+								    </div>
+								</div>
+								<div class="col-lg-6">
+								    <div class="form-group">
+								        <label class="form-control-label" for="shop-select">Employee Auth Id</label>
+								        <input type="text" id="input-employee_id" class="form-control" placeholder="123" name="employee_id"  value="<?php echo $admin->employee_id ?>">
+								        @error('employee_id')
 								            <small class="text-danger">{{ $message }}</small>
 								        @enderror
 								    </div>

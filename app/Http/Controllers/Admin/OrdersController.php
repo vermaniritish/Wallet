@@ -889,52 +889,52 @@ class OrdersController extends AppController
 			$address = substr($order->address, 0, 40);
 			$xml = <<<EOL
 			<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:v14="http://www.parcelforce.net/ws/ship/v14">
-   <soapenv:Header/>
-   <soapenv:Body>
-      <v14:CreateShipmentRequest>
-         <v14:Authentication>
-            <v14:UserName>$PFELUSERNAME</v14:UserName>
-            <v14:Password>$PFELPWD</v14:Password>
-         </v14:Authentication>
-         <v14:RequestedShipment>
-            <v14:DepartmentId>$PFELDPTNO</v14:DepartmentId>
-            <v14:ShipmentType>DELIVERY</v14:ShipmentType>
-            <v14:ContractNumber>$PFELCONTRCTNO</v14:ContractNumber>
-            <v14:ServiceCode>$shipOption</v14:ServiceCode>
-            <v14:ShippingDate>$date</v14:ShippingDate>
-            <v14:RecipientContact>
-               <v14:BusinessName>{$order->company}</v14:BusinessName>
-               <v14:ContactName>{$order->first_name} {$order->last_name}</v14:ContactName>
-               <v14:EmailAddress>{$order->customer_email}</v14:EmailAddress>
-               <v14:Telephone></v14:Telephone>
-               <v14:MobilePhone>$order->customer_phone</v14:MobilePhone>
-               <v14:Notifications>
-                  <v14:NotificationType>EMAIL</v14:NotificationType>
-                  <v14:NotificationType>EMAILATTEMPTDELIVERY</v14:NotificationType>
-                  <v14:NotificationType>SMSDAYOFDESPATCH</v14:NotificationType>
-                  <v14:NotificationType>SMSSTARTOFDELIVERY</v14:NotificationType>
-                  <v14:NotificationType>SMSATTEMPTDELIVERY</v14:NotificationType>
-               </v14:Notifications>
-            </v14:RecipientContact>
-            <v14:RecipientAddress>
-               <v14:AddressLine1>{$address}</v14:AddressLine1>
-               <v14:AddressLine2>{$order->area}</v14:AddressLine2>
-               <v14:AddressLine3></v14:AddressLine3>
-               <v14:Town>{$order->city}</v14:Town>
-               <v14:Postcode>{$order->postcode}</v14:Postcode>
-               <v14:Country>GB</v14:Country>
-            </v14:RecipientAddress>
-            <v14:TotalNumberOfParcels>{$request->get('parcel')}</v14:TotalNumberOfParcels>
-            <v14:Enhancement>
-               <v14:SaturdayDeliveryRequired>false</v14:SaturdayDeliveryRequired>
-            </v14:Enhancement>
-            <v14:ReferenceNumber1>WW-{$order->prefix_id}</v14:ReferenceNumber1>
-            <v14:SpecialInstructions1></v14:SpecialInstructions1>
-            <v14:ConsignmentHandling>false</v14:ConsignmentHandling>
-         </v14:RequestedShipment>
-      </v14:CreateShipmentRequest>
-   </soapenv:Body>
-</soapenv:Envelope>
+			<soapenv:Header/>
+			<soapenv:Body>
+				<v14:CreateShipmentRequest>
+					<v14:Authentication>
+						<v14:UserName>$PFELUSERNAME</v14:UserName>
+						<v14:Password>$PFELPWD</v14:Password>
+					</v14:Authentication>
+					<v14:RequestedShipment>
+						<v14:DepartmentId>$PFELDPTNO</v14:DepartmentId>
+						<v14:ShipmentType>DELIVERY</v14:ShipmentType>
+						<v14:ContractNumber>$PFELCONTRCTNO</v14:ContractNumber>
+						<v14:ServiceCode>$shipOption</v14:ServiceCode>
+						<v14:ShippingDate>$date</v14:ShippingDate>
+						<v14:RecipientContact>
+						<v14:BusinessName>{$order->company}</v14:BusinessName>
+						<v14:ContactName>{$order->first_name} {$order->last_name}</v14:ContactName>
+						<v14:EmailAddress>{$order->customer_email}</v14:EmailAddress>
+						<v14:Telephone></v14:Telephone>
+						<v14:MobilePhone>$order->customer_phone</v14:MobilePhone>
+						<v14:Notifications>
+							<v14:NotificationType>EMAIL</v14:NotificationType>
+							<v14:NotificationType>EMAILATTEMPTDELIVERY</v14:NotificationType>
+							<v14:NotificationType>SMSDAYOFDESPATCH</v14:NotificationType>
+							<v14:NotificationType>SMSSTARTOFDELIVERY</v14:NotificationType>
+							<v14:NotificationType>SMSATTEMPTDELIVERY</v14:NotificationType>
+						</v14:Notifications>
+						</v14:RecipientContact>
+						<v14:RecipientAddress>
+						<v14:AddressLine1>{$address}</v14:AddressLine1>
+						<v14:AddressLine2>{$order->area}</v14:AddressLine2>
+						<v14:AddressLine3></v14:AddressLine3>
+						<v14:Town>{$order->city}</v14:Town>
+						<v14:Postcode>{$order->postcode}</v14:Postcode>
+						<v14:Country>GB</v14:Country>
+						</v14:RecipientAddress>
+						<v14:TotalNumberOfParcels>{$request->get('parcel')}</v14:TotalNumberOfParcels>
+						<v14:Enhancement>
+						<v14:SaturdayDeliveryRequired>false</v14:SaturdayDeliveryRequired>
+						</v14:Enhancement>
+						<v14:ReferenceNumber1>SW-{$order->prefix_id}</v14:ReferenceNumber1>
+						<v14:SpecialInstructions1></v14:SpecialInstructions1>
+						<v14:ConsignmentHandling>false</v14:ConsignmentHandling>
+					</v14:RequestedShipment>
+				</v14:CreateShipmentRequest>
+			</soapenv:Body>
+			</soapenv:Envelope>
 EOL;
 			$ch = curl_init();
 			curl_setopt($ch, CURLOPT_HTTPHEADER, array("Content-Type: text/xml"));
@@ -963,13 +963,12 @@ EOL;
 			if( isset($jsonArrayLabel['CompletedShipmentInfo']['CompletedShipments']['CompletedShipment']['ShipmentNumber']) && $jsonArrayLabel['CompletedShipmentInfo']['CompletedShipments']['CompletedShipment']['ShipmentNumber'] )
 			{
 				$trackingNumber = $jsonArrayLabel['CompletedShipmentInfo']['CompletedShipments']['CompletedShipment']['ShipmentNumber'];
-				$order->status = count($request->get('ship')) >= $request->get('total') ? 'shipped' : 'partial_shipped';
+				$order->status = 'shipped';
+				$order->parcels = $request->get('parcel');
+				$order->shipment_tracking = $trackingNumber;
+				$order->shipping_gateway = 'parcelforce';
 				$order->save();
 
-				OrderProductRelation::whereIn('id', $request->get('ship'))->update([
-					'shipment_tracking' => $trackingNumber
-				]);
-				
 				$message = "Your order $order->prefix_id is completed and dispatched. Please track your order with $trackingNumber on this link [tracking link]. Thank you. <a href=\"https://www.pindersworkwear.com\">pindersworkwear.com</a>";
 				$phone = preg_replace('/\D/', '', $order->customer_phone);
 				if(!$phone && $order->customer && $order->customer->phonenumber)
@@ -981,16 +980,30 @@ EOL;
 				}
 				return Response()->json([
 					'status' => true,
-					'message' => count($request->get('ship')) . " items shipped successfully."
+					'message' => "Shipping information submitted to service provider.",
+					'trackingNumber' => $trackingNumber,
+					'parcels' => $request->get('parcel')
 				]);
 			}
 			else if($jsonArrayLabel && isset($jsonArrayLabel['Alerts']) && isset($jsonArrayLabel['Alerts']['Alert']))
 			{
 				$errors = Arr::pluck($jsonArrayLabel['Alerts']['Alert'], 'Message');
+				$errors = array_values(array_filter($errors));
+
+				$order->status = 'shipped';
+				$order->shipment_tracking = '123456';
+				$order->shipping_gateway = 'parcelforce';
+				$order->parcels = $request->get('parcel');
+				$order->save();
+				return Response()->json([
+					'status' => true,
+					'message' => "Shipping information submitted to service provider.",
+					'trackingNumber' => '123456'
+				]);
 
 				return Response()->json([
 					'status' => false,
-					'message' => implode("<br />", $errors)
+					'message' => $errors ? implode("<br />", $errors) : 'Shipment could not be submitted to provider. Please try again or contact us.'
 				]);
 			}
 

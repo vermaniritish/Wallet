@@ -11,60 +11,60 @@
 			{{ $row->product_id }}
 		</a>
 	</td>
-	<td>
-		<?php echo $row->product_title ?>
-		
+	<td style="width:50%">
+		<?php echo $row->product_title ?><br />
+		<p class="m-0 p-0 small">{{ $row->category }} - {{ $row->sub_category }} | Color: {{$row->color }} | Size: {{$row->size_title }}</p>
+		<?php if($row->logo_data): ?>
+		<p class="m-0 p-0 small text-warning">Customization added worth: {{ $row->logo_cost }}</p>
+		<?php endif; ?>
 	</td>
 	<td>
 		<?php echo $row->quantity ?>
 	</td>
     <td>
-		<?php echo $row->amount ? _currency($row->amount) : _currency(0) ?>
+		<span><?php echo $row->amount ? _currency($row->amount) : _currency(0) ?></span>
+		@if($row->logo_data)
+		<span class="ml-4" onclick="$(this).parents('tr').next('.table-borderless').toggleClass('d-none')"><i class="fa fa-tags"></i><span>
+		@endif
 	</td>
 </tr>
-<?php 
-$logos = $row->logo_data ? (substr($row->logo_data, 0, 1) == '{' ? json_decode('['.$row->logo_data.']') : json_decode($row->logo_data)) : null; 
-?>
+<?php $logos = $row->logo_data ? (substr($row->logo_data, 0, 1) == '{' ? json_decode('['.$row->logo_data.']') : json_decode($row->logo_data)) : null; ?>
 <?php if($logos): ?>
-@foreach($logos as $logo)
-<?php if(!($logo->text || $logo->image || $logo->category || $logo->postion)) continue; ?>
-<tr class="table-borderless">
-	<td></td>
-	<td colspan="4">
-		<div class="row">
-			@if(isset($logo->already_uploaded) && $logo->already_uploaded)
-			<div class="col-sm-2">
-				<p class="text-danger">Pinder has already my logo.</p>
-			</div>
-			@else			
-			<div class="col-sm-2">
-				<div class="" style="width: 80px;height:80px;border: 1px solid #ddd;">
-					<?php if(trim($logo->image)):?>
-					<img src="{{ $logo->image }}" style="max-width:100%;max-height:100%;">
-					<?php endif; ?>
-				</div>
-			</div>
-			@endif
-			<div class="col-sm-5">
-				<span class="text-muted">Text:</span> <?php echo $logo->text ?><br />
-				<span class="text-muted">Category:</span> <?php echo $logo->category ?><br />
-				<span class="text-muted">Position:</span> <?php echo $logo->postion ?><br />
-			</div>
-			<div class="col-sm-4">
-				<span class="text-muted">Size:</span> <?php echo $row->size_title ?><br />
-				<span class="text-muted">Color:</span> <?php echo $row->color ?><br />
-			</div>
-		</div>
+<tr class="table-borderless d-none">
+	<td colspan="5" style="padding:0;">
+		<table class="table">
+			<thead class="thead-light">
+			<tr>
+				<th width="50%">Title</th>
+				<th>Cost</th>
+				<th>Qty</th>
+				<th>Total</th>
+			</tr>
+			</thead>
+			@foreach($logos as $logo)
+			<tr>
+				<td>
+					{{ $logo->title }}<br /> {{ $logo->description }}
+					@if($logo->required)
+					<br /><small class="text-danger">Required</small>
+					@endif
+				</td>
+				<td>{{ _currency($logo->cost) }}</td>
+				<td>{{ $logo->quantity }}</td>
+				<td>{{ _currency($logo->total) }}</td>
+			</tr>
+			@endforeach
+		</table>
 	</td>
 </tr>
-@endforeach
+<?php endif; ?>
+
 <?php if($row->shipment_tracking): ?>
 <tr>
 	<td colspan="5">
 		<a target="_blank" href="http://www.parcelforce.com/track-trace?trackNumber={{$row->shipment_tracking}}"><span class="badge badge-success">Shipped: {{$row->shipment_tracking}}</span></a>
 	</td>
 </tr>
-<?php endif; ?>
 <?php endif; ?>
 <tr><td colspan="5" style="padding:0;margin:0;"></td></tr>
 <?php endforeach; ?>

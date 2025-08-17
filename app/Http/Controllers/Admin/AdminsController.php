@@ -158,7 +158,7 @@ class AdminsController extends AppController
 	        	unset($data['permissions']);
 	        	unset($data['_token']);
 	        	unset($data['send_password_email']);
-	        	$data['shop_id'] = json_encode($request->shop_id);
+	        	$data['shops'] = json_encode($request->shops);
 
 	        	$admin = Admins::create($data);
 	        	if($admin)
@@ -269,7 +269,7 @@ class AdminsController extends AppController
 		        	unset($data['permissions']);
 		        	unset($data['_token']);
 		        	unset($data['send_password_email']);
-		        	$data['shop_id'] = json_encode($request->shop_id);
+		        	$data['shops'] = json_encode($request->shops);
 
 		        	$admin = Admins::modify($id, $data);
 		        	if($admin)
