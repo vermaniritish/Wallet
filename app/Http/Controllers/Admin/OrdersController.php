@@ -993,12 +993,18 @@ EOL;
 				$order->status = 'shipped';
 				$order->shipment_tracking = '123456';
 				$order->shipping_gateway = 'parcelforce';
+				$order->delivery_at = 'Post';
 				$order->parcels = $request->get('parcel');
+				$order->delivery_cost = Settings::get('shipping_cost_parcelforce');
+				$order->total_amount = $order->subtotal + $order->logo_cost - $order->discount + $order->delivery_cost + $order->tax + $order->logo_tax; 
 				$order->save();
+
 				return Response()->json([
 					'status' => true,
 					'message' => "Shipping information submitted to service provider.",
-					'trackingNumber' => '123456'
+					'trackingNumber' => '123456',
+					'parcels' => $order->parcels,
+					'cost' => $order->delivery_cost
 				]);
 
 				return Response()->json([

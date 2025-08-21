@@ -129,6 +129,17 @@ use App\Models\Admin\Settings;
 									<td><?php echo $product->price ? _currency($product->price) : currency() ?></td>
 								</tr>
 								<tr>
+									<th>Options</th>
+									<td>
+										@if($product->common_product)
+										<span class="badge badge-primary">Common product</span>
+										@endif
+										@if($product->non_exchange)
+										<span class="badge badge-primary">Non Refund and Exchange.</span>
+										@endif
+									</td>
+								</tr>
+								<tr>
 									<td colspan="2">
 										<h2>Description</h2>
 										<?php echo $product->description ?>

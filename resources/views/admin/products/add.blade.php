@@ -417,7 +417,23 @@
 									</div>
 									<div class="col-lg-6">
 										<div class="form-group">
-											<label class="">Logo Options</label>
+											<label class="">Other Options</label>
+											<div class="custom-control">
+												<label class="custom-toggle">
+													<input type="hidden" name="common_product" value="0">
+													<input type="checkbox" name="common_product" v-model="common_product" value="1" <?php echo (old('common_product') ? 'checked' : '') ?>>
+													<span class="custom-toggle-slider rounded-circle" data-label-off="No" data-label-on="Yes"></span>
+												</label>
+												<label class="custom-control-label">Common Product</label>
+											</div>
+											<div class="custom-control">
+												<label class="custom-toggle">
+													<input type="hidden" name="non_exchange" value="0">
+													<input type="checkbox" name="non_exchange" v-model="non_exchange" value="1" <?php echo (old('non_exchange') ? 'checked' : '') ?>>
+													<span class="custom-toggle-slider rounded-circle" data-label-off="No" data-label-on="Yes"></span>
+												</label>
+												<label class="custom-control-label">Non Exchangeable and Refundable</label>
+											</div>
 											<div class="custom-control">
 												<label class="custom-toggle">
 													<input type="hidden" name="printed_logo" value="0">

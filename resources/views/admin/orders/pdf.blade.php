@@ -84,6 +84,9 @@
 								<tr class="item">
 									<td style="width:55%;padding: 5px; vertical-align: top;">
                                         <?php echo $row->product_title ?> <?php echo $row->product && $row->product->sku_number ? ' - ' . $row->product->sku_number : '' ?>
+										<?php if($row->non_exchange): ?>
+										<p class="m-0 p-0 small text-danger" style="color: #f5365c">No Refund and Exchange</p>
+										<?php endif; ?>
 										@if($logodata)
 										<br /><br />
 										<table style="border:1px solid #c7a162;width: 100%; line-height: inherit; text-align: left;font-size:12px;">

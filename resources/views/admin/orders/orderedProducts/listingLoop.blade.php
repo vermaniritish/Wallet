@@ -17,6 +17,10 @@
 		<?php if($row->logo_data): ?>
 		<p class="m-0 p-0 small text-warning">Customization added worth: {{ $row->logo_cost }}</p>
 		<?php endif; ?>
+		<?php if($row->non_exchange): ?>
+		<p class="m-0 p-0 small text-danger">No Refund and Exchange</p>
+		<?php endif; ?>
+
 	</td>
 	<td>
 		<?php echo $row->quantity ?>

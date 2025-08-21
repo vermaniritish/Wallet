@@ -30,7 +30,9 @@ let order = new Vue({
         dropValues: null,
         colorImages: {},
         embroidered_logo: 0,
-        printed_logo: 0
+        printed_logo: 0,
+        common_product: 0,
+        non_exchange: 0,
     },
     mounted: function() {
         this.initBasics();
@@ -132,6 +134,8 @@ let order = new Vue({
                 this.sku_number = data.sku_number;
                 this.embroidered_logo = data.embroidered_logo;
                 this.printed_logo = data.printed_logo;
+                this.common_product = data.common_product;
+                this.non_exchange = data.non_exchange;
                 this.colorImages = data.color_images ? JSON.parse(data.color_images) : {};
                 if (this.description !== null) {
                     put_editor_html('product-editor', this.description.trim());

@@ -363,7 +363,7 @@ class Orders extends AppModel
                             'products.id',
                             'title',
                             'amount',
-                            'quantity'
+                            'quantity',
                         ]);
                 },
             ])
