@@ -90,15 +90,6 @@
 								        @enderror
 								    </div>
 								</div>
-								<div class="col-lg-6">
-								    <div class="form-group">
-								        <label class="form-control-label" for="shop-select">Employee Auth Id</label>
-								        <input type="text" id="input-employee_id" class="form-control" placeholder="123" name="employee_id"  value="<?php echo old('employee_id') ?>">
-								        @error('employee_id')
-								            <small class="text-danger">{{ $message }}</small>
-								        @enderror
-								    </div>
-								</div>
 							</div>
 						</div>
 						<hr class="my-4" />

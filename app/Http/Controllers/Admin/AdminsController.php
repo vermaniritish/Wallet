@@ -139,8 +139,7 @@ class AdminsController extends AppController
 	                'send_password_email' => 'required',
 	                'is_admin' => 'required',
 	                'password' => [
-	                	'required',
-					    'min:8',
+	                	'required'
 	                ],
 	                'permissions' => [
 	                	Rule::requiredIf(function () use ($request) {
@@ -250,8 +249,7 @@ class AdminsController extends AppController
 		                ],
 		                'is_admin' => 'required',
 		                'password' => [
-		                	'nullable',
-						    'min:8',
+		                	'nullable'
 		                ],
 		                'permissions' => [
 		                	Rule::requiredIf(function () use ($request) {

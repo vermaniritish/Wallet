@@ -129,6 +129,10 @@ use App\Models\Admin\Settings;
 									<td><?php echo $product->price ? _currency($product->price) : currency() ?></td>
 								</tr>
 								<tr>
+									<th>Visibility</th>
+									<td><?php echo $product->shop_visible ? "<a class='text-primary'>Shop</a>" : '' ?> &nbsp; &nbsp; <?php echo $product->website_visible ? "<a class='text-primary'>Website</a>" : '' ?></td>
+								</tr>
+								<tr>
 									<th>Options</th>
 									<td>
 										@if($product->common_product)

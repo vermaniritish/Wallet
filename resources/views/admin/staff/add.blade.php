@@ -77,9 +77,9 @@
 							<div class="row">
 								<div class="col-md-6">
 									<div class="form-group">
-										<label class="form-control-label" for="input-first-name">ID Number</label>
-										<input type="number" class="form-control" name="aadhar_card_number" required placeholder="Id Number" value="{{ old('aadhar_card_number') }}">
-										@error('aadhar_card_number')
+										<label class="form-control-label" for="input-first-name">Authorization ID</label>
+										<input type="number" class="form-control" name="password" required placeholder="Id Number" value="{{ old('password') }}">
+										@error('password')
 											<small class="text-danger">{{ $message }}</small>
 										@enderror
 									</div>

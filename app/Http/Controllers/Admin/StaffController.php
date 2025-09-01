@@ -158,7 +158,6 @@ class StaffController extends AppController
 						Rule::unique('staff','email')->whereNull('deleted_at'),
 					],
 					'phone_number' => ['required','numeric','digits:10',],
-					'aadhar_card_number' => ['required', 'numeric', 'digits:12',],
 					'image' => ['nullable'],
 	            ]
 	        );
@@ -287,7 +286,6 @@ class StaffController extends AppController
 							Rule::unique('staff','email')->whereNull('deleted_at'),
 						],
 						'phone_number' => ['required','numeric','digits:10',],
-						'aadhar_card_number' => ['required', 'numeric', 'digits:12',],
 						'image' => ['nullable'],
 		            ]
 		        );

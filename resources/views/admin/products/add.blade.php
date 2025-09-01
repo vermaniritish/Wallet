@@ -414,6 +414,25 @@
 												<label class="custom-control-label">Do you want to publish this product ?</label>
 											</div>
 										</div>
+										<hr class="my-2" />
+										<div class="form-group">
+											<div class="custom-control">
+												<label class="custom-toggle">
+													<input type="hidden" name="website_visible" value="0">
+													<input type="checkbox" name="website_visible"  v-model="website_visible" value="1" <?php echo (old('website_visible') != '0' ? 'checked' : '') ?>>
+													<span class="custom-toggle-slider rounded-circle" data-label-off="No" data-label-on="Yes"></span>
+												</label>
+												<label class="custom-control-label">Visible on website ?</label>
+											</div>
+											<div class="custom-control">
+												<label class="custom-toggle">
+													<input type="hidden" name="shop_visible" value="0">
+													<input type="checkbox" name="shop_visible" v-model="shop_visible" value="1" <?php echo (old('shop_visible') != '0' ? 'checked' : '') ?>>
+													<span class="custom-toggle-slider rounded-circle" data-label-off="No" data-label-on="Yes"></span>
+												</label>
+												<label class="custom-control-label">Visible on shop ?</label>
+											</div>
+										</div>
 									</div>
 									<div class="col-lg-6">
 										<div class="form-group">
