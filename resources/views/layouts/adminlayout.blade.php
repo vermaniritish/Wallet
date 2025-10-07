@@ -100,6 +100,7 @@ $version = 3.1;
 				return "<?php echo csrf_token() ?>";
 			}
 		</script>
+		@stack('scripts')
 		<script src="<?php echo url('assets/vendor/jquery/dist/jquery.min.js') ?>"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.12/jquery-ui.min.js" type="text/javascript" charset="utf-8"></script>
 		<script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>

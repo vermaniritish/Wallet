@@ -42,5 +42,5 @@ function get_controller_action()
 
 function _currency($amount)
 {
-	return "£" . round($amount, 2);
+	return "£" . number_format($amount, 2);
 }

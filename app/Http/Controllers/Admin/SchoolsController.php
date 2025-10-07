@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Validator;
 use App\Models\Admin\Settings;
 use App\Models\Admin\Permissions;
 use App\Models\Admin\AdminAuth;
+use App\Models\Admin\Shops;
 use App\Libraries\General;
 use App\Models\Admin\School;
 use App\Models\Admin\Admins;
@@ -48,7 +49,7 @@ class SchoolsController extends AppController
     		$search = '%' . $search . '%';
     		$where['(
 				schools.id LIKE ? or
-				schools.title LIKE ? or
+				schools.name LIKE ? or
 			 	owner.first_name LIKE ? or 
 				owner.last_name LIKE ?)'] = [$search, $search, $search, $search];
     	}
@@ -176,7 +177,8 @@ class SchoolsController extends AppController
 		}
 
 	    return view("admin/schools/add", [
-	    		]);
+			'shops' => Shops::select(['id', 'name', 'slug'])->where('status', 1)->get()
+	    ]);
     }
 
     function view(Request $request, $id)
@@ -262,7 +264,8 @@ class SchoolsController extends AppController
 			}
 
 			return view("admin/schools/edit", [
-    			'page' => $page
+    			'page' => $page,
+				'shops' => Shops::select(['id', 'name', 'slug'])->where('status', 1)->get()
     		]);
 		}
 		else

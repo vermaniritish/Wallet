@@ -79,16 +79,14 @@ var productDetail = new Vue({
             postions: null
         },
         fileSizeError: null,
-        adding: null
+        adding: null,
+        accept: null
         
     },
-    methods: {
-       
+    methods: {       
         selectColor(id, title) {
             this.color = id;
             this.colorTitle = title;
-            if(primarySlider)
-            primarySlider.go($('#thumbnail_slider-list li[data-item="'+id+'"]').index());
         },
         renderSizes() {
             if(this.color) {
@@ -163,6 +161,10 @@ var productDetail = new Vue({
         },
         async addToCart(buyNow) 
         {
+            if(nonExchange && !this.accept) {
+                set_notification('error', 'Please acknowledge to proceed.');
+                return false;
+            }
             if(this.adding) return false;
             this.buyNow = buyNow ? true : false;
             this.editLogo = false;
@@ -293,7 +295,7 @@ var productDetail = new Vue({
             this.color = this.sizes[0].color_id;
         }
 
-        window.productSlider();
+        // window.productSlider();
     }
 });
 
@@ -302,6 +304,7 @@ var productListing = new Vue({
     // Mount Vue instance to the div with id="app"
     el: '#product-listing-vue',
     data: {
+        schoolId: null,
         salePage: false,
         listing: [],
         sort_by: null,
@@ -326,7 +329,10 @@ var productListing = new Vue({
             womenCount: null,
             kidsCount: null,
             unisexCount: null,
-        }
+        },
+        isOpen: false,
+        selectedOption: 50,
+        options: [50, 100, 150, 200, "All"]
     },
     methods: {
         currency: function(amount) {
@@ -336,12 +342,21 @@ var productListing = new Vue({
         init: async function() {
             await this.fetchListing();
         },
+        toggleDropdown() {
+            this.isOpen = !this.isOpen;
+        },
+        async selectOption(option) {
+            this.selectedOption = option;
+            this.isOpen = false;
+            this.page = 1;
+            await this.fetchListing();
+        },
         fetchListing: async function() {
             if(this.fetching) return false;
-            let categoryId = $('#careoryId').text().trim();
+            let categoryId = typeof cId !== 'undefined' && cId ? cId : ``;
             this.fetching = true;
             this.empty = false; 
-            let response = await fetch(site_url + `/api/products/listing?salePage=${this.salePage ? `1` : ``}${this.search ? `&search=${this.search}` : ''}&brands=${this.filters.brands ? this.filters.brands.join(',') : ``}&cId=${categoryId}&categories=${this.filters.categories ? this.filters.categories.join(',') : ``}&gender=${this.filters.gender ? this.filters.gender.join(',') : ``}&price_from=${this.filters.fromPrice ? this.filters.fromPrice : ``}&price_to=${this.filters.toPrice ? this.filters.toPrice : ``}&page=${this.page}&sort=${this.sort_by ? this.sort_by : ``}`);
+            let response = await fetch(site_url + `/api/products/listing?salePage=${this.salePage ? `1` : ``}${this.search ? `&search=${this.search}` : ''}&brands=${this.filters.brands ? this.filters.brands.join(',') : ``}&cId=${categoryId}&categories=${this.filters.categories ? this.filters.categories.join(',') : ``}&gender=${this.filters.gender ? this.filters.gender.join(',') : ``}&price_from=${this.filters.fromPrice ? this.filters.fromPrice : ``}&price_to=${this.filters.toPrice ? this.filters.toPrice : ``}${this.schoolId ? `&school_id=`+this.schoolId : ``}&page=${this.page}&limit=${this.selectedOption}&sort=${this.sort_by ? this.sort_by : ``}`);
             response = await response.json();
             if(response && response.status)
             {
@@ -439,23 +454,29 @@ var productListing = new Vue({
         }
     },
     mounted: function() {
-        console.log(window.location.pathname);
-        let pathname = window.location.pathname.split('/');
-        if(window.location.pathname.indexOf('/sale') > -1)
+        if(typeof schoolPageId !== 'undefined' && schoolPageId)
         {
-            this.salePage = true;
+            this.schoolId = schoolPageId;
         }
-        else if(window.location.pathname.indexOf('/search') > -1)
+        else
         {
-            const urlParams = new URLSearchParams(window.location.search);
-            this.search = urlParams.get('search') ? urlParams.get('search').trim() : '';
-            this.searchPage = true;
-            let brand = urlParams.get('brand') ? urlParams.get('brand').trim() : '';
-            if(brand)
-            this.filters = {brands : [brand]};
-        }
-        if(pathname.length > 2) {
-            this.filters.categories.push(pathname[2]);
+            let pathname = window.location.pathname.split('/');
+            if(window.location.pathname.indexOf('/sale') > -1)
+            {
+                this.salePage = true;
+            }
+            else if(window.location.pathname.indexOf('/search') > -1)
+            {
+                const urlParams = new URLSearchParams(window.location.search);
+                this.search = urlParams.get('search') ? urlParams.get('search').trim() : '';
+                this.searchPage = true;
+                let brand = urlParams.get('brand') ? urlParams.get('brand').trim() : '';
+                if(brand)
+                this.filters = {brands : [brand]};
+            }
+            if(pathname.length > 2) {
+                this.filters.categories.push(pathname[2]);
+            }
         }
         this.init()
     }
@@ -721,6 +742,7 @@ var minicart = new Vue({
         }
     },
     mounted: function() {
+        $('#header, main, .mobile-header-active').removeClass('d-none');
         this.gstTax = gstTax();
         this.fetchLogoPrices();
     }
@@ -1072,6 +1094,7 @@ checkoutPage = new Vue({
             saveInfo: false,
             newsletterSubscribe: false,
         },
+        shippingOptions: null,
         cart: [],
         note: ``,
         coupon: ``,
@@ -1079,6 +1102,8 @@ checkoutPage = new Vue({
         couponError: ``,
         gstTax: ``,
         oneTimeCost: (oneTimeProductCost()*1) > 0 ? (oneTimeProductCost()*1) : 0,
+        parcelforceCost: 0,
+        dpdCost: 0
     },
     methods: {
         formatMoney(m) {
@@ -1135,7 +1160,6 @@ checkoutPage = new Vue({
             return ``;
         },
         manualQty(e) {
-            console.log(e, e.target.value);
             let qty = e.target.value;
             let dataId = e.target.getAttribute("data-id");
             let index = this.cart.findIndex((v) => v.id == dataId);
@@ -1182,7 +1206,6 @@ checkoutPage = new Vue({
                             && item.position == (s[i].logo[k].postion).toLowerCase().replace(/\s+/g , '-')
                             && (s[i].quantity*1) >= (item.from_quantity*1) && (s[i].quantity*1) <= (item.to_quantity*1)
                         });
-                        console.log(exist);
                         if(exist && exist.length > 0 && exist[0].price)
                         {
                             s[i].logo[k].price = exist[0].price;
@@ -1192,6 +1215,15 @@ checkoutPage = new Vue({
             }
             this.oneTimeCost = oneTimeProductCost(s);
             return s;
+        },
+        handleShipping(e) {
+            let option = e.target.value;
+            if(option == 'parcelforce')
+                this.shippingOptions = { value: "Ship by Parcel Force", price: this.parcelforceCost };
+            else if(option == 'dpd')
+                this.shippingOptions = { value: "DPD", price: this.dpdCost };
+            else
+                this.shippingOptions = { value: option, price: 0 };
         },
         remove(id) {
             let index = this.cart.findIndex((v) => v.id == id);
@@ -1214,7 +1246,8 @@ checkoutPage = new Vue({
                 logo_cost: 0,
                 product_cost:0,
                 logo_discount:0,
-                applied_logo_discount: 0
+                applied_logo_discount: 0,
+                shipping_cost: 0
             }
 
             let subtotal = this.cart.map((item) => {
@@ -1234,7 +1267,6 @@ checkoutPage = new Vue({
             
             t.tax = 0;
             let logoCost = this.calcaualteLogoCost();
-            console.log(logoCost);
             t.logo_cost = logoCost.cost;
             t.logo_discount = (logoCost.logoDiscount*1) > 0 ? (logoCost.logoDiscount*1) : 0;
             t.applied_logo_discount = (logoCost.appliedDiscount*1) > 0 ? (logoCost.appliedDiscount*1) : 0;
@@ -1244,7 +1276,8 @@ checkoutPage = new Vue({
             t.subtotal = t.product_cost + (t.logo_cost - t.logo_discount) + (t.product_cost > 0 ? t.oneTimeCost : 0 );
             t.discount = this.detectDiscount(t.subtotal);
             t.tax = this.calculateTax(t);
-            t.total = t.subtotal - t.discount + t.tax;
+            t.shipping_cost = ( this.shippingOptions && this.shippingOptions.price * 1 > 0 ? this.shippingOptions.price * 1 : 0 );
+            t.total = t.subtotal - t.discount + t.tax + t.shipping_cost;
             return t;
         },
         calcaualteLogoCost()
@@ -1390,29 +1423,26 @@ checkoutPage = new Vue({
             if(this.checkout.saveInfo) {
                 localStorage.setItem('addressInfo', JSON.stringify(this.checkout));
             }
-
+            if(!this.shippingOptions) {
+                set_notification('error', 'Please select the shipping and delivery option.')
+            }
             if(this.saving) return false;
             let haveErrors = false;
 
             let errs = {};
             let checkout = JSON.parse(JSON.stringify(this.checkout));
             for(let e in checkout) {
-                if($('#nologinsection').length < 1 && ['phone_email'].includes(e)) {
-                    continue;
-                }
-                else if(['first_name', 'company','address2'].includes(e)) {
-                    continue;
-                }
-                else if(checkout[e] === ``) {
+                if(checkout[e] === ``) {
                     errs[e] = ``;
                     haveErrors = true;
                 }
             }
 
+            console.log(`haveErrors`, haveErrors);
             if(!haveErrors)
             {
                 this.errors = {};
-                let data = {...checkout, ...{coupon: this.appliedCoupon, cart: this.cart, token: $('#checkout-page').attr('data-token')} };
+                let data = {...checkout, ...{coupon: this.appliedCoupon, shipping: ( this.shippingOptions && this.shippingOptions.price ? this.shippingOptions.price : 0 ), cart: this.cart, token: $('#checkout-page').attr('data-token')} };
                 this.saving = true;
                 data.lastId = localStorage.getItem('orderId') ? localStorage.getItem('orderId') : null;
                 let response = await fetch(site_url + '/api/orders/booking', {
@@ -1427,10 +1457,10 @@ checkoutPage = new Vue({
                 {
                     localStorage.setItem('orderId', response.orderId);
 
-                    // window.scrollTo(0,0)
-                    // this.orderPlaced = response.orderId;
-                    // localStorage.removeItem('cart');
-                    // localStorage.removeItem('coupon');
+                    window.scrollTo(0,0)
+                    this.orderPlaced = response.orderId;
+                    localStorage.removeItem('cart');
+                    localStorage.removeItem('coupon');
                 }
                 else if(response && response.message)
                 {
@@ -1451,6 +1481,8 @@ checkoutPage = new Vue({
         }
     },
     mounted: async function() {
+        this.parcelforceCost = parcelforceCost*1;
+        this.dpdCost = dpdCost*1;
         this.gstTax = gstTax();
         this.logoPricesDynamix = await minicart.fetchLogoPrices();
         this.initcart();

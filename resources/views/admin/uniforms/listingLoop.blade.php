@@ -54,13 +54,13 @@
 					<i class="fas fa-eye text-yellow"></i>
 					<span class="status">View</span>
 				</a>
-				<?php /* if(Permissions::hasPermission('uniforms', 'update')): ?>
+				<?php if(Permissions::hasPermission('uniforms', 'update')): ?>
 					<div class="dropdown-divider"></div>
 					<a class="dropdown-item" href="<?php echo route('admin.uniforms.edit', ['id' => $row->id]) ?>">
 						<i class="fas fa-pencil-alt text-info"></i>
 						<span class="status">Edit</span>
 					</a>
-				<?php endif; */ ?>
+				<?php endif;?>
 				<?php if(Permissions::hasPermission('uniforms', 'delete')): ?>
 					<div class="dropdown-divider"></div>
 					<a 

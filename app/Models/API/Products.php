@@ -53,9 +53,12 @@ class Products extends AdminProducts
             $value = FileSystem::getAllSizeImages($value);
             foreach($value as $k => $v)
             {
-                foreach($v as $vk => $i)
+                if(is_array($v))
                 {
-                    $v[$vk] = $i . '?' . strtotime($this->modified);
+                    foreach($v as $vk => $i)
+                    {
+                        $v[$vk] = $i . '?' . strtotime($this->modified);
+                    }
                 }
                 $value[$k] = $v;
             }
@@ -100,13 +103,13 @@ class Products extends AdminProducts
     * @param $limit
     */
 
-    public static function getListing(Request $request, $where = [], $limit = 20)
+    public static function getListing(Request $request, $where = [], $limit = 4)
     {
         $userId = ApiAuth::getLoginId();
     	$orderBy = 'products.id';
     	$direction = 'desc';
     	$page = $request->get('page') ? $request->get('page') : 1;
-    	$limit = $limit;
+    	$limit = $request->get('limit') ? $request->get('limit') : $limit;
     	$offset = ($page - 1) * $limit;
     	   
         $select = [
@@ -135,6 +138,9 @@ class Products extends AdminProducts
 	    
 
         $pIds = [];
+
+        
+
         if($request->get('categories') || $request->get('cId'))
         {
             $listing->join('product_sub_category_relation', 'product_sub_category_relation.product_id', '=', 'products.id')
@@ -252,6 +258,11 @@ class Products extends AdminProducts
         {
             $listing->havingRaw('(sale_price is not null and (sale_price*1)> 0)');
         }
+
+        if($request->get('school_id'))
+        {
+            $listing->where('products.school_id', $request->get('school_id'));
+        }
         
 
 	    // Put offset and limit in case of pagination
@@ -260,7 +271,6 @@ class Products extends AdminProducts
 	    	$listing->offset($offset);
 	    	$listing->limit($limit);
 	    }
-
         $listing = $listing->paginate($limit);
 
 	    return $listing;

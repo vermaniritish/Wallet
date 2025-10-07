@@ -9,6 +9,7 @@ use App\Models\Admin\Pages;
 use App\Models\Admin\Users;
 use App\Libraries\General;
 use App\Models\Admin\ContactUs;
+use App\Models\Admin\Shops;
 use App\Models\Admin\OrderProductRelation;
 use App\Models\Admin\Settings;
 use Illuminate\Support\Facades\Validator;
@@ -59,9 +60,15 @@ class PagesController extends BaseController
     public function checkout(Request $request) 
     {
         $user = $request->session()->get('user');
+        $shops = Shops::select(['name'])->where('allow_pickup', 1)->where('status', 1)->limit(1)->get();
         return view('frontend.checkout.index', [
             'page' => null,
-            'user' => $user
+            'user' => $user,
+            'shops' => $shops,
+            'settings' => [
+                'shipping_cost_parcelforce' => Settings::get('shipping_cost_parcelforce'),
+                'shipping_cost_dpd' => Settings::get('shipping_cost_dpd')
+            ]
         ]);
     }
 

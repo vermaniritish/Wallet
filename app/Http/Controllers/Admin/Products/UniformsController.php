@@ -48,55 +48,47 @@ class UniformsController extends AppController
     	{
     		$search = $request->get('search');
     		$search = '%' . $search . '%';
-    		$where['(uniforms.title LIKE ? or shop_owner.first_name LIKE ? or shop_owner.last_name LIKE ? or uniforms.address LIKE ? or uniforms.postcode LIKE ?)'] = [$search, $search, $search, $search, $search];
+    		$where['(products.title LIKE ?)'] = [$search];
     	}
 
     	if($request->get('created_on'))
     	{
     		$createdOn = $request->get('created_on');
     		if(isset($createdOn[0]) && !empty($createdOn[0]))
-    			$where['uniforms.created >= ?'] = [
+    			$where['products.created >= ?'] = [
     				date('Y-m-d 00:00:00', strtotime($createdOn[0]))
     			];
     		if(isset($createdOn[1]) && !empty($createdOn[1]))
-    			$where['uniforms.created <= ?'] = [
+    			$where['products.created <= ?'] = [
     				date('Y-m-d 23:59:59', strtotime($createdOn[1]))
     			];
     	}
     	
-    	// if($request->get('shop_id') && !empty(array_filter($request->get('shop_id'))) )
-    	// {
-    	// 	$shops = $request->get('shop_id');
-    	// 	$shops = $shops ? implode(',', $shops) : 0;
-    	// 	$where[] = 'uniforms.shop_id IN ('.$shops.')';
-    	// }
+    	if($request->get('schools') && !empty(array_filter($request->get('schools'))) )
+    	{
+    		$shops = $request->get('schools');
+    		$shops = $shops ? implode(',', $shops) : 0;
+    		$where[] = 'products.school_id IN ('.$shops.')';
+    	}
 
     	if($request->get('category'))
     	{
     		$ids = ProductSubCategoryRelation::distinct()->whereIn('sub_category_id', $request->get('category'))->pluck('product_id')->toArray();
     		$ids = !empty($ids) ? implode(',', $ids) : '0';
-    		$where[] = 'uniforms.id IN ('.$ids.')';
-    	}
-
-		if($request->get('brand'))
-    	{
-    		$ids = BrandProducts::distinct()->whereIn('brand_id', $request->get('brand'))->pluck('product_id')->toArray();
-    		$ids = !empty($ids) ? implode(',', $ids) : '0';
-    		$where[] = 'uniforms.id IN ('.$ids.')';
+    		$where[] = 'products.id IN ('.$ids.')';
     	}
 
     	if($request->get('status'))
     	{
     		switch ($request->get('status')) {
     			case 'active':
-    				$where['uniforms.status'] = 1;
+    				$where['products.status'] = 1;
     			break;
     			case 'non_active':
-    				$where['uniforms.status'] = 0;
+    				$where['products.status'] = 0;
     			break;
     		}	
     	}
-
 		$where['products.is_uniform'] = 1;
     	$listing = Products::getListing($request, $where);
 
@@ -127,6 +119,7 @@ class UniformsController extends AppController
 	    			'listing' => $listing,
 	    			'categories' => $filters['categories'],
 					'brands' => $filters['brands'],
+					'schools' => $filters['schools']
 	    		]
 	    	);
 	    }
@@ -142,20 +135,13 @@ class UniformsController extends AppController
     	{
 			$categories = ProductCategories::getAllCategorySubCategory($catIds);
 		}
-    
-		$brands = Brands::getAll(
-			[
-				'brands.id',
-				'brands.title'
-			],
-			[
-			],
-			'brands.title desc'
-		);
+
+		$schools = Schools::select(['id', 'schooltype', 'name'])->orderBy('name', 'asc')->get();
 
     	return [
     		'categories' => $categories,
-			'brands' => $brands
+			'brands' => [],
+			'schools' => $schools
     	];
     }
 
@@ -215,7 +201,7 @@ class UniformsController extends AppController
 		}
     }
 
-    function add(Request $request)
+    function add(Request $request, $unifromId = null)
     {
     	if(!Permissions::hasPermission('uniforms', 'create'))
     	{
@@ -251,12 +237,12 @@ class UniformsController extends AppController
     		$validator = Validator::make(
 	            $data,
 	            [
-					'schools' => ['required'],
-					'product' => ['required', Rule::exists(Products::class,'id')],
+					'schools' => $unifromId ? ['nullable'] : ['required'],
+					'product' => $unifromId ? ['nullable'] : ['required', Rule::exists(Products::class,'id')],
 	                'description' => 'nullable',
 					'price' => ['required', 'numeric', 'min:0'],
 					'sale_price' => ['nullable', 'numeric', 'min:0'],
-	                'category' => ['required', Rule::exists(ProductCategories::class,'id')],
+	                'category' => $unifromId ? ['nullable'] : ['required', Rule::exists(ProductCategories::class,'id')],
 					'tags' => ['nullable', 'array'],
 					'tags.*' => ['string','max:20',],
 					'color_id' => ['nullable', 'array'],
@@ -268,9 +254,12 @@ class UniformsController extends AppController
 
 	        if(!$validator->fails())
 	        {
-				$schools = $data['schools'];
-				$data['parent_id'] = $data['product'];
-				$data['category_id'] = $data['category'];
+				if(!$unifromId){
+					$schools = $data['schools'];
+					$data['parent_id'] = $data['product'];
+					$data['category_id'] = $data['category'];
+				}
+
 				$data['is_uniform'] = 1;
 				unset($data['schools']);
 				unset($data['product']);
@@ -281,10 +270,10 @@ class UniformsController extends AppController
 				unset($data['sub_category']);
 				unset($data['sku_number']);
 				unset($data['category']);
-				foreach($schools as $s)
+
+				if($unifromId)
 				{
-					$data['school_id'] = $s;
-					$product = Products::create($data);
+					$product = Products::modify($unifromId, $data);
 					if(!empty($colors))
 					{
 						Products::handleColors($product->id, $colors);
@@ -299,6 +288,29 @@ class UniformsController extends AppController
 					if(!empty($subCategory))
 					{
 						Products::handleSubCategory($product->id, [$subCategory]);
+					}
+				}
+				else
+				{
+					foreach($schools as $s)
+					{
+						$data['school_id'] = $s;
+						$product = Products::create($data);
+						if(!empty($colors))
+						{
+							Products::handleColors($product->id, $colors);
+						}
+						if (!empty($sizeData)) {
+							Products::handleSizes($product->id, $sizeData);
+						}
+						if(!empty($brands))
+						{
+							Products::handleBrands($product->id, $brands);
+						}
+						if(!empty($subCategory))
+						{
+							Products::handleSubCategory($product->id, [$subCategory]);
+						}
 					}
 				}
 				$request->session()->flash('success', "Uniform created successfully.");
@@ -316,51 +328,46 @@ class UniformsController extends AppController
 				], 400);
 		    }
 		}
-	    
-	    $categories = ProductCategories::getAll(
-	    		[
-	    			'product_categories.id',
-	    			'product_categories.title'
-	    		],
-	    	    [
-					'status' => 1,
-				],
-	    		'product_categories.title desc'
-	    	);
+		
+		$categories = $brands = $schools = [];
+		if(!$unifromId)
+		{
+			$categories = ProductCategories::getAll(
+					[
+						'product_categories.id',
+						'product_categories.title'
+					],
+					[
+						'status' => 1,
+					],
+					'product_categories.title desc'
+				);
 
-		$brands = Brands::getAll(
-	    		[
-	    			'brands.id',
-	    			'brands.title'
-	    		],
-	    	    [
-					'status' => 1, 
-				],
-	    		'brands.title desc'
-	    	);
+			
+			$brands = Brands::getAll(
+					[
+						'brands.id',
+						'brands.title'
+					],
+					[
+						'status' => 1, 
+					],
+					'brands.title desc'
+				);
 
-	    $users = Users::getAll(
-	    		[
-	    			'users.id',
-	    			'users.first_name',
-	    			'users.last_name',
-	    			'users.status',
-	    		],
-	    		[
-	    		],
-	    		'concat(users.first_name, users.last_name) desc'
-	    	);
+			$schools = Schools::orderBy('name', 'asc')->get();
+		}
 		
 		$colors = Colours::getAll(
-	    		[
-	    			'colours.id',
-	    			'colours.color_code',
-	    			'colours.title',
-	    		],
-	    	    [
-				],
-	    		'colours.color_code desc'
-	    	);
+			[
+				'colours.id',
+				'colours.color_code',
+				'colours.title',
+			],
+			[
+			],
+			'colours.color_code desc'
+		);
 
 		$sizes = Sizes::getAll(
 	    		[
@@ -374,202 +381,17 @@ class UniformsController extends AppController
 				],
 	    		'sizes.size_title desc'
 	    	);
-	    $schools = Schools::orderBy('name', 'asc')->get();
+			
 		return view("admin/uniforms/add", [
-	    			'categories' => $categories,
-	    			'users' => $users,
-					'brands' => $brands,
-					'colors' => $colors,
-					'sizes' => $sizes,
-					'schools' => $schools
-	    		]);
+			'categories' => $categories,
+			'brands' => $brands,
+			'colors' => $colors,
+			'sizes' => $sizes,
+			'schools' => $schools,
+			'product' => $unifromId ? Products::find($unifromId)  : null
+		]);
     }
 
-    function edit(Request $request, $id)
-    {
-    	if(!Permissions::hasPermission('uniforms', 'update'))
-    	{
-    		$request->session()->flash('error', 'Permission denied.');
-    		return redirect()->route('admin.dashboard');
-    	}
-    	$product = Products::get($id);
-    	if($product)
-    	{
-	    	if($request->isMethod('post'))
-	    	{
-	    		$data = $request->toArray();
-				$sizeData = [];
-				$subCategory= [];
-				$brands = [];
-				$colors = [];
-				if(isset($data['sizeData']) && $data['sizeData']) {
-					$data['sizeData'] = json_decode($data['sizeData'], true);
-					$sizeData = $data['sizeData'];
-				}
-				if (isset($data['tags']) && $data['tags']) {
-					$data['tags'] = explode(',', $data['tags']);
-				}
-				if(isset($data['sub_category']) && $data['sub_category']) {
-	        		$subCategory = $data['sub_category'];
-	        	}
-				if(isset($data['color_id']) && $data['color_id']) {
-	        		$colors = $data['color_id'];
-	        	}
-				if(isset($data['brand']) && $data['brand']) {
-					$brands = $data['brand'];
-				}
-	    		$validator = Validator::make(
-		            $data,
-			            [
-							'title' => 'required',
-							'description' => 'nullable',
-							'price' => ['required', 'numeric', 'min:0'],
-							'max_price' => ['nullable', 'numeric', 'min:0'],
-							'category' => ['required', Rule::exists(ProductCategories::class,'id')],
-							'brand' => 'required',
-							'tags' => ['nullable', 'array'],
-							'tags.*' => ['string','max:20',],
-							'color_id' => ['nullable', 'array'],
-							'color_id.*' => ['required', Rule::exists(Colours::class,'id')],
-							'gender' => ['required', Rule::in(['Male','Female','Unisex','Kids'])],
-							'sku_number' => ['required', Rule::unique('uniforms')->ignore($product->id)],
-							'sizeData' => ['required', 'array']
-		            	]
-		        );
-		        if(!$validator->fails())
-		        {
-		        	unset($data['_token']);
-					unset($data['sizeData']);
-					unset($data['size']);
-					unset($data['sub_category']);
-					unset($data['color_id']);
-	        		/** ONLY IN CASE OF MULTIPLE IMAGE USE THIS **/
-	        		if(isset($data['image']) && $data['image'])
-	        		{
-	        			$data['image'] = json_decode($data['image'], true);
-	        			$product->image = $product->image ? json_decode($product->image) : [];
-		        		$data['image'] = array_merge($product->image, $data['image']);
-		        		$data['image'] = json_encode($data['image']);
-		        	}
-		        	else
-		        	{
-		        		unset($data['image']);
-		        	}
-		        	/** ONLY IN CASE OF MULTIPLE IMAGE USE THIS **/
-					unset($data['brand']);
-					unset($data['sub_category']);
-					$data['category_id'] = $data['category'];
-					unset($data['category']);
-		        	if(Products::modify($id, $data))
-		        	{
-						if (!empty($sizeData)) {
-							Products::handleSizes($product->id, $sizeData);
-						}
-						if(!empty($brands))
-		        		{
-		        			Products::handleBrands($product->id, $brands);
-		        		}
-						if(!empty($subCategory))
-						{
-							Products::handleSubCategory($product->id, $subCategory);
-						}
-						if(!empty($colors))
-						{
-							Products::handleColors($product->id, $colors);
-						}
-		        		$request->session()->flash('success', "Product updated successfully.");
-						return Response()->json([
-							'status' => true,
-							'message' => "Product created successfully.",
-							'id' => $product->id
-						]);
-		        	}
-		        	else
-		        	{
-						return Response()->json([
-							'status' => false,
-							'message' => 'Product could not be saved. Please try again.'
-						], 400);
-		        	}
-			    }
-			    else
-			    {
-					return Response()->json([
-						'status' => false,
-						'message' => current(current($validator->errors()->getMessages()))
-					], 400);
-			    }
-			}
-
-			$categories = ProductCategories::getAll(
-	    		[
-	    			'product_categories.id',
-	    			'product_categories.title'
-	    		],
-				[
-					'status' => 1, 
-				],
-	    		'product_categories.title desc'
-	    	);
-
-	    	$users = Users::getAll(
-	    		[
-	    			'users.id',
-	    			'users.first_name',
-	    			'users.last_name',
-	    			'users.status',
-	    		],
-	    		[
-	    		],
-	    		'concat(users.first_name, users.last_name) desc'
-	    	);
-
-			$brands = Brands::getAll(
-	    		[
-	    			'brands.id',
-	    			'brands.title'
-	    		],
-	    	    [
-					'status' => 1, 
-				],
-	    		'brands.title desc'
-	    	);
-			$colors = Colours::getAll(
-	    		[
-	    			'colours.id',
-	    			'colours.color_code',
-	    			'colours.title',
-	    		],
-	    	    [
-				],
-	    		'colours.color_code desc'
-	    	);
-			$sizes = Sizes::getAll(
-	    		[
-	    			'sizes.id',
-	    			'sizes.type',
-	    			'sizes.size_title',
-	    			'sizes.from_cm',
-	    			'sizes.to_cm',
-	    		],
-	    	    [
-				],
-	    		'sizes.size_title desc'
-	    	);
-			return view("admin/uniforms/add", [
-    			'product' => $product,
-    			'categories' => $categories,
-    			'users' => $users,
-				'brands' => $brands,
-				'colors' => $colors,
-				'sizes' => $sizes
-    		]);
-		}
-		else
-		{
-			abort(404);
-		}
-    }
 
     function delete(Request $request, $id)
     {

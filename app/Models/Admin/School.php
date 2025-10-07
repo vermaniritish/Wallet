@@ -16,6 +16,10 @@ class School extends AppModel
     protected $primaryKey = 'id';
     public $timestamps = false;
 
+    protected $casts = [
+        'shops' => 'json'
+    ];
+
 
     /**
     * Get resize images

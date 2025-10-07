@@ -1,40 +1,16 @@
- <!-- Start preloader -->
-    <div id="preloader">
-        <div id="ctn-preloader" class="ctn-preloader">
-            <div class="animation-preloader">
-                <div class="spinner"></div>
-                <div class="txt-loading">
-                    <span data-text-preloader="L" class="letters-loading">
-                        L
-                    </span>
-
-                    <span data-text-preloader="O" class="letters-loading">
-                        O
-                    </span>
-
-                    <span data-text-preloader="A" class="letters-loading">
-                        A
-                    </span>
-
-                    <span data-text-preloader="D" class="letters-loading">
-                        D
-                    </span>
-
-                    <span data-text-preloader="I" class="letters-loading">
-                        I
-                    </span>
-
-                    <span data-text-preloader="N" class="letters-loading">
-                        N
-                    </span>
-
-                    <span data-text-preloader="G" class="letters-loading">
-                        G
-                    </span>
+  <!-- Preloader Start -->
+    <div id="preloader-active" style="z-index:9999">
+        <div class="preloader d-flex align-items-center justify-content-center">
+            <div class="preloader-inner position-relative">
+                <div class="text-center">
+                    <h5 class="mb-5">Now Loading</h5>
+                    <div class="loader">
+                        <div class="bar bar1"></div>
+                        <div class="bar bar2"></div>
+                        <div class="bar bar3"></div>
+                    </div>
                 </div>
             </div>
-            <div class="loader-section section-left"></div>
-            <div class="loader-section section-right"></div>
         </div>
     </div>
-<!-- End preloader -->
+   

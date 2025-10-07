@@ -38,11 +38,16 @@ let order = new Vue({
         website_visible: 0
     },
     mounted: function() {
+        if(pageId){
+            this.selectedProduct = pageId;
+            this.initEditValues();
+        }
         this.initBasics();
         this.initTagIt();
         init_editor('#product-editor');
         this.mounting = false;
         document.getElementById('product-form').classList.remove('d-none');
+        
     },
     methods: {
         allowDrop(ev) {
@@ -254,10 +259,13 @@ let order = new Vue({
                     let formData = new FormData(document.getElementById('product-form'));
                     formData.append('sizeData', JSON.stringify(this.selectedSize));
                     formData.append('color_images', JSON.stringify(this.colorImages));
-                    let response = await fetch(this.url, {
-                        method: 'POST',
-                        body: formData,
-                    });
+                    let response = await fetch(
+                        pageId ? admin_url + '/uniforms/' + pageId + '/edit' : admin_url + '/uniforms/add', 
+                        {
+                            method: 'POST',
+                            body: formData,
+                        }
+                    );
                     response = await response.json();
                     if(response && response.status)
                     {
@@ -291,4 +299,93 @@ let order = new Vue({
             this.updateSubCategory();
         },
     },
+});
+
+
+let customization = new Vue({
+    el: '#customization',
+    data: {
+        id: null,
+        loading: false,
+        items: [
+        {
+          id: "1",
+          title: "",
+          description: "",
+          cost: 0,
+          quantity: 1,
+          total: 0,
+          required: false
+        }
+      ],
+      grandTotal: 0
+    },
+    mounted() {
+        let data = JSON.parse($('#edit-form').text());
+        this.id = data.id;
+        if(data && data.id && data.logo_customization) {
+            this.items = JSON.parse(data.logo_customization);
+        }
+    },
+     methods: {
+        updateItem(item, field, value) {
+            item[field] = value;
+            if (field === "cost" || field === "quantity") {
+                item.total = item.cost * item.quantity;
+            }
+        },
+        addRow() {
+            const newId = Date.now().toString();
+            this.items.push({
+                id: newId,
+                title: "",
+                description: "",
+                cost: 0,
+                quantity: 1,
+                total: 0,
+                required: false
+            });
+        },
+        removeRow(id) {
+            if (this.items.length > 1) {
+                this.items = this.items.filter(i => i.id !== id);
+            }
+        },
+        calculateGrandTotal() {
+            return this.grandTotal = (this.items && this.items.length > 0 ? this.items.reduce(
+                (sum, item) => sum + Number(item.total),
+                0
+            ) : 0)*1;
+        },
+        submitForm: async function (e) {
+            e.preventDefault();
+
+            if (this.loading) return false;
+            this.loading = true;
+
+            try {
+                // 👇 replace `product_id` with your actual product variable
+                let response = await fetch(admin_url + '/products/' + this.id + '/update-customization', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ items: this.items, _token: csrf_token() }),
+                });
+
+                response = await response.json();
+
+                if (response && response.status) {
+                    set_notification('success', response.message);
+                } else {
+                    set_notification('error', response.message);
+                }
+            } catch (error) {
+                console.error('Submit error:', error);
+                set_notification('error', 'Something went wrong!');
+            } finally {
+                this.loading = false;
+            }
+        }
+    }
 });

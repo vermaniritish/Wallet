@@ -108,18 +108,69 @@
 					    </div>
 
 					    <hr class="my-4" />
-					    <h6 class="heading-small text-muted mb-4">Upload School Logo</h6>
 					    <div class="pl-lg-4">
 					        <div class="row">
+					            
 					            <div class="col-lg-6">
-					                {{-- Upload Section --}}
+					    			<h6 class="heading-small text-muted mb-4">Other Information</h6>
+									<div class="form-group mb-1">
+										<div class="custom-control">
+											<label class="custom-toggle">
+												<input type="hidden" name="show_extra_products" value="0">
+												<input type="checkbox" name="show_extra_products" value="1" <?php echo (old('show_extra_products') != '0' ? 'checked' : '') ?>>
+												<span class="custom-toggle-slider rounded-circle" data-label-off="No" data-label-on="Yes"></span>
+											</label>
+											<label class="custom-control-label">Display Extra Products ?</label>
+										</div>
+									</div>
+									<div class="form-group mb-1">
+										<div class="custom-control">
+											<label class="custom-toggle">
+												<input type="hidden" name="collect_from_school" value="0">
+												<input type="checkbox" name="collect_from_school" value="1" <?php echo (old('collect_from_school') != '0' ? 'checked' : '') ?>>
+												<span class="custom-toggle-slider rounded-circle" data-label-off="No" data-label-on="Yes"></span>
+											</label>
+											<label class="custom-control-label">Collect From School ?</label>
+										</div>
+									</div>
+
+									<div class="form-group mb-1">
+										<div class="custom-control">
+											<label class="custom-toggle">
+												<input type="hidden" name="shipping" value="0">
+												<input type="checkbox" name="shipping" value="1" <?php echo (old('shipping') != '0' ? 'checked' : '') ?>>
+												<span class="custom-toggle-slider rounded-circle" data-label-off="No" data-label-on="Yes"></span>
+											</label>
+											<label class="custom-control-label">Courier and Shipping Options ?</label>
+										</div>
+									</div>
+									<div class="form-group">
+										<div class="custom-control">
+											<label class="custom-toggle">
+												<input type="hidden" name="collect_from_shop" value="0">
+												<input type="checkbox" name="collect_from_shop" value="1" <?php echo (old('collect_from_shop') != '0' ? 'checked' : '') ?> onclick="$('#shops').toggleClass('d-none');">
+												<span class="custom-toggle-slider rounded-circle" data-label-off="No" data-label-on="Yes"></span>
+											</label>
+											<label class="custom-control-label">Collect From Shops ?</label>
+										</div>
+										<div class="{{ (old('collect_from_shop') !='0' ? '' : 'd-none') }}" id="shops">
+											<select class="form-control" name="shops[]" multiple>
+												@foreach($shops as $s)
+													<option value="{{ $s->slug }}" {{ old('shops') && in_array($s->slug, old('shops')) ? 'selected' : '' }}>{{ $s->name }}</option>
+												@endforeach
+											</select>
+										</div>
+									</div>
+								</div>
+								<div class="col-lg-6">
+					                <h6 class="heading-small text-muted mb-4">School Logo and Status</h6>
 					                <div 
 					                    class="upload-image-section"
 					                    data-type="image"
 					                    data-multiple="false"
 					                    data-path="schools"
-					                    data-resize-large="70*18"
-					                    data-resize-small="70*18"
+					                    data-resize-large="500*500"
+					                    data-resize-small="50*50"
 					                >
 					                    <div class="upload-section">
 					                        <div class="button-ref mb-3">
@@ -132,16 +183,14 @@
 					                            <div class="progress-bar bg-default" role="progressbar" style="width: 0%;"></div>
 					                        </div>
 					                    </div>
-
-					                    {{-- Store logo URL --}}
+										<p>Recommended Size: 500px * 500px</p>
 					                    <textarea class="d-none" name="logo">{{ old('logo') }}</textarea>
-					                    <div class="show-section {{ !old('logo') ? 'd-none' : '' }}">
+					                    <div class="show-section  d-flex flex-row {{ !old('logo') ? 'd-none' : '' }}">
 					                        @include('admin.partials.previewFileRender', ['file' => old('logo') ])
 					                    </div>
 					                </div>
-					            </div>
-					            <div class="col-lg-6">
-									<div class="form-group">
+
+									<div class="form-group mb-1">
 										<div class="custom-control">
 											<label class="custom-toggle">
 												<input type="hidden" name="status" value="0">
@@ -151,7 +200,27 @@
 											<label class="custom-control-label">Do you want to publish this page ?</label>
 										</div>
 									</div>
-								</div>
+									<div class="form-group mb-1">
+										<div class="custom-control">
+											<label class="custom-toggle">
+												<input type="hidden" name="website_visible" value="0">
+												<input type="checkbox" name="website_visible" value="1" <?php echo (old('website_visible') != '0' ? 'checked' : '') ?>>
+												<span class="custom-toggle-slider rounded-circle" data-label-off="No" data-label-on="Yes"></span>
+											</label>
+											<label class="custom-control-label">Publish on website ?</label>
+										</div>
+									</div>
+									<div class="form-group mb-1">
+										<div class="custom-control">
+											<label class="custom-toggle">
+												<input type="hidden" name="shop_visible" value="0">
+												<input type="checkbox" name="shop_visible" value="1" <?php echo (old('shop_visible') != '0' ? 'checked' : '') ?>>
+												<span class="custom-toggle-slider rounded-circle" data-label-off="No" data-label-on="Yes"></span>
+											</label>
+											<label class="custom-control-label">Publish on shop ?</label>
+										</div>
+									</div>
+					            </div>
 					        </div>
 					    </div>
 

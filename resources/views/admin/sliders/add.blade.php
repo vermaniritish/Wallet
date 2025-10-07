@@ -44,24 +44,32 @@
 									@enderror
 								</div>
 							</div>
-							
+							<div class="col-md-6">
+								<div class="form-group">
+									<label class="form-control-label">Heading</label>
+									<input type="text" class="form-control" placeholder="Heading" required name="heading" value="{{ old('heading') }}">
+									@error('heading')
+										<small class="text-danger">{{ $message }}</small>
+									@enderror
+								</div>
+							</div>
 						</div>
 						
 						<div class="row">
 							<div class="col-md-6">
 								<div class="form-group">
-									<label class="form-control-label">Heading</label>
-									<textarea rows="2" class="form-control" placeholder="Heading" required name="heading">{{ old('heading') }}</textarea>
-									@error('heading')
+									<label class="form-control-label">Sub Heading</label>
+									<input type="text" class="form-control" placeholder="Sub Heading" name="sub_heading" value="{{ old('sub_heading') }}">
+									@error('sub_heading')
 										<small class="text-danger">{{ $message }}</small>
 									@enderror
 								</div>
 							</div>
 							<div class="col-md-6">
 								<div class="form-group">
-									<label class="form-control-label">Sub Heading</label>
-									<textarea rows="2" class="form-control" placeholder="Sub Heading" name="sub_heading">{{ old('sub_heading') }}</textarea>
-									@error('sub_heading')
+									<label class="form-control-label">Small Text</label>
+									<input type="text" class="form-control" placeholder="Small Text" required name="small_text" value="{{ old('small_text') }}">
+									@error('small_text')
 										<small class="text-danger">{{ $message }}</small>
 									@enderror
 								</div>
@@ -116,8 +124,7 @@
 											data-type="image"
 											data-multiple="false"
 											data-path="sliders"
-											data-resize-large="1920*753"
-											data-resize-small="192*74"
+											data-resize-large="1500*842"
 										>
 											<div class="upload-section">
 												<div class="button-ref mb-3">
@@ -125,7 +132,7 @@
 										                <span class="btn-inner--icon"><i class="fas fa-upload"></i></span>
 										                <span class="btn-inner--text">Upload Image</span>
 									              	</button>
-													<p><small>Recomeded Size: 1920*753</small></p>
+													<p><small>Recomeded Size: 1500*842</small></p>
 									            </div>
 									            <!-- PROGRESS BAR -->
 												<div class="progress d-none">

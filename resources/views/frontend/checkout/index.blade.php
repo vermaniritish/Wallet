@@ -1,170 +1,189 @@
 @extends('layouts.frontendlayout')
 @section('content')
-<div class="checkout__page--area" id="checkout-page" data-token="{{ $user ? General::encrypt($user->id) : '' }}">
-        <div class="container">
-        
-            <div class="checkout__page--inner d-flex" v-if="orderPlaced">
-                <div class="main checkout__mian">
-                    <div class="row categories-listing time-slot-page">
-                        <div class="col-sm-12 category-heading">
-                            <h2><i class="far fa-arrow-left" style="margin-right: 15px"></i> Order #@{{ orderPlaced }}</h2>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <p class="text-success text-center" style="font-size: 100px;"><i class="far fa-check-circle"></i></p>
-                                <h3 class="text-center my-4">Order Id: #@{{ orderPlaced }}</h3>
-                                <p class="text-center mb-1">We have recieved your order. Your order will be accepted and processed in some minutes.</p>
-                                <p class="text-center mb-1">For order realted queries, feel free to contact us at <a href="tel:+91-3434343434">+91 343434343</a> </p>
-                                <p class="text-center mt-4"><a href="{{url('/my-orders')}}" target="_blank" class="btn btn-primary" >My Order</a></p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="checkout__page--inner d-flex" v-else>
-                <div class="main checkout__mian">
-                    <header class="main__header checkout__mian--header mb-30">
-                       
-                        @include('frontend.checkout.summary')
-                        <nav>
-                            <ol class="breadcrumb checkout__breadcrumb d-flex">
-                                <li class="breadcrumb__item breadcrumb__item--completed d-flex align-items-center">
-                                    <a class="breadcrumb__link" href="{{url('/cart')}}">Cart</a>
-                                    <svg class="readcrumb__chevron-icon" xmlns="http://www.w3.org/2000/svg" width="17.007" height="16.831" viewBox="0 0 512 512"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="48" d="M184 112l144 144-144 144"></path></svg>
-                                </li>
-                        
-                                <li class="breadcrumb__item breadcrumb__item--current d-flex align-items-center">
-                                    <span class="breadcrumb__text current">Information</span>
-                                    <svg class="readcrumb__chevron-icon" xmlns="http://www.w3.org/2000/svg" width="17.007" height="16.831" viewBox="0 0 512 512"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="48" d="M184 112l144 144-144 144"></path></svg>
-                                </li>
-                                <li class="breadcrumb__item breadcrumb__item--blank">
-                                    <span class="breadcrumb__text">Payment</span>
-                                </li>
-                            </ol>
-                            </nav>
-                    </header>
-                    <main class="main__content_wrapper">
-                        <form action="#">
-                            @if(!$user)
-                            <div class="checkout__content--step section__contact--information" id="nologinsection">
-                                <div class="section__header checkout__section--header d-flex align-items-center justify-content-between mb-25">
-                                    <h2 class="section__header--title h3">Contact information</h2>
-                                    
-                                    <p class="layout__flex--item">
-                                        Already have an account?
-                                        <a class="layout__flex--item__link" href="{{url('/login')}}">Log in</a>  
-                                    </p>
-                                    
-                                </div>
-                                <div class="customer__information">
-                                    <div class="checkout__email--phone mb-12">
-                                       <label>
-                                            <input class="checkout__input--field border-radius-5" v-model="checkout.phone_email" required placeholder="Email or mobile phone number"  type="text">
-                                       </label>
-                                       <small v-if="errors && errors.phone_email == ``">This field is required.</small>
-                                    </div>
-                                    <div class="checkout__checkbox">
-                                        <input class="checkout__checkbox--input" id="check1" type="checkbox"  v-model="checkout.newsletterSubscribe">
-                                        <span class="checkout__checkbox--checkmark"></span>
-                                        <label class="checkout__checkbox--label" for="check1">
-                                            Email me with news and offers</label>
-                                    </div>
-                                </div>
-                            </div>
-                            @endif
-                            <div class="checkout__content--step section__shipping--address {{ $user ? 'pt-0' : '' }}"  >
-                                <div class="section__header mb-25">
-                                    <h3 class="section__header--title">Shipping address</h3>
-                                </div>
-                                <div class="section__shipping--address__content">
-                                    <div class="row">
-                                        <div class="col-lg-6 mb-12">
-                                            <div class="checkout__input--list ">
-                                                <label>
-                                                    <input class="checkout__input--field border-radius-5" placeholder="First name (optional)"  type="text" v-model="checkout.first_name">
-                                                </label>
-                                                <small v-if="errors && errors.first_name == ``">This field is required.</small>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-6 mb-12">
-                                            <div class="checkout__input--list">
-                                                <label>
-                                                    <input class="checkout__input--field border-radius-5" placeholder="Last name"  type="text" v-model="checkout.last_name" required>
-                                                </label>
-                                                <small v-if="errors && errors.last_name == ``">This field is required.</small>
-                                            </div>
-                                        </div>
-                                        <div class="col-12 mb-12">
-                                            <div class="checkout__input--list">
-                                                <label>
-                                                    <input class="checkout__input--field border-radius-5" placeholder="Company (optional)"  type="text" v-model="checkout.company">
-                                                </label>
-                                                <small v-if="errors && errors.company == ``">This field is required.</small>
-                                            </div>
-                                        </div>
-                                        <div class="col-12 mb-12">
-                                            <div class="checkout__input--list">
-                                                <label>
-                                                    <input class="checkout__input--field border-radius-5" placeholder="Address1"  type="text" v-model="checkout.address" required>
-                                                </label>
-                                                <small v-if="errors && errors.address == ``">This field is required.</small>
-                                            </div>
-                                        </div>
-                                        <div class="col-12 mb-12">
-                                            <div class="checkout__input--list">
-                                                <label>
-                                                    <input class="checkout__input--field border-radius-5" placeholder="Apartment, suite, etc. (optional)"  type="text" v-model="checkout.address2">
-                                                </label>
-                                                <small v-if="errors && errors.address2 == ``">This field is required.</small>                                                
-                                            </div>
-                                        </div>
-                                        <div class="col-12 mb-12">
-                                            <div class="checkout__input--list">
-                                                <label>
-                                                    <input class="checkout__input--field border-radius-5" placeholder="City"  type="text" v-model="checkout.city" required>
-                                                </label>
-                                                <small v-if="errors && errors.city == ``">This field is required.</small>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-6 mb-12">
-                                            <div class="checkout__input--list checkout__input--select select">
-                                                <label class="checkout__select--label" for="country">Country/region</label>
-                                                <select class="checkout__input--select__field border-radius-5" disabled id="country">
-                                                    <option value="2">United Kingdom</option>
-                                                    <option value="3">Netherlands</option>
-                                                    <option value="4">Afghanistan</option>
-                                                    <option value="5">Islands</option>
-                                                    <option value="6">Albania</option>
-                                                    <option value="7">Antigua Barbuda</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-6 mb-12">
-                                            <div class="checkout__input--list">
-                                                <label>
-                                                    <input class="checkout__input--field border-radius-5" placeholder="Postal code" type="text" v-model="checkout.postalcode" required>
-                                                </label>
-                                                <small v-if="errors && errors.postalcode == ``">This field is required.</small>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="checkout__checkbox">
-                                        <input class="checkout__checkbox--input" id="check2" type="checkbox" v-model="checkout.saveInfo">
-                                        <span class="checkout__checkbox--checkmark"></span>
-                                        <label class="checkout__checkbox--label" for="check2">
-                                            Save this information for next time</label>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                        </form>
-                    </main>
-                    <footer class="main__footer checkout__footer">
-                        <p>&nbsp;</p>
-                    </footer>
-                </div>
-                @include('frontend.checkout.aside')
+<div class="page-header breadcrumb-wrap">
+    <div class="container">
+        <div class="breadcrumb">
+            <a href="index.html" rel="nofollow">Home</a>
+            <span></span> Shop
+            <span></span> Checkout
+        </div>
+    </div>
+</div>
+<section class="mt-50 mb-50" id="checkout-page" data-token="{{ $user ? General::encrypt($user->id) : '' }}">
+    <div class="container" v-if="orderPlaced">
+        <div class="row">
+            <div class="col-sm-12">
+                <p class="text-success text-center" style="font-size: 100px;"><i class="far fa-check-circle"></i></p>
+                <h3 class="text-center my-4">Order Id: #@{{ orderPlaced }}</h3>
+                <p class="text-center mb-1">We have recieved your order. Your order will be accepted and processed in some minutes.</p>
+                <p class="text-center mb-1">For order realted queries, feel free to contact us at <a href="tel:+91-3434343434">+91 343434343</a> </p>
+                <p class="text-center mt-4"><a href="{{url('/my-orders')}}" target="_blank" class="btn btn-primary" >My Order</a></p>
             </div>
         </div>
     </div>
+    <div v-else class="container">
+        <div class="row">
+            <div class="col-lg-6 mb-sm-15">
+                <div class="toggle_info">
+                    <span><i class="fi-rs-user mr-10"></i><span class="text-muted">Already have an account?</span> <a href="#loginform" data-bs-toggle="collapse" class="collapsed" aria-expanded="false">Click here to login</a></span>
+                </div>
+                <div class="panel-collapse collapse login_form" id="loginform">
+                    <div class="panel-body">
+                        <p class="mb-30 font-sm">If you have shopped with us before, please enter your details below. If you are a new customer, please proceed to the Billing &amp; Shipping section.</p>
+                        <form method="post">
+                            <div class="form-group">
+                                <input type="text" name="email" placeholder="Username Or Email">
+                            </div>
+                            <div class="form-group">
+                                <input type="password" name="password" placeholder="Password">
+                            </div>
+                            <div class="login_footer form-group">
+                                <div class="chek-form">
+                                    <div class="custome-checkbox">
+                                        <input class="form-check-input" type="checkbox" name="checkbox" id="remember" value="">
+                                        <label class="form-check-label" for="remember"><span>Remember me</span></label>
+                                    </div>
+                                </div>
+                                <a href="#">Forgot password?</a>
+                            </div>
+                            <div class="form-group">
+                                <button class="btn btn-md" name="login">Log in</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="divider mt-50 mb-50"></div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="mb-25">
+                    <h4>Billing Details</h4>
+                </div>
+                <form method="post">
+                    <div class="form-group">
+                        <input type="text" required="" name="fname" placeholder="First name *" v-model="checkout.first_name">
+                        <small v-if="errors && errors.first_name == ``">This field is required.</small>
+
+                    </div>
+                    <div class="form-group">
+                        <input type="text" required="" name="lname" placeholder="Last name *" v-model="checkout.last_name">
+                        <small v-if="errors && errors.last_name == ``">This field is required.</small>
+
+                    </div>
+                    <div class="form-group">
+                        <input required="" type="text" name="cname" placeholder="Company Name"  v-model="checkout.company">
+                        <small v-if="errors && errors.company == ``">This field is required.</small>
+
+                    </div>
+                    
+                    <div class="form-group">
+                        <input type="text" name="billing_address" required="" placeholder="Address *" v-model="checkout.address">
+                        <small v-if="errors && errors.address == ``">This field is required.</small>
+
+                    </div>
+                    <div class="form-group">
+                        <input type="text" name="billing_address2" placeholder="Address line2"  v-model="checkout.address2">
+                        <small v-if="errors && errors.address2 == ``">This field is required.</small>
+
+                    </div>
+                    <div class="form-group">
+                        <input required="" type="text" name="city" placeholder="City / Town *" v-model="checkout.city">
+                        <small v-if="errors && errors.city == ``">This field is required.</small>
+                    </div>
+                    <div class="form-group">
+                        <select class="checkout__input--select__field border-radius-5" disabled id="country">
+                            <option value="2">United Kingdom</option>
+                            <option value="3">Netherlands</option>
+                            <option value="4">Afghanistan</option>
+                            <option value="5">Islands</option>
+                            <option value="6">Albania</option>
+                            <option value="7">Antigua Barbuda</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <input required="" type="text" name="zipcode" placeholder="Postcode / ZIP *" v-model="checkout.postalcode" >
+                        <small v-if="errors && errors.postalcode == ``">This field is required.</small>
+
+                    </div>
+                    <div class="form-group">
+                        <input required="" type="text" name="phone" placeholder="Phone *">
+                        <small v-if="errors && errors.phone == ``">This field is required.</small>
+                    </div>
+                    <div class="form-group">
+                        <input required="" type="text" name="email" placeholder="Email address *"  v-model="checkout.phone_email">
+                        <small v-if="errors && errors.email == ``">This field is required.</small>
+                    </div>
+                    <div class="form-group">
+                        <div class="checkbox">
+                            <div class="custome-checkbox">
+                                <input class="form-check-input" type="checkbox" name="checkbox" id="createaccount" v-model="checkout.saveInfo">
+                                <label class="form-check-label label_info" data-bs-toggle="collapse" href="#collapsePassword" data-target="#collapsePassword" aria-controls="collapsePassword" for="createaccount"><span>Create an account?</span></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="collapsePassword" class="form-group create-account collapse in">
+                        <input required="" type="password" placeholder="Password" name="password">
+                    </div>
+                    <div class="ship_detail">
+                        <div class="form-group">
+                            <div class="chek-form">
+                                <div class="custome-checkbox">
+                                    <input class="form-check-input" type="checkbox" name="checkbox" id="differentaddress">
+                                    <label class="form-check-label label_info" data-bs-toggle="collapse" data-target="#collapseAddress" href="#collapseAddress" aria-controls="collapseAddress" for="differentaddress"><span>Ship to a different address?</span></label>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="collapseAddress" class="different_address collapse in">
+                            <div class="form-group">
+                                <input type="text" name="fname" placeholder="First name *">
+                            </div>
+                            <div class="form-group">
+                                <input type="text" name="lname" placeholder="Last name *">
+                            </div>
+                            <div class="form-group">
+                                <input type="text" name="cname" placeholder="Company Name">
+                            </div>
+                            
+                            <div class="form-group">
+                                <input type="text" name="billing_address" placeholder="Address *">
+                            </div>
+                            <div class="form-group">
+                                <input type="text" name="billing_address2" placeholder="Address line2">
+                            </div>
+                            <div class="form-group">
+                                <input type="text" name="city" placeholder="City / Town *">
+                            </div>
+                            <div class="form-group">
+                                <input type="text" name="state" placeholder="State / County *">
+                            </div>
+                            <div class="form-group">
+                                <input type="text" name="zipcode" placeholder="Postcode / ZIP *">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-20">
+                        <h5>Additional information</h5>
+                    </div>
+                    <div class="form-group mb-30">
+                        <textarea rows="5" placeholder="Order notes"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="col-md-6">
+                @include('frontend.checkout.summary')
+            </div>
+        </div>
+    </div>
+</section>
 @endsection
+@push("scripts")
+<script>
+var parcelforceCost = {{($settings['shipping_cost_parcelforce'] ? $settings['shipping_cost_parcelforce'] : 0)}};
+var dpdCost = {{($settings['shipping_cost_dpd'] ? $settings['shipping_cost_dpd'] : 0)}}; 
+</script>
+@endpush

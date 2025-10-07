@@ -57,7 +57,7 @@ class HomeController extends AppController
 			'counter' => $products->perPage(),
 			'count' => $products->total(),
 			'maxPage' => ceil($products->total()/$products->perPage()),
-			'paginationMessage' => "Showing {$products->firstItem()} - {$products->lastItem()} of {$products->total()} results",
+			'paginationMessage' => "We found <strong class=\"text-brand\">{$products->total()}</strong> items for you!",
 			'count' => $request->get('page') && $request->get('page') < 2 ? [
 				'menCount' => Products::getCount($request, $where, "Male"),
 				'womenCount' => Products::getCount($request, $where, "Female"),
@@ -142,6 +142,7 @@ class HomeController extends AppController
 			else if($request->get('phone_email') && filter_var($request->get('phone_email'), FILTER_VALIDATE_EMAIL) !== false) {
 				$user = Users::select(['id', 'email', 'phonenumber'])->where('email', 'LIKE', $request->get('phone_email'))->limit(1)->first();
 			}
+
 			$order = new Orders();
 			$order->customer_id = $user ? $user->id : null;
 			$order->first_name = $request->get('first_name');
@@ -209,12 +210,13 @@ class HomeController extends AppController
 						$oneTimeCost = $logoDetailing['haveLogo'] ? Settings::get('one_time_setup_cost') : 0;
 						
 						/* Delivery Case */
-						$order->free_delivery = false;
-						$order->delivery_cost = 0;
-						$freeDelivery = Settings::get('free_delivery');
-						$freeDelivery = $freeDelivery ? json_decode($freeDelivery, true) : null;
-						$order->free_delivery = $freeDelivery && $subtotal >= $freeDelivery['min_cart_price'] ? 1 : 0;
-						$order->delivery_cost = 0;
+						// ----------------- Important
+						// $freeDelivery = Settings::get('free_delivery');
+						// $freeDelivery = $freeDelivery ? json_decode($freeDelivery, true) : null;
+						// $order->free_delivery = $freeDelivery && $subtotal >= $freeDelivery['min_cart_price'] ? 1 : 0;
+						// ----------------- Important
+						$order->free_delivery = 0;
+						$order->delivery_cost = isset($data['shipping']) && $data['shipping'] ? $data['shipping'] : 0;
 						/* Delivery Case */
 
 						$subtotal += $logoDetailing['cost']-$logoDetailing['logoDiscount'];
@@ -236,8 +238,7 @@ class HomeController extends AppController
 						$order->discount = $discount;
 						$order->tax_percentage = Settings::get('gst');
 						$order->tax = (($subtotal - $discount) * $order->tax_percentage) / 100;
-						$order->total_amount = ($subtotal - $discount) + $order->tax;
-						
+						$order->total_amount = ($subtotal - $discount) + $order->tax + $order->delivery_cost;
 						$order->save();
 					}
 

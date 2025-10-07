@@ -32,72 +32,76 @@
 					<div id="product" >
 						<p v-if="mounting" class="text-center big" style="padding: 15%"><i style="font-size: 30px" class="fa fa-spin fa-spinner"></i></p>
 						<form id="product-form" method="post" action="<?php echo route('admin.uniforms.add') ?>" class="form-validation d-none">
-							@if (isset($product) && $product->id)
-								<pre id="edit-form" class="d-none">{{ $product }}</pre>
-							@endif
 							<pre id="availableColor" class="d-none">{{ $colors }}</pre>
 							<pre id="availableSizes" class="d-none">{{ $sizes }}</pre>
 							<!--!! CSRF FIELD !!-->
 							{{ @csrf_field() }}
 							<h6 class="heading-small text-muted mb-4">Uniform information</h6>
 							<div class="pl-lg-4">
-								<div id="sub-category-form" class="row">
-									<div class="col-md-6">
-										<div class="form-group">
-											<label class="form-control-label" for="input-first-name">Category</label>
-											<select v-model="selectedCategory" class="no-selectpicker form-control" name="category" required>
-											<?php foreach($categories as $c): ?>
-												<option 
-													value="<?php echo $c->id ?>" 
-													<?php echo old('category') && in_array($c->id, old('category'))  ? 'selected' : '' ?> 
-												><?php echo $c->title ?></option>
-											<?php endforeach; ?>
-											</select>
-											@error('category')
-												<small class="text-danger">{{ $message }}</small>
-											@enderror
+								<?php if(!$product): ?>
+									<div id="sub-category-form" class="row">
+										<div class="col-md-6">
+											<div class="form-group">
+												<label class="form-control-label" for="input-first-name">Category</label>
+												<select v-model="selectedCategory" class="no-selectpicker form-control" name="category" required>
+												<?php foreach($categories as $c): ?>
+													<option 
+														value="<?php echo $c->id ?>" 
+														<?php echo old('category') && in_array($c->id, old('category'))  ? 'selected' : '' ?> 
+													><?php echo $c->title ?></option>
+												<?php endforeach; ?>
+												</select>
+												@error('category')
+													<small class="text-danger">{{ $message }}</small>
+												@enderror
+											</div>
+										</div>
+										<div class="col-md-6">
+											<div class="form-group">
+												<label class="form-control-label" for="input-first-name">Sub Category</label>
+												<select class="form-control no-selectpicker" v-model="selectedSubCategory" name="sub_category" required @change="updateProducts">
+													<option v-for="subCategory in subCategories" :key="subCategory.id" :value="subCategory.id">
+														@{{ subCategory.title }}
+													</option>
+												</select>
+												@error('category')
+													<small class="text-danger">{{ $message }}</small>
+												@enderror
+											</div>
 										</div>
 									</div>
-									<div class="col-md-6">
-										<div class="form-group">
-											<label class="form-control-label" for="input-first-name">Sub Category</label>
-											<select class="form-control no-selectpicker" v-model="selectedSubCategory" name="sub_category" required @change="updateProducts">
-												<option v-for="subCategory in subCategories" :key="subCategory.id" :value="subCategory.id">
-													@{{ subCategory.title }}
-												</option>
+									<div class="form-group">
+										<label class="form-control-label" for="input-first-name">Product</label>
+										<div v-if="products && products.length > 0">
+											<select id="productDropdown" v-model="selectedProduct" data-live-search="true" class="form-control no-selectpicker" name="product" placeholder="Product" required @change="initEditValues">
+												<option value=""></option>
+												<option v-for="p in products" :value="p.id">@{{ p.title }}</option>
 											</select>
-											@error('category')
-												<small class="text-danger">{{ $message }}</small>
-											@enderror
 										</div>
+										<div v-else><p>No products available. Please adjust the categories to search and select product.</p></div>
+										@error('product')
+											<small class="text-danger">{{ $message }}</small>
+										@enderror
 									</div>
-								</div>
-								<div class="form-group">
-									<label class="form-control-label" for="input-first-name">Product</label>
-									<div v-if="products && products.length > 0">
-										<select id="productDropdown" v-model="selectedProduct" data-live-search="true" class="form-control no-selectpicker" name="product" placeholder="Product" required @change="initEditValues">
+									<hr />
+									<div class="form-group">
+										<label class="form-control-label" for="input-first-name">School</label>
+										<select v-model="schools" class="form-control no-selectpicker" name="schools[]" placeholder="Schools" required multiple>
 											<option value=""></option>
-											<option v-for="p in products" :value="p.id">@{{ p.title }}</option>
+											@foreach($schools as $s)
+											<option value="{{ $s->id }}">{{ $s->name }} - {{ $s->schooltype }} - {{ $s->city }}</option>
+											@endforeach
 										</select>
+										@error('title')
+											<small class="text-danger">{{ $message }}</small>
+										@enderror
 									</div>
-									<div v-else><p>No products available. Please adjust the categories to search and select product.</p></div>
-									@error('product')
-										<small class="text-danger">{{ $message }}</small>
-									@enderror
-								</div>
-								<hr />
-								<div class="form-group">
-									<label class="form-control-label" for="input-first-name">School</label>
-									<select v-model="schools" class="form-control no-selectpicker" name="schools[]" placeholder="Schools" required multiple>
-										<option value=""></option>
-										@foreach($schools as $s)
-										<option value="{{ $s->id }}">{{ $s->name }} - {{ $s->schooltype }} - {{ $s->city }}</option>
-										@endforeach
-									</select>
-									@error('title')
-										<small class="text-danger">{{ $message }}</small>
-									@enderror
-								</div>
+								<?php else: ?>
+									<div class="form-group">
+										<p>School: <strong>{{ $product && $product->school ? $product->school->name : '' }}</strong> </p>
+										<p>Product: <strong>{{ $product && $product->parent ? $product->parent->title : '' }}</strong> </p>
+									</div>
+								<?php endif; ?>
 								<div class="form-group">
 									<label class="form-control-label" for="input-first-name">Title</label>
 									<input type="text" v-model="title" class="form-control" name="title" placeholder="Title" required value="{{ old('title') }}">
@@ -271,7 +275,7 @@
 										<div 
 											class="col-sm-4 upload-image-section vue-image"
 											data-type="image"
-											data-multiple="false"
+											data-multiple="true"
 											data-path="products"
 											data-resize-large="580*630"
 											data-resize-small="282*310"
@@ -460,7 +464,143 @@
 					</div>
 				</div>
 			</div>
+			@if (isset($product) && $product->id)
+				<div class="col-xl-12 order-xl-1">
+					<div class="card" id="customization">
+						<div class="card-header">
+							<div class="row align-items-center">
+								<div class="col-8">
+									<h3 class="mb-0">Customization</h3>
+								</div>
+							</div>
+						</div>
+						<div class="card-body">
+							<form @submit="submitForm">
+								<div class="table-responsive">
+									<table class="table table-hover w-100">
+										<thead class="table-dark">
+											<tr>
+												<th style="width: 18%">Title</th>
+												<th style="width: 25%">Description</th>
+												<th style="width: 12%">Cost ($)</th>
+												<th style="width: 12%">Quantity</th>
+												<th style="width: 12%">Total ($)</th>
+												<th style="10%">
+													Required
+												</th>
+												<th style="width: 5%">Action</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr
+											v-for="(item, index) in items"
+											:key="item.id"
+											>
+											<td>
+												<input
+												type="text"
+												class="form-control form-control-sm"
+												placeholder="Enter title"
+												v-model="item.title"
+												@input="updateItem(item, 'title', item.title)"
+												required
+												/>
+											</td>
+											<td>
+												<textarea
+												class="form-control form-control-sm"
+												placeholder="Enter description"
+												rows="2"
+												v-model="item.description"
+												@input="updateItem(item, 'description', item.description)"
+												required
+												></textarea>
+											</td>
+											<td>
+												<input
+												type="number"
+												class="form-control form-control-sm"
+												placeholder="0.00"
+												step="0.01"
+												min="0"
+												v-model.number="item.cost"
+												@input="updateItem(item, 'cost', item.cost)"
+												required
+												/>
+											</td>
+											<td>
+												<input
+												type="number"
+												class="form-control form-control-sm"
+												placeholder="1"
+												min="1"
+												v-model.number="item.quantity"
+												@input="updateItem(item, 'quantity', item.quantity)"
+												required
+												/>
+											</td>
+											<td>
+												<div class="fw-bold text-success">
+												$@{{ item.total }}
+												</div>
+											</td>
+											<td>
+												<div class="form-check d-flex">
+												<input
+													type="checkbox"
+													style="border: 1px solid"
+													class="form-check-input"
+													:id="'required-' + item.id"
+													v-model="item.required"
+												/>
+												</div>
+											</td>
+											<td>
+												<button
+												type="button"
+												class="btn btn-outline-danger btn-sm"
+												@click="removeRow(item.id)"
+												:disabled="items.length === 1"
+												title="Remove row"
+												>
+												Remove
+												</button>
+											</td>
+											</tr>
+										</tbody>
+										<tfoot class="table-light">
+											<tr>
+											<td colspan="2">
+												<button
+												type="button"
+												class="btn btn-sm btn-secondary"
+												@click="addRow"
+												>
+												Add New Row
+												</button>
+											</td>
+											<td colspan="2" class="text-end fw-bold fs-5">
+												Grand Total:
+											</td>
+											<td class="fw-bold fs-4 text-primary">
+												$@{{ calculateGrandTotal() }}
+											</td>
+											<td colspan="2" class="text-right"><button type="submit" class="btn btn-primary"><i class="fa fa-spin fa-spinner" v-if="loading"></i> Save</button></td>
+											</tr>
+										</tfoot>
+									</table>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+				@endif
 		</div>
 	</div>
 </div>
 @endsection
+@push('scripts')
+<script>
+var pageId = '{{ $product && $product->id ? $product->id : '' }}';
+</script>
+@endpush

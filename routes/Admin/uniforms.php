@@ -13,10 +13,10 @@ Route::post('/uniforms/add', '\App\Http\Controllers\Admin\Products\UniformsContr
 Route::get('/uniforms/{id}/view', '\App\Http\Controllers\Admin\Products\UniformsController@view')
     ->name('admin.uniforms.view');
 
-Route::get('/uniforms/{id}/edit', '\App\Http\Controllers\Admin\Products\UniformsController@edit')
+Route::get('/uniforms/{id}/edit', '\App\Http\Controllers\Admin\Products\UniformsController@add')
     ->name('admin.uniforms.edit');
 
-Route::post('/uniforms/{id}/edit', '\App\Http\Controllers\Admin\Products\UniformsController@edit')
+Route::post('/uniforms/{id}/edit', '\App\Http\Controllers\Admin\Products\UniformsController@add')
     ->name('admin.uniforms.edit');
 
 Route::post('/uniforms/bulkActions/{action}', '\App\Http\Controllers\Admin\Products\UniformsController@bulkActions')

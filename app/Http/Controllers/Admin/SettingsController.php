@@ -1,4 +1,4 @@
-<?php
+</div><?php
 /**
  * Settings Class
  *
@@ -115,7 +115,8 @@ class SettingsController extends AppController
 			}
 		}
 
-		return view("admin/settings/index", []);
+		return view("admin/settings/index", [
+		]);
 	}
 
 	function recaptcha(Request $request)

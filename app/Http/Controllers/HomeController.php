@@ -36,7 +36,7 @@ class HomeController extends BaseController
 				return redirect('/my-account');
             }
         }
-        $sliders = Sliders::where('status',1)->get();
+        $sliders = Sliders::where('status',1)->orderBy('id', 'desc')->get();
         $testimonials = Ratings::where('status',1)->get();
         return view('frontend.home.index', ['sliders' => $sliders,'testimonials' => $testimonials]);
     }
@@ -67,6 +67,7 @@ class HomeController extends BaseController
 					'products.max_price',
 					'products.price',
 					'products.gender',
+					'products.sku_number',
 					DB::raw('(Select sale_price from product_sizes where product_sizes.product_id = products.id order by sale_price desc limit 1) as sale_price')
 				]
 			)->where('id', '!=', $product->id)->where('category_id', $product->category_id)->where('status', 1)->orderByRaw('rand()')->limit(4)->get();
@@ -78,7 +79,6 @@ class HomeController extends BaseController
 				$logooption = ["Embroidered Logo"];
 			else
 				$logooption = null;
-
             return view('frontend.products.detail', [
                 'product' => $product,
                 'similarProducts' => $similarProducts,
@@ -97,7 +97,6 @@ class HomeController extends BaseController
                 $subCategory = ProductSubCategories::select(['title', 'slug', 'description', 'image'])->where('category_id', $category->id)->where('status', 1)->where('slug', 'LIKE', $subCategory)->limit(1)->first();
                 if(!$subCategory) {abort('404'); }
             }
-            
             $categories = ProductSubCategories::select(['title', 'slug', 'description', 'image'])->where('category_id', $category->id)->where('status', 1)->get();
             $brands = Brands::select(['id', 'title', 'slug'])->where('status', 1)->orderBy('title', 'asc')->get();
             return view('frontend.products.index', [

@@ -58,10 +58,8 @@ Route::middleware(['guest'])->group(function () {
 	//Admin public
 	include "Admin/auth.php";
 	include "Frontend/auth.php";
+	include "Frontend/school.php";
 	include "Frontend/home.php";
-
-	
-
 });
 // Frontend Routes
 // Route::middleware(['frontendauth'])->group(function () {

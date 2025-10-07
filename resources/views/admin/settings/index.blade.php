@@ -48,6 +48,14 @@
 								    <small class="text-danger">{{ $message }}</small>
 								@enderror
 							</div>
+
+							<div class="form-group">
+								<label class="form-control-label" for="input-first-name">Hotline Number</label>
+								<input type="text" class="form-control" name="company_address" required placeholder="Hotline Number" value="{{ Settings::get('hotline_number') }}">
+								@error('hotline_number')
+								    <small class="text-danger">{{ $message }}</small>
+								@enderror
+							</div>
 							<div class="row">
 								<div class="col-md-6">
 									<label class="form-control-label" for="input-first-name">Logo</label>
@@ -193,7 +201,7 @@
 						</button>
 					</form>
 				</div>
-			</div>
+			</div>			
 			<div class="card">
 				<!--!! FLAST MESSAGES !!-->
 				<div class="card-header">

@@ -679,4 +679,24 @@ class ProductsController extends AppController
 			'products' => $products,
 		]);
 	}
+
+	public function updateCustomization(Request $request, $id)
+	{
+		$product = Products::find($id);
+		$product->logo_customization = $request->items;
+		if($product->save())
+		{
+			return Response()->json([
+				'status' => true,
+				'message' => "Product created."
+			]);
+		}
+		else
+		{
+			return Response()->json([
+				'status' => false,
+				'message' => 'Product could not be saved. Please try again.'
+			], 400);
+		}
+	}
 }

@@ -129,6 +129,18 @@
 						                </div>
 									</div>
 								</div>	
+								<div class="col-md-6">
+									<div required class="custom-control mt-2">
+										<label class="custom-toggle">
+											<input type="hidden" name="allow_pickup" value="0">
+											<input type="checkbox" name="allow_pickup" value="1"
+												<?php echo old('allow_pickup') != '0' ? 'checked' : ''; ?>>
+											<span class="custom-toggle-slider rounded-circle" data-label-off="No"
+												data-label-on="Yes"></span>
+										</label>
+										<label class="custom-control-label">Allowed pickup of products</label>
+									</div>
+								</div>
 							</div>
 						</div>
 						<hr class="my-4" />

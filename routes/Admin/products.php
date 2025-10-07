@@ -26,6 +26,9 @@ Route::get('/products/{id}/edit', '\App\Http\Controllers\Admin\Products\Products
 Route::post('/products/{id}/edit', '\App\Http\Controllers\Admin\Products\ProductsController@edit')
     ->name('admin.products.edit');
 
+Route::post('/products/{id}/update-customization', '\App\Http\Controllers\Admin\Products\ProductsController@updateCustomization')
+    ->name('admin.products.updateCustomization');
+
 Route::post('/products/bulkActions/{action}', '\App\Http\Controllers\Admin\Products\ProductsController@bulkActions')
     ->name('admin.products.bulkActions');
 

@@ -210,7 +210,6 @@ class SlidersController extends AppController
                         'image' => ['nullable'],
                     ],
                 );
-                $data['status'] = isset($data['status']) && $data['status'] ? $data['status'] : 0;
                 if(!$validator->fails()) {
                     unset($data['_token']);
                     if(Sliders::modify($id, $data)) {
