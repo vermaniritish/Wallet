@@ -24,6 +24,7 @@ window.offerPrice = function(item) {
     return {price: item.quantity*item.price, freeLogo: 0, haveOffer: false };
 }
 const oneTimeProductCost = function(cart) {
+    return 0;
     let obj = oneTimeProductObject(cart);
     let imageCost = obj.image;
     let txtCost = obj.text;
@@ -80,10 +81,17 @@ var productDetail = new Vue({
         },
         fileSizeError: null,
         adding: null,
-        accept: null
-        
+        accept: null,
+        customization: [],
+        customizationErrors: {}
     },
     methods: {       
+        currency(a) {
+            return '£' + (a*1).toFixed(2);
+        },
+        renderActiveColor(id) {
+            return this.color == id ? `active` : ``;
+        },
         selectColor(id, title) {
             this.color = id;
             this.colorTitle = title;
@@ -173,12 +181,13 @@ var productDetail = new Vue({
             this.cart = this.sizes.filter((item) => {
                 return (item.quantity && (item.quantity*1) > 0)
             });
+            let custmomization = this.customization.filter((v) => v.initial && v.initial.trim()).map((v) => ({cost:v.cost, title: v.title, initial: v.initial}));
             let response = await fetch(site_url + '/api/orders/add-to-cart', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({cart: this.cart}),
+                body: JSON.stringify({cart: this.cart, customization: custmomization}),
             });
             response = await response.json();
             if(response && response.status)
@@ -273,6 +282,8 @@ var productDetail = new Vue({
     },
     mounted: function() 
     {
+        this.customization = JSON.parse($('#customization').text().trim());
+        console.log(this.customization);
         this.id  = $('#productId').text().trim();
         let cart = localStorage.getItem('cart');
         cart = cart ? JSON.parse(cart) : [];
@@ -281,21 +292,19 @@ var productDetail = new Vue({
         });
         let sizes = $('#product-sizes').text().trim();
         sizes = sizes ? JSON.parse(sizes) : [];
-        for(let i in sizes)
-        {
-            let exist = this.cart.filter((item) => {
-                return item.id == sizes[i].id
-            });
-            sizes[i].logo = exist && exist.length > 0 && exist[0].logo ? exist[0].logo : [...this.logo];
-            sizes[i].quantity = exist && exist.length > 0 && exist[0].quantity ? exist[0].quantity : 0;
-        }
+        // for(let i in sizes)
+        // {
+        //     let exist = this.cart.filter((item) => {
+        //         return item.id == sizes[i].id
+        //     });
+        //     sizes[i].logo = exist && exist.length > 0 && exist[0].logo ? exist[0].logo : [...this.logo];
+        //     sizes[i].quantity = exist && exist.length > 0 && exist[0].quantity ? exist[0].quantity : 0;
+        // }
         this.sizes = sizes;
         this.logoOptions = $('#logo-options').text().trim() ? JSON.parse($('#logo-options').text().trim()) : [];
         if(!this.color && this.sizes.length > 0) {
             this.color = this.sizes[0].color_id;
         }
-
-        // window.productSlider();
     }
 });
 
@@ -799,17 +808,17 @@ var minicart = new Vue({
             return (amount > 0) ? (`Price for ` + `${(totalLogos + (totalLogos > 1 ? ` logos are ` : ` logo is `))} <strong>£${amount.toFixed(2)}</strong>`) : '';
         },
         renderOneTimeFeeHtml() {
-            if(this.cart && this.cart.length > 0)
-            {
-                let obj = oneTimeProductObject(this.cart);
-                console.log(`obj`, obj);
-                if(obj && obj.image !== null && obj.text !== null && obj.image > 0 && obj.text > 0){
-                    return `<div class="d-flex flex-row justify-content-between gap-4">
-                    <span class="cart__content--variant" style="color: rgb(238, 39, 97);">For Logo <strong>£${obj.image.toFixed(2)}</strong></span>
-                        <span class="cart__content--variant" style="color: rgb(238, 39, 97);">For Text <strong>£${obj.text.toFixed(2)}</strong></span>
-                    </div>`
-                }
-            }
+            // if(this.cart && this.cart.length > 0)
+            // {
+            //     let obj = oneTimeProductObject(this.cart);
+            //     console.log(`obj`, obj);
+            //     if(obj && obj.image !== null && obj.text !== null && obj.image > 0 && obj.text > 0){
+            //         return `<div class="d-flex flex-row justify-content-between gap-4">
+            //         <span class="cart__content--variant" style="color: rgb(238, 39, 97);">For Logo <strong>£${obj.image.toFixed(2)}</strong></span>
+            //             <span class="cart__content--variant" style="color: rgb(238, 39, 97);">For Text <strong>£${obj.text.toFixed(2)}</strong></span>
+            //         </div>`
+            //     }
+            // }
             return ``;
         },
         manualQty(e) {
@@ -925,77 +934,19 @@ var minicart = new Vue({
             t.total = t.subtotal - t.discount + t.tax;
             return t;
         },
+        getCustomizationCost(custom)
+        {
+            return custom ? custom.reduce((sum, item) => sum + item.cost, 0) : 0;
+        },
         calcaualteLogoCost()
         {
             let cost = 0;
-            let haveLogo = 0;
-            let appliedDiscount = 0;
-            let logoDiscount = 0;
             for(let c of this.cart )
             {
-                let freeLogo = this.offerPrice(c).freeLogo;
-                if(c.logo)
-                {
-                    for(let item of c.logo)
-                    {
-                        if( (item.image || item.text) && !item.already_uploaded && item.category != 'None' )
-                        {
-                            haveLogo += (c.quantity*1);
-                        }
-
-                        if(item && item.category != 'None' && (item.price*1) > 0)
-                        {
-                            cost += item.price*c.quantity;
-
-                            if(freeLogo > 0)
-                            {
-                                discountQty = c.quantity > freeLogo ? freeLogo : c.quantity;
-                                appliedDiscount += discountQty;
-                                logoDiscount += item.price*discountQty;
-                            }
-                        }
-                    }
-                }
+                cost += this.getCustomizationCost(c.customization)*1;
             }
-            if(appliedDiscount < 1 && haveLogo > 0)
-            {
-                let subtotal = this.cart.map((item) => {
-                    if(item.offer && item.offer)
-                    {
-                        return this.offerPrice(item).price;
-                        // return item.quantity*item.price;
-                    }
-                    else
-                    {
-                        return item.quantity*item.price;
-                    }
-                });
-                subtotal = subtotal.reduce((partialSum, a) => partialSum + a, 0);
-                let prices = [];
-                for(let c of this.cart )
-                {
-                    for(let item of c.logo)
-                    {
-                        for(let i = 0; i < (c.quantity*1); i++)
-                        prices.push(item.price);
-                    }
-                }
-                let discount = freeLogoDiscount ? freeLogoDiscount : null;
-                if(discount &&  (subtotal*1) >= (discount.min_cart_price*1) && prices.length >= discount.quantity)
-                {
-                    const sortedPrices = prices.sort((a, b) => a - b);
-                    const topPrices = sortedPrices.slice(0, discount.quantity);
-                
-                    logoDiscount = topPrices.reduce((acc, price) => acc + price, 0);
-                    appliedDiscount = discount.quantity;
-                }
-            }
-            return {
-                cost,
-                haveLogo: haveLogo > 0 ? true : false,
-                logoDiscount,
-                appliedDiscount
-            };
+            
+            return {cost};
         },
         freeDelivery(){
             let subtotal = this.cart.map((item) => {
@@ -1146,17 +1097,17 @@ checkoutPage = new Vue({
             return (amount > 0) ? (`Price for ` + `${(totalLogos + (totalLogos > 1 ? ` logos are ` : ` logo is `))} <strong>£${amount.toFixed(2)}</strong>`) : '';
         },
         renderOneTimeFeeHtml() {
-            if(this.cart && this.cart.length > 0)
-            {
-                let obj = oneTimeProductObject(this.cart);
-                console.log(`obj`, obj);
-                if(obj && obj.image !== null && obj.text !== null && obj.image > 0 && obj.text > 0){
-                    return `<div class="d-flex flex-row gap-4">
-                    <span class="cart__content--variant" style="color: rgb(238, 39, 97);">For Logo <strong>£${obj.image.toFixed(2)}</strong></span>
-                        <span class="cart__content--variant" style="color: rgb(238, 39, 97);">For Text <strong>£${obj.text.toFixed(2)}</strong></span>
-                    </div>`
-                }
-            }
+            // if(this.cart && this.cart.length > 0)
+            // {
+            //     let obj = oneTimeProductObject(this.cart);
+            //     console.log(`obj`, obj);
+            //     if(obj && obj.image !== null && obj.text !== null && obj.image > 0 && obj.text > 0){
+            //         return `<div class="d-flex flex-row gap-4">
+            //         <span class="cart__content--variant" style="color: rgb(238, 39, 97);">For Logo <strong>£${obj.image.toFixed(2)}</strong></span>
+            //             <span class="cart__content--variant" style="color: rgb(238, 39, 97);">For Text <strong>£${obj.text.toFixed(2)}</strong></span>
+            //         </div>`
+            //     }
+            // }
             return ``;
         },
         manualQty(e) {
@@ -1280,77 +1231,19 @@ checkoutPage = new Vue({
             t.total = t.subtotal - t.discount + t.tax + t.shipping_cost;
             return t;
         },
+        getCustomizationCost(custom)
+        {
+            return custom ? custom.reduce((sum, item) => sum + item.cost, 0) : 0;
+        },
         calcaualteLogoCost()
         {
             let cost = 0;
-            let haveLogo = 0;
-            let appliedDiscount = 0;
-            let logoDiscount = 0;
             for(let c of this.cart )
             {
-                let freeLogo = this.offerPrice(c).freeLogo;
-                if(c.logo)
-                {
-                    for(let item of c.logo)
-                    {
-                        if( (item.image || item.text) && !item.already_uploaded && item.category != 'None' )
-                        {
-                            haveLogo += (c.quantity*1);
-                        }
-
-                        if(item && item.category != 'None' && (item.price*1) > 0)
-                        {
-                            cost += item.price*c.quantity;
-
-                            if(freeLogo > 0)
-                            {
-                                discountQty = c.quantity > freeLogo ? freeLogo : c.quantity;
-                                appliedDiscount += discountQty;
-                                logoDiscount += item.price*discountQty;
-                            }
-                        }
-                    }
-                }
+                cost += this.getCustomizationCost(c.customization)*1;
             }
-            if(appliedDiscount < 1 && haveLogo > 0)
-            {
-                let subtotal = this.cart.map((item) => {
-                    if(item.offer && item.offer)
-                    {
-                        return this.offerPrice(item).price;
-                        // return item.quantity*item.price;
-                    }
-                    else
-                    {
-                        return item.quantity*item.price;
-                    }
-                });
-                subtotal = subtotal.reduce((partialSum, a) => partialSum + a, 0);
-                let prices = [];
-                for(let c of this.cart )
-                {
-                    for(let item of c.logo)
-                    {
-                        for(let i = 0; i < (c.quantity*1); i++)
-                        prices.push(item.price);
-                    }
-                }
-                let discount = freeLogoDiscount ? freeLogoDiscount : null;
-                if(discount &&  (subtotal*1) >= (discount.min_cart_price*1) && prices.length >= discount.quantity)
-                {
-                    const sortedPrices = prices.sort((a, b) => a - b);
-                    const topPrices = sortedPrices.slice(0, discount.quantity);
-                
-                    logoDiscount = topPrices.reduce((acc, price) => acc + price, 0);
-                    appliedDiscount = discount.quantity;
-                }
-            }
-            return {
-                cost,
-                haveLogo: haveLogo > 0 ? true : false,
-                logoDiscount,
-                appliedDiscount
-            };
+            
+            return {cost};
         },
         freeDelivery(){
             let subtotal = this.cart.map((item) => {

@@ -33,6 +33,7 @@ use App\Models\Admin\OrderProductRelation;
 use App\Models\Admin\Orders;
 use App\Models\Admin\Users;
 use App\Models\Admin\ProductSizeRelation;
+use Illuminate\Support\Arr;
 
 class HomeController extends AppController
 {
@@ -186,7 +187,7 @@ class HomeController extends AppController
 					$includeTravelCharges = 0;
 					foreach($data['cart'] as $c)
 					{
-						$logo = isset($c['logo']) && $c['logo'] ? $c['logo'] : [];
+						$logo = isset($c['customization']) && $c['customization'] ? $c['customization'] : [];
 						$products[] = [
 							'order_id' => $order->id,
 							'product_id' => $c['product_id'],
@@ -206,8 +207,10 @@ class HomeController extends AppController
 					if($products)
 					{
 						OrderProductRelation::insert($products);
+						
 						$logoDetailing = $this->calculateLogoCost($data['cart']);
-						$oneTimeCost = $logoDetailing['haveLogo'] ? Settings::get('one_time_setup_cost') : 0;
+						// $oneTimeCost = $logoDetailing['haveLogo'] ? Settings::get('one_time_setup_cost') : 0;
+						$oneTimeCost = 0;
 						
 						/* Delivery Case */
 						// ----------------- Important
@@ -218,17 +221,13 @@ class HomeController extends AppController
 						$order->free_delivery = 0;
 						$order->delivery_cost = isset($data['shipping']) && $data['shipping'] ? $data['shipping'] : 0;
 						/* Delivery Case */
-
-						$subtotal += $logoDetailing['cost']-$logoDetailing['logoDiscount'];
-						$subtotal += $oneTimeCost;
-						
+						$order->subtotal = $subtotal;	
 						$order->logo_cost = $logoDetailing['cost'];
 						$order->logo_discount = $logoDetailing['logoDiscount'];
 						$order->logo_discount_applied = $logoDetailing['appliedDiscount'];
 						$order->one_time_cost = $oneTimeCost;
-						$order->subtotal = $subtotal;
 						$order->tax_percentage = Settings::get('gst');
-
+						$subtotal += $logoDetailing['cost'];
 						if(isset($data['coupon']) && $data['coupon'] && $data['coupon']['is_percentage'] > 0 && $data['coupon']['amount'] > 0) {
 							$discount = ($subtotal * $data['coupon']['amount'])/100;
 						}
@@ -290,6 +289,7 @@ class HomeController extends AppController
 				->orderBy('offers.type', 'asc')
 				->get();
 			$cart[$k]['offer'] = $offer ? $offer : null;	
+			$cart[$k]['customization'] = isset($data['customization']) && $data['customization'] ? $data['customization'] : null;	
 		}
 		return Response()
 			->json([
@@ -333,60 +333,8 @@ class HomeController extends AppController
 		$logoDiscount = 0;
 		foreach($cart as $c)
 		{
-			$freeLogo = $this->offerPrice($c)['freeLogo'];
-			if($c['logo'])
-			{
-				foreach($c['logo'] as $item)
-				{
-					if( ($item['image'] || $item['text']) && !$item['already_uploaded'] && $item['category'] != 'None' )
-					{
-						$haveLogo += ($c['quantity']*1);
-					}
-
-					if($item && $item['category'] != 'None' && isset($item['price']) && ($item['price']*1) > 0)
-					{
-						$cost += $item['price']*$c['quantity'];
-
-						if($freeLogo > 0)
-						{
-							$discountQty = $c['quantity'] > $freeLogo ? $freeLogo : $c['quantity'];
-							$appliedDiscount += $discountQty;
-							$logoDiscount += $item['price']*$discountQty;
-						}
-					}
-				}
-			}
-		}
-		if($appliedDiscount < 1 && $haveLogo > 0)
-		{
-			$freeLogoDiscount = Settings::get('free_logo_discount');
-			$subtotal = 0;
-			$prices = [];
-
-			foreach($cart as $item)
-			{
-				foreach($item['logo'] as $lItem)
-				{
-					for($i = 0; $i < ($item['quantity']*1); $i++)
-					{
-						$prices[] = $lItem['price'];
-					}
-				}
-				
-
-				$subtotal += $this->offerPrice($item)['price'];
-			}
-			
-			$discount = $freeLogoDiscount ? json_decode($freeLogoDiscount, true) : null;
-			if($discount && ($subtotal*1) >= ($discount['min_cart_price']*1) && count($prices) >= $discount['quantity'])
-			{
-				sort($prices);
-				$topPrices = array_slice($prices, 0, $discount['quantity']);
-				$logoDiscount = array_reduce($topPrices, function($acc, $price) {
-					return $acc + $price;
-				}, 0);
-				$appliedDiscount = $discount['quantity'];
-			}
+			$totalCost = array_sum(Arr::pluck($c['customization'], 'cost'));
+			$cost += $totalCost > 0 ? $totalCost : 0;
 		}
 		return [
 			'cost' => $cost,

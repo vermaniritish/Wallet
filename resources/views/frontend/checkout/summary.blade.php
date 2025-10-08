@@ -16,15 +16,16 @@
                                     <td  width="60%">
                                         <h5><a :href="'/' + c.slug">@{{c.title}}</a></h5> <span class="product-qty">x @{{c.quantity && c.quantity > 0 ? c.quantity : ``}}</span>
                                         <p class="font-xs">SKU: @{{c.size_title}}, Size: @{{c.size_title}}, Color: @{{c.color}}</p>
+                                        <span class="text-danger" v-if="c.customization && c.customization.length > 0">@{{ c.customization.length }} customization added worth £@{{(c.quantity * getCustomizationCost(c.customization)).toFixed(2)}}.</span>
                                     </td>
                                     <td  width="15%">£@{{c.quantity && c.quantity > 0 ? (c.quantity*c.price).toFixed(2) : ``}}</td>
                                 </tr>
                                 <tr>
-                                    <td colspan="2">Product Costs </td>
+                                    <td colspan="2">Product Costs</td>
                                     <td>£@{{formatMoney(calculate().product_cost)}}</td>
                                 </tr>
 								<tr v-if="calculate().logo_cost > 0">
-                                    <td colspan="2">Costs To Add Logo </td>
+                                    <td colspan="2">Customization Cost</td>
                                     <td>£@{{formatMoney(calculate().logo_cost)}}</td>
                                 </tr>
                                 <tr v-if="calculate().logo_discount > 0">

@@ -33,6 +33,7 @@
                                 <td class="product-des product-name">
                                     <h5 class="product-name"><a :href="'/' + c.slug">@{{ c.title }}</a></h5>
                                     <p class="font-xs">SKU: @{{c.size_title}}<br> Size:  @{{c.size_title}}<br/> Color: @{{c.color}} 
+                                        <span class="text-danger" v-if="c.customization && c.customization.length > 0"><br /> @{{ c.customization.length }} customization added worth £@{{(c.quantity * getCustomizationCost(c.customization)).toFixed(2)}}.</span>
                                     </p>
                                 </td>
                                 <td class="price" data-title="Price"><span>£@{{c.price}}</span></td>
@@ -104,7 +105,7 @@
                                             <td class="cart_total_amount"><span class="font-lg fw-900 text-brand">£@{{formatMoney(calculate().product_cost)}}</span></td>
                                         </tr>
                                         <tr v-if="calculate().logo_cost > 0">
-                                            <td class="cart_total_label">Customization</td>
+                                            <td class="cart_total_label">Customization Cost</td>
                                             <td class="cart_total_amount"><span class="font-lg fw-900 text-brand">£@{{formatMoney(calculate().logo_cost)}}</span></td>
                                         </tr>
                                         <tr v-if="calculate().logo_discount > 0">

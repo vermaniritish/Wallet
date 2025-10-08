@@ -484,7 +484,6 @@
 												<th style="width: 25%">Description</th>
 												<th style="width: 12%">Cost ($)</th>
 												<th style="width: 12%">Quantity</th>
-												<th style="width: 12%">Total ($)</th>
 												<th style="10%">
 													Required
 												</th>
@@ -529,22 +528,6 @@
 												/>
 											</td>
 											<td>
-												<input
-												type="number"
-												class="form-control form-control-sm"
-												placeholder="1"
-												min="1"
-												v-model.number="item.quantity"
-												@input="updateItem(item, 'quantity', item.quantity)"
-												required
-												/>
-											</td>
-											<td>
-												<div class="fw-bold text-success">
-												$@{{ item.total }}
-												</div>
-											</td>
-											<td>
 												<div class="form-check d-flex">
 												<input
 													type="checkbox"
@@ -572,18 +555,16 @@
 											<tr>
 											<td colspan="2">
 												<button
-												type="button"
-												class="btn btn-sm btn-secondary"
-												@click="addRow"
+													type="button"
+													class="btn btn-sm btn-secondary"
+													@click="addRow"
 												>
 												Add New Row
 												</button>
 											</td>
-											<td colspan="2" class="text-end fw-bold fs-5">
-												Grand Total:
+											<td colspan="2" class="text-end fw-bold fs-5">&nbsp;
 											</td>
-											<td class="fw-bold fs-4 text-primary">
-												$@{{ calculateGrandTotal() }}
+											<td class="fw-bold fs-4 text-primary">&nbsp;
 											</td>
 											<td colspan="2" class="text-right"><button type="submit" class="btn btn-primary"><i class="fa fa-spin fa-spinner" v-if="loading"></i> Save</button></td>
 											</tr>

@@ -1,4 +1,6 @@
 <?php foreach($listing->items() as $k => $row): ?>
+<?php $logos = $row->logo_data ? (substr($row->logo_data, 0, 1) == '{' ? json_decode('['.$row->logo_data.']') : json_decode($row->logo_data)) : null; ?>
+
 <tr class="table-borderless">
 	<td>
 		<div class="custom-control custom-checkbox">
@@ -14,8 +16,8 @@
 	<td style="width:50%">
 		<?php echo $row->product_title ?><br />
 		<p class="m-0 p-0 small">{{ $row->category }} - {{ $row->sub_category }} | Color: {{$row->color }} | Size: {{$row->size_title }}</p>
-		<?php if($row->logo_data): ?>
-		<p class="m-0 p-0 small text-warning">Customization added worth: {{ $row->logo_cost }}</p>
+		<?php if($logos): ?>
+		<p class="m-0 p-0 small text-warning">{{ count($logos) }} Customization added.</p>
 		<?php endif; ?>
 		<?php if($row->non_exchange): ?>
 		<p class="m-0 p-0 small text-danger">No Refund and Exchange</p>
@@ -32,14 +34,14 @@
 		@endif
 	</td>
 </tr>
-<?php $logos = $row->logo_data ? (substr($row->logo_data, 0, 1) == '{' ? json_decode('['.$row->logo_data.']') : json_decode($row->logo_data)) : null; ?>
 <?php if($logos): ?>
 <tr class="table-borderless d-none">
 	<td colspan="5" style="padding:0;">
 		<table class="table">
 			<thead class="thead-light">
 			<tr>
-				<th width="50%">Title</th>
+				<th width="30%">Title</th>
+				<th width="30%">Initial</th>
 				<th>Cost</th>
 				<th>Qty</th>
 				<th>Total</th>
@@ -47,15 +49,11 @@
 			</thead>
 			@foreach($logos as $logo)
 			<tr>
-				<td>
-					{{ $logo->title }}<br /> {{ $logo->description }}
-					@if($logo->required)
-					<br /><small class="text-danger">Required</small>
-					@endif
-				</td>
+				<td>{{ $logo->title }}</td>
+				<td>{{ $logo->initial }}</td>
 				<td>{{ _currency($logo->cost) }}</td>
-				<td>{{ $logo->quantity }}</td>
-				<td>{{ _currency($logo->total) }}</td>
+				<td>{{ $row->quantity }}</td>
+				<td>{{ _currency($logo->cost * $row->quantity) }}</td>
 			</tr>
 			@endforeach
 		</table>

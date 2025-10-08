@@ -61,8 +61,10 @@ $version = '1.0';
     </script>
     @stack('scripts')
     <script src="https://cdn.jsdelivr.net/npm/vue@2.7.16"></script>
+    
     <script src="{{ url('frontend/assets/js/vendor/modernizr-3.6.0.min.js') }}"></script>
     <script src="{{ url('frontend/assets/js/vendor/jquery-3.6.0.min.js') }}"></script>
+    <script src="<?php echo url('assets/js/bootstrap-notify.js') ?>"></script>
     <script src="{{ url('frontend/assets/js/vendor/jquery-migrate-3.3.0.min.js') }}"></script>
     <script src="{{ url('frontend/assets/js/vendor/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ url('frontend/assets/js/plugins/slick.js') }}"></script>

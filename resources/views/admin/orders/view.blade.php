@@ -50,7 +50,7 @@ use App\Models\Admin\Settings;
 									</tr>
 									<tr>
 										<th>Store</th>
-										<td class="text-primary"><?php echo $page->shop->name ?></td>
+										<td class="text-primary"><?php echo ($page->shop ? $page->shop->name : 'Website') ?></td>
 									</tr>
 									<tr>
 										<th>Customer Name</th>

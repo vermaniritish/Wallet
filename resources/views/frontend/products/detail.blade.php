@@ -105,7 +105,7 @@
                                         <span id="productId" class="d-none">{{ $product->id }}</span>
                                         <pre id="product-sizes" class="d-none">{{ json_encode($product->sizes ? $product->sizes : '') }}</pre>
 										<div style="padding-bottom:10px;">
-										<strong class="mr-10">Color</strong>: @{{ this.colorTitle ? this.colorTitle : '' }}
+										<strong class="mr-10">Color</strong>: @{{ colorTitle ? colorTitle : '' }}
 										</div>
                                         <div class="attr-detail attr-color mb-15">
                                             
@@ -113,10 +113,9 @@
                                                 <?php 
                                                 foreach($product->colors as $c): ?>
                                                 <?php $codes = explode(',',$c->color_code); ?>
-                                                <li>
-                                                    <li :class="color == '{{$c->id}}' ? `active` : ``" >
-                                                        <a v-on:click="selectColor({{$c->id}}, '{{$c->title}}')" href="#" data-color="{{ $c->title }}" data-code="{{$c->color_code}}"><span style="background-repeat: no-repeat;{{ (count($codes) > 1 ? 'background:linear-gradient('.$c->color_code.')' : 'background-color:' .$c->color_code) }}" class="product-color-white"></span></a>
-                                                    </li>
+                                                
+                                                <li :class="renderActiveColor('{{$c->id}}')">
+                                                    <a v-on:click="selectColor('{{$c->id}}', '{{$c->title}}')" href="javascript:;" data-color="{{ $c->title }}" data-code="{{$c->color_code}}"><span style="background-repeat: no-repeat;{{ (count($codes) > 1 ? 'background:linear-gradient('.$c->color_code.')' : 'background-color:' .$c->color_code) }}" class="product-color-white"></span></a>
                                                 </li>
                                                 <?php endforeach; ?>
                                             </ul>
@@ -143,8 +142,23 @@
 												</div>
 											</div>
 										</div>
+                                        <br>
                                         <div style="padding-bottom:10px;">
-											<strong class="mr-10"><a href="#">Click here</a> to Add Personalisation</strong>
+											<p style="text-brand"><i class="fi-rs-scale mr-5"></i> <strong class="mr-10">Add Personalisation</strong></p>
+											<small>Please note we do not accept exchanges or refunds for personalised items.</small>
+											<br><br>
+											
+                                            <?php 
+                                            $customization = $product->logo_customization;
+                                            $customization = $customization ? $customization : null;
+                                            echo '<pre id="customization" class="d-none">'.$customization.'</pre>';
+                                            ?>
+											<div style="padding-bottom:10px;" v-for="(c, k) in customization">
+                                                <strong> @{{ c.title }} (@{{currency(c.cost)}})</strong> 
+                                                <span v-if="c.required" style="color:#ff0000;font-size:14px">*</span>:  
+                                                <input type="text" style="width:99%;font-size:13px;" v-model="c.initial" placeholder="Enter Initial or Text" value="" :required="c.required" maxlength="15">
+                                                <small v-if="c.required && !c.initial" class="errors text-danger">This customization is required.</small>
+											</div>
 										</div>
 										<div class="bt-1 border-color-1 mt-30 mb-30"></div>
 										
@@ -159,6 +173,7 @@
 											</div>
 										</div>
                                         @endif
+                                        
 										 <div class="product-extra-link2">
                                                 <button type="submit" class="button button-add-to-cart" v-on:click="addToCart(null)"><i class="fa fa-spin fa-spinner" v-if="adding && !buyNow"></i><i class="fa fa-check text-success" v-else-if="!buyNow && adding === false"></i> Add to cart</button>
                                                 <!--<a aria-label="Add To Wishlist" class="action-btn hover-up" href="shop-wishlist.html"><i class="fi-rs-heart"></i></a>
