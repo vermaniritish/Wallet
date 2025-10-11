@@ -212,7 +212,6 @@ class UniformsController extends AppController
     	if($request->isMethod('post'))
     	{
 			$data = $request->toArray();
-			
     		unset($data['_token']);
 			$sizeData = [];
 			$colors = [];
@@ -268,7 +267,6 @@ class UniformsController extends AppController
 				unset($data['color_id']);
 				unset($data['brand']);
 				unset($data['sub_category']);
-				unset($data['sku_number']);
 				unset($data['category']);
 
 				if($unifromId)
@@ -285,10 +283,10 @@ class UniformsController extends AppController
 					{
 						Products::handleBrands($product->id, $brands);
 					}
-					if(!empty($subCategory))
-					{
-						Products::handleSubCategory($product->id, [$subCategory]);
-					}
+					if(!empty($subCategory) || !empty($data['category_id']))
+	        		{
+	        			Products::handleSubCategory($product->id, $data['category_id'], $subCategory);
+	        		}
 				}
 				else
 				{
@@ -307,9 +305,9 @@ class UniformsController extends AppController
 						{
 							Products::handleBrands($product->id, $brands);
 						}
-						if(!empty($subCategory))
+						if(!empty($subCategory) || !empty($data['category_id']))
 						{
-							Products::handleSubCategory($product->id, [$subCategory]);
+							Products::handleSubCategory($product->id, $data['category_id'], $subCategory);
 						}
 					}
 				}

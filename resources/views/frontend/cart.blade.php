@@ -32,7 +32,7 @@
                                 </td>
                                 <td class="product-des product-name">
                                     <h5 class="product-name"><a :href="'/' + c.slug">@{{ c.title }}</a></h5>
-                                    <p class="font-xs">SKU: @{{c.size_title}}<br> Size:  @{{c.size_title}}<br/> Color: @{{c.color}} 
+                                    <p class="font-xs">SKU: @{{c.sku_number}}<br> Size:  @{{c.size_title}}<br/> Color: @{{c.color}} 
                                         <span class="text-danger" v-if="c.customization && c.customization.length > 0"><br /> @{{ c.customization.length }} customization added worth £@{{(c.quantity * getCustomizationCost(c.customization)).toFixed(2)}}.</span>
                                     </p>
                                 </td>

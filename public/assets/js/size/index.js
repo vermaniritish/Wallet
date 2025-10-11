@@ -34,7 +34,7 @@ let men = new Vue({
                 waist: '',
                 hip: '',
                 length: '',
-                vat: 1
+                vat: 0
             });
         },
         validate() {

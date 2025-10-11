@@ -8,7 +8,7 @@
 					<h6 class="h2 text-white d-inline-block mb-0">Manage Uniforms</h6>
 				</div>
 				<div class="col-lg-6 col-5 text-right">
-					<a href="<?php echo route('admin.products') ?>" class="btn btn-neutral"><i class="ni ni-bold-left"></i> Back</a>
+					<a href="<?php echo route('admin.uniforms') ?>" class="btn btn-neutral"><i class="ni ni-bold-left"></i> Back</a>
 				</div>
 			</div>
 		</div>
@@ -43,7 +43,7 @@
 										<div class="col-md-6">
 											<div class="form-group">
 												<label class="form-control-label" for="input-first-name">Category</label>
-												<select v-model="selectedCategory" class="no-selectpicker form-control" name="category" required>
+												<select v-model="selectedCategory" class="no-selectpicker form-control" name="category" required  @change="updateProducts">
 												<?php foreach($categories as $c): ?>
 													<option 
 														value="<?php echo $c->id ?>" 
@@ -56,10 +56,12 @@
 												@enderror
 											</div>
 										</div>
+										
 										<div class="col-md-6">
 											<div class="form-group">
 												<label class="form-control-label" for="input-first-name">Sub Category</label>
-												<select class="form-control no-selectpicker" v-model="selectedSubCategory" name="sub_category" required @change="updateProducts">
+												<select class="form-control no-selectpicker" v-model="selectedSubCategory" name="sub_category" @change="updateProducts">
+													<option value=""></option>
 													<option v-for="subCategory in subCategories" :key="subCategory.id" :value="subCategory.id">
 														@{{ subCategory.title }}
 													</option>
@@ -75,7 +77,7 @@
 										<div v-if="products && products.length > 0">
 											<select id="productDropdown" v-model="selectedProduct" data-live-search="true" class="form-control no-selectpicker" name="product" placeholder="Product" required @change="initEditValues">
 												<option value=""></option>
-												<option v-for="p in products" :value="p.id">@{{ p.title }}</option>
+												<option v-for="p in products" :value="p.id">@{{ p.title }} - @{{ p.sku_number }}</option>
 											</select>
 										</div>
 										<div v-else><p>No products available. Please adjust the categories to search and select product.</p></div>
@@ -99,15 +101,37 @@
 								<?php else: ?>
 									<div class="form-group">
 										<p>School: <strong>{{ $product && $product->school ? $product->school->name : '' }}</strong> </p>
-										<p>Product: <strong>{{ $product && $product->parent ? $product->parent->title : '' }}</strong> </p>
+										<p>Product: <strong>{{ $product && $product->parent ? $product->parent->title . ' - ' . $product->sku_number : '' }}</strong> </p>
 									</div>
 								<?php endif; ?>
-								<div class="form-group">
-									<label class="form-control-label" for="input-first-name">Title</label>
-									<input type="text" v-model="title" class="form-control" name="title" placeholder="Title" required value="{{ old('title') }}">
-									@error('title')
-										<small class="text-danger">{{ $message }}</small>
-									@enderror
+								<div class="row">
+									<div class="col-md-6">
+										<div class="form-group">
+											<label class="form-control-label" for="input-first-name">Title</label>
+											<input type="text" v-model="title" class="form-control" name="title" placeholder="Title" required value="{{ old('title') }}">
+											@error('title')
+												<small class="text-danger">{{ $message }}</small>
+											@enderror
+										</div>
+									</div>
+									<div class="col-md-6">
+										<div class="form-group">
+											<label class="form-control-label" for="input-username">Gender Specific To ?</label>
+											<select v-model="selectedGender" required class="form-control no-selectpicker" name="gender">
+												<option {{ old('gender') == 'Male' ? 'selected' : '' }}
+													value="Male"> Male</option>
+												<option {{ old('gender') == 'Female' ? 'selected' : '' }}
+													value="Female"> Female</option>
+												<option {{ old('gender') == 'Kids' ? 'selected' : '' }}
+													value="Kids"> Kids</option>
+												<option {{ old('gender') == 'Unisex' ? 'selected' : '' }}
+													value="Unisex"> Unisex</option>
+											</select>
+											@error('gender')
+												<small class="text-danger">{{ $message }}</small>
+											@enderror
+										</div>
+									</div>
 								</div>
 								<div class="row">
 									<div class="col-lg-12">
@@ -561,7 +585,7 @@
 												Add New Row
 												</button>
 											</td>
-											<td colspan="2" class="text-end fw-bold fs-5">&nbsp;
+											<td class="text-end fw-bold fs-5">&nbsp;
 											</td>
 											<td class="fw-bold fs-4 text-primary">&nbsp;
 											</td>

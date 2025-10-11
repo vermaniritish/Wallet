@@ -118,6 +118,8 @@ let order = new Vue({
             this.sizes = $('#availableSizes').text() ? JSON.parse($('#availableSizes').text()) : [];
             if ($('#edit-form').length > 0) {
                 let data = JSON.parse($('#edit-form').text());
+                console.log(data.sizes);
+                this.defaultSizes = data.sizes && data.sizes.length > 0 ? data.sizes.map((v) => (v.id)) : [];
                 this.url = admin_url + '/products/' + data.id + '/edit';
                 this.selectedSubCategory = data && data.sub_categories && data.sub_categories.length > 0 ? data.sub_categories.map(category => category.sub_category_id) : [];
                 this.selectedCategory = data.category_id;

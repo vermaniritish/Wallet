@@ -44,7 +44,8 @@ class HomeController extends AppController
 
 	function productsListing(Request $request)
 	{
-		$where = ['products.status' => 1];
+		$where = ['products.status' => 1, 'products.parent_id is null
+		'];
 		$products = Products::getListing($request, $where);
 		$items = $products->items();
 		foreach($items as $k => $v)
@@ -193,6 +194,7 @@ class HomeController extends AppController
 							'product_id' => $c['product_id'],
 							'size_id' => $c['id'],
 							'size_title' => $c['size_title'] . ' ' . $c['from_cm'] . ' - ' . $c['to_cm'],
+							'sku_number' => isset($c['sku_number']) && $c['sku_number'] ? $c['sku_number'] : null,
 							'color' => $c['color'],
 							'product_title' => $c['title'],
 							'product_description' => $c['size_title'] . ' ' . $c['from_cm'] . ' - ' . $c['to_cm']."\nChest:" . (isset($c['chest']) && $c['chest'] ? $c['chest'] : '') ."Waist: ".(isset($c['waist']) && $c['waist'] ? $c['waist'] : '')." Hip:".(isset($c['hip']) && $c['hip'] ? $c['hip'] : ''),

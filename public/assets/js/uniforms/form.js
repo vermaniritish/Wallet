@@ -6,8 +6,8 @@ let order = new Vue({
         sizes: [],
         selectedSize: {},
         selectedSizeIds: {},
-        selectedCategory: null,
-        selectedSubCategory: null,
+        selectedCategory: ``,
+        selectedSubCategory: ``,
         selectedProduct: null,
         selectedColor: [],
         subCategories: [],
@@ -35,7 +35,7 @@ let order = new Vue({
         common_product: 0,
         non_exchange: 0,
         shop_visible: 0,
-        website_visible: 0
+        website_visible: 0,
     },
     mounted: function() {
         if(pageId){
@@ -126,6 +126,8 @@ let order = new Vue({
             if(response && response.status)
             {
                 let data = response.product;
+                this.id = data.id;
+                this.defaultSizes = data.sizes && data.sizes.length > 0 ? data.sizes.map((v) => (v.id)) : [];
                 this.title = data.title;
                 this.selectedColor = data && data.colors && data.colors.length > 0 ? data.colors.map(colors => colors.id.toString()) : [];
                 this.activeColor = this.selectedColor.length > 0 ? this.selectedColor[0] : null;
@@ -320,11 +322,16 @@ let customization = new Vue({
       ],
       grandTotal: 0
     },
-    mounted() {
-        let data = $('#edit-form').length > 0 ? JSON.parse($('#edit-form').text()) : null;
-        this.id = data.id;
-        if(data && data.id && data.logo_customization) {
-            this.items = JSON.parse(data.logo_customization);
+    async mounted() {
+        let response = await fetch(admin_url + '/products/' + order.selectedProduct + '/fetch');
+        response = await response.json();
+        if(response && response.status)
+        {
+            let data = response.product;
+            this.id = data.id;
+            if(data && data.id && data.logo_customization) {
+                this.items = JSON.parse(data.logo_customization);
+            }
         }
     },
      methods: {

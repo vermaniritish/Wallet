@@ -15,7 +15,7 @@
                                     <td class="image product-thumbnail" width="25%"><img :src="getImagePath(c.image)" alt="#"></td>
                                     <td  width="60%">
                                         <h5><a :href="'/' + c.slug">@{{c.title}}</a></h5> <span class="product-qty">x @{{c.quantity && c.quantity > 0 ? c.quantity : ``}}</span>
-                                        <p class="font-xs">SKU: @{{c.size_title}}, Size: @{{c.size_title}}, Color: @{{c.color}}</p>
+                                        <p class="font-xs">SKU: @{{c.sku_number}}, Size: @{{c.size_title}}, Color: @{{c.color}}</p>
                                         <span class="text-danger" v-if="c.customization && c.customization.length > 0">@{{ c.customization.length }} customization added worth £@{{(c.quantity * getCustomizationCost(c.customization)).toFixed(2)}}.</span>
                                     </td>
                                     <td  width="15%">£@{{c.quantity && c.quantity > 0 ? (c.quantity*c.price).toFixed(2) : ``}}</td>

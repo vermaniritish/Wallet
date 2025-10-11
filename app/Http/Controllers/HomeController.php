@@ -50,7 +50,7 @@ class HomeController extends BaseController
 			if(!$product) {
 				abort('404');
 			}
-            $product->sizes = ProductSizeRelation::select(['product_sizes.*', 'sizes.vat', 'products.title as title', 'products.slug', 'products.image', 'colours.title as color'])
+            $product->sizes = ProductSizeRelation::select(['product_sizes.*', 'sizes.vat', 'products.title as title', 'products.slug', 'products.image', 'products.sku_number', 'colours.title as color'])
 			->leftJoin('sizes', 'sizes.id', '=', 'product_sizes.size_id')
             ->leftJoin('products', 'products.id', '=', 'product_sizes.product_id')
             ->leftJoin('colours', 'colours.id', '=', 'product_sizes.color_id')

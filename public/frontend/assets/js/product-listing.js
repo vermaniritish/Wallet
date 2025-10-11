@@ -79,6 +79,7 @@ var productDetail = new Vue({
             category: [],
             postions: null
         },
+        skuNumber: null,
         fileSizeError: null,
         adding: null,
         accept: false,
@@ -208,6 +209,7 @@ var productDetail = new Vue({
                 localStorage.setItem('cart', JSON.stringify(cart));
             }
             await sleep(350);
+            minicart.updateCartCount();
             this.adding = false;
             if(buyNow)
             {
@@ -500,7 +502,14 @@ var minicart = new Vue({
         agree: false,
         logoPricesDynamix: [],
         cart: [],
-        gstTax: ``
+        gstTax: ``,
+        cartCount: 0
+    },
+    mounted: function() {
+        $('#header, main, .mobile-header-active').removeClass('d-none');
+        this.gstTax = gstTax();
+        this.updateCartCount();
+        this.fetchLogoPrices();
     },
     methods: {
         async fetchLogoPrices(){
@@ -515,9 +524,15 @@ var minicart = new Vue({
         formatMoney(m) {
           return (m*1).toFixed(2);  
         },
+        updateCartCount() {
+            let cart = localStorage.getItem('cart');
+            cart = cart ? JSON.parse(cart) : [];
+            this.cartCount = cart.length;
+        },
         cartcount(){
             let cart = localStorage.getItem('cart');
             cart = cart ? JSON.parse(cart) : [];
+            console.log(cart.length);
             return cart.length;
         },
         initcart() {
@@ -529,7 +544,6 @@ var minicart = new Vue({
             }
         },
         manualQty(e) {
-            console.log(e, e.target.value);
             let qty = e.target.value;
             let dataId = e.target.getAttribute("data-id");
             let index = this.cart.findIndex((v) => v.id == dataId);
@@ -749,12 +763,8 @@ var minicart = new Vue({
             }
             return null;
         }
-    },
-    mounted: function() {
-        $('#header, main, .mobile-header-active').removeClass('d-none');
-        this.gstTax = gstTax();
-        this.fetchLogoPrices();
     }
+    
 });
 
 if($('#cart-page').length)

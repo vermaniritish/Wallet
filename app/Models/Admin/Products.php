@@ -458,18 +458,30 @@ class Products extends AppModel
     }
 
 
-    public static function handleSubCategory($id, $subCategories)
+    public static function handleSubCategory($id, $category, $subCategories = null)
     {
         //Delete all first
         ProductSubCategoryRelation::where('product_id', $id)->delete();
-        // Then Save
-        foreach($subCategories as $c)
+        if($subCategories)
         {
-            $subCategory = ProductSubCategories::find($c);
+            foreach($subCategories as $c)
+            {
+                $subCategory = ProductSubCategories::find($c);
+                $relation = new ProductSubCategoryRelation();
+                $relation->product_id = $id;
+                $relation->category_id = $category;
+                $relation->sub_category_id = $subCategories ? (int)$c : null;
+                $relation->sub_category_title = $subCategories ? $subCategory->title : null;
+                $relation->save();
+            }
+        }
+        else
+        {
             $relation = new ProductSubCategoryRelation();
             $relation->product_id = $id;
-            $relation->sub_category_id = (int)$c;
-            $relation->sub_category_title = $subCategory->title;
+            $relation->category_id = $category;
+            $relation->sub_category_id = null;
+            $relation->sub_category_title = null;
             $relation->save();
         }
         $product = Products::find($id);

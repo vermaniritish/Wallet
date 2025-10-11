@@ -300,9 +300,9 @@ class ProductsController extends AppController
 	        		{
 	        			Products::handleBrands($product->id, $brands);
 	        		}
-					if(!empty($subCategory))
+					if(!empty($subCategory) || !empty($data['category_id']))
 	        		{
-	        			Products::handleSubCategory($product->id, $subCategory);
+	        			Products::handleSubCategory($product->id, $data['category_id'], $subCategory);
 	        		}
 					$request->session()->flash('success', "Product created successfully.");
 					return Response()->json([
@@ -402,6 +402,7 @@ class ProductsController extends AppController
     		return redirect()->route('admin.dashboard');
     	}
     	$product = Products::get($id);
+		
     	if($product)
     	{
 	    	if($request->isMethod('post'))
@@ -478,9 +479,9 @@ class ProductsController extends AppController
 		        		{
 		        			Products::handleBrands($product->id, $brands);
 		        		}
-						if(!empty($subCategory))
+						if(!empty($subCategory) || !empty($data['category_id']))
 						{
-							Products::handleSubCategory($product->id, $subCategory);
+							Products::handleSubCategory($product->id, $data['category_id'], $subCategory);
 						}
 						if(!empty($colors))
 						{
@@ -672,8 +673,20 @@ class ProductsController extends AppController
 	{
 		$products = ProductSubCategoryRelation::leftJoin('products', 'product_sub_category_relation.product_id', '=', 'products.id')
 			->select(['products.id', 'products.title', 'products.sku_number'])
-			->where('sub_category_id', $request->get('subcategory'))
-			->get();
+			->leftJoin('sub_categories', 'sub_categories.id', '=', 'product_sub_category_relation.sub_category_id')
+			->whereNull('parent_id');
+		
+		if($request->get('category')){
+			$products->where(function($q) use ($request) {
+				return $q->where('sub_categories.category_id', $request->get('category'))
+					->orWhere('product_sub_category_relation.category_id', $request->get('category'));
+			});
+		}
+
+		if($request->get('subcategory'))
+			$products->where('sub_category_id', $request->get('subcategory'));
+
+		$products = $products->get();
 		return response()->json([
 			'status' => true,
 			'products' => $products,
@@ -683,7 +696,7 @@ class ProductsController extends AppController
 	public function updateCustomization(Request $request, $id)
 	{
 		$product = Products::find($id);
-		$product->logo_customization = $request->items;
+		$product->logo_customization = $request->get('items') ? JSON_encode($request->get('items')) : null;
 		if($product->save())
 		{
 			return Response()->json([

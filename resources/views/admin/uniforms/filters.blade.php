@@ -80,7 +80,7 @@
 				</div>
 			</div>
 			<div class="dropdown-divider"></div>
-			<a href="<?php echo route('admin.products') ?>" class="btn btn-sm py-2 px-3 float-left">
+			<a href="<?php echo route('admin.uniforms') ?>" class="btn btn-sm py-2 px-3 float-left">
 				Reset All
 			</a>
 			<button href="#" class="btn btn-sm py-2 px-3 btn-primary float-right">

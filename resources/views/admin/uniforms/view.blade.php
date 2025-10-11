@@ -13,7 +13,7 @@ use App\Models\Admin\Settings;
 						<h6 class="h2 text-white d-inline-block mb-0">Manage Uniforms</h6>
 					</div>
 					<div class="col-lg-6 col-5 text-right">
-						<a href="<?php echo route('admin.products') ?>" class="btn btn-neutral"><i class="fa fa-arrow-left"></i> Back</a>
+						<a href="<?php echo route('admin.uniforms') ?>" class="btn btn-neutral"><i class="fa fa-arrow-left"></i> Back</a>
 						<a href="<?php echo url($product->slug) ?>" class="btn btn-neutral" target="_blank"><i class="fa fa-eye"></i> View Product</a>
 						<?php if($product->size_file): ?>
 						<a href="<?php echo url($product->size_file) ?>" target="_blank" class="btn btn-neutral" target="_blank"><i class="fa fa-download"></i> View Size Guide</a>
@@ -23,7 +23,7 @@ use App\Models\Admin\Settings;
 								<i class="fas fa-ellipsis-v"></i>
 							</a>
 							<div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-								<a class="dropdown-item" href="<?php echo route('admin.products.edit', ['id' => $product->id]) ?>">
+								<a class="dropdown-item" href="<?php echo route('admin.uniforms.edit', ['id' => $product->id]) ?>">
 									<i class="fas fa-pencil-alt text-info"></i>
 									<span class="status">Edit</span>
 								</a>
@@ -31,7 +31,7 @@ use App\Models\Admin\Settings;
 								<a 
 									class="dropdown-item _delete" 
 									href="javascript:;"
-									data-link="<?php echo route('admin.products.delete', ['id' => $product->id]) ?>"
+									data-link="<?php echo route('admin.uniforms.delete', ['id' => $product->id]) ?>"
 								>
 									<i class="fas fa-times text-danger"></i>
 									<span class="status text-danger">Delete</span>

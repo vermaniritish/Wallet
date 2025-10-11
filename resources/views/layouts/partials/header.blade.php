@@ -79,7 +79,7 @@ foreach ($headerMenu as $k => $v) {
                                 <div class="header-action-icon-2">
                                     <a class="mini-cart-icon" href="{{ url('/cart') }}">
                                         <img alt="Pinders" src="{{ url('frontend/assets/imgs/theme/icons/icon-cart.svg') }}">
-                                        <span class="pro-count blue" v-if="cartcount() > 0">@{{ cartcount() }}</span>
+                                        <span class="pro-count blue" v-if="cartCount > 0">@{{ cartCount }}</span>
                                     </a>
                                     <div class="cart-dropdown-wrap cart-dropdown-hm2 d-none">
                                         <ul>

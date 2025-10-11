@@ -488,7 +488,7 @@
 				</div>
 			</div>
 		</div>
-		@if (isset($product) && $product->id)
+		@if (isset($product) && $product->id && $product->parent_id)
 		<div class="col-xl-12 order-xl-1">
 			<div class="card" id="customization">
 				<div class="card-header">
@@ -585,7 +585,7 @@
 										Add New Row
 										</button>
 									</td>
-									<td colspan="2" class="text-end fw-bold fs-5">&nbsp;
+									<td class="text-end fw-bold fs-5">&nbsp;
 									</td>
 									<td class="fw-bold fs-4 text-primary">&nbsp;
 									</td>
