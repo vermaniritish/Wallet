@@ -333,7 +333,7 @@ class HomeController extends AppController
 		$logoDiscount = 0;
 		foreach($cart as $c)
 		{
-			$totalCost = array_sum(Arr::pluck($c['customization'], 'cost'));
+			$totalCost = isset($c['customization']) && $c['customization'] ? array_sum(Arr::pluck($c['customization'], 'cost')) : 0;
 			$cost += $totalCost > 0 ? $totalCost : 0;
 		}
 		return [

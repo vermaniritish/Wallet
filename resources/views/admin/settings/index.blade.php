@@ -56,6 +56,13 @@
 								    <small class="text-danger">{{ $message }}</small>
 								@enderror
 							</div>
+							<div class="form-group">
+								<label class="form-control-label" for="input-first-name">Email Address</label>
+								<input type="text" class="form-control" name="company_email" required placeholder="Email Address" value="{{ Settings::get('company_email') }}">
+								@error('company_email')
+								    <small class="text-danger">{{ $message }}</small>
+								@enderror
+							</div>
 							<div class="row">
 								<div class="col-md-6">
 									<label class="form-control-label" for="input-first-name">Logo</label>

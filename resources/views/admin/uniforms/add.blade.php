@@ -480,10 +480,9 @@
 									<table class="table table-hover w-100">
 										<thead class="table-dark">
 											<tr>
-												<th style="width: 18%">Title</th>
+												<th style="width: 30%">Title</th>
 												<th style="width: 25%">Description</th>
 												<th style="width: 12%">Cost ($)</th>
-												<th style="width: 12%">Quantity</th>
 												<th style="10%">
 													Required
 												</th>

@@ -35,7 +35,7 @@
                                         <td class="account__table--body__child--items">{{ _currency($o->total_amount) }}</td>
                                         <td class="account__table--body__child--items">
                                             
-                                            <a href="{{ route('invoice', ['id' => $o->prefix_id]) }}"s class="btn" data-toggle="tooltip" data-title="Download Invoice"><i class="fa fa-download"></i></a>
+                                            <a href="{{ route('invoice', ['id' => $o->prefix_id]) }}" class="btn" data-toggle="tooltip" data-title="Download Invoice"><i class="fa fa-download"></i></a>
                                             <?php if($o->shipment): 
                                             $shipment = explode(',', $o->shipment);
                                             ?>

@@ -10,6 +10,7 @@ use App\Models\Admin\Users;
 use App\Libraries\General;
 use App\Models\Admin\ContactUs;
 use App\Models\Admin\Shops;
+use App\Models\Admin\Faqs;
 use App\Models\Admin\OrderProductRelation;
 use App\Models\Admin\Settings;
 use Illuminate\Support\Facades\Validator;
@@ -24,34 +25,10 @@ class PagesController extends BaseController
 
     public function faqs(Request $request)
     {
-        $page = Pages::where('slug', 'LIKE', 'faqs')->limit(1)->first();
-        return view('frontend.page', ['page' => $page]);
+        $faqs = Faqs::where('status', 1)->get();
+        return view('frontend.faq', ['faqs' => $faqs]);
     }
     
-    public function termsConditions(Request $request)
-    {
-        $page = Pages::where('slug', 'LIKE', 'terms-conditions')->limit(1)->first();
-        return view('frontend.page', ['page' => $page]);
-    }
-
-    public function privacyPolicy(Request $request)
-    {
-        $page = Pages::where('slug', 'LIKE', 'privacy-policy')->limit(1)->first();
-        return view('frontend.page', ['page' => $page]);
-    }
-
-    public function deliveryInformation(Request $request)
-    {
-        $page = Pages::where('slug', 'LIKE', 'delivery-information')->limit(1)->first();
-        return view('frontend.page', ['page' => $page]);
-    }
-
-    public function returnPolicy(Request $request)
-    {
-        $page = Pages::where('slug', 'LIKE', 'return-policy')->limit(1)->first();
-        return view('frontend.page', ['page' => $page]);
-    }
-
     public function cart(Request $request) 
     {
         return view('frontend.cart', ['page' => null]);
@@ -76,7 +53,8 @@ class PagesController extends BaseController
     {
         $user = Users::find($request->session()->get('user')->id);
         return view('frontend.account.index', [
-            'user' => $user
+            'user' => $user,
+            'screen' => 'dashboard'
         ]);
     }
 
@@ -85,16 +63,17 @@ class PagesController extends BaseController
         $user = Users::find($request->session()->get('user')->id);
         $orders = Orders::where(function($query) use ($user) {
             return $query->orWhere('customer_id', $user->id)
-                    ->orWhere('email', 'LIKE', $user->email);
+                    ->orWhere('customer_email', 'LIKE', $user->email);
         })->select([
             'orders.id', 'orders.prefix_id', 'orders.created', 'orders.status', 'orders.total_amount', 'orders.paid',
             DB::raw('GROUP_CONCAT(order_products.shipment_tracking) as shipment')
         ])
         ->join('order_products', 'order_products.order_id', '=', 'orders.id')
         ->orderBy('id', 'desc')->groupBy('orders.id')->limit(3000)->get();
-        return view('frontend.account.orders', [
+        return view('frontend.account.index', [
             'user' => $user,
-            'orders' => $orders
+            'orders' => $orders,
+            'screen' => 'orders'
         ]);
     }
 
@@ -109,19 +88,17 @@ class PagesController extends BaseController
             $validator = Validator::make(
                 $data,
                     [
-                        'name' => 'required',
-                        'address' => 'required',
+                        'first_name' => 'required',
+                        'last_name' => 'required',
                     ]
             );
             if(!$validator->fails())
             {
-                $data['first_name'] = $data['name'];
-                unset($data['name']);
                 if(Users::modify($user->id, $data))
                 {
                     $user = Users::find($user->id);
                     $request->session()->put('user', $user);
-                    $request->session()->flash( 'success', "Your profile has been updated. Thank You!" );
+                    $request->session()->flash( 'success', "Your profile has been updated.");
     		        return redirect()->back();
                 }
                 else
@@ -136,15 +113,15 @@ class PagesController extends BaseController
     		    return redirect()->back();
             }
         }
-
-        return view('frontend.account.edit', [
-            'user' => $user
+        return view('frontend.account.index', [
+            'user' => $user,
+            'screen' => 'account'
         ]);
     }
     
     function contactUs(Request $request)
     {
-        $page = Pages::where('slug', 'LIKE', 'contact-us')->limit(1)->first();
+        $shops = Shops::select(['name', 'address','postcode', 'lat', 'lng'])->where(['status' => 1])->get();
     	if($request->isMethod('post'))
     	{
     		$data = $request->toArray();
@@ -153,9 +130,9 @@ class PagesController extends BaseController
 	            $request->toArray(),
 	            [
 	                'firstname' => ['required'],
-	                'lastname' => 'required',
 					'number' => ['required'],
 					'email' => ['required'],
+					'subject' => ['required'],
 					'message' => ['required'],
 	            ]
 	        );
@@ -165,14 +142,12 @@ class PagesController extends BaseController
 	        	if($page)
 	        	{
                     $userData = [
-                        '{first_name}' => $data['firstname'],
-                        '{last_name}' => $data['lastname'],
+                        '{name}' => $data['firstname'],
                         '{email}' => $data['email'],
                     ];
                     General::sendTemplateEmail($data['email'], 'thank-you-for-contacting', $userData);
                     $adminData = [
-                        '{first_name}' => $data['firstname'],
-                        '{last_name}' => $data['lastname'],
+                        '{name}' => $data['firstname'],
                         '{email}' => $data['email'],
                         '{number}' => $data['number'],
                         '{message}' => $data['message'],
@@ -197,7 +172,9 @@ class PagesController extends BaseController
 		    	return redirect()->back()->withErrors($validator)->withInput();
 		    }
 		}
-        return view('frontend.contactUs', ['page' => $page]);
+        return view('frontend.contactUs', [
+            'shops' => $shops
+        ]);
     }
 
     function invoice(Request $request, $id)
@@ -225,5 +202,14 @@ class PagesController extends BaseController
         {
             abort('404');
         }
+    }
+
+    function customPage(Request $request, $slug)
+    {
+        $page = Pages::where('slug', 'LIKE', $slug)->where('status', 1)->limit(1)->first();
+        if($page)
+            return view('frontend.page', ['page' => $page]);
+        else
+            abort(404);
     }
 }

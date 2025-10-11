@@ -61,7 +61,7 @@
 									<div class="col-md-6">
 										<div class="form-group">
 											<label class="form-control-label" for="input-first-name">Sub Category</label>
-											<select class="form-control no-selectpicker" v-model="selectedSubCategory" name="sub_category[]" required multiple>
+											<select class="form-control no-selectpicker" v-model="selectedSubCategory" name="sub_category[]" multiple>
 												<option v-for="subCategory in subCategories" :key="subCategory.id" :value="subCategory.id">
 													@{{ subCategory.title }}
 												</option>
@@ -453,7 +453,9 @@
 												</label>
 												<label class="custom-control-label">Non Exchangeable and Refundable</label>
 											</div>
-											<div class="custom-control">
+											<input type="hidden" name="printed_logo" value="0">
+											<input type="hidden" name="embroidered_logo" value="0">
+											<!-- <div class="custom-control">
 												<label class="custom-toggle">
 													<input type="hidden" name="printed_logo" value="0">
 													<input type="checkbox" name="printed_logo" v-model="printed_logo" value="1" <?php echo (old('printed_logo') != '0' ? 'checked' : '') ?>>
@@ -468,7 +470,7 @@
 													<span class="custom-toggle-slider rounded-circle" data-label-off="No" data-label-on="Yes"></span>
 												</label>
 												<label class="custom-control-label">Embroidered Logo</label>
-											</div>
+											</div> -->
 										</div>
 									</div>
 								</div>
@@ -502,7 +504,7 @@
 							<table class="table table-hover w-100">
 								<thead class="table-dark">
 									<tr>
-										<th style="width: 18%">Title</th>
+										<th style="width: 30%">Title</th>
 										<th style="width: 25%">Description</th>
 										<th style="width: 12%">Cost ($)</th>
 										<th style="10%">

@@ -273,7 +273,7 @@ let order = new Vue({
                         set_notification('success', response.message);
 
                         setTimeout(function () {
-                            window.location.href = (admin_url + '/uniforms/' + response.id + '/view');
+                            window.location.href = (admin_url + '/uniforms/' + response.id + '/edit');
                         }, 200)
                     }else{
                         this.loading = false;
@@ -321,7 +321,7 @@ let customization = new Vue({
       grandTotal: 0
     },
     mounted() {
-        let data = JSON.parse($('#edit-form').text());
+        let data = $('#edit-form').length > 0 ? JSON.parse($('#edit-form').text()) : null;
         this.id = data.id;
         if(data && data.id && data.logo_customization) {
             this.items = JSON.parse(data.logo_customization);

@@ -251,8 +251,8 @@ class ProductsController extends AppController
 			if (isset($data['color_id']) && $data['color_id']) {
 				$colors = $data['color_id'];
 			}
-			if(isset($data['sub_category']) && $data['sub_category']) {
-				$subCategory = $data['sub_category'];
+			if(isset($data['sub_category']) && array_filter($data['sub_category'])) {
+				$subCategory = array_values(array_filter($data['sub_category']));
 			}
 			if(isset($data['brand']) && $data['brand']) {
 				$brands = $data['brand'];

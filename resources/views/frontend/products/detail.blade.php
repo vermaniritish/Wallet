@@ -23,7 +23,6 @@
                                     <div class="detail-gallery">
                                         <span class="zoom-icon"><i class="fi-rs-search"></i></span>
                                         <!-- MAIN SLIDES -->
-                                        <?php $product->image = $product->image && is_array($product->image) ? $product->image : ($product->image ? [$product->image] : []); ?>
                                         <div class="product-image-slider">
                                             @if($product->image)
                                             @foreach($product->image as $i)
@@ -34,7 +33,7 @@
                                             @endif
                                             @if($product->color_images)
                                             @foreach($product->color_images as $i)
-                                            <?php $image = isset($i['path']) && $i['path'] ? FileSystem::getAllSizeImages($i['path']) : $i;?>
+                                            <?php $image = FileSystem::getAllSizeImages($i['path']);?>
                                             <figure class="border-radius-10">
                                                 <img src="{{ url($image['large']) }}" alt="product image">
                                             </figure>
@@ -45,12 +44,12 @@
                                         <div class="slider-nav-thumbnails pl-15 pr-15">
                                             @if($product->image)
                                             @foreach($product->image as $i)
-                                            <div><img src="{{ url($image['small']) }}" alt="product image"></div>
+                                            <div><img src="{{ url($i['small']) }}" alt="product image"></div>
                                             @endforeach
                                             @endif
                                             @if($product->color_images)
                                             @foreach($product->color_images as $i)
-                                            <?php $image = isset($i['path']) && $i['path'] ? FileSystem::getAllSizeImages($i['path']) : $i;?>
+                                            <?php $image = FileSystem::getAllSizeImages($i['path']);?>
                                             <div><img src="{{ url($image['small']) }}" alt="product image"></div>
                                             @endforeach
                                             @endif
@@ -78,7 +77,18 @@
                                                 
                                                 <span class="font-small ml-5 text-muted"> SKU:<span class="in-stock text-success ml-5">{{$product->sku_number}}</span></span>
                                             </div>
+                                            
                                         </div>
+                                        @if($product->printed_logo || $product->embroidered_logo)
+                                            <p>
+                                                @if($product->printed_logo)
+                                                <span class="badge bg-primary">Printed Logo</span>
+                                                @endif
+                                                @if($product->embroidered_logo)
+                                                <span class="badge bg-primary">Embroidered Logo</span>
+                                                @endif
+                                            </p>
+                                        @endif
                                         <div class="clearfix product-price-cover">
                                             <div class="product-price primary-color float-left">
                                                 <ins>
@@ -142,6 +152,7 @@
 												</div>
 											</div>
 										</div>
+                                        @if($product->logo_customization)
                                         <br>
                                         <div style="padding-bottom:10px;">
 											<p style="text-brand"><i class="fi-rs-scale mr-5"></i> <strong class="mr-10">Add Personalisation</strong></p>
@@ -161,14 +172,14 @@
 											</div>
 										</div>
 										<div class="bt-1 border-color-1 mt-30 mb-30"></div>
-										
+										@endif
                                         
 										@if($product->non_exchange)
 										<div class="form-group">
 											<div class="checkbox">
 												<div class="custome-checkbox">
 													<input class="form-check-input" type="checkbox" name="iacknowledge" id="iacknowledge" v-model="accept">
-													<label class="form-check-label label_info" data-bs-toggle="collapse"><span>I acknowledge that there will be no exchange or refunds as these garments are specially made to order.</span></label>
+													<label class="form-check-label label_info" for="iacknowledge"><span>I acknowledge that there will be no exchange or refunds as these garments are specially made to order.</span></label>
 												</div>
 											</div>
 										</div>
@@ -181,7 +192,6 @@
                                             </div>
                                         <ul class="product-meta font-xs color-grey mt-50">
                                             <li class="mb-5">SKU: {{$product->sku_number}}</li>
-                                            <!-- <li class="mb-5">Tags: <a href="#" rel="tag">Cloth</a>, <a href="#" rel="tag">Women</a>, <a href="#" rel="tag">Dress</a> </li> -->
                                             <li>
                                                 Brand:
                                                 <?php $brands = []; 

@@ -65,9 +65,7 @@
                                 <div class="contact__form--list mb-20">
                                     <label class="contact__form--label" for="input4">Email <span class="contact__form--label__star">*</span></label>
                                     <input class="contact__form--input" name="email" id="input4" placeholder="Email" type="email">
-                                    @error('email')
-                                        <small class="text-danger">{{ $message }}</small>
-                                    @enderror
+                                    @error('email')<small class="text-danger">{{ $message }}</small>@enderror
                                 </div>
                             </div>
                             <div class="col-12">

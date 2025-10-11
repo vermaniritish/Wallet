@@ -679,7 +679,7 @@ function set_notification(type, text, placementFrom, placementAlign, animateEnte
     else
         var colorName = 'bg-black';
 
-    if (!placementFrom) { placementFrom = 'bottom'; }
+    if (!placementFrom) { placementFrom = 'top'; }
     if (!placementAlign) { placementAlign = 'right'; }
     if (!animateEnter) { animateEnter = 'animated fadeInDown'; }
     if (!animateExit) { animateExit = 'animated fadeOutUp'; }
@@ -694,7 +694,7 @@ function set_notification(type, text, placementFrom, placementAlign, animateEnte
         type: colorName,
         allow_dismiss: allowDismiss,
         newest_on_top: true,
-        timer: 500000,
+        timer: 5000,
         offset: {
             "x": 30,
             "y": 50

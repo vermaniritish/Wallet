@@ -16,17 +16,8 @@ Route::get('/contact-us', '\App\Http\Controllers\PagesController@contactUs')
 Route::post('/contact-us', '\App\Http\Controllers\PagesController@contactUs')
     ->name('contactUs');
 
-Route::get('/privacy-policy', '\App\Http\Controllers\PagesController@privacyPolicy')
-    ->name('privacyPolicy');
-
-Route::get('/terms-conditions', '\App\Http\Controllers\PagesController@termsConditions')
-    ->name('termsConditions');
-
-Route::get('/delivery-information', '\App\Http\Controllers\PagesController@deliveryInformation')
-    ->name('deliveryInformation');
-
-Route::get('/return-policy', '\App\Http\Controllers\PagesController@returnPolicy')
-    ->name('returnPolicy');
+Route::get('/page/{slug}', '\App\Http\Controllers\PagesController@customPage')
+    ->name('customPage');
 
 Route::get('/cart', '\App\Http\Controllers\PagesController@cart')
     ->name('cart');

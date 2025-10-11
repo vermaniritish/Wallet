@@ -2,19 +2,22 @@ if($('#auth').length)
 var auth = new Vue({
     el: '#auth',
     data: {
-    mounting: true,
-    loading: false,
-    remember: false,
-    loginloading: false,
-    forgotLoading: false,
-    showLoginForm: true,
-    showRegisterForm: true,
-    showForgotPasswordForm: false,
-    loginErrorMessages: null,
-    registerErrorMessages: null,
-    forgotErrorMessages: null,
-    forgotSuccessMessages: null,
-    registered: false,
+        mounting: true,
+        loading: false,
+        remember: false,
+        loginloading: false,
+        forgotLoading: false,
+        showLoginForm: true,
+        showRegisterForm: true,
+        showForgotPasswordForm: false,
+        loginErrorMessages: null,
+        registerErrorMessages: null,
+        forgotErrorMessages: null,
+        forgotSuccessMessages: null,
+        registered: false,
+        email: null,
+        password: null,
+        remember: null
     },
     mounted: function() {
         this.mounting = false;
@@ -81,7 +84,10 @@ var auth = new Vue({
                     }
                     this.loginloading = false;
                     set_notification('success', response.message);
-                    window.location.href = site_url;
+                    if(redirectUrl)
+                        window.location.href = site_url + '/'+redirectUrl;
+                    else
+                        window.location.href = site_url + '/my-account';
                 }else{
                     this.loginErrorMessages = response.message;
                 }

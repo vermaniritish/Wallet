@@ -23,72 +23,7 @@ class AuthController extends Controller {
 	 */
 	public function register(Request $request)
 	{
-		if($request->isMethod('post')){
-    		$data = $request->toArray();
-			$validator = Validator::make(
-	            $request->toArray(),
-	            [
-					'email' => ['required', 'email', Rule::unique(Users::class, 'email')],
-					'phonenumber' => ['required', Rule::unique(Users::class, 'phonenumber')],
-					'password' => [
-						'required', 'string',
-						Password::min(8)->mixedCase()->numbers()->symbols(), 'max:36',
-					],
-					'password_confirmation' => ['required', 'same:password'],
-					'first_name' => ['required', 'string', 'max:30'],
-	            ]
-	        );
-			if(!$validator->fails())
-	        {
-				unset($data['password_confirmation']);
-				unset($data['_token']);
-				$nameParts = explode(' ', $data['first_name']);
-				$firstName = $nameParts[0];
-				$lastName = implode(' ', array_slice($nameParts, 1));
-				$data['first_name'] = ucfirst(strtolower($firstName));
-				$data['last_name'] = ucfirst(strtolower($lastName));
-				$data['token'] = General::hash();
-				$user = Users::create($data);
-				if($user)
-				{
-					$verificationUrl = route('home', ['token' => $data['token']]);
-					$codes = [
-						'{name}' => $user->first_name . ' ' . $user->last_name,
-						'{email}' => $user->email,
-						'{verification_link}' => General::urlToAnchor($verificationUrl)
-					];
-					$emails = [$data['email']];
-					General::sendTemplateEmail($emails, 'registration', $codes);
-					return response()->json([
-						'status' => true,
-						'message' => 'Welcome to Pinders Workwear. Thank You!',
-						'email' => $user->email,
-						'user_id' => $user->id
-					], Response::HTTP_OK);
-				}
-				else
-				{
-					return Response()->json([
-						'status' => false,
-						'message' => "User could not be registered."
-					], Response::HTTP_OK);
-				}
-			} else {
-				$errors = current(current($validator->errors()->toArray()));
-				return Response()->json([
-					'status' => false,
-					'message' => $errors
-				], Response::HTTP_OK);
-			}
-		}
-		else
-		{
-			$user = $request->session()->get('user');
-			if($user) {
-				return redirect('/my-account');
-			}
-		}
-		return view('frontend.auth.auth');
+		return view('frontend.auth.auth', ['redirect' => $request->get('redirect')]);
 	}
 
 	/**

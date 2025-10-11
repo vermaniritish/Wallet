@@ -32,7 +32,11 @@ foreach ($headerMenu as $k => $v) {
                     <div class="col-xl-3 col-lg-4">
                         <div class="header-info header-info-right">
                             <ul>
-                                <li><i class="fi-rs-user"></i><a href="#">Log In</a></li>
+                                @if($user)
+                                <li><i class="fi-rs-user"></i><a href="{{ url('/my-account') }}">My Account</a></li>
+                                @else
+                                <li><i class="fi-rs-user"></i><a href="{{ url('/login') }}">Log In</a></li>
+                                @endif
                             </ul>
                         </div>
                     </div>

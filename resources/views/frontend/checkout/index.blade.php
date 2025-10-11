@@ -22,35 +22,11 @@
         </div>
     </div>
     <div v-else class="container">
+        @if(!$user)
         <div class="row">
             <div class="col-lg-6 mb-sm-15">
                 <div class="toggle_info">
-                    <span><i class="fi-rs-user mr-10"></i><span class="text-muted">Already have an account?</span> <a href="#loginform" data-bs-toggle="collapse" class="collapsed" aria-expanded="false">Click here to login</a></span>
-                </div>
-                <div class="panel-collapse collapse login_form" id="loginform">
-                    <div class="panel-body">
-                        <p class="mb-30 font-sm">If you have shopped with us before, please enter your details below. If you are a new customer, please proceed to the Billing &amp; Shipping section.</p>
-                        <form method="post">
-                            <div class="form-group">
-                                <input type="text" name="email" placeholder="Username Or Email">
-                            </div>
-                            <div class="form-group">
-                                <input type="password" name="password" placeholder="Password">
-                            </div>
-                            <div class="login_footer form-group">
-                                <div class="chek-form">
-                                    <div class="custome-checkbox">
-                                        <input class="form-check-input" type="checkbox" name="checkbox" id="remember" value="">
-                                        <label class="form-check-label" for="remember"><span>Remember me</span></label>
-                                    </div>
-                                </div>
-                                <a href="#">Forgot password?</a>
-                            </div>
-                            <div class="form-group">
-                                <button class="btn btn-md" name="login">Log in</button>
-                            </div>
-                        </form>
-                    </div>
+                    <span><i class="fi-rs-user mr-10"></i><span class="text-muted">Already have an account?</span> <a href="{{url('/login?redirect=checkout')}}">Click here to login</a></span>
                 </div>
             </div>
         </div>
@@ -59,6 +35,7 @@
                 <div class="divider mt-50 mb-50"></div>
             </div>
         </div>
+        @endif
         <div class="row">
             <div class="col-md-6">
                 <div class="mb-25">
@@ -110,6 +87,7 @@
                         <small v-if="errors && errors.postalcode == ``">This field is required.</small>
 
                     </div>
+                    @if(!$user)
                     <div class="form-group">
                         <input required="" type="text" name="phone" placeholder="Phone *">
                         <small v-if="errors && errors.phone == ``">This field is required.</small>
@@ -129,6 +107,7 @@
                     <div id="collapsePassword" class="form-group create-account collapse in">
                         <input required="" type="password" placeholder="Password" name="password">
                     </div>
+                    @endif
                     <div class="ship_detail">
                         <div class="form-group">
                             <div class="chek-form">
@@ -185,5 +164,6 @@
 <script>
 var parcelforceCost = {{($settings['shipping_cost_parcelforce'] ? $settings['shipping_cost_parcelforce'] : 0)}};
 var dpdCost = {{($settings['shipping_cost_dpd'] ? $settings['shipping_cost_dpd'] : 0)}}; 
+var loginuseremail = '{{ $user ? $user->email : '' }}';
 </script>
 @endpush

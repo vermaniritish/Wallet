@@ -10063,4 +10063,31 @@ span.fi-rs-apps {
 }
 .zoomContainer{ z-index: 9999;}
 .zoomWindow{ z-index: 9999;}
+.widget-category ul > li.active a {
+  color: #088178;
+}
+.bootstrap-notify-container button{
+  position: absolute;
+  right: 10px;
+  top: 15px;
+  z-index: 1033;
+  color: #FFF;
+  background: none;
+  border: none;
+}
+.bg-green {
+  background-color: #28a745;
+  color: #FFF;
+}
+.bg-red {
+  background-color: #dc3545;
+  color: #FFF;
+}
+
+.bg-black {
+background-color: #FFF;
+color: #FFF;
+}
+
 /*# sourceMappingURL=main.css.map */
+

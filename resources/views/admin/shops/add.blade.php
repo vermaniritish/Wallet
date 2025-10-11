@@ -35,28 +35,6 @@
 						<h6 class="heading-small text-muted mb-4">Shop information</h6>
 						<div class="pl-lg-4">
 							<div class="form-group">
-								<label class="form-control-label" for="input-first-name">Shop Owner</label>
-								<select class="form-control" name="user_id" required="">
-							      	<option value="">Select</option>
-							      	<?php 
-							      		foreach($users as $s): 
-							      		$content = $s->name . "<small class='badge badge-".($s->status ? "success" : "danger")."'>".($s->status ? "Active" : "Inactive")."</small>";
-							      	?>
-
-							      		<option 
-							      			value="<?php echo $s->id ?>" 
-							      			<?php echo old('user_id') == $s->id  ? 'selected' : '' ?>
-							      			data-content="<?php echo $content ?>"
-							      		>
-							      			<?php echo $s->name; ?>		
-							      		</option>
-							  		<?php endforeach; ?>
-							    </select>
-								@error('user_id')
-								    <small class="text-danger">{{ $message }}</small>
-								@enderror
-							</div>
-							<div class="form-group">
 								<label class="form-control-label" for="input-name">Shop Name</label>
 								<input type="text" class="form-control" name="name" required placeholder="Name" value="{{ old('name') }}">
 								@error('name')

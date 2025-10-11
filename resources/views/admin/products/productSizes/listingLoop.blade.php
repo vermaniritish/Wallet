@@ -4,7 +4,7 @@ use App\Models\Admin\Permissions;
 <?php foreach($listing->items() as $k => $row): if(!$row->colors) continue; ?>
 <tr>
 	<td class="text-center" >
-		<span style="background-color: {{ $row->colors->color_code }}; color: {{ strpos(strtolower($row->colors->color_code), '#FFF') !== false ? '#444' : '#FFF' }};" class="badge badge-secondary">{{ $row->colors->title }}</span>
+		<span style="background-color: {{ $row->colors->color_code }}; color: #444;" class="badge badge-secondary">{{ $row->colors->title }}</span>
 	</td>
 	<td class="text-center" >
 		<?php echo $row->size_title ?>

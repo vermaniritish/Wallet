@@ -81,7 +81,7 @@ var productDetail = new Vue({
         },
         fileSizeError: null,
         adding: null,
-        accept: null,
+        accept: false,
         customization: [],
         customizationErrors: {}
     },
@@ -181,7 +181,7 @@ var productDetail = new Vue({
             this.cart = this.sizes.filter((item) => {
                 return (item.quantity && (item.quantity*1) > 0)
             });
-            let custmomization = this.customization.filter((v) => v.initial && v.initial.trim()).map((v) => ({cost:v.cost, title: v.title, initial: v.initial}));
+            let custmomization = this.customization ? this.customization.filter((v) => v.initial && v.initial.trim()).map((v) => ({cost:v.cost, title: v.title, initial: v.initial})) : null;
             let response = await fetch(site_url + '/api/orders/add-to-cart', {
                 method: 'POST',
                 headers: {
@@ -282,7 +282,7 @@ var productDetail = new Vue({
     },
     mounted: function() 
     {
-        this.customization = JSON.parse($('#customization').text().trim());
+        this.customization = $('#customization').length > 0 && $('#customization').text().trim() ? JSON.parse($('#customization').text().trim()) : null;
         console.log(this.customization);
         this.id  = $('#productId').text().trim();
         let cart = localStorage.getItem('cart');
@@ -1033,7 +1033,7 @@ checkoutPage = new Vue({
         saving: false,
         logoPricesDynamix: [],
         checkout:{
-            phone_email: ``,
+            phone_email: loginuseremail,
             first_name:``,
             last_name:``,
             last_name:``,

@@ -86,37 +86,6 @@
 							<div class="row">
 								<div class="col-lg-6">
 									<div class="form-group">
-										<!-- FILE OR IMAGE UPLOAD. FOLDER PATH SET HERE in data-path AND CHANGE THE data-multiple TO TRUE SEE MAGIC  -->
-										<div 
-											class="upload-image-section"
-											data-type="image"
-											data-multiple="false"
-											data-path="pages"
-											data-resize-large="800*915"
-											data-resize-medium="350*400"
-										>
-											<div class="upload-section">
-												<div class="button-ref mb-3">
-													<button class="btn btn-icon btn-primary btn-lg" type="button">
-										                <span class="btn-inner--icon"><i class="fas fa-upload"></i></span>
-										                <span class="btn-inner--text">Upload Image</span>
-									              	</button>
-									            </div>
-									            <!-- PROGRESS BAR -->
-												<div class="progress d-none">
-								                  <div class="progress-bar bg-default" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>
-								                </div>
-								            </div>
-							                <!-- INPUT WITH FILE URL -->
-							                <textarea class="d-none" name="image"><?php echo old('image') ?></textarea>
-							                <div class="show-section <?php echo !old('image') ? 'd-none' : "" ?>">
-							                	@include('admin.partials.previewFileRender', ['file' => old('image') ])
-							                </div>
-										</div>
-									</div>
-								</div>
-								<div class="col-lg-6">
-									<div class="form-group">
 										<div class="custom-control">
 											<label class="custom-toggle">
 												<input type="hidden" name="status" value="0">

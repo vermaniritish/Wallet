@@ -175,7 +175,6 @@ class ShopsController extends AppController
     		$validator = Validator::make(
 	            $data,
 	            [
-	                'user_id' => 'required',
 	                'name' => 'required',
 	                'postcode' => 'required',
 	                'address' => 'required',
@@ -241,7 +240,6 @@ class ShopsController extends AppController
 	    		$validator = Validator::make(
 		            $data,
 		            [
-		                'user_id' => 'required',
 		                'name' => 'required',
 		                'postcode' => 'required',
 		                'address' => 'required',

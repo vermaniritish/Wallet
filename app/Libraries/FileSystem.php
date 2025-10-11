@@ -211,7 +211,7 @@ class FileSystem
 
 	public static function getAllSizeImages($file)
 	{
-		$multiple = json_decode($file, true);
+		$multiple = is_array($file) ? $file : json_decode($file, true);
 		$allFiles = $multiple && is_array($multiple) ? $multiple : ($file ? [$file] : null);		
 		if($allFiles)
 		{
@@ -226,7 +226,6 @@ class FileSystem
 					'small' => file_exists(public_path($path . '/S-' . $name)) ? $path . '/S-' . $name : "",
 				];
 			}
-
 			return $multiple && is_array($multiple) ? $allFiles : current($allFiles);
 		}
 		

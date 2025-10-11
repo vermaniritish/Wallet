@@ -9,7 +9,7 @@
 					</div>
 					<div class="col-lg-6 col-5 text-right">
 						<a href="<?php echo route('admin.pages') ?>" class="btn btn-neutral"><i class="fa fa-arrow-left"></i> Back</a>
-						<a href="#" class="btn btn-neutral" target="_blank"><i class="fa fa-eye"></i> View Page</a>
+						<a href="<?php echo url('/page/'.$page->slug) ?>" class="btn btn-neutral" target="_blank"><i class="fa fa-eye"></i> View Page</a>
 						<div class="dropdown" data-toggle="tooltip" data-title="More Actions">
 							<a class="btn btn-neutral" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 								<i class="fas fa-ellipsis-v"></i>

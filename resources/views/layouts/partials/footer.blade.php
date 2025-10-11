@@ -1,3 +1,4 @@
+<?php use App\Models\Admin\Settings; ?>
 <footer class="main">
         <section class="newsletter p-30 text-white wow fadeIn animated">
             <div class="container">
@@ -34,10 +35,10 @@
                             </div>
                             <h5 class="mt-20 mb-10 fw-600 text-grey-4 wow fadeIn animated">Contact</h5>
                             <p class="wow fadeIn animated">
-                                <strong>Address: </strong>Mansfield Road, Aston,Sheffield, S26 2BS
+                                <strong>Address: </strong>{{Settings::get('company_address')}}
                             </p>
                             <p class="wow fadeIn animated">
-                                <strong>Phone: </strong>0114 2513275
+                                <strong>Phone: </strong>{{Settings::get('hotline_number')}}
                             </p>
                             <p class="wow fadeIn animated">
                                 <strong>Hours: </strong>10:00 - 18:00, Mon - Sat
@@ -78,7 +79,7 @@
                             
                             <div class="col-md-4 col-lg-12 mt-md-3 mt-lg-0">
                                 
-                                <img class="wow fadeIn animated" src="assets/imgs/theme/payment-method.png" alt="">
+                                <img class="wow fadeIn animated" src="{{ url('/frontend/assets/imgs/theme/payment-method.png') }}" alt="">
                             </div>
                         </div>
                     </div>
