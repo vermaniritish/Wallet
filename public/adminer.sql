@@ -573,7 +573,7 @@ CREATE TABLE `admins` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 INSERT INTO `admins` (`id`, `shop_id`, `employee_id`, `shops`, `first_name`, `last_name`, `email`, `password`, `phonenumber`, `last_login`, `is_admin`, `otp`, `otp_sent_on`, `token`, `image`, `created_by`, `status`, `deleted_at`, `created`, `address`, `modified`) VALUES
-(7,	'[\"2\",\"1\"]',	'123',	'[1, 2]',	'Super',	'Admin',	'admin@laravel.com',	'$2y$10$x5H/H6eMHpIXSlVsYsj/ae3bJV6me0pjGmzoBbzP5zCjcGFspOyMa',	NULL,	'2025-10-11 12:11:34',	1,	NULL,	NULL,	'oxPt2A7OkX2KJ5bA0EFpThsMHwIK7fTr',	'/uploads/admins/17523089744493-59335-1-removebg-preview.png',	NULL,	1,	NULL,	'2025-02-13 14:43:17',	NULL,	'2025-10-11 06:41:34'),
+(7,	'[\"2\",\"1\"]',	'123',	'[1, 2]',	'Super',	'Admin',	'admin@laravel.com',	'$2y$10$x5H/H6eMHpIXSlVsYsj/ae3bJV6me0pjGmzoBbzP5zCjcGFspOyMa',	NULL,	'2025-10-12 01:33:16',	1,	NULL,	NULL,	'oxPt2A7OkX2KJ5bA0EFpThsMHwIK7fTr',	'/uploads/admins/17523089744493-59335-1-removebg-preview.png',	NULL,	1,	NULL,	'2025-02-13 14:43:17',	NULL,	'2025-10-11 20:03:16'),
 (8,	NULL,	NULL,	NULL,	'Sumesh',	'Soni',	'sumesh.s@gmail.com',	'$2y$10$n6Fi6a5rvRM1RmgEyLMZ.O5xcbzWJ4V8BOOR17.hwIQ9fAJ5fKv/6',	NULL,	'2025-06-25 16:21:44',	0,	NULL,	NULL,	NULL,	NULL,	7,	1,	NULL,	'2025-03-18 13:05:34',	NULL,	'2025-06-25 10:51:44'),
 (9,	NULL,	NULL,	NULL,	'Vasu',	'Iyer',	'vi@aureoleglobal.com',	'$2y$10$ZYRAgCdTYBppBcwqPVGR2uenzazx365QT57pnepMdMHLXtyT7WYfi',	NULL,	'2025-04-02 01:21:38',	0,	NULL,	NULL,	NULL,	NULL,	7,	1,	NULL,	'2025-03-24 14:34:31',	NULL,	'2025-04-01 19:51:38');
 
@@ -650,7 +650,9 @@ INSERT INTO `brand_product` (`id`, `brand_id`, `product_id`, `created`, `modifie
 (20,	13,	87,	'2024-02-20 10:28:17',	'2024-02-20 10:28:17'),
 (23,	13,	88,	'2024-02-20 10:38:49',	'2024-02-20 10:38:49'),
 (37,	13,	93,	'2024-03-23 04:14:27',	'2024-03-23 04:14:27'),
-(940,	16,	489,	'2025-10-11 06:57:59',	'2025-10-11 06:57:59');
+(940,	16,	489,	'2025-10-11 06:57:59',	'2025-10-11 06:57:59'),
+(949,	13,	492,	'2025-10-11 21:45:18',	'2025-10-11 21:45:18'),
+(950,	15,	492,	'2025-10-11 21:45:18',	'2025-10-11 21:45:18');
 
 DROP TABLE IF EXISTS `brands`;
 CREATE TABLE `brands` (
@@ -2240,7 +2242,81 @@ INSERT INTO `product_colors` (`id`, `product_id`, `color_id`, `color_title`, `co
 (10314,	491,	290,	'Bright Royal/​Black/​White',	'R/B/W',	7,	'2025-10-11 12:55:17',	'2025-10-11 07:25:17'),
 (10315,	491,	314,	'Field Camo',	'FCA',	7,	'2025-10-11 12:55:17',	'2025-10-11 07:25:17'),
 (10316,	491,	315,	'Jungle Camo',	'JUN',	7,	'2025-10-11 12:55:17',	'2025-10-11 07:25:17'),
-(10317,	491,	220,	'Natural',	'NAT',	7,	'2025-10-11 12:55:17',	'2025-10-11 07:25:17');
+(10317,	491,	220,	'Natural',	'NAT',	7,	'2025-10-11 12:55:17',	'2025-10-11 07:25:17'),
+(10351,	493,	290,	'Bright Royal/​Black/​White',	'R/B/W',	7,	'2025-10-12 02:00:38',	'2025-10-11 20:30:38'),
+(10352,	493,	314,	'Field Camo',	'FCA',	7,	'2025-10-12 02:00:38',	'2025-10-11 20:30:38'),
+(10353,	493,	315,	'Jungle Camo',	'JUN',	7,	'2025-10-12 02:00:38',	'2025-10-11 20:30:38'),
+(10354,	493,	220,	'Natural',	'NAT',	7,	'2025-10-12 02:00:38',	'2025-10-11 20:30:38'),
+(10359,	494,	290,	'Bright Royal/​Black/​White',	'R/B/W',	7,	'2025-10-12 02:08:39',	'2025-10-11 20:38:39'),
+(10360,	494,	314,	'Field Camo',	'FCA',	7,	'2025-10-12 02:08:39',	'2025-10-11 20:38:39'),
+(10361,	494,	315,	'Jungle Camo',	'JUN',	7,	'2025-10-12 02:08:39',	'2025-10-11 20:38:39'),
+(10362,	494,	220,	'Natural',	'NAT',	7,	'2025-10-12 02:08:39',	'2025-10-11 20:38:39'),
+(10429,	492,	237,	'Fluorescent Pink',	'FLP',	7,	'2025-10-12 03:15:18',	'2025-10-11 21:45:18'),
+(10430,	492,	152,	'Baby Pink/​Arctic White',	'BPI/A',	7,	'2025-10-12 03:15:18',	'2025-10-11 21:45:18'),
+(10431,	492,	56,	'Burnt Orange',	'BOR',	7,	'2025-10-12 03:15:18',	'2025-10-11 21:45:18'),
+(10432,	492,	194,	'Electric Yellow/​Jet Black',	'EY/JB',	7,	'2025-10-12 03:15:18',	'2025-10-11 21:45:18'),
+(10433,	492,	434,	'White/​White',	'WH/WH',	7,	'2025-10-12 03:15:18',	'2025-10-11 21:45:18'),
+(10434,	492,	93,	'Nude',	'NUD',	7,	'2025-10-12 03:15:18',	'2025-10-11 21:45:18'),
+(10435,	492,	375,	'Classic Red/​True Pink',	'CS/TP',	7,	'2025-10-12 03:15:18',	'2025-10-11 21:45:18'),
+(10436,	492,	243,	'Heather Oatmeal',	'HOA',	7,	'2025-10-12 03:15:18',	'2025-10-11 21:45:18'),
+(10437,	492,	82,	'Lavender',	'LAV',	7,	'2025-10-12 03:15:18',	'2025-10-11 21:45:18'),
+(10438,	492,	105,	'Red Hot Chilli',	'RHC',	7,	'2025-10-12 03:15:18',	'2025-10-11 21:45:18'),
+(10439,	492,	59,	'Caramel Latte',	'CLT',	7,	'2025-10-12 03:15:18',	'2025-10-11 21:45:18'),
+(10440,	492,	24,	'Digital Lavender',	'DTL',	7,	'2025-10-12 03:15:18',	'2025-10-11 21:45:18'),
+(10441,	492,	266,	'Heather Grey/​Black',	'HE/BK',	7,	'2025-10-12 03:15:18',	'2025-10-11 21:45:18'),
+(10442,	492,	69,	'Dusty Lilac',	'DUL',	7,	'2025-10-12 03:15:18',	'2025-10-11 21:45:18'),
+(10443,	492,	381,	'Walnut/​Black',	'WN/BK',	7,	'2025-10-12 03:15:18',	'2025-10-11 21:45:18'),
+(10444,	492,	336,	'Walnut',	'WNT',	7,	'2025-10-12 03:15:18',	'2025-10-11 21:45:18'),
+(10445,	492,	337,	'Vintage Olive',	'VOL',	7,	'2025-10-12 03:15:18',	'2025-10-11 21:45:18'),
+(10446,	492,	416,	'Retro Blues',	'RTB',	7,	'2025-10-12 03:15:18',	'2025-10-11 21:45:18'),
+(10447,	492,	328,	'Olive Green/​White',	'OL/WH',	7,	'2025-10-12 03:15:18',	'2025-10-11 21:45:18'),
+(10448,	492,	61,	'Chocolate Fudge Brownie',	'CFU',	7,	'2025-10-12 03:15:18',	'2025-10-11 21:45:18'),
+(10449,	492,	359,	'Bright Blue',	'BRB',	7,	'2025-10-12 03:15:18',	'2025-10-11 21:45:18'),
+(10450,	492,	176,	'Jet Black/​Sapphire Blue',	'JB/SA',	7,	'2025-10-12 03:15:18',	'2025-10-11 21:45:18'),
+(10451,	492,	200,	'Jet Black/White',	'JB/WH',	7,	'2025-10-12 03:15:18',	'2025-10-11 21:45:18'),
+(10452,	492,	201,	'Oxford Navy/Heather Grey',	'OX/HE',	7,	'2025-10-12 03:15:18',	'2025-10-11 21:45:18'),
+(10453,	492,	366,	'Navy Fleck',	'NVFL',	7,	'2025-10-12 03:15:18',	'2025-10-11 21:45:18'),
+(10454,	492,	228,	'Chocolate',	'CHO',	7,	'2025-10-12 03:15:18',	'2025-10-11 21:45:18'),
+(10455,	492,	258,	'Bottle Green/​Off White',	'BO/OW',	7,	'2025-10-12 03:15:18',	'2025-10-11 21:45:18'),
+(10456,	492,	2,	'Navy Blue',	'NB',	7,	'2025-10-12 03:15:18',	'2025-10-11 21:45:18'),
+(10457,	492,	47,	'Black',	'BLK',	7,	'2025-10-12 03:15:18',	'2025-10-11 21:45:18'),
+(10458,	492,	305,	'Surf Blue/​White',	'SB/WH',	7,	'2025-10-12 03:15:18',	'2025-10-11 21:45:18'),
+(10459,	492,	250,	'Teal',	'TEA',	7,	'2025-10-12 03:15:18',	'2025-10-11 21:45:18'),
+(10460,	492,	420,	'Navy/​Taupe',	'NV/TP',	7,	'2025-10-12 03:15:18',	'2025-10-11 21:45:18'),
+(10461,	492,	123,	'Yellow/​Black',	'YL/BK',	7,	'2025-10-12 03:15:18',	'2025-10-11 21:45:18'),
+(10462,	495,	237,	'Fluorescent Pink',	'FLP',	7,	'2025-10-12 03:16:10',	'2025-10-11 21:46:10'),
+(10463,	495,	152,	'Baby Pink/​Arctic White',	'BPI/A',	7,	'2025-10-12 03:16:10',	'2025-10-11 21:46:10'),
+(10464,	495,	56,	'Burnt Orange',	'BOR',	7,	'2025-10-12 03:16:11',	'2025-10-11 21:46:11'),
+(10465,	495,	194,	'Electric Yellow/​Jet Black',	'EY/JB',	7,	'2025-10-12 03:16:11',	'2025-10-11 21:46:11'),
+(10466,	495,	434,	'White/​White',	'WH/WH',	7,	'2025-10-12 03:16:11',	'2025-10-11 21:46:11'),
+(10467,	495,	93,	'Nude',	'NUD',	7,	'2025-10-12 03:16:11',	'2025-10-11 21:46:11'),
+(10468,	495,	375,	'Classic Red/​True Pink',	'CS/TP',	7,	'2025-10-12 03:16:11',	'2025-10-11 21:46:11'),
+(10469,	495,	243,	'Heather Oatmeal',	'HOA',	7,	'2025-10-12 03:16:11',	'2025-10-11 21:46:11'),
+(10470,	495,	82,	'Lavender',	'LAV',	7,	'2025-10-12 03:16:11',	'2025-10-11 21:46:11'),
+(10471,	495,	105,	'Red Hot Chilli',	'RHC',	7,	'2025-10-12 03:16:11',	'2025-10-11 21:46:11'),
+(10472,	495,	59,	'Caramel Latte',	'CLT',	7,	'2025-10-12 03:16:11',	'2025-10-11 21:46:11'),
+(10473,	495,	24,	'Digital Lavender',	'DTL',	7,	'2025-10-12 03:16:11',	'2025-10-11 21:46:11'),
+(10474,	495,	266,	'Heather Grey/​Black',	'HE/BK',	7,	'2025-10-12 03:16:11',	'2025-10-11 21:46:11'),
+(10475,	495,	69,	'Dusty Lilac',	'DUL',	7,	'2025-10-12 03:16:11',	'2025-10-11 21:46:11'),
+(10476,	495,	381,	'Walnut/​Black',	'WN/BK',	7,	'2025-10-12 03:16:11',	'2025-10-11 21:46:11'),
+(10477,	495,	336,	'Walnut',	'WNT',	7,	'2025-10-12 03:16:11',	'2025-10-11 21:46:11'),
+(10478,	495,	337,	'Vintage Olive',	'VOL',	7,	'2025-10-12 03:16:11',	'2025-10-11 21:46:11'),
+(10479,	495,	416,	'Retro Blues',	'RTB',	7,	'2025-10-12 03:16:11',	'2025-10-11 21:46:11'),
+(10480,	495,	328,	'Olive Green/​White',	'OL/WH',	7,	'2025-10-12 03:16:11',	'2025-10-11 21:46:11'),
+(10481,	495,	61,	'Chocolate Fudge Brownie',	'CFU',	7,	'2025-10-12 03:16:11',	'2025-10-11 21:46:11'),
+(10482,	495,	359,	'Bright Blue',	'BRB',	7,	'2025-10-12 03:16:11',	'2025-10-11 21:46:11'),
+(10483,	495,	176,	'Jet Black/​Sapphire Blue',	'JB/SA',	7,	'2025-10-12 03:16:11',	'2025-10-11 21:46:11'),
+(10484,	495,	200,	'Jet Black/White',	'JB/WH',	7,	'2025-10-12 03:16:11',	'2025-10-11 21:46:11'),
+(10485,	495,	201,	'Oxford Navy/Heather Grey',	'OX/HE',	7,	'2025-10-12 03:16:11',	'2025-10-11 21:46:11'),
+(10486,	495,	366,	'Navy Fleck',	'NVFL',	7,	'2025-10-12 03:16:11',	'2025-10-11 21:46:11'),
+(10487,	495,	228,	'Chocolate',	'CHO',	7,	'2025-10-12 03:16:11',	'2025-10-11 21:46:11'),
+(10488,	495,	258,	'Bottle Green/​Off White',	'BO/OW',	7,	'2025-10-12 03:16:11',	'2025-10-11 21:46:11'),
+(10489,	495,	2,	'Navy Blue',	'NB',	7,	'2025-10-12 03:16:11',	'2025-10-11 21:46:11'),
+(10490,	495,	47,	'Black',	'BLK',	7,	'2025-10-12 03:16:11',	'2025-10-11 21:46:11'),
+(10491,	495,	305,	'Surf Blue/​White',	'SB/WH',	7,	'2025-10-12 03:16:11',	'2025-10-11 21:46:11'),
+(10492,	495,	250,	'Teal',	'TEA',	7,	'2025-10-12 03:16:11',	'2025-10-11 21:46:11'),
+(10493,	495,	420,	'Navy/​Taupe',	'NV/TP',	7,	'2025-10-12 03:16:11',	'2025-10-11 21:46:11'),
+(10494,	495,	123,	'Yellow/​Black',	'YL/BK',	7,	'2025-10-12 03:16:11',	'2025-10-11 21:46:11');
 
 DROP TABLE IF EXISTS `product_reports`;
 CREATE TABLE `product_reports` (
@@ -2308,25 +2384,50 @@ INSERT INTO `product_sizes` (`id`, `size_title`, `from_cm`, `to_cm`, `chest`, `w
 (48481,	'S',	1,	1,	1,	1,	1,	1,	491,	20,	314,	1002.00,	0.00,	NULL,	1,	'2025-10-11 07:25:17',	'2025-10-11 07:25:17'),
 (48482,	'M',	1,	1,	1,	1,	1,	1,	491,	23,	314,	1002.00,	0.00,	NULL,	1,	'2025-10-11 07:25:17',	'2025-10-11 07:25:17'),
 (48483,	'S',	1,	1,	1,	1,	1,	1,	491,	20,	315,	999.00,	1000.00,	NULL,	1,	'2025-10-11 07:25:17',	'2025-10-11 07:25:17'),
-(48484,	'M',	1,	1,	1,	1,	1,	1,	491,	23,	315,	999.00,	1000.00,	NULL,	1,	'2025-10-11 07:25:17',	'2025-10-11 07:25:17');
+(48484,	'M',	1,	1,	1,	1,	1,	1,	491,	23,	315,	999.00,	1000.00,	NULL,	1,	'2025-10-11 07:25:17',	'2025-10-11 07:25:17'),
+(48489,	'S',	1,	1,	1,	1,	1,	1,	493,	20,	220,	1000.00,	0.00,	NULL,	1,	'2025-10-11 20:30:38',	'2025-10-11 20:30:38'),
+(48490,	'M',	1,	1,	1,	1,	1,	1,	493,	23,	220,	1000.00,	0.00,	NULL,	1,	'2025-10-11 20:30:38',	'2025-10-11 20:30:38'),
+(48491,	'S',	1,	1,	1,	1,	1,	1,	493,	20,	290,	1000.00,	0.00,	NULL,	1,	'2025-10-11 20:30:38',	'2025-10-11 20:30:38'),
+(48492,	'M',	1,	1,	1,	1,	1,	1,	493,	23,	290,	1000.00,	0.00,	NULL,	0,	'2025-10-11 20:30:38',	'2025-10-11 20:30:38'),
+(48493,	'S',	1,	1,	1,	1,	1,	1,	493,	20,	314,	1002.00,	0.00,	NULL,	1,	'2025-10-11 20:30:38',	'2025-10-11 20:30:38'),
+(48494,	'M',	1,	1,	1,	1,	1,	1,	493,	23,	314,	1002.00,	0.00,	NULL,	1,	'2025-10-11 20:30:38',	'2025-10-11 20:30:38'),
+(48495,	'S',	1,	1,	1,	1,	1,	1,	493,	20,	315,	999.00,	1000.00,	NULL,	1,	'2025-10-11 20:30:38',	'2025-10-11 20:30:38'),
+(48496,	'M',	1,	1,	1,	1,	1,	1,	493,	23,	315,	999.00,	1000.00,	NULL,	1,	'2025-10-11 20:30:38',	'2025-10-11 20:30:38'),
+(48505,	'S',	1,	1,	1,	1,	1,	1,	494,	20,	220,	1000.00,	0.00,	NULL,	1,	'2025-10-11 20:38:39',	'2025-10-11 20:38:39'),
+(48506,	'M',	1,	1,	1,	1,	1,	1,	494,	23,	220,	1000.00,	0.00,	NULL,	1,	'2025-10-11 20:38:39',	'2025-10-11 20:38:39'),
+(48507,	'S',	1,	1,	1,	1,	1,	1,	494,	20,	290,	1000.00,	0.00,	NULL,	1,	'2025-10-11 20:38:39',	'2025-10-11 20:38:39'),
+(48508,	'M',	1,	1,	1,	1,	1,	1,	494,	23,	290,	1000.00,	0.00,	NULL,	0,	'2025-10-11 20:38:39',	'2025-10-11 20:38:39'),
+(48509,	'S',	1,	1,	1,	1,	1,	1,	494,	20,	314,	1002.00,	0.00,	NULL,	1,	'2025-10-11 20:38:39',	'2025-10-11 20:38:39'),
+(48510,	'M',	1,	1,	1,	1,	1,	1,	494,	23,	314,	1002.00,	0.00,	NULL,	1,	'2025-10-11 20:38:39',	'2025-10-11 20:38:39'),
+(48511,	'S',	1,	1,	1,	1,	1,	1,	494,	20,	315,	999.00,	1000.00,	NULL,	1,	'2025-10-11 20:38:39',	'2025-10-11 20:38:39'),
+(48512,	'M',	1,	1,	1,	1,	1,	1,	494,	23,	315,	999.00,	1000.00,	NULL,	1,	'2025-10-11 20:38:39',	'2025-10-11 20:38:39'),
+(48519,	'52S',	1,	1,	1,	1,	1,	1,	492,	118,	237,	773.00,	653.00,	NULL,	1,	'2025-10-11 21:45:18',	'2025-10-11 21:45:18'),
+(48520,	'34S',	1,	1,	1,	1,	1,	1,	492,	109,	237,	773.00,	653.00,	NULL,	0,	'2025-10-11 21:45:18',	'2025-10-11 21:45:18'),
+(48521,	'52S',	1,	1,	1,	1,	1,	1,	495,	118,	237,	773.00,	653.00,	NULL,	1,	'2025-10-11 21:46:11',	'2025-10-11 21:46:11'),
+(48522,	'34S',	1,	1,	1,	1,	1,	1,	495,	109,	237,	773.00,	653.00,	NULL,	0,	'2025-10-11 21:46:11',	'2025-10-11 21:46:11');
 
 DROP TABLE IF EXISTS `product_sub_category_relation`;
 CREATE TABLE `product_sub_category_relation` (
   `id` int NOT NULL AUTO_INCREMENT,
   `product_id` int NOT NULL,
-  `sub_category_id` int NOT NULL,
-  `sub_category_title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `category_id` int DEFAULT NULL,
+  `sub_category_id` int DEFAULT NULL,
+  `sub_category_title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `product_id` (`product_id`),
   KEY `category_id` (`sub_category_id`),
+  KEY `category_id_2` (`category_id`),
   CONSTRAINT `product_sub_category_relation_ibfk_5` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-  CONSTRAINT `product_sub_category_relation_ibfk_6` FOREIGN KEY (`sub_category_id`) REFERENCES `sub_categories` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
+  CONSTRAINT `product_sub_category_relation_ibfk_6` FOREIGN KEY (`sub_category_id`) REFERENCES `sub_categories` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `product_sub_category_relation_ibfk_7` FOREIGN KEY (`category_id`) REFERENCES `product_categories` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
-INSERT INTO `product_sub_category_relation` (`id`, `product_id`, `sub_category_id`, `sub_category_title`) VALUES
-(1016,	489,	2,	'V neck'),
-(1017,	490,	2,	'V neck'),
-(1018,	491,	2,	'V neck');
+INSERT INTO `product_sub_category_relation` (`id`, `product_id`, `category_id`, `sub_category_id`, `sub_category_title`) VALUES
+(1016,	489,	NULL,	2,	'V neck'),
+(1017,	490,	NULL,	2,	'V neck'),
+(1018,	491,	NULL,	2,	'V neck'),
+(1019,	492,	11,	NULL,	NULL),
+(1020,	495,	11,	NULL,	NULL);
 
 DROP TABLE IF EXISTS `products`;
 CREATE TABLE `products` (
@@ -2387,7 +2488,11 @@ CREATE TABLE `products` (
 INSERT INTO `products` (`id`, `school_id`, `parent_id`, `shop_id`, `category_id`, `is_uniform`, `user_id`, `color_id`, `gender`, `tags`, `title`, `slug`, `short_description`, `description`, `size_file`, `image`, `color_images`, `cropped_area`, `postcode`, `phonenumber`, `address`, `duration_of_service`, `base_price`, `purchase_price`, `margin`, `price`, `sale_price`, `max_price`, `service_price`, `sku_number`, `sold`, `status`, `printed_logo`, `embroidered_logo`, `non_exchange`, `common_product`, `website_visible`, `shop_visible`, `logo_customization`, `created_by`, `deleted_at`, `created`, `modified`) VALUES
 (489,	NULL,	NULL,	NULL,	7,	0,	NULL,	NULL,	'Male',	NULL,	'SHORT SLEEVE SHIRT TWIN PACK NON IRON',	'short-sleeve-shirt-twin-pack-non-iron-epKMgq',	'SHORT SLEEVE SHIRT TWIN PACK NON IRON',	'<p>LONG -Descriotion&nbsp;&nbsp;SHORT SLEEVE SHIRT TWIN PACK NON IRON</p>',	'/uploads/products/1760165848118-file-sample-150kb.pdf',	'[\"/uploads/products/17601655756415-pssh-wht-sb.jpg\"]',	'{\"220\":{\"path\":\"/uploads/products/17601655537161-sb.jpg\",\"colorId\":\"product-editor\"},\"290\":{\"path\":\"/uploads/products/17601655591024-wht.jpg\",\"colorId\":\"product-editor\"},\"314\":{\"path\":\"/uploads/products/1760165547682-wht.jpg\",\"colorId\":\"product-editor\"},\"315\":{\"path\":\"/uploads/products/17601655011261-1756320692-3.png\",\"colorId\":\"product-editor\"}}',	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	100.00,	10.00,	1000.00,	NULL,	NULL,	NULL,	'PSSH',	0,	1,	0,	0,	1,	0,	1,	1,	NULL,	7,	NULL,	'2025-10-11 12:23:12',	'2025-10-11 06:57:59'),
 (490,	1,	489,	NULL,	7,	1,	NULL,	NULL,	NULL,	NULL,	'Uniform - SHORT SLEEVE SHIRT TWIN PACK NON IRON',	'uniform-short-sleeve-shirt-twin-pack-non-iron-3pR2gp',	'Uniform - SHORT SLEEVE SHIRT TWIN PACK NON IRON',	NULL,	NULL,	NULL,	'{\"220\":{\"path\":\"/uploads/products/17601655537161-sb.jpg\",\"colorId\":\"product-editor\"},\"290\":{\"path\":\"/uploads/products/17601655591024-wht.jpg\",\"colorId\":\"product-editor\"},\"314\":{\"path\":\"/uploads/products/1760165547682-wht.jpg\",\"colorId\":\"product-editor\"},\"315\":{\"path\":\"/uploads/products/17601655011261-1756320692-3.png\",\"colorId\":\"product-editor\"}}',	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	100.00,	10.00,	1000.00,	NULL,	NULL,	NULL,	NULL,	0,	1,	0,	0,	1,	0,	1,	1,	NULL,	7,	NULL,	'2025-10-11 12:50:03',	'2025-10-11 07:20:03'),
-(491,	288,	489,	NULL,	7,	1,	NULL,	NULL,	NULL,	NULL,	'Uniform - SHORT SLEEVE SHIRT TWIN PACK NON IRON',	'uniform-short-sleeve-shirt-twin-pack-non-iron-nvjj4v',	'Uniform - SHORT SLEEVE SHIRT TWIN PACK NON IRON',	NULL,	NULL,	NULL,	'{\"220\":{\"path\":\"/uploads/products/17601655537161-sb.jpg\",\"colorId\":\"product-editor\"},\"290\":{\"path\":\"/uploads/products/17601655591024-wht.jpg\",\"colorId\":\"product-editor\"},\"314\":{\"path\":\"/uploads/products/1760165547682-wht.jpg\",\"colorId\":\"product-editor\"},\"315\":{\"path\":\"/uploads/products/17601655011261-1756320692-3.png\",\"colorId\":\"product-editor\"}}',	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	100.00,	10.00,	1000.00,	NULL,	NULL,	NULL,	NULL,	0,	1,	1,	1,	1,	0,	1,	1,	NULL,	7,	NULL,	'2025-10-11 12:50:03',	'2025-10-11 07:25:17');
+(491,	288,	489,	NULL,	7,	1,	NULL,	NULL,	NULL,	NULL,	'Uniform - SHORT SLEEVE SHIRT TWIN PACK NON IRON',	'uniform-short-sleeve-shirt-twin-pack-non-iron-nvjj4v',	'Uniform - SHORT SLEEVE SHIRT TWIN PACK NON IRON',	NULL,	NULL,	NULL,	'{\"220\":{\"path\":\"/uploads/products/17601655537161-sb.jpg\",\"colorId\":\"product-editor\"},\"290\":{\"path\":\"/uploads/products/17601655591024-wht.jpg\",\"colorId\":\"product-editor\"},\"314\":{\"path\":\"/uploads/products/1760165547682-wht.jpg\",\"colorId\":\"product-editor\"},\"315\":{\"path\":\"/uploads/products/17601655011261-1756320692-3.png\",\"colorId\":\"product-editor\"}}',	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	100.00,	10.00,	1000.00,	NULL,	NULL,	NULL,	NULL,	0,	1,	1,	1,	1,	0,	1,	1,	NULL,	7,	NULL,	'2025-10-11 12:50:03',	'2025-10-11 07:25:17'),
+(492,	NULL,	NULL,	NULL,	11,	0,	NULL,	NULL,	'Male',	NULL,	'Cum ab hic eiusmod q',	'cum-ab-hic-eiusmod-q-D03XQp',	'Non vero tempor tene',	NULL,	NULL,	'[\"/uploads/products/17602136746923-sb.jpg\"]',	'{\"237\":{\"path\":\"/uploads/products/17602136705827-pssh-wht-sb.jpg\",\"colorId\":\"product-editor\"}}',	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	477.00,	69.00,	773.00,	NULL,	653.00,	NULL,	'872',	0,	1,	0,	0,	1,	1,	1,	1,	NULL,	7,	NULL,	'2025-10-12 01:44:43',	'2025-10-11 21:45:18'),
+(493,	2,	489,	NULL,	7,	1,	NULL,	NULL,	NULL,	NULL,	'SHORT SLEEVE SHIRT TWIN PACK NON IRON',	'short-sleeve-shirt-twin-pack-non-iron-g0V4Ov',	'SHORT SLEEVE SHIRT TWIN PACK NON IRON',	NULL,	'/uploads/products/1760214635526-file-sample-150kb.pdf',	'[\"/uploads/products/17602146307675-pssh-wht-sb.jpg\"]',	'{\"220\":{\"path\":\"/uploads/products/17601655537161-sb.jpg\",\"colorId\":\"product-editor\"},\"290\":{\"path\":\"/uploads/products/17601655591024-wht.jpg\",\"colorId\":\"product-editor\"},\"314\":{\"path\":\"/uploads/products/1760165547682-wht.jpg\",\"colorId\":\"product-editor\"},\"315\":{\"path\":\"/uploads/products/17601655011261-1756320692-3.png\",\"colorId\":\"product-editor\"}}',	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	100.00,	10.00,	1000.00,	NULL,	1200.00,	NULL,	NULL,	0,	1,	1,	1,	1,	0,	1,	1,	NULL,	7,	NULL,	'2025-10-12 02:00:38',	'2025-10-11 20:30:38'),
+(494,	215,	489,	NULL,	7,	1,	NULL,	NULL,	'Male',	NULL,	'SHORT SLEEVE SHIRT TWIN PACK NON IRON',	'short-sleeve-shirt-twin-pack-non-iron-XqdQJ0',	'SHORT SLEEVE SHIRT TWIN PACK NON IRON',	NULL,	NULL,	NULL,	'{\"220\":{\"path\":\"/uploads/products/17601655537161-sb.jpg\",\"colorId\":\"product-editor\"},\"290\":{\"path\":\"/uploads/products/17601655591024-wht.jpg\",\"colorId\":\"product-editor\"},\"314\":{\"path\":\"/uploads/products/1760165547682-wht.jpg\",\"colorId\":\"product-editor\"},\"315\":{\"path\":\"/uploads/products/17601655011261-1756320692-3.png\",\"colorId\":\"product-editor\"}}',	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	100.00,	10.00,	1000.00,	NULL,	1200.00,	NULL,	'PS111',	0,	1,	1,	1,	1,	0,	1,	1,	'[{\"id\": \"1\", \"cost\": 33, \"title\": \"fgf\", \"total\": 33, \"quantity\": 1, \"required\": false, \"description\": \"gfgf\"}]',	7,	NULL,	'2025-10-12 02:00:38',	'2025-10-11 20:47:27'),
+(495,	288,	492,	NULL,	11,	1,	NULL,	NULL,	'Male',	NULL,	'Cum ab hic eiusmod q',	'cum-ab-hic-eiusmod-q-gpAMMp',	'Non vero tempor tene',	NULL,	NULL,	NULL,	'{\"237\":{\"path\":\"/uploads/products/17602136705827-pssh-wht-sb.jpg\",\"colorId\":\"product-editor\"}}',	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	477.00,	69.00,	773.00,	NULL,	653.00,	NULL,	'111AAA',	0,	1,	1,	1,	1,	0,	1,	1,	NULL,	7,	NULL,	'2025-10-12 03:16:10',	'2025-10-11 21:46:10');
 
 DROP TABLE IF EXISTS `ratings`;
 CREATE TABLE `ratings` (
@@ -3481,4 +3586,4 @@ CREATE TABLE `users_wishlist` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 
--- 2025-10-11 10:16:53
+-- 2025-10-11 21:56:56
