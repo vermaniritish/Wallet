@@ -88,7 +88,7 @@
 									<hr />
 									<div class="form-group">
 										<label class="form-control-label" for="input-first-name">School</label>
-										<select v-model="schools" class="form-control no-selectpicker" name="schools[]" placeholder="Schools" required multiple>
+										<select v-model="schools" class="form-control no-selectpicker" name="schools[]" placeholder="Schools" required>
 											<option value=""></option>
 											@foreach($schools as $s)
 											<option value="{{ $s->id }}">{{ $s->name }} - {{ $s->schooltype }} - {{ $s->city }}</option>
