@@ -23,7 +23,7 @@
                     <i class="fas fa-sort" data-field="product_sizes.size_title"></i>
                     <?php endif; ?>
                 </th>				
-                <th class="sort text-center" width="20%" >
+                <th class="sort text-center" width="15%" >
                     From cm 
                     <?php if(isset($_GET['sort']) && $_GET['sort'] == 'product_sizes.from_cm' && isset($_GET['direction']) && $_GET['direction'] == 'asc'): ?>
                     <i class="fas fa-sort-down active" data-field="product_sizes.from_cm" data-sort="asc"></i>
@@ -33,7 +33,7 @@
                     <i class="fas fa-sort" data-field="product_sizes.from_cm"></i>
                     <?php endif; ?>
                 </th>
-                <th class="sort text-center" width="20%" >
+                <th class="sort text-center" width="15%" >
                     To cm
                     <?php if(isset($_GET['sort']) && $_GET['sort'] == 'product_sizes.to_cm' && isset($_GET['direction']) && $_GET['direction'] == 'asc'): ?>
                     <i class="fas fa-sort-down active" data-field="product_sizes.to_cm" data-sort="asc"></i>
