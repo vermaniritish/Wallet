@@ -28,9 +28,6 @@ class Products extends AppModel
     protected $casts = [
         'tags' => 'array',
     ];
-    
-    /**** ONLY USE FOR MAIN TALBLES NO NEED TO USE FOR RELATION TABLES OR DROPDOWNS OR SMALL SECTIONS ***/
-    use SoftDeletes;
 
     /**
     * Product -> Colours belongsToMany relation
