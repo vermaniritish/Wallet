@@ -402,8 +402,7 @@ class ProductsController extends AppController
     		return redirect()->route('admin.dashboard');
     	}
     	$product = Products::get($id);
-		
-    	if($product)
+		if($product)
     	{
 	    	if($request->isMethod('post'))
 	    	{

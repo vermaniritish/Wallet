@@ -1,4 +1,7 @@
-<?php use App\Libraries\FileSystem; ?>
+<?php 
+use App\Libraries\FileSystem; 
+use Illuminate\Support\Str;
+?>
 @extends('layouts.frontendlayout')
 @section('content')
 <div id="product-page">
@@ -6,7 +9,10 @@
             <div class="container">
                 <div class="breadcrumb">
                     <a href="index.html" rel="nofollow">Home</a>
-                    @if($product->categories)
+                    @if($product->school_id)
+                    <span></span> <a :href="site_url + `/school/{{Str::slug($product->school_name . '-' . $product->school_id)}}/uniforms`" rel="nofollow">{{ $product->school_name }}</a>
+                    
+                    @elseif($product->categories)
                     <span></span> <a :href="site_url + `/{{$product->categories->slug}}`" rel="nofollow">{{ $product->categories && $product->categories->title ? $product->categories->title : ''}}</a>
                     @endif
                     <span></span> {{$product->title}}
@@ -60,11 +66,16 @@
                                 <div class="col-md-6 col-sm-12 col-xs-12">
                                     <div class="detail-info">
                                         <div class="d-flex align-items-center flex-row gap-1">
-                                            @if($product->categories)
-                                            <a href="{{url('/'.$product->categories->slug)}}" alt="{{$product->categories->title}}">{{$product->categories->title}}</a>
-                                            @endif
-                                            @if($product->subCategories && $product->subCategories->count() > 0)
-                                            <a href="{{url('/'.$product->subCategories[0]->title)}}" alt="{{$product->subCategories[0]->title}}">{{$product->subCategories[0]->title}}</a>
+                                            @if($product->school_id)
+                                            
+                                            <a href="{{url('/school/'.Str::slug($product->school_name . '-' . $product->school_id).'/uniforms')}}" alt="{{$product->categories->title}}">{{$product->school_name}}</a>
+                                            @else
+                                                @if($product->categories)
+                                                <a href="{{url('/'.$product->categories->slug)}}" alt="{{$product->categories->title}}">{{$product->categories->title}}</a>
+                                                @endif
+                                                @if($product->subCategories && $product->subCategories->count() > 0)
+                                                <a href="{{url('/'.$product->subCategories[0]->title)}}" alt="{{$product->subCategories[0]->title}}">{{$product->subCategories[0]->title}}</a>
+                                                @endif
                                             @endif
                                         </div>
 
@@ -102,6 +113,12 @@
                                         </div>
                                         <div class="bt-1 border-color-1 mt-15 mb-15"></div>
                                         <div class="short-desc mb-30">
+                                            <p>Brand:
+                                            <?php $brands = []; 
+                                            foreach($product->brands as $b):
+                                            echo '<span class="in-stock text-success ml-5">'.$b->title.'</span>';
+                                            endforeach;
+                                            ?></p>
                                             <p>{{ $product->short_description }}</p>
                                         </div>
                                         @if($product->non_exchange)
@@ -138,14 +155,17 @@
                                                         <li data-active="false" class="ProductSizes-newProductSizesItem-xII" data-test-id="ProductSize" v-for="s in renderSizes()">
                                                             <div class="productsizes" data-stock-status="InStock"><small>@{{ s.size_title }} </small></div>
                                                             <div class="productsizes-stockinfo1">
-                                                                <small class="productsizes-stockinfo2">£@{{s.price}}</small>
+                                                                <small class="productsizes-stockinfo2" style="color:#088178">£@{{s.price}}</small>
                                                             </div>
-                                                            <div class="quantity__box">
+                                                            <div class="quantity__box" v-if="s.status">
                                                                 <button type="button" class="quantity__value" aria-label="quantity value" value="Decrease Value" v-on:click="decrement(s.id)">-</button>
                                                                 <label>
                                                                     <input type="number" class="quantity__number quickview__value--number" v-on:input="manualQty"  :data-id="s.id" :value="s.quantity && s.quantity > 0 ? s.quantity : ``" />
                                                                 </label>
                                                                 <button type="button" class="quantity__value" aria-label="quantity value" value="Increase Value"  v-on:click="increment(s.id)">+</button>
+                                                            </div>
+                                                            <div class="quantity__box" v-else>
+                                                                <button type="button" class="quantity__value" style="width: 100%;padding: 8px 0;"><small style="font-size: 80%;" class="text-danger">Out of Stock</small></button>
                                                             </div>
                                                         </li>												
                                                     </ul>
@@ -190,17 +210,6 @@
                                                 <!--<a aria-label="Add To Wishlist" class="action-btn hover-up" href="shop-wishlist.html"><i class="fi-rs-heart"></i></a>
                                                 <a aria-label="Compare" class="action-btn hover-up" href="shop-compare.html"><i class="fi-rs-shuffle"></i></a>-->
                                             </div>
-                                        <ul class="product-meta font-xs color-grey mt-50">
-                                            <li class="mb-5">SKU: {{$product->sku_number}}</li>
-                                            <li>
-                                                Brand:
-                                                <?php $brands = []; 
-                                                foreach($product->brands as $b):
-                                                echo '<span class="in-stock text-success ml-5">'.$b->title.'</span>';
-                                                endforeach;
-                                                ?>
-                                            </li>
-                                        </ul>
                                     </div>
                                     <!-- Detail Info -->
                                 </div>

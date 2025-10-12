@@ -44,8 +44,12 @@ class HomeController extends AppController
 
 	function productsListing(Request $request)
 	{
-		$where = ['products.status' => 1, 'products.parent_id is null
-		'];
+		$where = ['products.status' => 1];
+		if($request->get('school_id'))
+			$where['products.school_id'] = $request->get('school_id');
+		else
+			$where[] = 'products.parent_id is null';
+		
 		$products = Products::getListing($request, $where);
 		$items = $products->items();
 		foreach($items as $k => $v)

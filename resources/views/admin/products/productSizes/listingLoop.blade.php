@@ -22,7 +22,7 @@ use App\Models\Admin\Permissions;
 		<?php echo $row->sale_price ? _currency($row->sale_price) : _currency(0) ?>
 	</td>
 	<td class="text-center" >
-		<?php echo $row->status ? "<span class='text-danger'>In Stock</span>" : "<span class='text-danger'>Out of Stock</span>" ?>
+		<?php echo $row->status ? "<span class='text-success'>In Stock</span>" : "<span class='text-danger'>Out of Stock</span>" ?>
 	</td>
 </tr>
 <?php endforeach; ?>
