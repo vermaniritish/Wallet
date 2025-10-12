@@ -1,6 +1,7 @@
 let order = new Vue({
     el: '#product',
     data: {
+        id: null,
         mounting: true,
         defaultSizes: [],
         sizes: [],
@@ -119,6 +120,7 @@ let order = new Vue({
             if ($('#edit-form').length > 0) {
                 let data = JSON.parse($('#edit-form').text());
                 console.log(data.sizes);
+                this.id = data.id;
                 this.defaultSizes = data.sizes && data.sizes.length > 0 ? data.sizes.map((v) => (v.id)) : [];
                 this.url = admin_url + '/products/' + data.id + '/edit';
                 this.selectedSubCategory = data && data.sub_categories && data.sub_categories.length > 0 ? data.sub_categories.map(category => category.sub_category_id) : [];
@@ -191,7 +193,7 @@ let order = new Vue({
                                 to_cm: size.to_cm,
                                 price: this.price > 0 ? this.price : 0,
                                 sale_price: this.maxPrice > 0 ? this.maxPrice : ``,
-                                status: size.status
+                                status: !this.id ? true : size.status
                             });
                         }
                     } 
