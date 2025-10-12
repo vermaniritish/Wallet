@@ -34,6 +34,9 @@ Route::post('/edit-account', '\App\Http\Controllers\PagesController@editAccount'
 Route::get('/my-orders', '\App\Http\Controllers\PagesController@myOrders')
     ->name('myOrders')->middleware('userAuth');
 
+Route::get('/track-order', '\App\Http\Controllers\PagesController@trackOrder')
+    ->name('trackOrder')->middleware('userAuth');
+
 Route::get('/my-orders/{id}', '\App\Http\Controllers\PagesController@invoice')
     ->name('invoice')->middleware('userAuth');
 

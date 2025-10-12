@@ -204,6 +204,29 @@ class PagesController extends BaseController
         }
     }
 
+    function trackOrder(Request $request)
+    {
+        $data = $request->toArray();
+        $user = Users::find($request->session()->get('user')->id);
+        $order = null;
+        if($data)
+        {
+            $order = Orders::select(['parcels', 'shipment_tracking', 'shipping_gateway'])
+                ->leftJoin('users', 'users.id', '=', 'orders.customer_id')
+                ->where(function($q) use ($data) {
+                    return $q->where('prefix_id', 'LIKE', trim($data['orderid']))
+                        ->orWhere('orders.customer_email', 'LIKE', $data['email'])
+                        ->orWhere('users.email', 'LIKE', $data['email']);
+                })->limit(1)->first();
+        }
+        
+        return view('frontend.account.index', [
+            'user' => $user,
+            'order' => $order,
+            'screen' => 'track-order'
+        ]);
+    }
+
     function customPage(Request $request, $slug)
     {
         $page = Pages::where('slug', 'LIKE', $slug)->where('status', 1)->limit(1)->first();

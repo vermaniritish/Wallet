@@ -24,8 +24,8 @@
                             @if(isset($screen) && $screen == 'orders')
                                 @include('frontend.account.orders', ['screen' => 'orders'])
                             @endif
-                            @if(isset($screen) && $screen == 'track-orders')
-                                @include('frontend.account.trackorders', ['screen' => 'track-orders'])
+                            @if(isset($screen) && $screen == 'track-order')
+                                @include('frontend.account.trackorder', ['screen' => 'track-order'])
                             @endif
                             @if(isset($screen) && $screen == 'address')
                                 @include('frontend.account.address', ['screen' => 'address'])
