@@ -5,7 +5,7 @@
                 <!--!! CSRF FIELD !!-->
                 {{ @csrf_field() }}
                 <h6 class="heading-small text-muted mb-4">Female Size information</h6>
-                <div class="">
+                <div ref="menContainer">
                     <div v-for="(men, index) in mens" :key="index" >
                         <div class=" mt-2 d-flex position-relative pe-0">
                             <input type="hidden" value="Female" name="type" >
@@ -14,7 +14,7 @@
                                 <tr>
                                 <td>
                                     <div class="d-flex flex-row align-items-center gap-2">
-                                        <i class="fa fa-arrows" aria-hidden="true"></i>
+                                        <i class="fa fa-arrows handle" aria-hidden="true"></i>
                                         <div class="form-group">
                                             <label class="form-control-label" for="input-first-name">Size Type</label>
                                             <input type="text" class="form-control" v-model="men.size_title" :name="'mens[' + index + '][size_title]'" required  placeholder="XL" value="{{ old('color_code') }}">
