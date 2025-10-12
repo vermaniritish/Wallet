@@ -257,7 +257,7 @@
 														<th>Size (From - To)</th>
 														<th>Price</th>
 														<th>Sale Price</th>
-														<th>Status</th>
+														<th>In Stock</th>
 														<th>Remove Item</th>
 													</tr>
 												</thead>
