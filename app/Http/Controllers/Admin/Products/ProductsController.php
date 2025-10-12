@@ -73,13 +73,6 @@ class ProductsController extends AppController
     				date('Y-m-d 23:59:59', strtotime($createdOn[1]))
     			];
     	}
-    	
-    	// if($request->get('shop_id') && !empty(array_filter($request->get('shop_id'))) )
-    	// {
-    	// 	$shops = $request->get('shop_id');
-    	// 	$shops = $shops ? implode(',', $shops) : 0;
-    	// 	$where[] = 'products.shop_id IN ('.$shops.')';
-    	// }
 
     	if($request->get('category'))
     	{
@@ -383,7 +376,7 @@ class ProductsController extends AppController
 	    		],
 	    	    [
 				],
-	    		'sizes.size_title desc'
+	    		'sizes.sort_order asc'
 	    	);
 	    return view("admin/products/add", [
 	    			'categories' => $categories,
@@ -643,7 +636,7 @@ class ProductsController extends AppController
 
 	public function getSize($gender)
 	{
-		$sizes = Sizes::select(['id','size_title','from_cm','to_cm'])->whereType($gender)->get();
+		$sizes = Sizes::select(['id','size_title','from_cm','to_cm'])->whereType($gender)->orderBy('sort_order', 'asc')->get();
 		return response()->json([
 			'status' => true,
 			'sizes' => $sizes,

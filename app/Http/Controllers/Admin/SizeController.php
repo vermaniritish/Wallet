@@ -41,10 +41,10 @@ class SizeController extends AppController
     		return redirect()->route('admin.dashboard');
     	}
 
-		$male = Sizes::where('type','Male')->select(['type','id','size_title','from_cm','to_cm','chest','waist','hip','length', 'vat'])->get();
-		$female = Sizes::where('type','Female')->select(['type','id','size_title','from_cm','to_cm','chest','waist','hip','length', 'vat'])->get();
-		$unisex = Sizes::where('type','Unisex')->select(['type','id','size_title','from_cm','to_cm','chest','waist','hip','length', 'vat'])->get();
-		$kids = Sizes::where('type','Kids')->select(['type','id','size_title','from_cm','to_cm','chest','waist','hip','length', 'vat'])->get();
+		$male = Sizes::where('type','Male')->select(['type','id','size_title','from_cm','to_cm','chest','waist','hip','length', 'vat'])->orderBy('sort_order', 'asc')->get();
+		$female = Sizes::where('type','Female')->select(['type','id','size_title','from_cm','to_cm','chest','waist','hip','length', 'vat'])->orderBy('sort_order', 'asc')->get();
+		$unisex = Sizes::where('type','Unisex')->select(['type','id','size_title','from_cm','to_cm','chest','waist','hip','length', 'vat'])->orderBy('sort_order', 'asc')->get();
+		$kids = Sizes::where('type','Kids')->select(['type','id','size_title','from_cm','to_cm','chest','waist','hip','length', 'vat'])->orderBy('sort_order', 'asc')->get();
     	$where = [];
 		$filters = $this->filters($request);
 		return view(
@@ -101,17 +101,20 @@ class SizeController extends AppController
 				]);
 				if(!$validator->fails())
 				{
-					foreach ($request->mens as $item) {
+					$mens = array_values($request->mens);
+					foreach($mens as $k => $item) {
 						$sizeId = null;
 						if(isset($item['id']) && $item['id']) {
 							$sizeId = Sizes::select(['id'])->where('id',$item['id'])->limit(1)->pluck('id')->first();
 						}
 						$item['type'] = $data['type'];
+						$item['sort_order'] = $k;
 						if($sizeId)
 							Sizes::modify($sizeId, $item);
 						else
 							Sizes::create($item);
 					}
+					
 					$request->session()->flash('success', 'Size created successfully.');
 					return redirect()->back();
 				}

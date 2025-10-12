@@ -13,12 +13,15 @@
                             <table class="row w-100 p-3" style="border: none">
                                 <tr>
                                 <td>
-                                    <div class="form-group">
-                                        <label class="form-control-label" for="input-first-name">Size Type</label>
-                                        <input type="text" class="form-control" v-model="men.size_title" :name="'mens[' + index + '][size_title]'" required  placeholder="XL" value="{{ old('color_code') }}">
-                                        @error('color_code')
-                                            <small class="text-danger">{{ $message }}</small>
-                                        @enderror
+                                    <div class="d-flex flex-row align-items-center gap-2">
+                                        <i class="fa fa-arrows" aria-hidden="true"></i>
+                                        <div class="form-group">
+                                            <label class="form-control-label" for="input-first-name">Size Type</label>
+                                            <input type="text" class="form-control" v-model="men.size_title" :name="'mens[' + index + '][size_title]'" required  placeholder="XL" value="{{ old('color_code') }}">
+                                            @error('color_code')
+                                                <small class="text-danger">{{ $message }}</small>
+                                            @enderror
+                                        </div>
                                     </div>
                                 </td>
                                 <td>
@@ -77,7 +80,7 @@
                                 </td>
                                 </tr>
                                 <tr>
-                                    <td colspan="7">
+                                    <td colspan="5">
                                         <div class="custom-control">
                                             <label class="custom-toggle">
                                                 <input type="hidden" :name="'mens[' + index + '][vat]'" value="0" />
@@ -86,6 +89,9 @@
                                             </label>
                                             <label class="custom-control-label">Vat Applicable?</label>
                                         </div>
+                                    </td>
+                                    <td colspan="2" class="text-right">
+                                        <button class="btn btn-sm btn-danger" v-on:click="remove(men.id, index)">Remove</buttton>
                                     </td>
                                 </tr>
                             </table>

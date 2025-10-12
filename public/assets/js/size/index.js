@@ -15,7 +15,8 @@ let men = new Vue({
     ]
     },
     mounted: function() {
-        this.initEditValues()
+        this.initEditValues();
+        this.initSortable();
     },
     methods: {
         initEditValues: function () {
@@ -23,6 +24,13 @@ let men = new Vue({
                 let data = JSON.parse($('#male').text());
                 this.mens = data;
             }
+        },
+        initSortable() {
+            const el = this.$refs.menContainer;
+            Sortable.create(el, {
+                handle: '.handle',
+                animation: 150
+            });
         },
         addForm() {
             this.mens.push({ 
@@ -36,6 +44,14 @@ let men = new Vue({
                 length: '',
                 vat: 0
             });
+        },
+        async remove(id, i) {
+            if( id ) {
+                if(confirm('Are you sure to remove the size?')) {       
+                    await fetch(admin_url + '/size/'+id+'/delete');
+                }
+            }
+            this.mens.splice(i, 1);
         },
         validate() {
             let data = [...this.mens];
@@ -71,7 +87,8 @@ let women = new Vue({
     ]
     },
     mounted: function() {
-        this.initEditValues()
+        this.initEditValues();
+        this.initSortable();
     },
     methods: {
         initEditValues: function () {
@@ -79,6 +96,13 @@ let women = new Vue({
                 let data = JSON.parse($('#female').text());
                 this.mens = data;
             }
+        },
+        initSortable() {
+            const el = this.$refs.menContainer;
+            Sortable.create(el, {
+                handle: '.handle',
+                animation: 150
+            });
         },
         addForm() {
             this.mens.push({ 
@@ -92,6 +116,14 @@ let women = new Vue({
                 length: '',
                 vat: 1
             });
+        },
+        async remove(id, i) {
+            if( id ) {
+                if(confirm('Are you sure to remove the size?')) {       
+                    await fetch(admin_url + '/size/'+id+'/delete');
+                }
+            }
+            this.mens.splice(i, 1);
         },
         validate() {
             let data = [...this.mens];
@@ -130,7 +162,8 @@ let unisex = new Vue({
     ]
     },
     mounted: function() {
-        this.initEditValues()
+        this.initEditValues();
+        this.initSortable();
     },
     methods: {
         initEditValues: function () {
@@ -138,6 +171,13 @@ let unisex = new Vue({
                 let data = JSON.parse($('#unisex').text());
                 this.mens = data;
             }
+        },
+        initSortable() {
+            const el = this.$refs.menContainer;
+            Sortable.create(el, {
+                handle: '.handle',
+                animation: 150
+            });
         },
         addForm() {
             this.mens.push({ 
@@ -151,6 +191,14 @@ let unisex = new Vue({
                 length: '',
                 vat: 1
             });
+        },
+        async remove(id, i) {
+            if( id ) {
+                if(confirm('Are you sure to remove the size?')) {       
+                    await fetch(admin_url + '/size/'+id+'/delete');
+                }
+            }
+            this.mens.splice(i, 1);
         },
         validate() {
             let data = [...this.mens];
@@ -186,7 +234,8 @@ let kids = new Vue({
         }]
     },
     mounted: function() {
-        this.initEditValues()
+        this.initEditValues();
+        this.initSortable();
     },
     methods: {
         initEditValues: function () {
@@ -194,6 +243,13 @@ let kids = new Vue({
                 let data = JSON.parse($('#kids').text());
                 this.mens = data;
             }
+        },
+        initSortable() {
+            const el = this.$refs.menContainer;
+            Sortable.create(el, {
+                handle: '.handle',
+                animation: 150
+            });
         },
         addForm() {
             this.mens.push({ 
@@ -207,6 +263,14 @@ let kids = new Vue({
                 length: '',
                 vat: 1
             });
+        },
+        async remove(id, i) {
+            if( id ) {
+                if(confirm('Are you sure to remove the size?')) {       
+                    await fetch(admin_url + '/size/'+id+'/delete');
+                }
+            }
+            this.mens.splice(i, 1);
         },
         validate() {
             let data = [...this.mens];

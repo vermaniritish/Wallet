@@ -5,20 +5,23 @@
                 <!--!! CSRF FIELD !!-->
                 {{ @csrf_field() }}
                 <h6 class="heading-small text-muted mb-4">Male Size information</h6>
-                <div class="">
-                    <div v-for="(men, index) in mens" :key="index" >
+                <div ref="menContainer">
+                    <div v-for="(men, index) in mens"  :key="index">
                         <div class=" mt-2 d-flex position-relative pe-0">
                             <input type="hidden" value="Male" name="type" >
                             <input type="hidden"  name="id" v-if="men.id"  :name="'mens[' + index + '][id]'" :value="men.id" >
                             <table class="row w-100 p-3">
                                 <tr>
                                 <td>
-                                    <div class="form-group">
-                                        <label class="form-control-label" for="input-first-name">Size Type</label>
-                                        <input type="text" class="form-control" v-model="men.size_title" :name="'mens[' + index + '][size_title]'"   required placeholder="XL" value="{{ old('color_code') }}">
-                                        @error('color_code')
-                                            <small class="text-danger">{{ $message }}</small>
-                                        @enderror
+                                    <div class="d-flex flex-row align-items-center gap-2">
+                                        <i class="fa fa-arrows handle" aria-hidden="true"></i>
+                                        <div class="form-group">
+                                            <label class="form-control-label" for="input-first-name">Size Type</label>
+                                            <input type="text" class="form-control" v-model="men.size_title" :name="'mens[' + index + '][size_title]'" required  placeholder="XL" value="{{ old('color_code') }}">
+                                            @error('color_code')
+                                                <small class="text-danger">{{ $message }}</small>
+                                            @enderror
+                                        </div>
                                     </div>
                                 </td>
                                 <td>
@@ -66,18 +69,18 @@
                                         @enderror
                                     </div>
                                 </td>
-                                <td>
-                                    <div class="form-group">
-                                        <label class="form-control-label" for="input-first-name">Length</label>
-                                        <input type="number" class="form-control" v-model="men.length" :name="'mens[' + index + '][length]'"  placeholder="cm" value="{{ old('color_code') }}" min="0">
-                                        @error('color_code')
-                                            <small class="text-danger">{{ $message }}</small>
-                                        @enderror
-                                    </div>
-                                </td>
+                                    <td>
+                                        <div class="form-group">
+                                            <label class="form-control-label" for="input-first-name">Length</label>
+                                            <input type="number" class="form-control" v-model="men.length" :name="'mens[' + index + '][length]'"  placeholder="cm" value="{{ old('color_code') }}" min="0">
+                                            @error('color_code')
+                                                <small class="text-danger">{{ $message }}</small>
+                                            @enderror
+                                        </div>
+                                    </td>
                                 </tr>
                                 <tr>
-                                    <td colspan="7">
+                                    <td colspan="5">
                                         <div class="custom-control">
                                             <label class="custom-toggle">
                                                 <input type="hidden" :name="'mens[' + index + '][vat]'" value="0" />
@@ -86,6 +89,9 @@
                                             </label>
                                             <label class="custom-control-label">Vat Applicable?</label>
                                         </div>
+                                    </td>
+                                    <td colspan="2" class="text-right">
+                                        <button type="button" class="btn btn-sm btn-danger" v-on:click="remove(men.id, index)">Remove</buttton>
                                     </td>
                                 </tr>
                             </table>
