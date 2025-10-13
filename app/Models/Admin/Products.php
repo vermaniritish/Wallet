@@ -461,6 +461,7 @@ class Products extends AppModel
         ProductSubCategoryRelation::where('product_id', $id)->delete();
         if($subCategories)
         {
+            $subCategories = is_array($subCategories) ? $subCategories : [$subCategories];
             foreach($subCategories as $c)
             {
                 $subCategory = ProductSubCategories::find($c);
