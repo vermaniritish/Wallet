@@ -247,6 +247,7 @@ class UniformsController extends AppController
 					'color_id' => ['nullable', 'array'],
 					'color_id.*' => ['distinct','required', Rule::exists(Colours::class,'id')],
 					'gender' => ['nullable', Rule::in(['Male','Female','Unisex'])],
+					'sku_number' => ['required', Rule::unique('products')->ignore($unifromId ? $unifromId : 0)],
 					'sizeData' => ['required', 'array']
 	            ]
 	        );
