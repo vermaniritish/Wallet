@@ -299,7 +299,10 @@ var productDetail = new Vue({
             let sColor = JSON.parse($('#default-color').text().trim());
             console.log(`sColor`, sColor);
             if(sColor)
-            this.selectColor(sColor.id, sColor.title)
+            {
+                this.color = sColor.id;
+                this.colorTitle = sColor.title;
+            }
         }
         // for(let i in sizes)
         // {
