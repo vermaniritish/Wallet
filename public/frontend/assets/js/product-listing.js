@@ -97,8 +97,9 @@ var productDetail = new Vue({
             this.color = id;
             this.colorTitle = title;
             let c = $('.slider-thumb[data-item="'+id+'"]').index();
-            $('.product-image-slider').slick('slickGoTo', c);
-            $('.slider-nav-thumbnails').slick('slickGoTo', c); // Goes to 3rd slide
+            console.log(`c`, c);
+            // $('.product-image-slider').slick('slickGoTo', c);
+            // $('.slider-nav-thumbnails').slick('slickGoTo', c); // Goes to 3rd slide
         },
         renderSizes() {
             if(this.color) {
