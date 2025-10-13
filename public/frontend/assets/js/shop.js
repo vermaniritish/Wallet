@@ -8,6 +8,7 @@
             arrows: false,
             fade: false,
             asNavFor: '.slider-nav-thumbnails',
+            
         });
 
         $('.slider-nav-thumbnails').slick({

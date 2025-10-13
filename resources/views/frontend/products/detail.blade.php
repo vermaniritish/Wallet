@@ -35,7 +35,7 @@ use Illuminate\Support\Str;
                                             @if($product->image)
                                             @foreach($product->image as $i)
                                             <figure class="border-radius-10">
-                                                <img src="{{ url($i['large']) }}" alt="product image">
+                                                <img src="{{ url($i['large']) }}" >
                                             </figure>
                                             @endforeach
                                             @endif
@@ -44,7 +44,7 @@ use Illuminate\Support\Str;
                                             <?php $image = FileSystem::getAllSizeImages($i['path']);
                                             if(!in_array($k, $colorIds)) continue; ?>
                                             <figure class="border-radius-10">
-                                                <img src="{{ url($image['large']) }}" alt="product image">
+                                                <img src="{{ url($image['large']) }}" >
                                             </figure>
                                             @endforeach
                                             @endif
@@ -53,7 +53,7 @@ use Illuminate\Support\Str;
                                         <div class="slider-nav-thumbnails pl-15 pr-15">
                                             @if($product->image)
                                             @foreach($product->image as $i)
-                                            <div><img src="{{ url($i['small']) }}" alt="product image"></div>
+                                            <div><img src="{{ url($i['small']) }}" ></div>
                                             @endforeach
                                             @endif
                                             @if($product->color_images)
@@ -61,7 +61,7 @@ use Illuminate\Support\Str;
                                             foreach($product->color_images as $k => $i):
                                                 if(!in_array($k, $colorIds)) continue; ?>
                                                 <?php $image = FileSystem::getAllSizeImages($i['path']);?>
-                                                <div><img src="{{ url($image['small']) }}" alt="product image"></div>
+                                                <div class="slider-thumb" data-item="{{ $k }}"><img src="{{ url($image['small']) }}" ></div>
                                             <?php endforeach; ?>
                                             @endif
                                         </div>
