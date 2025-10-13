@@ -211,10 +211,8 @@ var productDetail = new Vue({
             await sleep(350);
             minicart.updateCartCount();
             this.adding = false;
-            if(buyNow)
-            {
-                window.location.href = '/checkout'   
-            }
+            window.location.href = '/cart';   
+            
         },
         async openLogoModal() 
         {
