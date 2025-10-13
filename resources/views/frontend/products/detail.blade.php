@@ -117,6 +117,7 @@ use Illuminate\Support\Str;
                                             </div>
                                         </div>
                                         <div class="bt-1 border-color-1 mt-15 mb-15"></div>
+                                        @if($product->brands)
                                         <div class="short-desc mb-30">
                                             <p>Brand:
                                             <?php $brands = []; 
@@ -126,6 +127,7 @@ use Illuminate\Support\Str;
                                             ?></p>
                                             <p>{{ $product->short_description }}</p>
                                         </div>
+                                        @endif
                                         @if($product->non_exchange)
                                         <div class="product_sort_info font-xs mb-30">
                                             <ul>

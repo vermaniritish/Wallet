@@ -412,6 +412,13 @@
 												<small class="text-danger">{{ $message }}</small>
 											@enderror
 										</div>
+										<div class="form-group">
+											<label class="form-control-label" for="input-first-name">Size Guide Video</label>
+											<input type="text" v-model="size_guide_video" class="form-control" name="size_guide_video" placeholder="Size Guide Video" required value="{{ old('size_guide_video', $product->size_guide_video) }}">
+											@error('size_guide_video')
+												<small class="text-danger">{{ $message }}</small>
+											@enderror
+										</div>
 									</div>
 									
 									<div class="col-lg-6">

@@ -36,6 +36,7 @@ let order = new Vue({
         non_exchange: 0,
         shop_visible: 0,
         website_visible: 0,
+        size_guide_video: ``
     },
     mounted: function() {
         if(pageId){
@@ -147,6 +148,7 @@ let order = new Vue({
                 this.non_exchange = data.non_exchange;
                 this.website_visible = data.website_visible;
                 this.shop_visible = data.shop_visible;
+                this.size_guide_video = data.size_guide_video;
                 // if (this.description !== null) {
                 //     put_editor_html('product-editor', this.description.trim());
                 // }
