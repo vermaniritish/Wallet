@@ -221,10 +221,12 @@ use Illuminate\Support\Str;
                             </div>
                             <div class="row">
                                 <div class="col-lg-10 m-auto entry-main-content">
+                                    @if($product->description)
                                     <h2 class="section-title style-1 mb-30">Description</h2>
                                     <div class="description mb-50">
                                         <?php echo $product->description; ?>
                                     </div>
+                                    @endif
                                     
                                     <div class="social-icons single-share">
                                         <ul class="text-grey-5 d-inline-block">
