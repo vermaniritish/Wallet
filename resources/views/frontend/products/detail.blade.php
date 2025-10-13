@@ -1,6 +1,8 @@
 <?php 
 use App\Libraries\FileSystem; 
 use Illuminate\Support\Str;
+$colors = Arr::pluck($product->colors, 'id');
+pr($colors); die;
 ?>
 @extends('layouts.frontendlayout')
 @section('content')
@@ -138,8 +140,7 @@ use Illuminate\Support\Str;
                                         <div class="attr-detail attr-color mb-15">
                                             
                                             <ul class="list-filter color-filter">
-                                                <?php 
-                                                foreach($product->colors as $c): ?>
+                                                <?php foreach($product->colors as $c): ?>
                                                 <?php $codes = explode(',',$c->color_code); ?>
                                                 
                                                 <li :class="renderActiveColor('{{$c->id}}')">
