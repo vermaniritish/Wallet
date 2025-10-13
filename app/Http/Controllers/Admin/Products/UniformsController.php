@@ -267,7 +267,7 @@ class UniformsController extends AppController
 					{
 						$lastImages = Products::select(['image'])->where('id', $unifromId)->limit(1)->first();
 						$data['image'] = json_decode($data['image'], true);
-						$lastImages = $lastImages ? json_decode($lastImages) : [];
+						$lastImages = $lastImages ? json_decode($lastImages, true) : [];
 						$data['image'] = array_merge($lastImages, $data['image']);
 					}
 					$data['image'] = json_encode($data['image']);
