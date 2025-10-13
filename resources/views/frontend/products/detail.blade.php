@@ -1,7 +1,8 @@
 <?php 
 use App\Libraries\FileSystem; 
 use Illuminate\Support\Str;
-$colorIds = Arr::pluck($product->colors, 'id');
+$colors = Arr::pluck($product->colors, 'id');
+
 ?>
 @extends('layouts.frontendlayout')
 @section('content')
@@ -55,12 +56,10 @@ $colorIds = Arr::pluck($product->colors, 'id');
                                             @endforeach
                                             @endif
                                             @if($product->color_images)
-                                            <?php
-                                            foreach($product->color_images as $k => $i):
-                                                if(in_array($k, $colorIds)) continue; ?>
-                                                <?php $image = FileSystem::getAllSizeImages($i['path']);?>
-                                                <div><img src="{{ url($image['small']) }}" alt="product image"></div>
-                                            <?php endforeach; ?>
+                                            @foreach($product->color_images as $i)
+                                            <?php $image = FileSystem::getAllSizeImages($i['path']);?>
+                                            <div><img src="{{ url($image['small']) }}" alt="product image"></div>
+                                            @endforeach
                                             @endif
                                         </div>
                                     </div>
