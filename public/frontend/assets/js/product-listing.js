@@ -96,10 +96,9 @@ var productDetail = new Vue({
         selectColor(id, title) {
             this.color = id;
             this.colorTitle = title;
-            let c = $('.slider-thumb[data-item="'+id+'"]').index();
-            console.log(`c`, c);
-            // $('.product-image-slider').slick('slickGoTo', c);
-            // $('.slider-nav-thumbnails').slick('slickGoTo', c); // Goes to 3rd slide
+            let c = $('.slider-thumb[data-item="'+id+'"]').index() - 1;
+            $('.product-image-slider').slick('slickGoTo', c);
+            $('.slider-nav-thumbnails').slick('slickGoTo', c); // Goes to 3rd slide
         },
         renderSizes() {
             if(this.color) {
