@@ -75,10 +75,12 @@
 									<div class="form-group">
 										<label class="form-control-label" for="input-first-name">Product</label>
 										<div v-if="products && products.length > 0">
-											<select id="productDropdown" v-model="selectedProduct" data-live-search="true" class="form-control no-selectpicker" name="product" placeholder="Product" required @change="initEditValues">
-												<option value=""></option>
-												<option v-for="p in products" :value="p.id">@{{ p.title }} - @{{ p.sku_number }}</option>
-											</select>
+											<div>
+												<select id="productDropdown" v-model="selectedProduct" data-live-search="true" class="form-control no-selectpicker" name="product" placeholder="Product" required @change="initEditValues">
+													<option value=""></option>
+													<option v-for="p in products" :value="p.id">@{{ p.title }} - @{{ p.sku_number }}</option>
+												</select>
+											</div>
 										</div>
 										<div v-else><p>No products available. Please adjust the categories to search and select product.</p></div>
 										@error('product')
