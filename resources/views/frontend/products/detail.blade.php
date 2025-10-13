@@ -5,7 +5,6 @@ use Illuminate\Support\Str;
 @extends('layouts.frontendlayout')
 @section('content')
 <?php $colorIds = Arr::pluck($product->colors, 'id'); 
-pr($product); die;
 ?>
 <div id="product-page">
 <div class="page-header breadcrumb-wrap">
@@ -43,7 +42,7 @@ pr($product); die;
                                             @if($product->color_images)
                                             @foreach($product->color_images as $k => $i)
                                             <?php $image = FileSystem::getAllSizeImages($i['path']);
-                                            if(in_array($k, $colorIds)) continue; ?>
+                                            if(!in_array($k, $colorIds)) continue; ?>
                                             <figure class="border-radius-10">
                                                 <img src="{{ url($image['large']) }}" alt="product image">
                                             </figure>
@@ -60,7 +59,7 @@ pr($product); die;
                                             @if($product->color_images)
                                             <?php
                                             foreach($product->color_images as $k => $i):
-                                                if(in_array($k, $colorIds)) continue; ?>
+                                                if(!in_array($k, $colorIds)) continue; ?>
                                                 <?php $image = FileSystem::getAllSizeImages($i['path']);?>
                                                 <div><img src="{{ url($image['small']) }}" alt="product image"></div>
                                             <?php endforeach; ?>
