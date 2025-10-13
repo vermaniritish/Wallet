@@ -260,6 +260,27 @@ class UniformsController extends AppController
 				}
 
 				$data['is_uniform'] = 1;
+				/** ONLY IN CASE OF MULTIPLE IMAGE USE THIS **/
+				if(isset($data['image']) && $data['image'])
+				{
+					$data['image'] = json_decode($data['image'], true);
+					$product->image = $product->image ? json_decode($product->image) : [];
+					$data['image'] = array_merge($product->image, $data['image']);
+					$data['image'] = json_encode($data['image']);
+				}
+				else
+				{
+					unset($data['image']);
+				}
+				if(isset($data['size_file']) && $data['size_file'])
+				{
+					$data['size_file'] = $data['size_file'];
+				}
+				else
+				{
+					unset($data['size_file']);
+				}
+				/** ONLY IN CASE OF MULTIPLE IMAGE USE THIS **/
 				unset($data['schools']);
 				unset($data['product']);
 				unset($data['size']);
