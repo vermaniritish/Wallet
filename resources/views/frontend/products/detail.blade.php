@@ -1,11 +1,12 @@
 <?php 
 use App\Libraries\FileSystem; 
 use Illuminate\Support\Str;
-$colorIds = Arr::pluck($product->colors, 'id');
-pr($product->color_images); die;
 ?>
 @extends('layouts.frontendlayout')
 @section('content')
+<?php $colorIds = Arr::pluck($product->colors, 'id'); 
+pr($product); die;
+?>
 <div id="product-page">
 <div class="page-header breadcrumb-wrap">
             <div class="container">
