@@ -1,8 +1,7 @@
 <?php 
 use App\Libraries\FileSystem; 
 use Illuminate\Support\Str;
-$colors = Arr::pluck($product->colors, 'id');
-
+$colorIds = Arr::pluck($product->colors, 'id');
 ?>
 @extends('layouts.frontendlayout')
 @section('content')
@@ -41,7 +40,8 @@ $colors = Arr::pluck($product->colors, 'id');
                                             @endif
                                             @if($product->color_images)
                                             @foreach($product->color_images as $i)
-                                            <?php $image = FileSystem::getAllSizeImages($i['path']);?>
+                                            <?php $image = FileSystem::getAllSizeImages($i['path']);
+                                            if(in_array($k, $colorIds)) continue; ?>
                                             <figure class="border-radius-10">
                                                 <img src="{{ url($image['large']) }}" alt="product image">
                                             </figure>
@@ -56,10 +56,12 @@ $colors = Arr::pluck($product->colors, 'id');
                                             @endforeach
                                             @endif
                                             @if($product->color_images)
-                                            @foreach($product->color_images as $i)
-                                            <?php $image = FileSystem::getAllSizeImages($i['path']);?>
-                                            <div><img src="{{ url($image['small']) }}" alt="product image"></div>
-                                            @endforeach
+                                            <?php
+                                            foreach($product->color_images as $k => $i):
+                                                if(in_array($k, $colorIds)) continue; ?>
+                                                <?php $image = FileSystem::getAllSizeImages($i['path']);?>
+                                                <div><img src="{{ url($image['small']) }}" alt="product image"></div>
+                                            <?php endforeach; ?>
                                             @endif
                                         </div>
                                     </div>
