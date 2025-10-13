@@ -39,7 +39,7 @@ $colorIds = Arr::pluck($product->colors, 'id');
                                             @endforeach
                                             @endif
                                             @if($product->color_images)
-                                            @foreach($product->color_images as $i)
+                                            @foreach($product->color_images as $k => $i)
                                             <?php $image = FileSystem::getAllSizeImages($i['path']);
                                             if(in_array($k, $colorIds)) continue; ?>
                                             <figure class="border-radius-10">
