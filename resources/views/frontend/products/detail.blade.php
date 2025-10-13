@@ -130,7 +130,8 @@ use Illuminate\Support\Str;
                                         @endif
 
                                         <span id="productId" class="d-none">{{ $product->id }}</span>
-                                        <pre id="product-sizes" class="d-none">{{ json_encode($product->sizes ? $product->sizes : '') }}</pre>
+                                        <pre id="product-sizes" class="d-none">{{ json_encode($product->sizes ? $product->sizes : []) }}</pre>
+                                        <pre id="default-color" class="d-none">{{ json_encode($product->colors && count($product->colors) > 0 ? $product->colors[0] : [])}}</div>
 										<div style="padding-bottom:10px;">
 										<strong class="mr-10">Color</strong>: @{{ colorTitle ? colorTitle : '' }}
 										</div>

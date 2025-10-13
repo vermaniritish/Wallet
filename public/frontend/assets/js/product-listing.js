@@ -102,7 +102,7 @@ var productDetail = new Vue({
                 return this.sizes.filter((i) => i.color_id == this.color );
             }
             else {
-                return this.sizes;
+                return [];
             }
         },
         renderAllAddedSizes() {
@@ -294,6 +294,12 @@ var productDetail = new Vue({
         });
         let sizes = $('#product-sizes').text().trim();
         sizes = sizes ? JSON.parse(sizes) : [];
+        if(sizes.length > 0){
+            let sColor = JSON.parse($('#default-color').text().trim());
+            console.log(`sColor`, sColor);
+            if(sColor)
+            this.selectColor(sColor.id, sColor.title)
+        }
         // for(let i in sizes)
         // {
         //     let exist = this.cart.filter((item) => {
