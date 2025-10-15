@@ -264,7 +264,7 @@ class ProductsController extends AppController
 					'color_id' => ['nullable', 'array'],
 					'color_id.*' => ['distinct','required', Rule::exists(Colours::class,'id')],
 					'gender' => ['required', Rule::in(['Male','Female','Unisex'])],
-					'sku_number' => ['required', Rule::unique('products')],
+					'sku_number' => ['required', Rule::unique('products')->whereNull('parent_id')],
 					'sizeData' => ['required', 'array']
 	            ]
 	        );
@@ -434,7 +434,7 @@ class ProductsController extends AppController
 							'color_id' => ['nullable', 'array'],
 							'color_id.*' => ['required', Rule::exists(Colours::class,'id')],
 							'gender' => ['required', Rule::in(['Male','Female','Unisex','Kids'])],
-							'sku_number' => ['required', Rule::unique('products')->ignore($product->id)],
+							'sku_number' => ['required', Rule::unique('products')->whereNull('parent_id')->ignore($product->id)],
 							'sizeData' => ['required', 'array']
 		            	]
 		        );
