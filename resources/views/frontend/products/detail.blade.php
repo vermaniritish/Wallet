@@ -117,17 +117,28 @@ use Illuminate\Support\Str;
                                             </div>
                                         </div>
                                         <div class="bt-1 border-color-1 mt-15 mb-15"></div>
-                                        @if($product->brands)
                                         <div class="short-desc mb-30">
+                                            @if($product->brands && $product->brands->count() > 0)
                                             <p>Brand:
                                             <?php $brands = []; 
                                             foreach($product->brands as $b):
                                             echo '<span class="in-stock text-success ml-5">'.$b->title.'</span>';
                                             endforeach;
                                             ?></p>
+                                            @endif
                                             <p>{{ $product->short_description }}</p>
+                                            @if($product->size_file || $product->size_guide_video)
+                                            <div style="padding-bottom:10px;">
+                                                @if($product->size_file)
+                                                <a class="my-2" href="#" onclick="openPDF(event, '{{ url($product->size_file) }}')"><img src="measure.png" style="width: 20px; vertical-align:middle;"> <strong>Size Guide</strong></a>
+                                                @endif
+                                                @if($product->size_guide_video)
+                                                <a class="my-2" href="#" onclick="openYouTubeEmbed(event, '{{ url($product->size_guide_video) }}')"><img src="play.png" style="width: 20px; vertical-align:middle;"> <strong>Size Guide Video</strong></a>
+                                                @endif
+                                            </div>
+                                            @endif
                                         </div>
-                                        @endif
+                                        
                                         @if($product->non_exchange)
                                         <div class="product_sort_info font-xs mb-30">
                                             <ul>

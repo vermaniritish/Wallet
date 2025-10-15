@@ -297,7 +297,6 @@ var productDetail = new Vue({
         sizes = sizes ? JSON.parse(sizes) : [];
         if(sizes.length > 0){
             let sColor = JSON.parse($('#default-color').text().trim());
-            console.log(`sColor`, sColor);
             if(sColor)
             {
                 this.color = sColor.id;

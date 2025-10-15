@@ -648,12 +648,33 @@
 
 })(jQuery);
 
+function openPDF(event, pdfUrl) {
+    event.preventDefault(); // Prevent normal link behavior
+    window.open(pdfUrl, "pdfPopup", "width=800,height=600,resizable=yes,scrollbars=yes");
+}
+
+function openYouTubeEmbed(event, embedUrl) {
+    event.preventDefault(); // Stop the link from navigating normally
+
+    const popup = window.open("", "youtubePopup", "width=800,height=450,resizable=yes");
+
+    popup.document.write(`
+    <html>
+        <head><title>Size Guide Video</title></head>
+        <body style="margin:0; overflow:hidden; background-color:black;">
+        <iframe width="100%" height="100%" src="${embedUrl}?autoplay=1" 
+            frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
+        </iframe>
+        </body>
+    </html>
+    `);
+}
 
 $("#newsletterForm").on("submit", function(e) {
     e.preventDefault();
 
     $.ajax({
-        url: "/api/newsletter/subscribe",
+        url: site_url+"/api/newsletter/subscribe",
         type: "POST",
         data: {
             email: $("#email").val(),
