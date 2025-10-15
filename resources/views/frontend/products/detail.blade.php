@@ -130,10 +130,10 @@ use Illuminate\Support\Str;
                                             @if($product->size_file || $product->size_guide_video)
                                             <div style="padding-bottom:10px;">
                                                 @if($product->size_file)
-                                                <a class="my-2" href="#" onclick="openPDF(event, '{{ url($product->size_file) }}')"><img src="measure.png" style="width: 20px; vertical-align:middle;"> <strong>Size Guide</strong></a>
+                                                <a class="my-2" href="#" onclick="openPDF(event, '{{ url($product->size_file) }}')"><img src="{{ url('assets/img/measure.png') }}" style="width: 20px; vertical-align:middle;"> <strong>Size Guide</strong></a>
                                                 @endif
                                                 @if($product->size_guide_video)
-                                                <a class="my-2" href="#" onclick="openYouTubeEmbed(event, '{{ url($product->size_guide_video) }}')"><img src="play.png" style="width: 20px; vertical-align:middle;"> <strong>Size Guide Video</strong></a>
+                                                <a class="my-2" href="#" onclick="openYouTubeEmbed(event, '{{ url($product->size_guide_video) }}')"><img src="{{ url('assets/img/play.png') }}" style="width: 20px; vertical-align:middle;"> <strong>Size Guide Video</strong></a>
                                                 @endif
                                             </div>
                                             @endif
