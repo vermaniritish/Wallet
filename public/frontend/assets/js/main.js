@@ -652,21 +652,53 @@ function openPDF(event, pdfUrl) {
     event.preventDefault(); // Prevent normal link behavior
     window.open(pdfUrl, "pdfPopup", "width=800,height=600,resizable=yes,scrollbars=yes");
 }
+function openYouTubeEmbed(event, url) {
+    event.preventDefault(); // Stop default navigation
 
-function openYouTubeEmbed(event, embedUrl) {
-    event.preventDefault(); // Stop the link from navigating normally
+    // Convert any YouTube URL to embed format
+    function convertToEmbedUrl(inputUrl) {
+        try {
+            const urlObj = new URL(inputUrl);
+
+            // Case 1: Regular YouTube URL like https://www.youtube.com/watch?v=VIDEO_ID
+            if (urlObj.hostname.includes('youtube.com') && urlObj.searchParams.has('v')) {
+                const videoId = urlObj.searchParams.get('v');
+                return `https://www.youtube.com/embed/${videoId}`;
+            }
+
+            // Case 2: Short URL like https://youtu.be/VIDEO_ID
+            if (urlObj.hostname === 'youtu.be') {
+                const videoId = urlObj.pathname.replace('/', '');
+                return `https://www.youtube.com/embed/${videoId}`;
+            }
+
+            // Case 3: Already an embed URL
+            if (urlObj.pathname.startsWith('/embed/')) {
+                return inputUrl;
+            }
+
+            // Fallback: return original URL if nothing matched
+            return inputUrl;
+
+        } catch (e) {
+            console.error('Invalid YouTube URL:', inputUrl);
+            return inputUrl;
+        }
+    }
+
+    const embedUrl = convertToEmbedUrl(url);
 
     const popup = window.open("", "youtubePopup", "width=800,height=450,resizable=yes");
 
     popup.document.write(`
-    <html>
-        <head><title>Size Guide Video</title></head>
-        <body style="margin:0; overflow:hidden; background-color:black;">
-        <iframe width="100%" height="100%" src="${embedUrl}?autoplay=1" 
-            frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
-        </iframe>
-        </body>
-    </html>
+        <html>
+            <head><title>Size Guide Video</title></head>
+            <body style="margin:0; overflow:hidden; background-color:black;">
+                <iframe width="100%" height="100%" src="${embedUrl}?autoplay=1"
+                    frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
+                </iframe>
+            </body>
+        </html>
     `);
 }
 
