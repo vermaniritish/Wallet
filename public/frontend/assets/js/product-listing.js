@@ -528,7 +528,7 @@ var minicart = new Vue({
             $('#search-global').autocomplete({
                 source: function (request, response) {
                     $.ajax({
-                        url: site_url + `/api/products/listing?cId=${minicart.search}&limit=50`,
+                        url: site_url + `/api/products/listing?cId=${$('.select-active').val()}&limit=50`,
                         type: 'GET',
                         dataType: 'json',
                         data: {
