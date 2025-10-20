@@ -18,7 +18,7 @@
                             <h2>Account Verification</h2>
                         </div>
                         <div class="single-content">
-                            <p class="text-success text-center" style="font-size: 100px;"><i class="far fa-check-circle"></i></p>
+                            <p class="text-success text-center mb-1" style="font-size: 100px;"><i class="far fa-check-circle"></i></p>
                             <p class="text-center mb-1">Your account is verified. Please login to continue</p>
 
                             <p class="text-center mt-4"><a href="{{url('/login')}}" target="_blank" class="btn btn-primary" >Login</a></p>
