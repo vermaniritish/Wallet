@@ -126,19 +126,25 @@ class HomeController extends AppController
 	function createBooking(Request $request)
 	{
 		$data = $request->toArray();
-		pr($data); die;
-		$validator = Validator::make(
-			$data,
-			[
-                'first_name' => ['required'],
-				'last_name' => ['required'],
-				'address' => ['required'],
-				'postalcode' => ['required'],				
-				'cart' => ['required'],
-                'cart' => ['required', 'array'],
-                'cart.*.quantity' => ['required', 'integer', 'min:1'],
-			]
-		);
+		$validator = Validator::make($data, [
+			'first_name'   => ['required'],
+			'last_name'    => ['required'],
+			'address'      => ['required'],
+			'postalcode'   => ['required'],
+			'cart'         => ['required', 'array'],
+			'cart.*.quantity' => ['required', 'integer', 'min:1'],
+		]);
+
+		// ✅ If saveInfo = true, then email, phone, password are required
+		$validator->sometimes(['email', 'phone', 'password'], 'required', function ($input) {
+			return !empty($input->saveInfo) && $input->saveInfo === true;
+		});
+
+		// ✅ If ship_different_address = true, then shipping fields are required
+		$validator->sometimes(['ship_fname', 'ship_address1', 'ship_state', 'ship_zip'], 'required', function ($input) {
+			return !empty($input->ship_different_address) && $input->ship_different_address === true;
+		});
+
 		if(!$validator->fails())
 		{
 			$user = null;
@@ -146,29 +152,74 @@ class HomeController extends AppController
 				$userId = General::decrypt($request->get('token'));
 				$user = Users::select(['id', 'email', 'phonenumber'])->where('id', $userId)->limit(1)->first();
 			}
-			else if($request->get('phone_email') && filter_var($request->get('phone_email'), FILTER_VALIDATE_EMAIL) !== false) {
-				$user = Users::select(['id', 'email', 'phonenumber'])->where('email', 'LIKE', $request->get('phone_email'))->limit(1)->first();
+
+			if($request->get('saveInfo'))
+			{
+				$user = Users::select(['id', 'email', 'phonenumber'])->where(function($q) {
+					return $q->where('email', 'LIKE', $request->get('email'))
+							->orWhere('phonenumber', 'LIKE', $request->get('phone'));
+				})->limit(1)->first();
+				if($user){
+					return Response()->json(['status' => true, 'message' => 'User having same email and phone is already registered with us. Please login to place order.']);
+				}
+
+				$password = $request->get('password');
+
+	        	$user = [
+	        		'first_name' => $request->get('first_name'),
+	        		'last_name' => $request->get('last_name'),
+	        		'email' => $request->get('email'),
+	        		'password' => $request->get('password'),
+	        		'token' => General::hash(64)
+	        	];
+
+	        	if($user = Users::create($user))
+	        	{
+        			$link = url('/email-verification/' . $user['token']);
+        			$codes = [
+        				'{first_name}' => $user->first_name,
+        				'{last_name}' => $user->last_name,
+        				'{email}' => $user->email,
+        				'{password}' => $password,
+        				'{verification_link}' => General::urlToAnchor($link)
+        			];
+
+        			General::sendTemplateEmail(
+        				$user->email,
+        				'registration',
+        				$codes
+        			);
+				}
+				else
+				{
+					return Response()->json(['status' => true, 'message' => 'Something went wrong. Please try again or contact us.']);
+				}
 			}
 
+			pr($user); die;
 			$order = new Orders();
 			$order->customer_id = $user ? $user->id : null;
 			$order->first_name = $request->get('first_name');
 			$order->last_name = $request->get('last_name');
 			$order->company = $request->get('company');
-			if($user)
-			{
-				$order->customer_email = $user->email;
-				$order->customer_phone = $user->phonenumber;
-			}
-			else
-			{
+			$order->customer_email = $request->get('email');
+			$order->customer_phone = $request->get('phone');
 
-				$order->customer_email = $request->get('phone_email') && filter_var($request->get('phone_email'), FILTER_VALIDATE_EMAIL) !== false ? $request->get('phone_email') : null;
-				$order->customer_phone = $request->get('phone_email') && filter_var($request->get('phone_email'), FILTER_VALIDATE_EMAIL) !== false ? null : $request->get('phone_email');
-			}
 			if($order->customer_email || $order->customer_phone)
 			{
-				$order->manual_address = 1;
+				if($request->ship_different_address)
+				{
+					$order->ship_address1 = $request->get('ship_address1');
+					$order->ship_address2 = $request->get('ship_address2');
+					$order->ship_city = $request->get('ship_city');
+					$order->ship_company = $request->get('ship_company');
+					$order->ship_fname = $request->get('ship_fname');
+					$order->ship_lname = $request->get('ship_lname');
+					$order->ship_state = $request->get('ship_state');
+					$order->ship_zip = $request->get('ship_zip');
+					$order->ship_different_address = 1;
+				}
+
 				$order->address = $data['address'];
 				$order->area = ($data['address2'] ? $data['address2'] : null);
 				$order->city = $data['city'];
