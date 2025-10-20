@@ -69,9 +69,9 @@ class HomeController extends BaseController
 				DB::raw('(CASE WHEN products.image is NOT NULL THEN products.image ELSE parent_product.image END) as image'),
 				'products.sku_number', 'colours.title as color'
 			])
-			->leftJoin('products as parent_product', 'parent_product.id', '=', 'products.parent_id')
 			->leftJoin('sizes', 'sizes.id', '=', 'product_sizes.size_id')
             ->leftJoin('products', 'products.id', '=', 'product_sizes.product_id')
+			->leftJoin('products as parent_product', 'parent_product.id', '=', 'products.parent_id')
 			->leftJoin('schools', 'schools.id', '=', 'products.school_id')
             ->leftJoin('colours', 'colours.id', '=', 'product_sizes.color_id')
             ->where('product_id', $product->id)
