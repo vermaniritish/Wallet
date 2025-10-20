@@ -512,7 +512,8 @@ var minicart = new Vue({
         logoPricesDynamix: [],
         cart: [],
         gstTax: ``,
-        cartCount: 0
+        cartCount: 0,
+        search: ''
     },
     mounted: async function() {
         $('#header, main, .mobile-header-active').removeClass('d-none');
@@ -520,8 +521,27 @@ var minicart = new Vue({
         this.gstTax = gstTax();
         this.updateCartCount();
         this.fetchLogoPrices();
+        this.initSearch();
     },
     methods: {
+        initSearch()  {
+            $('#search-global').autocomplete({
+                source: function (request, response) {
+                    $.ajax({
+                        url: site_url + `/api/products/listing?cId=${this.search}&limit=50`,
+                        type: 'GET',
+                        dataType: 'json',
+                        data: {
+                            query: request.term
+                        },
+                        success: function (data) {
+                            response(data);
+                        }
+                    });
+                },
+                minLength: 3 // Minimum characters before search starts
+            });
+        },
         async fetchLogoPrices(){
             if(this.logoPricesDynamix && this.logoPricesDynamix.length < 1){
                 let res = await fetch(site_url+'/api/actions/logo-prices');

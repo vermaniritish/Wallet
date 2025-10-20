@@ -7,10 +7,8 @@ $googleKey = Settings::get('google_api_key');
 $gstTax = Settings::get('gst');
 $version = '1.1';
 ?>
-
 <!DOCTYPE html>
 <html class="no-js" lang="en">
-
 <head>
     <meta charset="utf-8">
     <title>Pinders Schoolwear</title>
@@ -26,6 +24,9 @@ $version = '1.1';
     <!-- Template CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css" integrity="sha512-q3eWabyZPc1XTCmF+8/LuE1ozpg5xxn7iO89yfSOd5/oKvyqLngoNGsx8jq92Y8eXJ/IRxQbEC+FGSYxtk2oiw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="{{ url('frontend/assets/css/main.css?v=' . $version) }}">
+    <link rel="stylesheet" 
+          href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+    
 </head>
 
 <body>
@@ -65,6 +66,7 @@ $version = '1.1';
     <script src="{{ url('frontend/assets/js/vendor/modernizr-3.6.0.min.js') }}"></script>
     <script src="{{ url('frontend/assets/js/vendor/jquery-3.6.0.min.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
     <script src="<?php echo url('assets/js/bootstrap-notify.js') ?>"></script>
     <script src="{{ url('frontend/assets/js/vendor/jquery-migrate-3.3.0.min.js') }}"></script>
     <script src="{{ url('frontend/assets/js/vendor/bootstrap.bundle.min.js') }}"></script>

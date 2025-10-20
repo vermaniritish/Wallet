@@ -1,11 +1,14 @@
 <?php 
 use App\Models\Admin\Settings;
 use App\Models\Admin\Menu;
+use App\Models\Admin\ProductCategories;
 $user = request()->session()->get('user');
 $headerMenu = Menu::select('id', 'key', 'value', 'slug', 'mega_menu as megaMenu')->where('slug', 'header')->get();
 foreach ($headerMenu as $k => $v) {
     $headerMenu[$k]->megaMenu = $headerMenu[$k]->megaMenu ? json_decode($headerMenu[$k]->megaMenu) : [];
 }
+$cats = ProductCategories::select(['id', 'title'])->where('status', 1)->whereNull('parent_id')->orderBy('title', 'asc')->limit(100)->get();
+
 ?>
 <header class="header-area header-style-3 header-height-2 d-none" id="header">
         <div class="header-top header-top-ptb-1 d-none d-lg-block">
@@ -53,25 +56,14 @@ foreach ($headerMenu as $k => $v) {
                     </div>
                     <div class="header-right">
                         <div class="search-style-2">
-                            <form action="#">
-                                <select class="select-active">
-                                    <option>All Categories</option>
-                                    <option>Accessories</option>
-                                    <option>Boys</option>
-                                    <option>Girls</option>
-                                    <option>Doc & Bags</option>
-                                    <option>Health Care</option>
-                                    <option>Hoodies</option>
-                                    <option>Knitwear</option>
-                                    <option>PE Leggings & Training Trousers</option>
-                                    <option>Polo Shirts & T-shirts</option>
-									<option>Seasonal</option>
-									<option>Shoes & Socks</option>
-									<option>Special Offers</option>
-                                    <option>Stationery</option>
-									<option>Tabard Bibs and Aprons</option>
+                            <form onsubmit="return false;">
+                                <select class="select-active" v-model="search">
+                                    <option value="">All Categories</option>
+                                    @foreach($cats as $c)
+                                    <option value="{{ $c->id }}">{{ $c->title }}</option>
+                                    @endforeach
                                 </select>
-                                <input type="text" placeholder="Search for items...">
+                                <input type="text" placeholder="Search for items..." id="search-global">
                             </form>
                         </div>
                         <div class="header-action-right">
