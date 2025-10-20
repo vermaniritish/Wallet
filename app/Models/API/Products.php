@@ -137,7 +137,7 @@ class Products extends AdminProducts
             ->leftJoin('product_categories', 'product_categories.id', '=', 'products.category_id');
 
         $pIds = [];
-        
+
         if($request->get('categories') || $request->get('cId'))
         {
             $listing->join('product_sub_category_relation', 'product_sub_category_relation.product_id', '=', 'products.id')
@@ -268,6 +268,7 @@ class Products extends AdminProducts
 	    	$listing->offset($offset);
 	    	$listing->limit($limit);
 	    }
+        echo $listing->toSql(); die;
         $listing = $listing->paginate($limit);
 
 	    return $listing;
