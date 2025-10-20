@@ -560,7 +560,7 @@ var minicart = new Vue({
             }).data("ui-autocomplete")._renderItem = function (ul, item) {
                 return $("<li>")
                     .append(`
-                        <div class="ui-menu-item-wrapper">
+                        <div class="ui-menu-item-wrapper d-flex gap-2 align-items-center">
                             <img src="${item.image}" alt="${item.label}">
                             <div>
                                 <div class="autocomplete-product-title">${item.label}</div>
