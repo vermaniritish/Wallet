@@ -377,4 +377,22 @@ class HomeController extends BaseController
 			'category' => null
 		]);
 	}
+
+	function emailVerification(Request $request, $slug)
+	{
+		$user = Users::where('token', $slug)->whereNull('verified_at')->limit(1)->first();
+		if($user)
+		{
+			$user->verified_at = date('Y-m-d H:i:s');
+			$user->token = null;
+			$user->save();
+			return view('frontend.verified', [
+				'user' => $user
+			]);
+		}
+		else
+		{
+			die('Error: Link is expired.');
+		}
+	}
 }

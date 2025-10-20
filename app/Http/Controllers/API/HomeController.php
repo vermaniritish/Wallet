@@ -400,6 +400,4 @@ class HomeController extends AppController
 			'appliedDiscount' => $appliedDiscount
 		];
 	}
-
-	
 }

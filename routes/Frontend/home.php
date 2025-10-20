@@ -2,6 +2,9 @@
 Route::get('/', '\App\Http\Controllers\HomeController@index')
     ->name('home');
 
+Route::get('/email-verification/{slug}', '\App\Http\Controllers\HomeController@emailVerification')
+    ->name('emailVerification');
+
 Route::get('/login', '\App\Http\Controllers\Auth\AuthController@register')->name('login');
 
 Route::get('/about-us', '\App\Http\Controllers\PagesController@aboutUs')
