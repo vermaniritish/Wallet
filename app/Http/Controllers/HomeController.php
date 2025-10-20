@@ -46,13 +46,26 @@ class HomeController extends BaseController
         $product = Products::select(['id'])->where('slug', 'LIKE', $category)->where('status', 1)->limit(1)->first();
         if($product)
         {
-            $product = Products::select(['products.*', 'products.school_id', 'schools.schooltype', 'schools.schooltype', 'schools.name as school_name'])
+            $product = Products::select([
+					'products.*', 
+					'products.school_id', 
+					'schools.schooltype', 
+					'schools.schooltype', 
+					'schools.name as school_name'
+				])
 				->leftJoin('schools', 'schools.id', '=', 'products.school_id')
 				->where('products.slug', 'LIKE', $category)->where('products.status', 1)->limit(1)->first();
 			if(!$product) {
 				abort('404');
 			}
-            $product->sizes = ProductSizeRelation::select(['product_sizes.*', 'sizes.vat', 'products.title as title', 'products.slug', 'products.image', 'products.sku_number', 'colours.title as color'])
+            $product->sizes = ProductSizeRelation::select([
+				'product_sizes.*', 
+				'sizes.vat', 
+				'products.title as title', 
+				'products.slug', 
+				'products.image', 
+				'products.sku_number', 'colours.title as color'
+			])
 			->leftJoin('sizes', 'sizes.id', '=', 'product_sizes.size_id')
             ->leftJoin('products', 'products.id', '=', 'product_sizes.product_id')
 			->leftJoin('schools', 'schools.id', '=', 'products.school_id')
@@ -103,7 +116,10 @@ class HomeController extends BaseController
         }
         else
         {
-            $category = ProductCategories::select(['id','title', 'slug', 'description', 'image'])->where('slug', 'LIKE', $category)->where('status', 1)->limit(1)->first();
+            $category = ProductCategories::select(['id','title', 'slug', 'description', 'image'])
+				->where('slug', 'LIKE', $category)
+				->where('status', 1)
+				->limit(1)->first();
             if(!$category) { abort(404); }
 
             if($subCategory){

@@ -331,6 +331,7 @@
 							<!-- Address -->
 							<h6 class="heading-small text-muted mb-4">Publish Information</h6>
 							<div class="pl-lg-4">
+								<p>Files upload is optional. In case of no image and size guide. It will show originated product image and size guide.</p>
 								<div class="row">
 									<div class="col-lg-6">
 										<div class="form-group">

@@ -119,7 +119,7 @@ class Products extends AdminProducts
             'products.slug',
             'products.price',
             'products.phonenumber',
-            'products.image',
+            DB::raw('(CASE WHEN products.image is NULL THEN products.image ELSE parent_product.image END) as image'),
             'products.max_price',
             'products.gender',
             'product_categories.title as category',
@@ -133,9 +133,8 @@ class Products extends AdminProducts
         }
 
     	$listing = Products::distinct()->select($select)
+            ->leftJoin('products as parent_product', 'parent_product.id', '=', 'products.parent_id')
             ->leftJoin('product_categories', 'product_categories.id', '=', 'products.category_id');
-        
-	    
 
         $pIds = [];
 
