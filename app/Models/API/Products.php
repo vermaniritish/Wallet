@@ -119,7 +119,7 @@ class Products extends AdminProducts
             'products.slug',
             'products.price',
             'products.phonenumber',
-            DB::raw('(CASE WHEN products.image is NULL THEN products.image ELSE parent_product.image END) as image'),
+            DB::raw('(CASE WHEN products.image is NOT NULL THEN products.image ELSE parent_product.image END) as image'),
             'products.max_price',
             'products.gender',
             'product_categories.title as category',
