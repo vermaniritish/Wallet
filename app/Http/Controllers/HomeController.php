@@ -94,13 +94,13 @@ class HomeController extends BaseController
 			
 			if($product->school_id)
 			{
-				$similarProducts->where('school_id', $product->school_id);
+				$similarProducts->where('products.school_id', $product->school_id);
 			}
 			else
 			{
-				$similarProducts->where('category_id', $product->category_id);
+				$similarProducts->where('products.category_id', $product->category_id);
 			}
-			$similarProducts = $similarProducts->where('status', 1)->orderByRaw('rand()')->limit(4)->get();
+			$similarProducts = $similarProducts->where('products.status', 1)->orderByRaw('rand()')->limit(4)->get();
 			if($product && $product->printed_logo && $product->embroidered_logo)
 				$logooption = ["Printed Logo","Embroidered Logo"];
 			elseif($product && $product->printed_logo)
