@@ -75,7 +75,17 @@ class HomeController extends BaseController
 			->leftJoin('schools', 'schools.id', '=', 'products.school_id')
             ->leftJoin('colours', 'colours.id', '=', 'product_sizes.color_id')
             ->where('product_id', $product->id)
-			->orderBy('sizes.sort_order', 'asc')->get();
+			->orderBy('sizes.sort_order', 'asc')
+			->get()
+			->map(function ($item) {
+				$decoded = json_decode($item->image, true);
+				if (is_array($decoded) && count($decoded) > 0) {
+					$item->image = $decoded[0];
+				} else {
+					$item->image = null;
+				}
+				return $item;
+			});;
             $similarProducts = Products::select(
 				[
 					'products.id',
