@@ -195,8 +195,7 @@ class HomeController extends AppController
 					return Response()->json(['status' => true, 'message' => 'Something went wrong. Please try again or contact us.']);
 				}
 			}
-
-			pr($user); die;
+			
 			$order = new Orders();
 			$order->customer_id = $user ? $user->id : null;
 			$order->first_name = $request->get('first_name');
