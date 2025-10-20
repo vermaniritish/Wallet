@@ -532,7 +532,7 @@ var minicart = new Vue({
                         type: 'GET',
                         dataType: 'json',
                         data: {
-                            query: request.term
+                            search: request.term
                         },
                         success: function (data) {
                             if (data.status && data.products) {
