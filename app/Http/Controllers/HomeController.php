@@ -65,10 +65,11 @@ class HomeController extends BaseController
 				'product_sizes.*', 
 				'sizes.vat', 
 				'products.title as title', 
-				'products.slug', 
-				'products.image', 
+				'products.slug',
+				DB::raw('(CASE WHEN products.image is NOT NULL THEN products.image ELSE parent_product.image END) as image'),
 				'products.sku_number', 'colours.title as color'
 			])
+			->leftJoin('products as parent_product', 'parent_product.id', '=', 'products.parent_id')
 			->leftJoin('sizes', 'sizes.id', '=', 'product_sizes.size_id')
             ->leftJoin('products', 'products.id', '=', 'product_sizes.product_id')
 			->leftJoin('schools', 'schools.id', '=', 'products.school_id')
@@ -297,7 +298,7 @@ class HomeController extends BaseController
 
 			if($order->save()) 
 			{
-				$order->prefix_id = 'PWW-'.(Settings::get('order_prefix') + $order->id);
+				$order->prefix_id = 'PSW-'.(Settings::get('order_prefix') + $order->id);
 				$order->save();
 
 				$products = [];
