@@ -160,7 +160,7 @@ class HomeController extends AppController
 							->orWhere('phonenumber', 'LIKE', $request->get('phone'));
 				})->limit(1)->first();
 				if($user){
-					return Response()->json(['status' => true, 'message' => 'User having same email and phone is already registered with us. Please login to place order.']);
+					return Response()->json(['status' => false, 'message' => 'User having same email and phone is already registered with us. Please login to place order.']);
 				}
 
 				$password = $request->get('password');
@@ -192,10 +192,10 @@ class HomeController extends AppController
 				}
 				else
 				{
-					return Response()->json(['status' => true, 'message' => 'Something went wrong. Please try again or contact us.']);
+					return Response()->json(['status' => false, 'message' => 'Something went wrong. Please try again or contact us.']);
 				}
 			}
-			
+
 			$order = new Orders();
 			$order->customer_id = $user ? $user->id : null;
 			$order->first_name = $request->get('first_name');
