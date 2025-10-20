@@ -155,7 +155,7 @@ class HomeController extends AppController
 
 			if($request->get('saveInfo'))
 			{
-				$user = Users::select(['id', 'email', 'phonenumber'])->where(function($q) {
+				$user = Users::select(['id', 'email', 'phonenumber'])->where(function($q) use($request) {
 					return $q->where('email', 'LIKE', $request->get('email'))
 							->orWhere('phonenumber', 'LIKE', $request->get('phone'));
 				})->limit(1)->first();
