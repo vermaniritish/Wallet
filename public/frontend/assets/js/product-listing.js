@@ -535,12 +535,42 @@ var minicart = new Vue({
                             query: request.term
                         },
                         success: function (data) {
-                            response(data);
+                            if (data.status && data.products) {
+                                response($.map(data.products, function (item) {
+                                    return {
+                                        label: item.title,
+                                        value: item.title,
+                                        id: item.id,
+                                        price: item.price,
+                                        sku: item.sku_number,
+                                        image: item.image?.[0]?.small || '/frontend/assets/imgs/shop/product-2-2.jpg',
+                                        slug: item.slug
+                                    };
+                                }));
+                            } else {
+                                response([]);
+                            }
                         }
                     });
                 },
-                minLength: 3 // Minimum characters before search starts
-            });
+                minLength: 3,
+                select: function (event, ui) {
+                    window.location.href = '/' + ui.item.slug;
+                }
+            }).data("ui-autocomplete")._renderItem = function (ul, item) {
+                return $("<li>")
+                    .append(`
+                        <div class="ui-menu-item-wrapper">
+                            <img src="${item.image}" alt="${item.label}">
+                            <div>
+                                <div class="autocomplete-product-title">${item.label}</div>
+                                <div class="autocomplete-product-price">₹${item.price}</div>
+                                <div class="autocomplete-product-sku">SKU: ${item.sku}</div>
+                            </div>
+                        </div>
+                    `)
+                    .appendTo(ul);
+            };
         },
         async fetchLogoPrices(){
             if(this.logoPricesDynamix && this.logoPricesDynamix.length < 1){
