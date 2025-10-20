@@ -56,7 +56,8 @@ class HomeController extends BaseController
 				])
 				->leftJoin('products as parent_product', 'parent_product.id', '=', 'products.parent_id')
 				->leftJoin('schools', 'schools.id', '=', 'products.school_id')
-				->where('products.slug', 'LIKE', $category)->where('products.status', 1)->limit(1)->first();
+				->where('products.slug', 'LIKE', $category)
+				->where('products.status', 1)->limit(1)->first();
 			if(!$product) {
 				abort('404');
 			}
@@ -89,7 +90,7 @@ class HomeController extends BaseController
 					DB::raw('(Select sale_price from product_sizes where product_sizes.product_id = products.id order by sale_price desc limit 1) as sale_price')
 				]
 			)->leftJoin('products as parent_product', 'parent_product.id', '=', 'products.parent_id')
-			->where('id', '!=', $product->id);
+			->where('products.id', '!=', $product->id);
 			
 			if($product->school_id)
 			{
