@@ -343,7 +343,6 @@
 												data-path="products"
 												data-resize-large="580*630"
 												data-resize-small="282*310"
-
 											>
 												<div class="upload-section">
 													<div class="button-ref mb-3">
