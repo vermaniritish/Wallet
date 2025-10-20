@@ -131,7 +131,7 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <div class="d-flex gap-2 align-items-center">
+                            <div class="d-flex gap-2 align-items-center justify-content-between">
                                 <a class="btn" href="{{url('/')}}"><i class="fi-rs-shopping-bag mr-10"></i>Continue Shopping</a>
                                 <a href="{{url('/checkout')}}" class="btn "> <i class="fi-rs-box-alt mr-10"></i> Proceed To CheckOut</a>
                             </div>
