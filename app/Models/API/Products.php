@@ -143,7 +143,7 @@ class Products extends AdminProducts
             $listing->join('product_sub_category_relation', 'product_sub_category_relation.product_id', '=', 'products.id')
                 ->leftJoin('sub_categories', 'sub_categories.id', '=', 'product_sub_category_relation.sub_category_id');
             if($request->get('cId')) {
-                $listing->where('sub_categories.category_id', $request->get('cId'));
+                $listing->where('product_sub_category_relation.category_id', $request->get('cId'));
             }
 
             $cats = $request->get('categories');
@@ -268,7 +268,6 @@ class Products extends AdminProducts
 	    	$listing->offset($offset);
 	    	$listing->limit($limit);
 	    }
-        echo $listing->toSql(); die;
         $listing = $listing->paginate($limit);
 
 	    return $listing;
