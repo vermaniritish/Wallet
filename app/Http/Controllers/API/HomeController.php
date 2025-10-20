@@ -126,6 +126,7 @@ class HomeController extends AppController
 	function createBooking(Request $request)
 	{
 		$data = $request->toArray();
+		pr($data); die;
 		$validator = Validator::make(
 			$data,
 			[

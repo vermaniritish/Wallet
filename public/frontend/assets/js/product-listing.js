@@ -553,7 +553,7 @@ var minicart = new Vue({
                         }
                     });
                 },
-                minLength: 3,
+                minLength: 2,
                 select: function (event, ui) {
                     window.location.href = '/' + ui.item.slug;
                 }
@@ -1114,10 +1114,20 @@ checkoutPage = new Vue({
             postalcode:``,
             saveInfo: false,
             newsletterSubscribe: false,
+            ship_different_address: false,
+            ship_fname: ``,
+            ship_lname: ``,
+            ship_company: ``,
+            ship_address1: ``,
+            ship_address2: ``,
+            ship_city: ``,
+            ship_state: ``,
+            ship_zip: ``,
+            note: ``,
         },
         shippingOptions: null,
         cart: [],
-        note: ``,
+        
         coupon: ``,
         appliedCoupon: null,
         couponError: ``,

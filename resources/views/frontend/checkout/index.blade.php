@@ -112,36 +112,36 @@
                         <div class="form-group">
                             <div class="chek-form">
                                 <div class="custome-checkbox">
-                                    <input class="form-check-input" type="checkbox" name="checkbox" id="differentaddress">
+                                    <input class="form-check-input" type="checkbox" name="checkbox" v-model="ship_different_address" id="differentaddress">
                                     <label class="form-check-label label_info" data-bs-toggle="collapse" data-target="#collapseAddress" href="#collapseAddress" aria-controls="collapseAddress" for="differentaddress"><span>Ship to a different address?</span></label>
                                 </div>
                             </div>
                         </div>
                         <div id="collapseAddress" class="different_address collapse in">
                             <div class="form-group">
-                                <input type="text" name="fname" placeholder="First name *">
+                                <input type="text" name="fname" placeholder="First name *" v-model="checkout.ship_fname">
                             </div>
                             <div class="form-group">
-                                <input type="text" name="lname" placeholder="Last name *">
+                                <input type="text" name="lname" placeholder="Last name *" v-model="checkout.ship_lname">
                             </div>
                             <div class="form-group">
-                                <input type="text" name="cname" placeholder="Company Name">
+                                <input type="text" name="cname" placeholder="Company Name"  v-model="checkout.ship_company">
                             </div>
                             
                             <div class="form-group">
-                                <input type="text" name="billing_address" placeholder="Address *">
+                                <input type="text" name="billing_address" placeholder="Address *" v-model="checkout.ship_address1">
                             </div>
                             <div class="form-group">
-                                <input type="text" name="billing_address2" placeholder="Address line2">
+                                <input type="text" name="billing_address2" placeholder="Address line2" v-model="checkout.ship_address2">
                             </div>
                             <div class="form-group">
-                                <input type="text" name="city" placeholder="City / Town *">
+                                <input type="text" name="city" placeholder="City / Town *" v-model="checkout.ship_city">
                             </div>
                             <div class="form-group">
-                                <input type="text" name="state" placeholder="State / County *">
+                                <input type="text" name="state" placeholder="State / County *" v-model="checkout.ship_state">
                             </div>
                             <div class="form-group">
-                                <input type="text" name="zipcode" placeholder="Postcode / ZIP *">
+                                <input type="text" name="zipcode" placeholder="Postcode / ZIP *" v-model="checkout.ship_zip">
                             </div>
                         </div>
                     </div>
@@ -149,7 +149,7 @@
                         <h5>Additional information</h5>
                     </div>
                     <div class="form-group mb-30">
-                        <textarea rows="5" placeholder="Order notes"></textarea>
+                        <textarea rows="5" placeholder="Order notes" v-model="checkout.note"></textarea>
                     </div>
                 </form>
             </div>
