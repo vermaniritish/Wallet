@@ -514,8 +514,9 @@ var minicart = new Vue({
         gstTax: ``,
         cartCount: 0
     },
-    mounted: function() {
+    mounted: async function() {
         $('#header, main, .mobile-header-active').removeClass('d-none');
+        $('.select-active').select2();
         this.gstTax = gstTax();
         this.updateCartCount();
         this.fetchLogoPrices();

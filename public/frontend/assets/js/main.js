@@ -465,7 +465,6 @@
     /*---------------------
         Select active
     --------------------- */
-    $('.select-active').select2();
 
     /*--- Checkout toggle function ----*/
     $('.checkout-click1').on('click', function(e) {
@@ -771,4 +770,8 @@ function set_notification(type, text, placementFrom, placementAlign, animateEnte
         '<a href="{3}" target="{4}" data-notify="url"></a>' +
         '</div>'
     });
+}
+
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
 }
