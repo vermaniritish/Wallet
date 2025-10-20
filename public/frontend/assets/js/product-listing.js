@@ -1103,7 +1103,8 @@ checkoutPage = new Vue({
         saving: false,
         logoPricesDynamix: [],
         checkout:{
-            phone_email: loginuseremail,
+            email: loginuseremail,
+            phone: ``,
             first_name:``,
             last_name:``,
             last_name:``,
@@ -1124,10 +1125,11 @@ checkoutPage = new Vue({
             ship_state: ``,
             ship_zip: ``,
             note: ``,
+            ship_different_address: ``,
+            password: ``,
         },
         shippingOptions: null,
         cart: [],
-        
         coupon: ``,
         appliedCoupon: null,
         couponError: ``,

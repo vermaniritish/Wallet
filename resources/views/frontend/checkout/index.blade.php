@@ -89,11 +89,11 @@
                     </div>
                     @if(!$user)
                     <div class="form-group">
-                        <input required="" type="text" name="phone" placeholder="Phone *">
+                        <input required="" type="text" name="phone" placeholder="Phone *"  v-model="checkout.phone"   @input="checkout.phone = checkout.phone.replace(/[^0-9]/g, '').slice(0, 14)">
                         <small v-if="errors && errors.phone == ``">This field is required.</small>
                     </div>
                     <div class="form-group">
-                        <input required="" type="text" name="email" placeholder="Email address *"  v-model="checkout.phone_email">
+                        <input required="" type="text" name="email" placeholder="Email address *"  v-model="checkout.email">
                         <small v-if="errors && errors.email == ``">This field is required.</small>
                     </div>
                     <div class="form-group">
@@ -105,14 +105,14 @@
                         </div>
                     </div>
                     <div id="collapsePassword" class="form-group create-account collapse in">
-                        <input required="" type="password" placeholder="Password" name="password">
+                        <input required="" type="password" placeholder="Password" name="password" v-model="checkout.password">
                     </div>
                     @endif
                     <div class="ship_detail">
                         <div class="form-group">
                             <div class="chek-form">
                                 <div class="custome-checkbox">
-                                    <input class="form-check-input" type="checkbox" name="checkbox" v-model="ship_different_address" id="differentaddress">
+                                    <input class="form-check-input" type="checkbox" name="checkbox" v-model="checkout.ship_different_address" id="differentaddress">
                                     <label class="form-check-label label_info" data-bs-toggle="collapse" data-target="#collapseAddress" href="#collapseAddress" aria-controls="collapseAddress" for="differentaddress"><span>Ship to a different address?</span></label>
                                 </div>
                             </div>
