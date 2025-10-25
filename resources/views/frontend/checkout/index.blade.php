@@ -117,7 +117,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div id="collapseAddress" class="different_address collapse in">
+                        <div v-if="checkout.ship_different_address" class="different_address collapse in show">
                             <div class="form-group">
                                 <input type="text" name="fname" placeholder="First name *" v-model="checkout.ship_fname">
                             </div>
