@@ -19,6 +19,7 @@ use App\Models\API\Products;
 use App\Models\API\ProductCategories;
 use App\Models\Admin\OrderProductRelation;
 use App\Models\Admin\Orders;
+use App\Models\Admin\HomePage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 
@@ -36,9 +37,50 @@ class HomeController extends BaseController
 				return redirect('/my-account');
             }
         }
-        $sliders = Sliders::where('status',1)->orderBy('id', 'desc')->get();
+        $sliders = Sliders::where('status',1)->orderBy('id', 'desc')->where('type', 'main')->get();
+		$rightTopSlide = Sliders::where('status',1)->orderByRaw('RAND()')->where('type', 'right_top')->limit(1)->first();
+		$rightBottomSlide = Sliders::where('status',1)->orderByRaw('RAND()')->where('type', 'right_bottom')->limit(1)->first();	
         $testimonials = Ratings::where('status',1)->get();
-        return view('frontend.home.index', ['sliders' => $sliders,'testimonials' => $testimonials]);
+		
+		$cids = HomePage::get('popular_categories');
+		$cids = $cids ? json_decode($cids) : [-1];
+		$categories = ProductCategories::select(['id', 'slug', 'image', 'title'])->whereIn('id', $cids)->where('status', 1)->get();
+		
+		$cids = HomePage::get('featured_products');
+		$cids = $cids ? json_decode($cids) : [-1];
+		$featuredProducts = Products::getListing($request, [
+			'products.status' => 1,
+			'products.website_visible' => 1,
+			'(products.id IN (?))' => [implode(',', $cids)]
+		], 50);
+
+		$cids = HomePage::get('trending_products');
+		$cids = $cids ? json_decode($cids) : [-1];
+		$trendingProducts = Products::getListing($request, [
+			'products.status' => 1,
+			'products.website_visible' => 1,
+			'(products.id IN (?))' => [implode(',', $cids)]
+		], 50);
+
+		$cids = HomePage::get('new_arrivals');
+		$cids = $cids ? json_decode($cids) : [-1];
+		$newProducts = Products::getListing($request, [
+			'products.status' => 1,
+			'products.website_visible' => 1,
+			'(products.id IN (?))' => [implode(',', $cids)]
+		], 50);
+
+		
+        return view('frontend.home.index', [
+			'sliders' => $sliders,
+			'testimonials' => $testimonials, 
+			'rightTopSlide' => $rightTopSlide, 
+			'rightBottomSlide' => $rightBottomSlide,
+			'categories' => $categories,
+			'newProducts' => $newProducts,
+			'trendingProducts' => $trendingProducts,
+			'featuredProducts' => $featuredProducts,
+		]);
     }
 
     public function listing(Request $request, $category, $subCategory = null)

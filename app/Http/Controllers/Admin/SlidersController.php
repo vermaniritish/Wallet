@@ -142,12 +142,12 @@ class SlidersController extends AppController
             $validator = Validator::make(
                 $request->toArray(),
                 [
-                    'label' => 'required|string|max:255',
+                    'label' => 'nullable|string|max:255',
                     'heading' => 'nullable|string',
                     'sub_heading' => 'nullable|string',
-                    'button_title' => 'nullable|required_if:button_status,1|string|max:255',
-                    'button_url' => 'nullable|required_if:button_status,1',
-                    'image' => ['nullable'],
+                    'button_title' => 'required|string|max:255',
+                    'button_url' => 'required',
+                    'image' => ['required'],
                 ],
             );
             if(!$validator->fails()) {
@@ -205,12 +205,21 @@ class SlidersController extends AppController
                         'label' => 'required|string|max:255',
                         'heading' => 'nullable|string',
                         'sub_heading' => 'nullable|string',
-                        'button_title' => 'nullable|exclude_if:button_status,0|required_if:button_status,1|string|max:255',
-                        'button_url' => 'exclude_if:button_status,0|required_if:button_status,1',
+                        'button_title' => 'required|string|max:255',
+                        'button_url' => 'required',
                         'image' => ['nullable'],
                     ],
                 );
                 if(!$validator->fails()) {
+                    if(!isset($data['image']) || !$data['image'])
+                    {
+                        if(!$page->image)
+                        {
+                            $request->session()->flash('error', 'Slider image is required.');
+                            return redirect()->back()->withErrors($validator)->withInput();
+                        }
+                        unset($data['image']);
+                    }
                     unset($data['_token']);
                     if(Sliders::modify($id, $data)) {
                         $request->session()->flash('success', 'Slider updated successfully.');

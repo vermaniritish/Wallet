@@ -27,45 +27,8 @@
     </div>
     @endif
 </div>
-<?php if(!isset($nobuttons) || !$nobuttons): ?>
 <div class="row">
-    <div class="col-md-12">
-        <div class="form-group">
-            <label class="form-control-label" for="input-first-name">Button (on/off)</label>
-            <div class="custom-control mt-2">
-                <label class="custom-toggle">
-                    <input type="hidden" name="<?php echo $key . '_button_status' ?>" value="0" />
-                    <input type="checkbox" id="buttonStatus" value="1" name="<?php echo $key . '_button_status' ?>" <?php echo (HomePage::get($key . '_button_status') ? 'checked' : '') ?>>
-                    <span class="custom-toggle-slider rounded-circle"
-                        data-label-off="No" data-label-on="Yes"></span>
-                </label>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="row">
-    <div class="col-md-12">
-        <div class="form-group">
-            <label class="form-control-label" for="input-first-name">Button Title</label>
-            <input type="text" class="form-control" placeholder="Button Title" name="<?php echo $key . '_button_title' ?>" value="{{ HomePage::get($key . '_button_title') }}">
-            @error('button_title')
-                <small class="text-danger">{{ $message }}</small>
-            @enderror
-        </div>
-    </div>
-    <div class="col-md-12">
-        <div class="form-group">
-            <label class="form-control-label" for="input-first-name">Button Url</label>
-            <input type="text" class="form-control" placeholder="Button Url" name="<?php echo $key . '_button_url' ?>" value="{{ HomePage::get($key . '_button_url') }}">
-            @error('button_url')
-                <small class="text-danger">{{ $message }}</small>
-            @enderror
-        </div>
-    </div>
-</div>
-<?php endif; ?>
-<div class="row">
-    <div class="col-md-12">
+    <div class="col-md-6">
         <div class="form-group">
             <div 
                 class="upload-image-section"
@@ -96,4 +59,44 @@
             </div>
         </div>
     </div>
+    <?php if(!isset($nobuttons) || !$nobuttons): ?>
+    <div class="col-md-6">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label class="form-control-label" for="input-first-name">Button (on/off)</label>
+                    <div class="custom-control mt-2">
+                        <label class="custom-toggle">
+                            <input type="hidden" name="<?php echo $key . '_button_status' ?>" value="0" />
+                            <input type="checkbox" id="buttonStatus" value="1" name="<?php echo $key . '_button_status' ?>" <?php echo (HomePage::get($key . '_button_status') ? 'checked' : '') ?>>
+                            <span class="custom-toggle-slider rounded-circle"
+                                data-label-off="No" data-label-on="Yes"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label class="form-control-label" for="input-first-name">Button Title</label>
+                    <input type="text" class="form-control" placeholder="Button Title" name="<?php echo $key . '_button_title' ?>" value="{{ HomePage::get($key . '_button_title') }}">
+                    @error('button_title')
+                        <small class="text-danger">{{ $message }}</small>
+                    @enderror
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label class="form-control-label" for="input-first-name">Button Url</label>
+                    <input type="text" class="form-control" placeholder="Button Url" name="<?php echo $key . '_button_url' ?>" value="{{ HomePage::get($key . '_button_url') }}">
+                    @error('button_url')
+                        <small class="text-danger">{{ $message }}</small>
+                    @enderror
+                </div>
+            </div>
+        </div>
+    </div>
+    <?php endif; ?>
+    
 </div>

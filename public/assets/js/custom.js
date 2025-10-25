@@ -897,7 +897,8 @@ $('body').on('click', '.upload-image-section .fileRemover', function() {
                 }
             });
         }
-        else{
+        else
+        {
             $(this).parents('.upload-image-section').find('textarea').val('');
             $(this).parents('.single-image').remove();
         }

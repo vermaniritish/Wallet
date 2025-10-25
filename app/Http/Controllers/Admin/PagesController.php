@@ -24,6 +24,7 @@ use App\Models\Admin\Pages;
 use App\Models\Admin\Admins;
 use App\Models\Admin\Products;
 use App\Models\Admin\BlogCategories;
+use App\Models\Admin\ProductCategories;
 use App\Models\Admin\HomePage;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Str;
@@ -318,8 +319,9 @@ class PagesController extends AppController
 		    return redirect()->back();
 		}
 
-		$products = Products::select(['id', 'title'])->where('status', 1)->orderBy('id', 'desc')->get();
-		return view("admin/pages/homepage", ['products' => $products]);
+		$categories = ProductCategories::select(['id', 'image', 'title'])->where('status', 1)->whereNull('parent_id')->orderBy('title', 'desc')->get();
+		$products = Products::select(['id', 'parent_id', 'title'])->where('status', 1)->orderBy('title', 'desc')->get();
+		return view("admin/pages/homepage", ['products' => $products, 'categories' => $categories]);
     }
 
 

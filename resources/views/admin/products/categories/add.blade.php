@@ -65,7 +65,7 @@
 											data-type="image"
 											data-multiple="false"
 											data-path="categories"
-											data-resize-large="400*320"
+											data-resize-large="500*500"
 										>
 											<div class="upload-section">
 												<div class="button-ref mb-3">
@@ -73,6 +73,7 @@
 										                <span class="btn-inner--icon"><i class="fas fa-upload"></i></span>
 										                <span class="btn-inner--text">Upload Image</span>
 									              	</button>
+                        							<p><small>Recomeded Size: 500px * 500px</small></p>
 									            </div>
 									            <!-- PROGRESS BAR -->
 												<div class="progress d-none">
