@@ -62,21 +62,21 @@
                                     <td colspan="2">
                                         <div class="shipping_option">
                                             <div class="custome-radio">
-                                                <input class="form-check-input" required="" type="radio" name="shipping_option" value="parcelforce" id="exampleRadios1a" checked="" @change="handleShipping">
+                                                <input class="form-check-input" required="" type="radio" name="shipping_option" value="parcelforce" id="exampleRadios1a" change="handleShipping">
                                                 <label class="form-check-label" for="exampleRadios1a" data-bs-toggle="collapse" data-target="#parcellavbel"  aria-controls="parcellavbel">{{_currency($settings['shipping_cost_parcelforce'])}} - Ship to Address by Parcel Force</label>
                                                 <div class="form-group collapse in" id="parcellavbel">
                                                     <p class="text-muted mt-5"></p>
                                                 </div>
                                             </div>
                                             <div class="custome-radio">
-                                                <input class="form-check-input" required="" type="radio" name="shipping_option" id="dpd" checked=""  value="dpd"@change="handleShipping">
+                                                <input class="form-check-input" required="" type="radio" name="shipping_option" id="dpd" value="dpd"@change="handleShipping">
                                                 <label class="form-check-label" for="dpd" data-bs-toggle="collapse" data-target="#dpdlabel"  aria-controls="dpdlabel">{{_currency($settings['shipping_cost_dpd'])}} - Ship to Address by DPD</label>
                                                 <div class="form-group collapse in" id="dpdlabel">
                                                     <p class="text-muted mt-5"></p>
                                                 </div>
                                             </div>
                                             <div class="custome-radio">
-                                                <input class="form-check-input" required="" type="radio" name="shipping_option" id="exampleRadios2a" checked="" value="Ship to School"@change="handleShipping">
+                                                <input class="form-check-input" required="" type="radio" name="shipping_option" id="exampleRadios2a" alue="Ship to School"@change="handleShipping">
                                                 <label class="form-check-label" for="exampleRadios2a" data-bs-toggle="collapse" data-target="#shiptoschool"  aria-controls="shiptoschool">£0.00 - Ship to School</label>
                                                 <div class="form-group collapse in" id="shiptoschool">
                                                     <p class="text-muted mt-5"></p>
@@ -84,7 +84,7 @@
                                             </div>
                                             @foreach($shops as $k => $s)
                                             <div class="custome-radio">
-                                                <input class="form-check-input" required="" type="radio" name="shipping_option" id="exampleRadios3a{{$k}}" @change="handleShipping" checked=""  value="Collect From {{$s->name}}">
+                                                <input class="form-check-input" required="" type="radio" name="shipping_option" id="exampleRadios3a{{$k}}" @change="handleShipping" value="Collect From {{$s->name}}">
                                                 <label class="form-check-label" for="exampleRadios3a{{$k}}" data-bs-toggle="collapse" data-target="#collectfromaston{{$k}}" aria-controls="collectfromaston{{$k}}">£0.00 - Collect From {{$s->name}}</label>
                                                 <div class="form-group collapse in" id="collectfromaston">
                                                     <p class="text-muted mt-5">Monday to Friday (9am-5pm)</p>

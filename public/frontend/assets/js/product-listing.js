@@ -1397,11 +1397,14 @@ checkoutPage = new Vue({
             if(this.checkout.saveInfo) {
                 localStorage.setItem('addressInfo', JSON.stringify(this.checkout));
             }
-            if(!this.shippingOptions) {
-                set_notification('error', 'Please select the shipping and delivery option.')
-            }
             if(this.saving) return false;
             let haveErrors = false;
+
+            
+            if(!this.shippingOptions) {
+                set_notification('error', 'Please select the shipping and delivery option.')
+                haveErrors = true;
+            }
 
             let errs = {};
             let checkout = JSON.parse(JSON.stringify(this.checkout));
@@ -1412,7 +1415,6 @@ checkoutPage = new Vue({
                 }
             }
 
-            console.log(`haveErrors`, haveErrors);
             if(!haveErrors)
             {
                 this.errors = {};
