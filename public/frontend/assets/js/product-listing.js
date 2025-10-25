@@ -1125,7 +1125,6 @@ checkoutPage = new Vue({
             ship_state: ``,
             ship_zip: ``,
             note: ``,
-            ship_different_address: ``,
             password: ``,
         },
         shippingOptions: null,
