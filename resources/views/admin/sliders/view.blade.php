@@ -72,6 +72,10 @@ use App\Models\Admin\Permissions;
 										<td><?php echo $page->label ?></td>
 									</tr>
 									<tr>
+										<th>Type</th>
+										<td><?php echo ucwords(str_replace("_", " ", $row->type))?></td>
+									</tr>
+									<tr>
 										<td colspan="2">
 											<h2>Heading</h2>
 											<?php echo $page->heading ?>

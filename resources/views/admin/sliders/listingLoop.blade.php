@@ -18,6 +18,9 @@
 		<?php echo $row->label ?>
 	</td>
 	<td>
+		<?php echo ucwords(str_replace("_", " ", $row->type)) ?>
+	</td>
+	<td>
     	<?php echo Str::limit($row->heading, 100, '...'); ?>
 	</td>
 	<td>
