@@ -47,12 +47,14 @@ class HomeController extends BaseController
 		$categories = ProductCategories::select(['id', 'slug', 'image', 'title'])->whereIn('id', $cids)->where('status', 1)->get();
 		
 		$cids = HomePage::get('featured_products');
+		echo $cids; die;
 		$cids = $cids ? json_decode($cids) : [-1];
 		$featuredProducts = Products::getListing($request, [
 			'products.status' => 1,
 			'products.website_visible' => 1,
 			'(products.id IN (?))' => [implode(',', $cids)]
 		], 50);
+		
 
 		$cids = HomePage::get('trending_products');
 		$cids = $cids ? json_decode($cids) : [-1];
