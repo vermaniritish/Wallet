@@ -48,11 +48,11 @@ class HomeController extends BaseController
 		
 		$cids = HomePage::get('featured_products');
 		$cids = $cids ? json_decode($cids) : [-1];
-		
+
 		$featuredProducts = Products::getListing($request, [
 			'products.status' => 1,
 			'products.website_visible' => 1,
-			'(products.id IN (?))' => [implode(',', $cids)]
+			'(products.id IN ('.implode(',', $cids).'))'
 		], 50);
 		
 
@@ -61,7 +61,7 @@ class HomeController extends BaseController
 		$trendingProducts = Products::getListing($request, [
 			'products.status' => 1,
 			'products.website_visible' => 1,
-			'(products.id IN (?))' => [implode(',', $cids)]
+			'(products.id IN ('.implode(',', $cids).'))'
 		], 50);
 
 		$cids = HomePage::get('new_arrivals');
@@ -69,7 +69,7 @@ class HomeController extends BaseController
 		$newProducts = Products::getListing($request, [
 			'products.status' => 1,
 			'products.website_visible' => 1,
-			'(products.id IN (?))' => [implode(',', $cids)]
+			'(products.id IN ('.implode(',', $cids).'))'
 		], 50);
 
 		
