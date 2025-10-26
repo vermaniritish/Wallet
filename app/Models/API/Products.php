@@ -268,6 +268,8 @@ class Products extends AdminProducts
 	    	$listing->offset($offset);
 	    	$listing->limit($limit);
 	    }
+        pr($where);
+        echo $listing->toSql(); die;
         $listing = $listing->paginate($limit);
 
 	    return $listing;
