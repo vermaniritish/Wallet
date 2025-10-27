@@ -338,6 +338,9 @@ class HomeController extends AppController
 		$cart = $data['cart'];
 		foreach($cart as $k => $c)
 		{
+			$colorImages = Products::select(['color_images'])->where('id', $c['product_id'])->limit(1)->pluck('color_images')->first();
+			$colorImages = $colorImages ? $colorImages : null;
+			
 			$offer = Offers::select(['type', 'quantity', 'offer_total_price', 'free_logo'])
 				->where('product_id', $c['product_id'])
 				->whereRaw('FIND_IN_SET(?, colors)', [$c['color_id']])
@@ -345,6 +348,9 @@ class HomeController extends AppController
 				->where('status', 1)
 				->orderBy('offers.type', 'asc')
 				->get();
+			if(isset($c['color_id']) && $c['color_id'] && $colorImages && isset($colorImages[$c['color_id']]) && $colorImages[$c['color_id']]){
+				$cart[$k]['image'] = json_encode([$colorImages[$c['color_id']]['path']]);
+			}
 			$cart[$k]['offer'] = $offer ? $offer : null;	
 			$cart[$k]['customization'] = isset($data['customization']) && $data['customization'] ? $data['customization'] : null;	
 		}

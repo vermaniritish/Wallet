@@ -360,7 +360,7 @@ use App\Models\Admin\Settings;
 												@endif
 										</div>
 										<div class="text-right">
-											@if ($change->status)
+											@if ($change->status && isset($status[$change->status]['label']) && $status[$change->status]['label'])
 												<span class="mx-3 badge" style="{{ $status[$change->status]['styles'] }}">{{ $status[$change->status]['label'] }}</span>
 											@endif										
 										</div>

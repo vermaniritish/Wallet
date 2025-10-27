@@ -182,16 +182,17 @@ var productDetail = new Vue({
             this.editLogo = false;
             $('body').removeClass('overflow-hidden');
             this.adding = true;
-            this.cart = this.sizes.filter((item) => {
+            let scart = this.sizes.filter((item) => {
                 return (item.quantity && (item.quantity*1) > 0)
             });
+            scart = [...scart, ...this.cart];
             let custmomization = this.customization ? this.customization.filter((v) => v.initial && v.initial.trim()).map((v) => ({cost:v.cost, title: v.title, initial: v.initial})) : null;
             let response = await fetch(site_url + '/api/orders/add-to-cart', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({cart: this.cart, customization: custmomization}),
+                body: JSON.stringify({cart: scart, customization: custmomization}),
             });
             response = await response.json();
             if(response && response.status)
@@ -850,7 +851,7 @@ var minicart = new Vue({
             cart = cart ? JSON.parse(cart) : [];
             return cart.length;
         },
-        initcart() {
+        async initcart() {
             let cart = localStorage.getItem('cart');
             cart = cart ? JSON.parse(cart) : [];
             this.cart = this.handleLogoPrices(cart);
@@ -1090,6 +1091,7 @@ var minicart = new Vue({
         this.gstTax = gstTax();
         this.logoPricesDynamix = await minicart.fetchLogoPrices();
         this.initcart();
+        
     }
 });
 

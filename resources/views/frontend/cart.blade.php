@@ -13,7 +13,7 @@
     <div class="container">
         <div class="row">
             <div class="col-12">
-                <div class="table-responsive">
+                <div class="table-responsive" style="overflow:unset">
                     <table class="table shopping-summery clean">
                         <thead>
                             <tr class="main-heading">
@@ -32,9 +32,25 @@
                                 </td>
                                 <td class="product-des product-name">
                                     <h5 class="product-name"><a :href="'/' + c.slug">@{{ c.title }}</a></h5>
-                                    <p class="font-xs">SKU: @{{c.sku_number}}<br> Size:  @{{c.size_title}}<br/> Color: @{{c.color}} 
-                                        <span class="text-danger" v-if="c.customization && c.customization.length > 0"><br /> @{{ c.customization.length }} customization added worth £@{{(c.quantity * getCustomizationCost(c.customization)).toFixed(2)}}.</span>
-                                    </p>
+                                    <p class="font-xs">SKU: @{{c.sku_number}}<br> Size:  @{{c.size_title}}<br/> Color: @{{c.color}} </p>
+                                    <div class="font-xs position-relative popover-block">
+                                        <span 
+                                            class="text-danger font-xs" 
+                                            v-if="c.customization && c.customization.length > 0"
+                                        >@{{ c.customization.length }} customization added worth £@{{(c.quantity * getCustomizationCost(c.customization)).toFixed(2)}}.</span>
+                                        <div v-if="c.customization && c.customization.length > 0" class="popover bs-popover-auto fade show" data-popper-placement="right" role="tooltip" id="popover995992" style="position: absolute; inset: 0px auto auto 0px; margin: 0px;bottom: unset;top: -50px;right: -20px;left: unset;">
+                                            <div class="popover-arrow" style="position: absolute; transform: translate(0px, 47px);"></div>
+                                            <h3 class="popover-header">Customization</h3>
+                                            <div class="popover-body pt-2">
+                                                <ul>
+                                                    <li v-for="l in c.customization" style="border-bottom: 1px solid #eee;padding: 5px 0;">
+                                                        <span class="text-muted">@{{ l.title }} | @{{ formatMoney(l.cost) }}</span><br />
+                                                        <strong>@{{ l.initial }}</strong>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </td>
                                 <td class="price" data-title="Price"><span>£@{{c.price}}</span></td>
                                 <td class="text-center" data-title="Stock">
