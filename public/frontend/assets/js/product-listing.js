@@ -1411,6 +1411,8 @@ checkoutPage = new Vue({
             let errs = {};
             let checkout = JSON.parse(JSON.stringify(this.checkout));
             for(let e in checkout) {
+                if(!checkout['ship_different_address'] && (['ship_fname', 'ship_lname', 'ship_company', 'ship_address1', 'ship_address2', 'ship_city', 'ship_state', 'ship_zip']).includes(e)) continue;
+                if(!checkout['saveInfo'] && (['password']).includes(e)) continue;
                 if(checkout[e] === ``) {
                     errs[e] = ``;
                     haveErrors = true;

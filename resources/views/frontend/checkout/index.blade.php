@@ -44,33 +44,33 @@
                 <form method="post">
                     <div class="form-group">
                         <input type="text" required="" name="fname" placeholder="First name *" v-model="checkout.first_name">
-                        <small v-if="errors && errors.first_name == ``">This field is required.</small>
+                        <small class="text-danger" v-if="errors && errors.first_name == ``">This field is required.</small>
 
                     </div>
                     <div class="form-group">
                         <input type="text" required="" name="lname" placeholder="Last name *" v-model="checkout.last_name">
-                        <small v-if="errors && errors.last_name == ``">This field is required.</small>
+                        <small class="text-danger" v-if="errors && errors.last_name == ``">This field is required.</small>
 
                     </div>
                     <div class="form-group">
                         <input required="" type="text" name="cname" placeholder="Company Name"  v-model="checkout.company">
-                        <small v-if="errors && errors.company == ``">This field is required.</small>
+                        <small class="text-danger" v-if="errors && errors.company == ``">This field is required.</small>
 
                     </div>
                     
                     <div class="form-group">
                         <input type="text" name="billing_address" required="" placeholder="Address *" v-model="checkout.address">
-                        <small v-if="errors && errors.address == ``">This field is required.</small>
+                        <small class="text-danger" v-if="errors && errors.address == ``">This field is required.</small>
 
                     </div>
                     <div class="form-group">
                         <input type="text" name="billing_address2" placeholder="Address line2"  v-model="checkout.address2">
-                        <small v-if="errors && errors.address2 == ``">This field is required.</small>
+                        <small class="text-danger" v-if="errors && errors.address2 == ``">This field is required.</small>
 
                     </div>
                     <div class="form-group">
                         <input required="" type="text" name="city" placeholder="City / Town *" v-model="checkout.city">
-                        <small v-if="errors && errors.city == ``">This field is required.</small>
+                        <small class="text-danger" v-if="errors && errors.city == ``">This field is required.</small>
                     </div>
                     <div class="form-group">
                         <select class="checkout__input--select__field border-radius-5" disabled id="country">
@@ -84,17 +84,16 @@
                     </div>
                     <div class="form-group">
                         <input required="" type="text" name="zipcode" placeholder="Postcode / ZIP *" v-model="checkout.postalcode" >
-                        <small v-if="errors && errors.postalcode == ``">This field is required.</small>
-
+                        <small class="text-danger" v-if="errors && errors.postalcode == ``">This field is required.</small>
                     </div>
                     @if(!$user)
                     <div class="form-group">
                         <input required="" type="text" name="phone" placeholder="Phone *"  v-model="checkout.phone"   @input="checkout.phone = checkout.phone.replace(/[^0-9]/g, '').slice(0, 14)">
-                        <small v-if="errors && errors.phone == ``">This field is required.</small>
+                        <small class="text-danger" v-if="errors && errors.phone == ``">This field is required.</small>
                     </div>
                     <div class="form-group">
                         <input required="" type="text" name="email" placeholder="Email address *"  v-model="checkout.email">
-                        <small v-if="errors && errors.email == ``">This field is required.</small>
+                        <small class="text-danger" v-if="errors && errors.email == ``">This field is required.</small>
                     </div>
                     <div class="form-group">
                         <div class="checkbox">
@@ -119,29 +118,37 @@
                         </div>
                         <div v-if="checkout.ship_different_address" class="different_address collapse in show">
                             <div class="form-group">
-                                <input type="text" name="fname" placeholder="First name *" v-model="checkout.ship_fname">
+                                <input type="text" name="ship_fname" placeholder="First name *" v-model="checkout.ship_fname">
+                                <small class="text-danger" v-if="errors && errors.ship_fname == ``">This field is required.</small>
                             </div>
                             <div class="form-group">
-                                <input type="text" name="lname" placeholder="Last name *" v-model="checkout.ship_lname">
+                                <input type="text" name="ship_lname" placeholder="Last name *" v-model="checkout.ship_lname">
+                                <small class="text-danger" v-if="errors && errors.ship_lname == ``">This field is required.</small>
                             </div>
                             <div class="form-group">
-                                <input type="text" name="cname" placeholder="Company Name"  v-model="checkout.ship_company">
+                                <input type="text" name="ship_company" placeholder="Company Name"  v-model="checkout.ship_company">
+                                <small class="text-danger" v-if="errors && errors.ship_company == ``">This field is required.</small>
                             </div>
                             
                             <div class="form-group">
-                                <input type="text" name="billing_address" placeholder="Address *" v-model="checkout.ship_address1">
+                                <input type="text" name="ship_address1" placeholder="Address *" v-model="checkout.ship_address1">
+                                <small class="text-danger" v-if="errors && errors.ship_address1 == ``">This field is required.</small>
                             </div>
                             <div class="form-group">
-                                <input type="text" name="billing_address2" placeholder="Address line2" v-model="checkout.ship_address2">
+                                <input type="text" name="ship_address2" placeholder="Address line2" v-model="checkout.ship_address2">
+                                <small class="text-danger" v-if="errors && errors.ship_address2 == ``">This field is required.</small>
                             </div>
                             <div class="form-group">
-                                <input type="text" name="city" placeholder="City / Town *" v-model="checkout.ship_city">
+                                <input type="text" name="ship_city" placeholder="City / Town *" v-model="checkout.ship_city">
+                                <small class="text-danger" v-if="errors && errors.ship_city == ``">This field is required.</small>
                             </div>
                             <div class="form-group">
-                                <input type="text" name="state" placeholder="State / County *" v-model="checkout.ship_state">
+                                <input type="text" name="ship_state" placeholder="State / County *" v-model="checkout.ship_state">
+                                <small class="text-danger" v-if="errors && errors.ship_state == ``">This field is required.</small>
                             </div>
                             <div class="form-group">
-                                <input type="text" name="zipcode" placeholder="Postcode / ZIP *" v-model="checkout.ship_zip">
+                                <input type="text" name="ship_zip" placeholder="Postcode / ZIP *" v-model="checkout.ship_zip">
+                                <small class="text-danger" v-if="errors && errors.ship_zip == ``">This field is required.</small>
                             </div>
                         </div>
                     </div>

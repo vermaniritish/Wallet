@@ -10136,3 +10136,11 @@ color: #FFF;
   border: 1px solid #d0f3ec;
   background: #d0f3ec;
 }
+
+.popover-block .popover h3
+{
+  background: #FFF;font-size: 14px;color: #088178;
+}
+.popover-block:hover .popover{
+  display: block !important;
+}

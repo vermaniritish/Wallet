@@ -38,7 +38,7 @@
                                             class="text-danger font-xs" 
                                             v-if="c.customization && c.customization.length > 0"
                                         >@{{ c.customization.length }} customization added worth £@{{(c.quantity * getCustomizationCost(c.customization)).toFixed(2)}}.</span>
-                                        <div v-if="c.customization && c.customization.length > 0" class="popover bs-popover-auto fade show" data-popper-placement="right" role="tooltip" id="popover995992" style="position: absolute; inset: 0px auto auto 0px; margin: 0px;bottom: unset;top: -50px;right: -20px;left: unset;">
+                                        <div v-if="c.customization && c.customization.length > 0" class="popover bs-popover-auto fade show" data-popper-placement="right" role="tooltip" id="popover995992" style="position: absolute; inset: 0px auto auto 0px; margin: 0px;bottom: unset;top: -50px;right: -20px;left: unset;display:none;">
                                             <div class="popover-arrow" style="position: absolute; transform: translate(0px, 47px);"></div>
                                             <h3 class="popover-header">Customization</h3>
                                             <div class="popover-body pt-2">

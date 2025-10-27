@@ -2,7 +2,7 @@
     <div class="mb-20">
         <h4>Your Orders</h4>
     </div>
-    <div class="table-responsive order_table">
+    <div class="table-responsive order_table" style="overflow: unset;">
         <table class="table">
             <thead>
                 <tr>
@@ -16,7 +16,24 @@
                     <td  width="60%">
                         <h5><a :href="'/' + c.slug">@{{c.title}}</a></h5> <span class="product-qty">x @{{c.quantity && c.quantity > 0 ? c.quantity : ``}}</span>
                         <p class="font-xs">SKU: @{{c.sku_number}}, Size: @{{c.size_title}}, Color: @{{c.color}}</p>
-                        <span class="text-danger" v-if="c.customization && c.customization.length > 0">@{{ c.customization.length }} customization added worth £@{{(c.quantity * getCustomizationCost(c.customization)).toFixed(2)}}.</span>
+                        <div class="font-xs position-relative popover-block">
+                            <span 
+                                class="text-danger font-xs" 
+                                v-if="c.customization && c.customization.length > 0"
+                            >@{{ c.customization.length }} customization added worth £@{{(c.quantity * getCustomizationCost(c.customization)).toFixed(2)}}.</span>
+                            <div v-if="c.customization && c.customization.length > 0" class="popover bs-popover-auto fade show" data-popper-placement="right" role="tooltip" id="popover995992" style="position: absolute; top: -46px; right: -60%; bottom: unset; left: unset; margin: 0px; display: none;">
+                                <div class="popover-arrow" style="position: absolute; transform: translate(0px, 47px);"></div>
+                                <h3 class="popover-header">Customization</h3>
+                                <div class="popover-body pt-2">
+                                    <ul>
+                                        <li v-for="l in c.customization" style="border-bottom: 1px solid #eee;padding: 5px 0;">
+                                            <span class="text-muted">@{{ l.title }} | @{{ formatMoney(l.cost) }}</span><br />
+                                            <strong>@{{ l.initial }}</strong>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
                     </td>
                     <td  width="15%">£@{{c.quantity && c.quantity > 0 ? (c.quantity*c.price).toFixed(2) : ``}}</td>
                 </tr>
