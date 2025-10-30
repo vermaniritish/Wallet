@@ -508,6 +508,7 @@ class Products extends AppModel
                     $relation->sale_price = isset($sizeData['sale_price']) ? $sizeData['sale_price'] : null;
                     $relation->color_id = $colorId; 
                     $relation->status = isset($sizeData['status']) ? $sizeData['status'] : 0; 
+                    $relation->non_exchange = isset($sizeData['non_exchange']) ? $sizeData['non_exchange'] : 0; 
                     $relation->save();
                 }
             }

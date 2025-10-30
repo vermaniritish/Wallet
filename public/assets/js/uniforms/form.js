@@ -166,7 +166,8 @@ let order = new Vue({
                             to_cm: size.to_cm,
                             price: parseFloat(size.price),
                             sale_price: size.sale_price && (size.sale_price*1) > 0 ? parseFloat(size.sale_price) : ``,
-                            status: size.status
+                            status: size.status,
+                            non_exchage: size.non_exchage
                         });
                     });
                 }

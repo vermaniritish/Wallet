@@ -35,7 +35,7 @@
 					<i class="fas fa-ellipsis-v"></i>
 				</a>
 				<div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-					<a class="dropdown-item" href="<?php echo url('/'.$row->slug) ?>">
+					<a class="dropdown-item" href="<?php echo url('/'.$row->slug) ?>" target="_blank">
 						<i class="fas fa-eye text-yellow"></i>
 						<span class="status">View</span>
 					</a>
