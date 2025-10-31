@@ -297,8 +297,8 @@ class CouponsController extends AppController
     		return redirect()->route('admin.dashboard');
     	}
 
-    	$admin = Coupons::find($id);
-    	if($admin->delete())
+    	$page = Coupons::find($id);
+    	if(Coupons::where('uuid', $page->uuid)->delete())
     	{
     		$request->session()->flash('success', 'Coupon deleted successfully.');
     		return redirect()->route('admin.coupons');
