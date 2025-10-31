@@ -91,6 +91,7 @@
 											<label class="custom-control-label" for="mark_all"></label>
 										</div>
 									</th>
+									
 									<th width="15%" class="sort">
 										Title
 										<?php if(isset($_GET['sort']) && $_GET['sort'] == 'coupons.title' && isset($_GET['direction']) && $_GET['direction'] == 'asc'): ?>
@@ -102,16 +103,6 @@
 										<?php endif; ?>
 									</th>
 									
-									<th width="10%" class="sort">
-										Amount
-										<?php if(isset($_GET['sort']) && $_GET['sort'] == 'coupons.amount' && isset($_GET['direction']) && $_GET['direction'] == 'asc'): ?>
-										<i class="fas fa-sort-down active" data-field="coupons.amount" data-sort="asc"></i>
-										<?php elseif(isset($_GET['sort']) && $_GET['sort'] == 'coupons.amount' && isset($_GET['direction']) && $_GET['direction'] == 'desc'): ?>
-										<i class="fas fa-sort-up active" data-field="coupons.amount" data-sort="desc"></i>
-										<?php else: ?>
-										<i class="fas fa-sort" data-field="coupons.amount"></i>
-										<?php endif; ?>
-									</th>
 									<th width="10%" class="sort">
 										Max Use
 										<?php if(isset($_GET['sort']) && $_GET['sort'] == 'coupons.max_use' && isset($_GET['direction']) && $_GET['direction'] == 'asc'): ?>

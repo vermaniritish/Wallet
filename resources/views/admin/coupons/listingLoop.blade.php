@@ -8,9 +8,6 @@
 		</div>
 	</td>
 	<td>
-		<?php echo $row->coupon_code ?>
-	</td>
-	<td>
 		<?php echo $row->title ?>
 	</td>
 	<td>
