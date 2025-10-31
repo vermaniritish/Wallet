@@ -8,34 +8,16 @@
 		</div>
 	</td>
 	<td>
-		<span class="badge badge-dot mr-4">
-			<i class="bg-warning"></i>
-			<span class="status"><?php echo $row->id ?></span>
-		</span>
-	</td>
-	<td>
-		<?php echo $row->title ?>
-	</td>
-	<td>
 		<?php echo $row->coupon_code ?>
 	</td>
 	<td>
-		<?php echo $row->amount ?>
+		<?php echo $row->title ?>
 	</td>
 	<td>
 		<?php echo $row->max_use ?>
 	</td>
 	<td>
 		<?php echo _d($row->end_date) ?>
-	</td>
-	<td>
-		<div class="custom-control">
-			<label class="custom-toggle">
-				<?php $switchUrl =  route('admin.actions.switchUpdate', ['relation' => 'coupons', 'field' => 'status', 'id' => $row->id]); ?>
-				<input type="checkbox" name="status" onchange="switch_action('<?php echo $switchUrl ?>', this)" value="1" <?php echo ($row->status ? 'checked' : '') ?>>
-				<span class="custom-toggle-slider rounded-circle" data-label-off="OFF" data-label-on="ON"></span>
-			</label>
-		</div>
 	</td>
 	<td>
 		<?php echo _dt($row->created) ?>
@@ -51,13 +33,6 @@
 						<i class="fas fa-eye text-yellow"></i>
 						<span class="status">View</span>
 					</a>
-					<?php if(Permissions::hasPermission('coupons', 'update')): ?>
-						<div class="dropdown-divider"></div>
-						<a class="dropdown-item" href="<?php echo route('admin.coupons.edit', ['id' => $row->id]) ?>">
-							<i class="fas fa-pencil-alt text-info"></i>
-							<span class="status">Edit</span>
-						</a>
-					<?php endif; ?>
 					<?php if(Permissions::hasPermission('coupons', 'delete')): ?>
 						<div class="dropdown-divider"></div>
 						<a 

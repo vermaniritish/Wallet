@@ -60,17 +60,10 @@
 						<table class="table align-items-center table-flush">
 							<tbody>
 								<tr>
-									<th>Id</th>
-									<td><?php echo $page->id ?></td>
-								</tr>
-								<tr>
 									<th>Title</th>
 									<td><?php echo $page->title ?></td>
 								</tr>
-								<tr>
-									<th>Code</th>
-									<td><?php echo $page->coupon_code ?></td>
-								</tr>
+								
 								<tr>
 									<th>Maximum Use</th>
 									<td><?php echo $page->max_use ?></td>
@@ -83,11 +76,16 @@
 									<th>End Date</th>
 									<td><?php echo _d($page->end_date) ?></td>
 								</tr>
-								
 								<tr>
-									<td colspan="2">
-										<h2>Description</h2>
-										<?php echo $page->description ?>
+									<th>Description</th>
+									<td><?php echo $page->description ?></td>
+								</tr>
+								<tr>
+									<th>Codes</th>
+									<td>
+										@foreach($coupons as $c)
+										<p class="m-0"><?php echo $c ?></p>
+										@endforeach
 									</td>
 								</tr>
 							</tbody>

@@ -84,7 +84,8 @@ var productDetail = new Vue({
         adding: null,
         accept: false,
         customization: [],
-        customizationErrors: {}
+        customizationErrors: {},
+        nonExchangeable: false
     },
     methods: {       
         currency(a) {
@@ -112,16 +113,17 @@ var productDetail = new Vue({
             // return this.sizes;
             return this.sizes.filter((i) => ((i.quantity*1) > 0) );
         },
-        manualQty(e) {
-            console.log(e, e.target.value);
+        manualQty(e, sizeObj) {
             let qty = e.target.value;
             let dataId = e.target.getAttribute("data-id");
             let index = this.sizes.findIndex((v) => v.id == dataId);
             let s = [...this.sizes];
             s[index].quantity = qty;
+            this.setNonExchange(sizeObj, qty);
             this.sizes = JSON.parse(JSON.stringify(s));
         },
-        increment(id) {
+        increment(sizeObj) {
+            let id = sizeObj.id;
             let index = this.sizes.findIndex((v) => v.id == id);
             let s = [...this.sizes];
 
@@ -131,19 +133,34 @@ var productDetail = new Vue({
             else {
                 s[index].quantity = 1;
             }
+            this.setNonExchange(sizeObj, s[index].quantity);
             this.sizes = JSON.parse(JSON.stringify(s));
         },
-        decrement(id) {
+        decrement(sizeObj) {
+            let id = sizeObj.id;
             let index = this.sizes.findIndex((v) => v.id == id);
             let s = [...this.sizes];
-
+            
             if(s[index].quantity && (s[index].quantity * 1) > 0){
                 s[index].quantity = (s[index].quantity*1) - 1;
             }
             else {
                 s[index].quantity = 0;
             }
+            this.setNonExchange(sizeObj, s[index].quantity);
             this.sizes = JSON.parse(JSON.stringify(s));
+        },
+        setNonExchange(sizeObj, qty)
+        {
+            if(sizeObj.non_exchange && (qty > 0)) {
+                this.nonExchangeable = true;
+            }
+            else if(nonExchange) {
+                this.nonExchangeable = true;
+            }
+            else {
+                this.nonExchangeable = false;
+            }
         },
         handleFileUpload(sizeIndex, logoKey) {
             this.uploading = {sizeIndex, logoKey};
@@ -173,7 +190,7 @@ var productDetail = new Vue({
         },
         async addToCart(buyNow) 
         {
-            if(nonExchange && !this.accept) {
+            if(this.nonExchangeable && !this.accept) {
                 set_notification('error', 'Please acknowledge to proceed.');
                 return false;
             }
@@ -286,6 +303,7 @@ var productDetail = new Vue({
     },
     mounted: function() 
     {
+        this.nonExchangeable = nonExchange ? true : false;
         this.customization = $('#customization').length > 0 && $('#customization').text().trim() ? JSON.parse($('#customization').text().trim()) : null;
         console.log(this.customization);
         this.id  = $('#productId').text().trim();

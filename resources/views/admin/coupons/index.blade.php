@@ -91,17 +91,6 @@
 											<label class="custom-control-label" for="mark_all"></label>
 										</div>
 									</th>
-									<th width="10%" class="sort">
-										<!--- MAKE SURE TO USE PROPOER FIELD IN data-field AND PROPOER DIRECTION IN data-sort -->
-										Id
-										<?php if(isset($_GET['sort']) && $_GET['sort'] == 'coupons.id' && isset($_GET['direction']) && $_GET['direction'] == 'asc'): ?>
-										<i class="fas fa-sort-down active" data-field="coupons.id" data-sort="asc"></i>
-										<?php elseif(isset($_GET['sort']) && $_GET['sort'] == 'coupons.id' && isset($_GET['direction']) && $_GET['direction'] == 'desc'): ?>
-										<i class="fas fa-sort-up active" data-field="coupons.id" data-sort="desc"></i>
-										<?php else: ?>
-										<i class="fas fa-sort" data-field="coupons.id" data-sort="asc"></i>
-										<?php endif; ?>
-									</th>
 									<th width="15%" class="sort">
 										Title
 										<?php if(isset($_GET['sort']) && $_GET['sort'] == 'coupons.title' && isset($_GET['direction']) && $_GET['direction'] == 'asc'): ?>
@@ -112,16 +101,7 @@
 										<i class="fas fa-sort" data-field="coupons.title"></i>
 										<?php endif; ?>
 									</th>
-									<th width="10%" class="sort">
-										Code
-										<?php if(isset($_GET['sort']) && $_GET['sort'] == 'coupons.coupon_code' && isset($_GET['direction']) && $_GET['direction'] == 'asc'): ?>
-										<i class="fas fa-sort-down active" data-field="coupons.coupon_code" data-sort="asc"></i>
-										<?php elseif(isset($_GET['sort']) && $_GET['sort'] == 'coupons.coupon_code' && isset($_GET['direction']) && $_GET['direction'] == 'desc'): ?>
-										<i class="fas fa-sort-up active" data-field="coupons.coupon_code" data-sort="desc"></i>
-										<?php else: ?>
-										<i class="fas fa-sort" data-field="coupons.coupon_code"></i>
-										<?php endif; ?>
-									</th>
+									
 									<th width="10%" class="sort">
 										Amount
 										<?php if(isset($_GET['sort']) && $_GET['sort'] == 'coupons.amount' && isset($_GET['direction']) && $_GET['direction'] == 'asc'): ?>
@@ -143,23 +123,13 @@
 										<?php endif; ?>
 									</th>
 									<th width="12.5%" class="sort">
-										End Date
+										Expiry Date
 										<?php if(isset($_GET['sort']) && $_GET['sort'] == 'coupons.end_date' && isset($_GET['direction']) && $_GET['direction'] == 'asc'): ?>
 										<i class="fas fa-sort-down active" data-field="coupons.end_date" data-sort="asc"></i>
 										<?php elseif(isset($_GET['sort']) && $_GET['sort'] == 'coupons.end_date' && isset($_GET['direction']) && $_GET['direction'] == 'desc'): ?>
 										<i class="fas fa-sort-up active" data-field="coupons.end_date" data-sort="desc"></i>
 										<?php else: ?>
 										<i class="fas fa-sort" data-field="coupons.end_date"></i>
-										<?php endif; ?>
-									</th>
-									<th  width="10%" class="sort">
-										Status
-										<?php if(isset($_GET['sort']) && $_GET['sort'] == 'coupons.status' && isset($_GET['direction']) && $_GET['direction'] == 'asc'): ?>
-										<i class="fas fa-sort-down active" data-field="coupons.status" data-sort="asc"></i>
-										<?php elseif(isset($_GET['sort']) && $_GET['sort'] == 'coupons.status' && isset($_GET['direction']) && $_GET['direction'] == 'desc'): ?>
-										<i class="fas fa-sort-up active" data-field="coupons.status" data-sort="desc"></i>
-										<?php else: ?>
-										<i class="fas fa-sort" data-field="coupons.status"></i>
 										<?php endif; ?>
 									</th>
 									<th width="12.5%" class="sort">

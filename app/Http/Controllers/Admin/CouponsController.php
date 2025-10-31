@@ -20,6 +20,8 @@ use App\Models\Admin\BlogCategories;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Str;
 use App\Libraries\FileSystem;
+use App\Libraries\General;
+use App\Models\Admin\Settings;
 use App\Http\Controllers\Admin\AppController;
 use Illuminate\Support\Facades\Storage;
 
@@ -148,10 +150,11 @@ class CouponsController extends AppController
     		$validator = Validator::make(
 	            $request->toArray(),
 	            [
+					'number_of_coupons' => 'required|integer|min:1',
 	                'title' => ['required'],
-					'coupon_code' => ['required', Rule::unique('coupons','coupon_code')->whereNull('deleted_at')],
+					'coupon_code' => ['required', 'regex:/^[A-Za-z0-9]*[0-9]$/', Rule::unique('coupons','coupon_code')->whereNull('deleted_at')],
 					'max_use' => ['required', 'integer'],
-					'end_date' => ['required', 'after_or_equal:today'],
+					'end_date' => 'required|date|after_or_equal:today',
 	                'description' => 'nullable',
 					'is_percentage' => ['required','boolean'],
 					'amount' => ['required']
@@ -159,19 +162,32 @@ class CouponsController extends AppController
 	        );
 	        if(!$validator->fails())
 	        {
+				$noCoupons = $request->get('number_of_coupons');
+				unset($data['number_of_coupons']);
 				$formattedDateTime = date('Y-m-d H:i:s', strtotime($request->get('end_date')));
 				$data['end_date'] = $formattedDateTime;
-	        	$page = Coupons::create($data);
-	        	if($page)
-	        	{
-	        		$request->session()->flash('success', 'Coupon created successfully.');
-	        		return redirect()->route('admin.coupons');
-	        	}
-	        	else
-	        	{
-	        		$request->session()->flash('error', 'Coupon could not be save. Please try again.');
-		    		return redirect()->back()->withErrors($validator)->withInput();
-	        	}
+				$code = $request->coupon_code;
+				$inserted = 0;
+				$data['uuid'] = General::hash();
+				for($i = 0; $i < $noCoupons; $i++)
+				{
+					if($i > 0)
+					{
+						$alpha = preg_replace('/[0-9]/', '', $code);
+						$numeric = preg_replace('/[^0-9]/', '', $code);
+						$num = $numeric !== '' ? intval($numeric) : 0;
+						$num++;
+						$newNumeric = str_pad($num, strlen($numeric), '0', STR_PAD_LEFT);
+						$newCode = $alpha . $newNumeric;
+						$code = $newCode;
+					}
+					$data['coupon_code'] = $code;
+	        		$page = Coupons::create($data);
+					$inserted++;
+				}
+
+				$request->session()->flash('success', $inserted . ' coupons created.');
+				return redirect()->route('admin.coupons');
 		    }
 		    else
 		    {
@@ -195,8 +211,15 @@ class CouponsController extends AppController
     	$page = Coupons::get($id);
     	if($page)
     	{
+			$coupons = Coupons::select(['coupon_code'])
+				->where('uuid', $page->uuid)
+				->orderBy('coupon_code', 'asc')
+				->pluck('coupon_code')
+				->toArray();
+
 	    	return view("admin/coupons/view", [
-    			'page' => $page
+    			'page' => $page,
+				'coupons' => $coupons
     		]);
 		}
 		else
@@ -335,27 +358,62 @@ class CouponsController extends AppController
 
 	function download(Request $request, $id)
     {
-    	$page = Coupons::get($id);
-		
+    	$page = Coupons::find($id);
     	if($page)
     	{
-			$html = view(
-				"admin/coupons/pdf", 
-				[
-					'page' => $page
-				]
-			)->render();
+			$coupons = Coupons::where('uuid', $page->uuid)
+				->orderBy('coupon_code', 'asc')
+				->get();
+
 			$mpdf = new \Mpdf\Mpdf([
-                'tempDir' => public_path('/uploads'),
-                'mode' => 'utf-8', 
-                'orientation' => 'P',
-                'format' => [210, 297],
-                'setAutoTopMargin' => true,
-                'margin_left' => 0,'margin_right' => 0,'margin_top' => 0,'margin_bottom' => 0,'margin_header' => 0,'margin_footer' => 0
-            ]);
+				'tempDir' => public_path('/uploads'),
+				'mode' => 'utf-8',
+				'orientation' => 'P',
+				'format' => [210, 297],
+				'margin_left' => 0,
+				'margin_right' => 0,
+				'margin_top' => 0,
+				'margin_bottom' => 0,
+			]);
+
+			
+			$footerHtml = '
+			<table width="750" border="0" cellspacing="0" cellpadding="0">
+				<tr>
+					<td style="padding:20px 30px;font-family: Arial, Helvetica, sans-serif;font-size: 13px;color: #666666;">
+						Pinders Schoolwear Ltd<br />
+						TEL; 0114 2513275<br />
+						www.pindersschoolwear.com<br />
+					</td>
+					<td style="text-align:right;">
+						<div align="right">
+							<img src="https://pindersschoolwear.com/image/emaillogo2.jpg" />
+						</div>
+					</td>
+				</tr>
+			</table>';
+
+			$mpdf->SetHTMLFooter($footerHtml);
+
 			$mpdf->showImageErrors = true;
-			$mpdf->WriteHTML($html);
-            $mpdf->Output('Coupon-'.$page->id.'.pdf','D');
+			$logo = Settings::get('logo');
+			foreach ($coupons as $index => $page) {
+
+				// Pass coupon data to blade
+				$html = view('admin.coupons.pdf', [
+					'page' => $page,
+					'logo' => $logo
+				])->render();
+
+				// Add new page for all except first page
+				if ($index > 0) {
+					$mpdf->AddPage();
+				}
+
+				$mpdf->WriteHTML($html);
+			}
+
+			$mpdf->Output($page->coupon_code . ' - Coupons.pdf', 'I');
 		}
 		else
 		{

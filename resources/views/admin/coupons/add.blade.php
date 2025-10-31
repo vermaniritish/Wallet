@@ -36,6 +36,23 @@
 						<div class="pl-lg-4">
 							<div class="row">
 								<div class="col-md-6">
+									<label class="form-control-label" for="input-first-name">Number of coupons you want to add.</label>
+									<input 
+										type="number"
+										class="form-control"
+										name="number_of_coupons"
+										required
+										placeholder="Number of coupons"
+										min="0"
+										step="1"
+										oninput="this.value = this.value.replace(/[^0-9]/g, '');"
+										value="{{ old('number_of_coupons') }}"
+									>
+								</div>
+							</div>
+							<hr class="my-4" />
+							<div class="row">
+								<div class="col-md-6">
 									<div class="form-group">
 										<label class="form-control-label" for="input-first-name">Title</label>
 										<input type="text" class="form-control" name="title" required placeholder="Title" value="{{ old('title') }}">
@@ -47,7 +64,8 @@
 								<div class="col-md-6">
 									<div class="form-group">
 										<label class="form-control-label" for="input-first-name">Code</label>
-										<input type="text" class="form-control" name="coupon_code" required placeholder="Coupon Code" value="{{ old('coupon_code') }}">
+										<input type="text" class="form-control" name="coupon_code" required placeholder="Coupon Code" value="{{ old('coupon_code') }}"    pattern="^[A-Za-z0-9]*[0-9]$">
+										<p class="small text-muted">Start with a letter and end with a number. To generate auto incremented. e.g. (ABC123)</p>
 										@error('coupon_code')
 											<small class="text-danger">{{ $message }}</small>
 										@enderror
@@ -66,8 +84,16 @@
 								</div>
 								<div class="col-md-6">
 									<div class="form-group">
-										<label class="form-control-label" for="input-first-name">End Date</label>
-										<input class="form-control" type="date" name="end_date" required placeholder="Coupon End Date" value="{{ old('end_date') }}">
+										<label class="form-control-label" for="input-first-name">Expiry Date</label>
+										<input 
+											class="form-control" 
+											type="date" 
+											name="end_date" 
+											required 
+											placeholder="Coupon End Date"
+											min="{{ date('Y-m-d') }}"
+											value="{{ old('end_date') }}"
+										>
 										@error('end_date')
 											<small class="text-danger">{{ $message }}</small>
 										@enderror

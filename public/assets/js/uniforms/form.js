@@ -154,8 +154,8 @@ let order = new Vue({
                 // }
                 if (data && data.sizes && data.sizes.length > 0) 
                 {
-
                     data.sizes.forEach(size => {
+                        console.log(size.color_id, size);
                         if (!this.selectedSize[size.color_id]) {
                             this.selectedSize[size.color_id] = [];
                         }
@@ -167,7 +167,7 @@ let order = new Vue({
                             price: parseFloat(size.price),
                             sale_price: size.sale_price && (size.sale_price*1) > 0 ? parseFloat(size.sale_price) : ``,
                             status: size.status,
-                            non_exchage: size.non_exchage
+                            non_exchange: size.non_exchange
                         });
                     });
                 }

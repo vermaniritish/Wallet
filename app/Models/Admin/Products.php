@@ -247,7 +247,7 @@ class Products extends AppModel
                     $query->select(['id', 'first_name', 'last_name', 'status']);
                 },
                 'sizes' => function($query) {
-                    $query->select(['sizes.id', 'sizes.size_title', 'sizes.from_cm',  'sizes.to_cm', 'price','sale_price','color_id', 'product_sizes.status'])->orderBy('product_sizes.id', 'asc');
+                    $query->select(['sizes.id', 'sizes.size_title', 'sizes.from_cm',  'sizes.to_cm', 'price','sale_price','color_id', 'product_sizes.status','product_sizes.non_exchange'])->orderBy('product_sizes.id', 'asc');
                 },
                 'colors' => function($query) {
                     $query->select(['colours.id', 'colours.title', 'colours.color_code']);

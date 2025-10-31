@@ -24,5 +24,8 @@ use App\Models\Admin\Permissions;
 	<td class="text-center" >
 		<?php echo $row->status ? "<span class='text-success'>In Stock</span>" : "<span class='text-danger'>Out of Stock</span>" ?>
 	</td>
+	<td class="text-center" >
+		<?php echo $row->non_exchange ? 'Yes' : 'No' ?>
+	</td>
 </tr>
 <?php endforeach; ?>

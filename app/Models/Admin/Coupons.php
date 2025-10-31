@@ -57,6 +57,7 @@ class Coupons extends AppModel
                 'owner.last_name as owner_last_name'
             ])
             ->leftJoin('admins as owner', 'owner.id', '=', 'coupons.created_by')
+            ->groupBy('uuid')
             ->orderBy($orderBy, $direction);
 
         if(!empty($where))

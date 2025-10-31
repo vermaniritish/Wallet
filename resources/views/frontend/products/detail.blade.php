@@ -139,13 +139,11 @@ use Illuminate\Support\Str;
                                             @endif
                                         </div>
                                         
-                                        @if($product->non_exchange)
-                                        <div class="product_sort_info font-xs mb-30">
+                                        <div class="product_sort_info font-xs mb-30" v-if="nonExchangeable">
                                             <ul>
                                                 <li class="mb-10" style="color:#d1001f;font-weight:bold;"><i class="fi-rs-refresh mr-5"></i> Made to order only. This is a Non-Exchangeable & Non-Refundable product.</li>
                                             </ul>
                                         </div>
-                                        @endif
 
                                         <span id="productId" class="d-none">{{ $product->id }}</span>
                                         <pre id="product-sizes" class="d-none">{{ json_encode($product->sizes ? $product->sizes : []) }}</pre>
@@ -176,11 +174,11 @@ use Illuminate\Support\Str;
                                                                 <small class="productsizes-stockinfo2" style="color:#088178">£@{{s.price}}</small>
                                                             </div>
                                                             <div class="quantity__box" v-if="s.status">
-                                                                <button type="button" class="quantity__value" aria-label="quantity value" value="Decrease Value" v-on:click="decrement(s.id)">-</button>
+                                                                <button type="button" class="quantity__value" aria-label="quantity value" value="Decrease Value" v-on:click="decrement(s)">-</button>
                                                                 <label>
                                                                     <input type="number" class="quantity__number quickview__value--number" v-on:input="manualQty"  :data-id="s.id" :value="s.quantity && s.quantity > 0 ? s.quantity : ``" />
                                                                 </label>
-                                                                <button type="button" class="quantity__value" aria-label="quantity value" value="Increase Value"  v-on:click="increment(s.id)">+</button>
+                                                                <button type="button" class="quantity__value" aria-label="quantity value" value="Increase Value"  v-on:click="increment(s)">+</button>
                                                             </div>
                                                             <div class="quantity__box" v-else>
                                                                 <button type="button" class="quantity__value" style="width: 100%;padding: 8px 0;"><small style="font-size: 80%;" class="text-danger">Out of Stock</small></button>
