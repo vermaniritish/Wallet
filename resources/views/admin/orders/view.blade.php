@@ -167,6 +167,10 @@ $currency = Settings::get('currency_symbol');
 										<th>Ship Mode</th>
 										<td><?php echo $page->shipping_gateway ? ($page->shipping_gateway) : '-' ?></td>
 									</tr>
+									<tr>
+										<th>Order Note</th>
+										<td><?php echo $page->note ? ($page->note) : '-' ?></td>
+									</tr>
 								</tbody>
 							</table>
 						</div>
