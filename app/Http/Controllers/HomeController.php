@@ -121,7 +121,6 @@ class HomeController extends BaseController
             ->where('product_id', $product->id)
 			->orderBy('sizes.sort_order', 'asc')
 			->get();
-			pr($product->sizes); die;
             $similarProducts = Products::select(
 				[
 					'products.id',
