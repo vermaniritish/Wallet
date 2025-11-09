@@ -223,7 +223,6 @@ class Addresses extends AppModel
 	    {
             if(isset($data['title']) && $data['title'])
             {
-                $product->slug = Str::slug($product->title) . '-' . General::encode($product->id);
                 $product->save();
             }
 
