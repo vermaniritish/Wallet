@@ -10,6 +10,13 @@
                 <form method="post">
                 {{ @csrf_field() }}
                 <div class="form-group">
+                    <p class="mb-10 font-sm">Title</p>
+                    <input type="text" name="title" required="" value="{{$address->title}}">
+                    @error('title')
+                        <small class="text-danger">{{ $message }}</small>
+                    @enderror
+                </div>
+                <div class="form-group">
                     <p class="mb-10 font-sm">Address</p>
                     <input type="text" name="address" required="" value="{{$address->address}}">
                     @error('address')

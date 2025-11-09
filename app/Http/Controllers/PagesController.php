@@ -265,6 +265,7 @@ class PagesController extends BaseController
             $validator = Validator::make(
                 $data,
                     [
+                        'title' => 'required',
                         'address' => 'required',
                         'area' => 'required',
                         'city' => 'required',
