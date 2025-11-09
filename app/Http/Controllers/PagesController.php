@@ -58,11 +58,11 @@ class PagesController extends BaseController
         $user = $request->session()->get('user');
         $addresses = Addresses::where('user_id', $user->id)
             ->where(function($q) use ($search) {
-                return $q->where('title', 'LIKE', $search.'%')
-                    ->orWhere('address', 'LIKE', $search.'%')
-                    ->orWhere('area', 'LIKE', $search.'%')
-                    ->orWhere('city', 'LIKE', $search.'%')
-                    ->orWhere('state', 'LIKE', $search.'%');
+                return $q->orWhere('title', 'LIKE', '%'.$search.'%')
+                    ->orWhere('address', 'LIKE', '%'.$search.'%')
+                    ->orWhere('area', 'LIKE', '%'.$search.'%')
+                    ->orWhere('city', 'LIKE', '%'.$search.'%')
+                    ->orWhere('state', 'LIKE', '%'.$search.'%');
             })
             ->orderBy('id', 'desc')
             ->limit(50)
