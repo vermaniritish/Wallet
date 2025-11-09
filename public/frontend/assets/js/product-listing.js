@@ -1224,7 +1224,7 @@ checkoutPage = new Vue({
                     checkoutPage.checkout.address = item.address;
                     checkoutPage.checkout.address2 = item.area;
                     checkoutPage.checkout.city = item.city;
-                    checkoutPage.checkout.postalcode = item.postalcode;
+                    checkoutPage.checkout.postalcode = item.postcode;
                 }
             }).data("ui-autocomplete")._renderItem = function (ul, item) {
                 return $("<li>")
