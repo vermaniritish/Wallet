@@ -4,7 +4,9 @@ use Illuminate\Support\Str;
 ?>
 @extends('layouts.frontendlayout')
 @section('content')
-<?php $colorIds = Arr::pluck($product->colors, 'id'); 
+<?php 
+$colorIds = Arr::pluck($product->colors, 'id'); 
+pr($product->sizes); die;
 ?>
 <div id="product-page">
 <div class="page-header breadcrumb-wrap">
