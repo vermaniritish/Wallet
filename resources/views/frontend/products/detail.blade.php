@@ -6,6 +6,9 @@ use Illuminate\Support\Str;
 @section('content')
 <?php 
 $colorIds = Arr::pluck($product->colors, 'id'); 
+$nonExchange = $product->non_exchange || $product->sizes->filter(function ($size) {
+    return $size->non_exchange == 1;
+})->count() > 0;
 ?>
 <div id="product-page">
 <div class="page-header breadcrumb-wrap">
@@ -211,7 +214,7 @@ $colorIds = Arr::pluck($product->colors, 'id');
 										<div class="bt-1 border-color-1 mt-30 mb-30"></div>
 										@endif
                                         
-										@if($product->non_exchange)
+										@if($nonExchange)
 										<div class="form-group">
 											<div class="checkbox">
 												<div class="custome-checkbox">
