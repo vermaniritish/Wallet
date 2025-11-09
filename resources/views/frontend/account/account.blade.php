@@ -27,6 +27,10 @@
                         <label>Email Address <span class="required">*</span></label>
                         <input required="" class="form-control square" name="email" type="email" value="{{ $user->email }}" disabled>
                     </div>
+                    <div class="form-group col-md-12">
+                        <label>Phone Number <span class="required">*</span></label>
+                        <input required="" class="form-control square" type="phone" value="{{ $user->phonenumber }}" disabled>
+                    </div>
                     <div class="col-md-12">
                         <button type="submit" class="btn btn-fill-out submit">Save</button>
                     </div>

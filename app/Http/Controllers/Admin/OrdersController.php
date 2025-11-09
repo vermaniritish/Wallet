@@ -17,7 +17,9 @@ use Illuminate\Support\Facades\Validator;
 use App\Models\Admin\Permissions;
 use App\Models\Admin\Coupons;
 use App\Models\Admin\Admins;
+use App\Models\Admin\Shops;
 use App\Models\Admin\BlogCategories;
+use App\Models\Admin\Schools;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Str;
 use App\Libraries\FileSystem;
@@ -62,12 +64,21 @@ class OrdersController extends AppController
     		$search = $request->get('search');
     		$search = '%' . $search . '%';
     		$where['(
-				orders.id LIKE ? or
-				orders.customer_name LIKE ? or
+				orders.prefix_id LIKE ? or
+				orders.first_name LIKE ? or
+				orders.last_name LIKE ? or
+				orders.customer_email LIKE ? or
+				orders.customer_phone LIKE ? or
+				orders.company LIKE ? or
 				orders.address LIKE ? or
 				orders.status LIKE ? or
-			 	orders.total_amount LIKE ?)'] = [$search, $search, $search, $search, $search];
+				orders.coupon_code LIKE ? or
+			 	orders.total_amount LIKE ?)'] = [$search, $search, $search, $search, $search, $search, $search, $search, $search, $search];
     	}
+
+    	if($request->get('coupon')) {
+			$where['orders.coupon_code'] = $request->get('coupon');
+		}
 
     	if($request->get('created_on'))
     	{
@@ -105,6 +116,22 @@ class OrdersController extends AppController
 		{
 			$where['orders.status'] = $request->get('status');
 		}
+
+		if($request->get('source') == 'website') {
+			$where[] = '(orders.shop_id is null)';
+		}
+		else if($request->get('source') == 'shop') {
+			$where[] = '(orders.shop_id is not null)';
+		}
+		if($request->get('shipping') == 'parcelforce') {
+			$where['( orders.shipping_gateway LIKE ? or orders.shipping_gateway LIKE ?)'] = ['%Parcel Force%', 'parcelforce'];
+		}
+		else if($request->get('shipping') == 'dpd') {
+			$where['( orders.shipping_gateway LIKE ? or orders.shipping_gateway LIKE ?)'] = ['DPD', 'dpd'];
+		}
+		elseif($request->get('shipping')) {
+			$where['( orders.shipping_gateway LIKE ?)'] = ['%'.$request->get('shipping').'%'];
+		}
     	$listing = Orders::getListing($request, $where);
     	if($request->ajax())
     	{
@@ -133,7 +160,9 @@ class OrdersController extends AppController
 	    		[
 					'status' => Orders::getStaticData()['status'],
 	    			'listing' => $listing,
-	    			'admins' => $filters['admins']
+	    			'admins' => $filters['admins'],
+					'shops' => Shops::select(['id', 'name', 'status'])->orderBy('name', 'asc')->get(),
+					'schools' => Schools::select(['id', 'schooltype', 'name', 'status'])->orderBy('name', 'asc')->get()
 	    		]
 	    	);
 	    }
@@ -159,7 +188,7 @@ class OrdersController extends AppController
 	    	);
 	    }
     	return [
-	    	'admins' => $admins
+	    	'admins' => $admins,
     	];
     }
 
@@ -377,27 +406,32 @@ class OrdersController extends AppController
 
 	function download(Request $request, $id)
     {
-    	$page = Orders::get($id);
-		$where = ['order_products.order_id' => $id];
-		$listing = OrderProductRelation::getListing($request, $where);
-		
-    	if($page)
-    	{
+		$id = Orders::select(['id'])->where(function($q) use ($id) {
+			return $q->where('id', $id)->orWhere('prefix_id', $id);
+		})->limit(1)->pluck('id')->first();
+    	if($id)
+		{
+			$page = Orders::get($id);
+			$where = ['order_products.order_id' => $id];
+			$listing = OrderProductRelation::getListing($request, $where);
 			$html = view(
 				"admin/orders/pdf", 
 				[
 					'page' => $page,
-					'listing' => $listing
+					'listing' => $listing,
+					'logo' => Settings::get('logo')
 				]
 			)->render();
 			$mpdf = new \Mpdf\Mpdf([
-                'tempDir' => public_path('/uploads'),
-                'mode' => 'utf-8', 
-                'orientation' => 'P',
-                'format' => [210, 297],
-                'setAutoTopMargin' => true,
-                'margin_left' => 0,'margin_right' => 0,'margin_top' => 0,'margin_bottom' => 0,'margin_header' => 0,'margin_footer' => 0
-            ]);
+				'tempDir' => public_path('/uploads'),
+				'mode' => 'utf-8',
+				'format' => 'A4',
+				'orientation' => 'P',
+				'margin_left' => 10,
+				'margin_right' => 10,
+				'margin_top' => 10,
+				'margin_bottom' => 10,
+			]);
 			$mpdf->showImageErrors = true;
 			$mpdf->WriteHTML($html);
             $mpdf->Output('Order-'.$page->prefix_id.'.pdf','I');

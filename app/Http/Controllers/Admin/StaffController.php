@@ -20,6 +20,7 @@ use Illuminate\Validation\Rule;
 use App\Libraries\FileSystem;
 use App\Http\Controllers\Admin\AppController;
 use App\Models\Admin\Orders;
+use App\Models\Admin\Shops;
 use App\Models\Admin\Settings;
 use App\Models\Admin\Staff;
 use App\Models\Admin\StaffDocuments;
@@ -150,6 +151,7 @@ class StaffController extends AppController
     		$validator = Validator::make(
 	            $request->toArray(),
 	            [
+					'shops' => 'required|array',
 					'first_name' => 'required',
 					'last_name' => 'required',
 					'email' => [
@@ -183,6 +185,7 @@ class StaffController extends AppController
 		}
 
 	    return view("admin/staff/add", [
+					'shops' => Shops::select(['id', 'name', 'status'])->orderBy('name', 'asc')->get()
 	    		]);
     }
 
@@ -283,7 +286,7 @@ class StaffController extends AppController
 						'email' => [
 							'required',
 							'email',
-							Rule::unique('staff','email')->whereNull('deleted_at'),
+							Rule::unique('staff','email')->whereNull('deleted_at')->ignore($id),
 						],
 						'phone_number' => ['required','numeric','digits:10',],
 						'image' => ['nullable'],
@@ -343,7 +346,8 @@ class StaffController extends AppController
 			}
 
 			return view("admin/staff/edit", [
-    			'page' => $page
+    			'page' => $page,
+				'shops' => Shops::select(['id', 'name', 'status'])->orderBy('name', 'asc')->get()
     		]);
 		}
 		else

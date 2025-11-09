@@ -19,7 +19,7 @@
                     <div class="col-md-8">
                         <div class="dashboard-content">
                             @if(isset($screen) && $screen == 'dashboard')
-                                @include('frontend.account.dashboard', ['screen' => 'dashboard'])
+                                @include('frontend.account.dashboard', ['screen' => 'dashboard', 'user' => $user])
                             @endif
                             @if(isset($screen) && $screen == 'orders')
                                 @include('frontend.account.orders', ['screen' => 'orders'])

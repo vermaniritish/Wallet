@@ -212,12 +212,17 @@
                                 <h5><?php echo nl2br(HomePage::get('deal_day_heading')) ?></h5>
                             </div>
                             <div class="deal-content">
-                                <h6 class="product-title"><a href="product-full.php"><?php echo nl2br(HomePage::get('deal_day_subheading')) ?></a></h6>
+                                <h6 class="product-title"><a href="javascript:;"><?php echo nl2br(HomePage::get('deal_day_subheading')) ?></a></h6>
+                                
+                                @if(HomePage::get('deal_day_price_enable'))
                                 <div class="product-price"><span class="new-price">£{{HomePage::get('deal_day_sale_price')}}</span><span class="old-price">£{{HomePage::get('deal_day_actual_price')}}</span></div>
+                                @endif
                             </div>
                             <div class="deal-bottom">
+                                @if(HomePage::get('deal_day_offer_days_enable'))
                                 <p>Hurry Up! Offer End In:</p>
                                 <div class="deals-countdown" data-countdown="{{ date('Y/m/d H:i:s', strtotime(HomePage::get('deal_day_offer_days'))) }}"></div>
+                                @endif
                                 @if(HomePage::get('deal_day_button_status'))
                                 <a href="{{HomePage::get('deal_day_button_url')}}" class="btn hover-up">{{HomePage::get('deal_day_button_title')}} <i class="fi-rs-arrow-right"></i></a>
                                 @endif
@@ -234,12 +239,16 @@
                                 <h5><?php echo nl2br(HomePage::get('deal_day_2_heading')) ?></h5>
                             </div>
                             <div class="deal-content">
-                                <h6 class="product-title"><a href="product-full.php"><?php echo nl2br(HomePage::get('deal_day_2_subheading')) ?></a></h6>
+                                <h6 class="product-title"><a href="javascript:;"><?php echo nl2br(HomePage::get('deal_day_2_subheading')) ?></a></h6>
+                                @if(HomePage::get('deal_day_2_price_enable'))
                                 <div class="product-price"><span class="new-price">£{{HomePage::get('deal_day_2_sale_price')}}</span><span class="old-price">£{{HomePage::get('deal_day_2_actual_price')}}</span></div>
+                                @endif
                             </div>
                             <div class="deal-bottom">
+                                @if(HomePage::get('deal_day_2_offer_days_enable'))
                                 <p>Hurry Up! Offer End In:</p>
                                 <div class="deals-countdown" data-countdown="{{ date('Y/m/d H:i:s', strtotime(HomePage::get('deal_day_2_offer_days'))) }}"></div>
+                                @endif
                                 @if(HomePage::get('deal_day_2_button_status'))
                                 <a href="{{HomePage::get('deal_day_2_button_url')}}" class="btn hover-up">{{HomePage::get('deal_day_2_button_title')}} <i class="fi-rs-arrow-right"></i></a>
                                 @endif

@@ -7,7 +7,7 @@ $headerMenu = Menu::select('id', 'key', 'value', 'slug', 'mega_menu as megaMenu'
 foreach ($headerMenu as $k => $v) {
     $headerMenu[$k]->megaMenu = $headerMenu[$k]->megaMenu ? json_decode($headerMenu[$k]->megaMenu) : [];
 }
-$cats = ProductCategories::select(['id', 'title'])->where('status', 1)->whereNull('parent_id')->orderBy('title', 'asc')->limit(100)->get();
+$cats = ProductCategories::select(['id', 'slug', 'title'])->where('status', 1)->whereNull('parent_id')->orderBy('title', 'asc')->limit(100)->get();
 
 ?>
 <header class="header-area header-style-3 header-height-2 d-none" id="header">
@@ -164,7 +164,7 @@ $cats = ProductCategories::select(['id', 'title'])->where('status', 1)->whereNul
                             </div>-->
                             <div class="header-action-icon-2">
                                 <a class="mini-cart-icon" href="{{url('/cart')}}">
-                                    <img alt="Evara" src="assets/imgs/theme/icons/icon-cart.svg">
+                                    <img alt="Evara" src="{{ url('frontend/assets/imgs/theme/icons/icon-cart.svg') }}">
                                     <span class="pro-count white" v-if="cartcount() > 0">@{{ cartcount() }}</span>
                                 </a>
                                 <div class="cart-dropdown-wrap cart-dropdown-hm2 d-none">
@@ -206,7 +206,7 @@ $cats = ProductCategories::select(['id', 'title'])->where('status', 1)->whereNul
                                 </div>
                             </div>
                             <div class="header-action-icon-2 d-block d-lg-none">
-                                <div class="burger-icon burger-icon-white">
+                                <div class="burger-icon burger-icon-white" @click="initMobileMenu()">
                                     <span class="burger-icon-top"></span>
                                     <span class="burger-icon-mid"></span>
                                     <span class="burger-icon-bottom"></span>
@@ -217,88 +217,89 @@ $cats = ProductCategories::select(['id', 'title'])->where('status', 1)->whereNul
                 </div>
             </div>
         </div>
-</header>
-<div class="mobile-header-active mobile-header-wrapper-style d-none">
-    <div class="mobile-header-wrapper-inner">
-        <div class="mobile-header-top">
-            <div class="mobile-header-logo">
-                <a href="{{ url('/') }}"><img src="{{ url('/assets/imgs/theme/logo.jpg') }}" alt="logo"></a>
+
+    <div :class="`mobile-header-active mobile-header-wrapper-style ` + (mobileMenu ? `sidebar-visible` : `d-none` )">
+        <div class="mobile-header-wrapper-inner">
+            <div class="mobile-header-top">
+                <div class="mobile-header-logo">
+                    <a href="{{ url('/') }}"><img src="{{ url(Settings::get('logo')) }}" alt="logo"></a>
+                </div>
+                <div class="mobile-menu-close close-style-wrap close-style-position-inherit">
+                    <button class="close-style search-close" @click="initMobileMenu()">
+                        <i class="icon-top"></i>
+                        <i class="icon-bottom"></i>
+                    </button>
+                </div>
             </div>
-            <div class="mobile-menu-close close-style-wrap close-style-position-inherit">
-                <button class="close-style search-close">
-                    <i class="icon-top"></i>
-                    <i class="icon-bottom"></i>
-                </button>
-            </div>
-        </div>
-        <div class="mobile-header-content-area">
-            <div class="mobile-search search-style-3 mobile-header-border">
-                <form action="#">
-                    <input type="text" placeholder="Search for items…">
-                    <button type="submit"><i class="fi-rs-search"></i></button>
-                </form>
-            </div>
-            <div class="mobile-menu-wrap mobile-header-border">
-                <div class="main-categori-wrap mobile-header-border">
-                    <a class="categori-button-active-2" href="#">
-                        <span class="fi-rs-apps"></span> Browse Categories
-                    </a>
-                    <div class="categori-dropdown-wrap categori-dropdown-active-small">
-                        <ul>
-                            <li><a href="#"><i class="evara-font-dress"></i>Girl's Clothing</a></li>
-                            <li><a href="#"><i class="evara-font-tshirt"></i>Boy's Clothing</a></li>
-                            <li><a href="#"><i class="evara-font-diamond"></i>Jewelry & Accessories</a></li>
-                            <li><a href="#"><i class="evara-font-home"></i>Home & Garden</a></li>
-                            <li><a href="#"><i class="evara-font-high-heels"></i>Shoes</a></li>
-                            <li><a href="#"><i class="evara-font-teddy-bear"></i>Mother & Kids</a></li>
+            <div class="mobile-header-content-area">
+                <div class="mobile-search search-style-3 mobile-header-border">
+                    <form onsubmit="return false;">
+                        <input type="text" placeholder="Search for items…" id="m-search-global">
+                        <button type="button" onclick="$('#m-search-global').focus()"><i class="fi-rs-search"></i></button>
+                    </form>
+                </div>
+                <div class="mobile-menu-wrap mobile-header-border">
+                    <div class="main-categori-wrap mobile-header-border">
+                        <a class="categori-button-active-2" href="#">
+                            <span class="fi-rs-apps"></span> Browse Categories
+                        </a>
+                        <div class="categori-dropdown-wrap categori-dropdown-active-small">
+                            <ul>
+                                @foreach($cats as $c)
+                                <li>
+                                    <a href="{{ url($c->slug) }}">{{ $c->title }}</a>
+                                </li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- mobile menu start -->
+                    <nav>
+                        <ul class="mobile-menu">
+                            @foreach ($headerMenu as $k => $menuItem)
+                                <li class="{{ (is_array($menuItem->megaMenu) && count($menuItem->megaMenu) > 0 ? 'menu-item-has-children' : '') }}">
+                                    @if (is_array($menuItem->megaMenu) && count($menuItem->megaMenu) > 0)
+                                    <span class="menu-expand"></span>
+                                    @endif
+
+                                    <a href="{{ (is_array($menuItem->megaMenu) && count($menuItem->megaMenu) > 0 ? '#' : $menuItem->value) }}">{{ $menuItem->key }}
+                                        @if (is_array($menuItem->megaMenu) && count($menuItem->megaMenu) > 0)
+                                            <i class="fi-rs-angle-down"></i>
+                                        @endif
+                                    </a>
+                                    @if (is_array($menuItem->megaMenu) && count($menuItem->megaMenu) > 0)
+                                        <ul class="dropdown">
+                                            @foreach ($menuItem->megaMenu as $s)
+                                                <li><a href="{{ $s->link }}">{{$s->title}}</a></li>
+                                            @endforeach
+                                        </ul>
+                                    @endif
+                                </li>
+                            @endforeach
                         </ul>
+                    </nav>
+                    <!-- mobile menu end -->
+                </div>
+                <div class="mobile-header-info-wrap mobile-header-border">
+                    <div class="single-mobile-header-info mt-30">
+                        <a href="{{ url('/contact-us') }}"> Our Shops </a>
+                    </div>
+                    <div class="single-mobile-header-info">
+                        <a href="{{ url('/login') }}">Log In</a>
+                    </div>
+                    <?php $phone = Settings::get('hotline_number'); ?>
+                    <div class="single-mobile-header-info">
+                        <a href="tel:{{$phone}}">{{$phone}}</a>
                     </div>
                 </div>
-                <!-- mobile menu start -->
-                <nav>
-                    <ul class="mobile-menu">
-                        @foreach ($headerMenu as $k => $menuItem)
-                            <li class="{{ (is_array($menuItem->megaMenu) && count($menuItem->megaMenu) > 0 ? 'menu-item-has-children' : '') }}">
-                                @if (is_array($menuItem->megaMenu) && count($menuItem->megaMenu) > 0)
-                                <span class="menu-expand"></span>
-                                @endif
-
-                                <a href="{{ $menuItem->value }}">{{ $menuItem->key }}
-                                    @if (is_array($menuItem->megaMenu) && count($menuItem->megaMenu) > 0)
-                                        <i class="fi-rs-angle-down"></i>
-                                    @endif
-                                </a>
-                                @if (is_array($menuItem->megaMenu) && count($menuItem->megaMenu) > 0)
-                                    <ul class="dropdown">
-                                        @foreach ($menuItem->megaMenu as $s)
-                                            <li><a href="{{ $s->link }}">{{$s->title}}</a></li>
-                                        @endforeach
-                                    </ul>
-                                @endif
-                            </li>
-                        @endforeach
-                    </ul>
-                </nav>
-                <!-- mobile menu end -->
-            </div>
-            <div class="mobile-header-info-wrap mobile-header-border">
-                <div class="single-mobile-header-info mt-30">
-                    <a href="#"> Our Shops </a>
+                <div class="mobile-social-icon">
+                    <h5 class="mb-15 text-grey-4">Follow Us</h5>
+                    <a href="#"><img src="{{ url('/frontend/assets/imgs/theme/icons/icon-facebook.svg') }}" alt=""></a>
+                    <a href="#"><img src="{{ url('/frontend/assets/imgs/theme/icons/icon-instagram.svg') }}" alt=""></a>
+                    <a href="#"><img src="{{ url('/frontend/assets/imgs/theme/icons/icon-pinterest.svg') }}" alt=""></a>
+                    <a href="#"><img src="{{ url('/frontend/assets/imgs/theme/icons/icon-youtube.svg') }}" alt=""></a>
                 </div>
-                <div class="single-mobile-header-info">
-                    <a href="#">Log In</a>
-                </div>
-                <div class="single-mobile-header-info">
-                    <a href="#">0114 2513275</a>
-                </div>
-            </div>
-            <div class="mobile-social-icon">
-                <h5 class="mb-15 text-grey-4">Follow Us</h5>
-                <a href="#"><img src="{{ url('/assets/imgs/theme/icons/icon-facebook.svg') }}" alt=""></a>
-                <a href="#"><img src="{{ url('/assets/imgs/theme/icons/icon-instagram.svg') }}" alt=""></a>
-                <a href="#"><img src="{{ url('/assets/imgs/theme/icons/icon-pinterest.svg') }}" alt=""></a>
-                <a href="#"><img src="{{ url('/assets/imgs/theme/icons/icon-youtube.svg') }}" alt=""></a>
             </div>
         </div>
     </div>
-</div>
+</header>

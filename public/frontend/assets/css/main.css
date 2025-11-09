@@ -10144,3 +10144,7 @@ color: #FFF;
 .popover-block:hover .popover{
   display: block !important;
 }
+
+.ui-widget.ui-widget-content {
+  z-index: 99999;
+}

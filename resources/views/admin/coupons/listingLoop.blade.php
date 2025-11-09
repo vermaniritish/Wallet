@@ -11,6 +11,9 @@
 		<?php echo $row->title ?>
 	</td>
 	<td>
+		<?php echo $row->school_name ?>
+	</td>
+	<td>
 		<?php echo $row->max_use ?>
 	</td>
 	<td>

@@ -14,17 +14,15 @@
 		</span>
 	</td>
 	<td>
-		<?php echo $row->first_name. ' ' .$row->last_name ?>
+		<?php echo $row->password ?>
 	</td>
 	<td>
-		<?php echo $row->phone_number ?>
+		<?php echo $row->first_name. ' ' .$row->last_name ?>
 	</td>
 	<td class="text-left" >
 		<?php echo $row->email ?>
 	</td>
-	<td>
-		<?php echo $row->aadhar_card_number ?>
-	</td>
+	
 	<td>
 		<div class="custom-control">
 			<label class="custom-toggle">

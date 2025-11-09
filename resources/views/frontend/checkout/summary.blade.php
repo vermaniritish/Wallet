@@ -16,24 +16,27 @@
                     <td  width="60%">
                         <h5><a :href="'/' + c.slug">@{{c.title}}</a></h5> <span class="product-qty">x @{{c.quantity && c.quantity > 0 ? c.quantity : ``}}</span>
                         <p class="font-xs">SKU: @{{c.sku_number}}, Size: @{{c.size_title}}, Color: @{{c.color}}</p>
-                        <div class="font-xs position-relative popover-block">
-                            <span 
-                                class="text-danger font-xs" 
-                                v-if="c.customization && c.customization.length > 0"
-                            >@{{ c.customization.length }} customization added worth £@{{(c.quantity * getCustomizationCost(c.customization)).toFixed(2)}}.</span>
-                            <div v-if="c.customization && c.customization.length > 0" class="popover bs-popover-auto fade show" data-popper-placement="right" role="tooltip" id="popover995992" style="position: absolute; top: -46px; right: -60%; bottom: unset; left: unset; margin: 0px; display: none;">
-                                <div class="popover-arrow" style="position: absolute; transform: translate(0px, 47px);"></div>
-                                <h3 class="popover-header">Customization</h3>
-                                <div class="popover-body pt-2">
-                                    <ul>
-                                        <li v-for="l in c.customization" style="border-bottom: 1px solid #eee;padding: 5px 0;">
-                                            <span class="text-muted">@{{ l.title }} | @{{ formatMoney(l.cost) }}</span><br />
-                                            <strong>@{{ l.initial }}</strong>
-                                        </li>
-                                    </ul>
+                        <div class="font-xs" v-if="c.customization && c.customization.length > 0">
+                            <span class="position-relative popover-block">
+                                <span 
+                                    class="text-danger font-xs" 
+                                    
+                                >@{{ c.customization.length }} customization added worth £@{{(c.quantity * getCustomizationCost(c.customization)).toFixed(2)}}.</span>
+                                <div v-if="c.customization && c.customization.length > 0" class="popover bs-popover-auto fade show" data-popper-placement="right" role="tooltip" id="popover995992" style="position: absolute; top: -46px; right: -80%; bottom: unset; left: unset; margin: 0px; display: none;">
+                                    <div class="popover-arrow" style="position: absolute; transform: translate(0px, 47px);"></div>
+                                    <h3 class="popover-header">Customization</h3>
+                                    <div class="popover-body pt-2">
+                                        <ul>
+                                            <li v-for="l in c.customization" style="border-bottom: 1px solid #eee;padding: 5px 0;">
+                                                <span class="text-muted">@{{ l.title }} | @{{ formatMoney(l.cost) }}</span><br />
+                                                <strong>@{{ l.initial }}</strong>
+                                            </li>
+                                        </ul>
+                                    </div>
                                 </div>
-                            </div>
+                            </span>
                         </div>
+                        <p v-if="c.non_exchange == 1 || c.non_exchange == '1'" class="font-xs" style="color: rgb(209, 0, 31);"> Made to order only. This is a Non-Exchangeable &amp; Non-Refundable product.</p>
                     </td>
                     <td  width="15%">£@{{c.quantity && c.quantity > 0 ? (c.quantity*c.price).toFixed(2) : ``}}</td>
                 </tr>
@@ -78,15 +81,15 @@
                     <th>Shipping & Handling Charges</th>
                     <td colspan="2">
                         <div class="shipping_option">
-                            <div class="custome-radio">
-                                <input class="form-check-input" required="" type="radio" name="shipping_option" value="parcelforce" id="exampleRadios1a" change="handleShipping">
+                            <div class="custome-radio" v-if="parcelforceEnable">
+                                <input class="form-check-input" required="" type="radio" name="shipping_option" value="parcelforce" id="exampleRadios1a" @change="handleShipping">
                                 <label class="form-check-label" for="exampleRadios1a" data-bs-toggle="collapse" data-target="#parcellavbel"  aria-controls="parcellavbel">{{_currency($settings['shipping_cost_parcelforce'])}} - Ship to Address by Parcel Force</label>
                                 <div class="form-group collapse in" id="parcellavbel">
                                     <p class="text-muted mt-5"></p>
                                 </div>
                             </div>
-                            <div class="custome-radio">
-                                <input class="form-check-input" required="" type="radio" name="shipping_option" id="dpd" value="dpd"@change="handleShipping">
+                            <div class="custome-radio"  v-if="dpdEnable">
+                                <input class="form-check-input" required="" type="radio" name="shipping_option" id="dpd" value="dpd" @change="handleShipping">
                                 <label class="form-check-label" for="dpd" data-bs-toggle="collapse" data-target="#dpdlabel"  aria-controls="dpdlabel">{{_currency($settings['shipping_cost_dpd'])}} - Ship to Address by DPD</label>
                                 <div class="form-group collapse in" id="dpdlabel">
                                     <p class="text-muted mt-5"></p>
@@ -149,5 +152,5 @@
             </div>
         </div>
     </div>
-    <a href="#" v-on:click="submit" class="btn btn-fill-out btn-block mt-30"><i class="fa fa-spin fa-spinner" v-if="saving"></i> Place Order</a>
+    <a href="javascript:;" v-on:click="submit" class="btn btn-fill-out btn-block mt-30"><i class="fa fa-spin fa-spinner" v-if="saving"></i> Place Order</a>
 </div>

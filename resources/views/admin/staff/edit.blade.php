@@ -29,12 +29,25 @@
 					</div>
 				</div>
 				<div class="card-body">
-					<form method="post" action="<?php echo route('admin.staff.add') ?>" class="form-validation">
+					<form method="post" action="<?php echo route('admin.staff.edit', ['id' => $page->id]) ?>" class="form-validation">
 						<!--!! CSRF FIELD !!-->
 						{{ @csrf_field() }}
 						<h6 class="heading-small text-muted mb-4">Staff information</h6>
 						<div class="pl-lg-4">
 						<div class="row">
+							<div class="col-md-12">
+								<div class="form-group">
+									<label class="form-control-label" for="input-first-name">Shops</label>
+									<select class="form-control" name="shops[]" multiple>
+										@foreach($shops as $k => $s)
+										<option value="{{$s->id}}" {{ (old('shops', $page->shops) && in_array($s->id, old('shops', $page->shops)) ? 'selected' : '') }} data-subtext="{{ ($s->status ? 'Active' : 'Inactive') }}">{{$s->name}}</option>
+										@endforeach							
+									</select>
+									@error('shops')
+										<small class="text-danger">{{ $message }}</small>
+									@enderror
+								</div>
+							</div>
 								<div class="col-md-6">
 									<div class="form-group">
 										<label class="form-control-label" for="input-first-name">First Name</label>
@@ -86,10 +99,10 @@
 								</div>
 							</div>
 						</div>
-						<hr class="my-4" />
+						<hr class="my-4  d-none" />
 						<!-- Address -->
-						<h6 class="heading-small text-muted mb-4">Publish Staff Image</h6>
-						<div class="pl-lg-4">
+						<h6 class="heading-small text-muted mb-4  d-none">Publish Staff Image</h6>
+						<div class="pl-lg-4  d-none">
 							<div class="row">
 								<div class="col-lg-6">
 									<div class="form-group">

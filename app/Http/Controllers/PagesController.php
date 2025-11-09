@@ -13,6 +13,7 @@ use App\Models\Admin\Shops;
 use App\Models\Admin\Faqs;
 use App\Models\Admin\OrderProductRelation;
 use App\Models\Admin\Settings;
+use App\Models\Admin\Addresses;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 class PagesController extends BaseController
@@ -37,15 +38,39 @@ class PagesController extends BaseController
     public function checkout(Request $request) 
     {
         $user = $request->session()->get('user');
-        $shops = Shops::select(['name'])->where('allow_pickup', 1)->where('status', 1)->limit(1)->get();
+        $shops = Shops::select(['name'])->where('allow_pickup', 1)->where('status', 1)->get();
         return view('frontend.checkout.index', [
             'page' => null,
             'user' => $user,
             'shops' => $shops,
             'settings' => [
                 'shipping_cost_parcelforce' => Settings::get('shipping_cost_parcelforce'),
-                'shipping_cost_dpd' => Settings::get('shipping_cost_dpd')
+                'shipping_cost_dpd' => Settings::get('shipping_cost_dpd'),
+                'shipping_parcelforce' => Settings::get('shipping_parcelforce'),
+                'shipping_dpd' => Settings::get('shipping_dpd'),
             ]
+        ]);
+    }
+
+    public function searchAddresses(Request $request)
+    {
+        $search = $request->get('search');
+        $user = $request->session()->get('user');
+        $addresses = Addresses::where('user_id', $user->id)
+            ->where(function($q) use ($search) {
+                return $q->where('title', 'LIKE', $search.'%')
+                    ->orWhere('address', 'LIKE', $search.'%')
+                    ->orWhere('area', 'LIKE', $search.'%')
+                    ->orWhere('city', 'LIKE', $search.'%')
+                    ->orWhere('state', 'LIKE', $search.'%');
+            })
+            ->orderBy('id', 'desc')
+            ->limit(50)
+            ->get();
+        
+        return Response()->json([
+            'status' => true,
+            'addresses' => $addresses
         ]);
     }
 
@@ -224,6 +249,53 @@ class PagesController extends BaseController
             'user' => $user,
             'order' => $order,
             'screen' => 'track-order'
+        ]);
+    }
+
+    function addresses(Request $request)
+    {
+        $data = $request->toArray();
+        $user = Users::find($request->session()->get('user')->id);
+        $address = Addresses::where('user_id', $user->id)->limit(1)->first();
+
+        if($request->isMethod('post'))
+        {
+            $data = $request->toArray();
+            unset($data['_token']);
+            $validator = Validator::make(
+                $data,
+                    [
+                        'address' => 'required',
+                        'area' => 'required',
+                        'city' => 'required',
+                        'state' => 'required',
+                        'postcode' => 'required',
+                    ]
+            );
+            if(!$validator->fails())
+            {
+                if(Addresses::modify($address->id, $data))
+                {
+                    $request->session()->flash( 'success', "Address updated.");
+    		        return redirect()->back();
+                }
+                else
+                {
+                    $request->session()->flash( 'error', "Address could not be saved." );
+    		        return redirect()->back();
+                }
+            }
+            else
+            {
+                $request->session()->flash( 'error', current(current($validator->errors())) );
+    		    return redirect()->back();
+            }
+        }
+        
+        return view('frontend.account.index', [
+            'user' => $user,
+            'address' => $address,
+            'screen' => 'address'
         ]);
     }
 

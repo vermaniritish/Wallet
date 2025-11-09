@@ -145,7 +145,7 @@
             </ul>
         </li>
         <?php endif; ?>
-        <?php if(Permissions::hasPermission('offers', 'listing')): ?>
+        <?php /*if(Permissions::hasPermission('offers', 'listing')): ?>
             <?php $active = strpos(request()->route()->getAction()['as'], 'admin.contactUs') > -1; ?>
             <li class="nav-item">
                 <a class="nav-link<?php echo ($active ? ' active' : '') ?>" href="<?php echo route('admin.offers') ?>">
@@ -153,7 +153,7 @@
                     <span class="nav-link-text">Offers</span>
                 </a>
             </li>
-        <?php endif; ?>
+        <?php endif;*/ ?>
         <?php if(Permissions::hasPermission('brands', 'listing')): ?>
             <?php $active = strpos(request()->route()->getAction()['as'], 'admin.brands') > -1; ?>
             <li class="nav-item">
@@ -217,7 +217,7 @@
                 </a>
             </li>
         <?php endif; ?>
-        <?php if(Permissions::hasPermission('ratings', 'listing')): ?>
+        <?php /*if(Permissions::hasPermission('ratings', 'listing')): ?>
             <?php $active = strpos(request()->route()->getAction()['as'], 'admin.ratings') > -1; ?>
             <li class="nav-item">
                 <a class="nav-link<?php echo ($active ? ' active' : '') ?>" href="<?php echo route('admin.ratings') ?>">
@@ -225,7 +225,7 @@
                     <span class="nav-link-text">Rating</span>
                 </a>
             </li>
-        <?php endif; ?>
+        <?php endif;*/ ?>
         <?php if(Permissions::hasPermission('sliders', 'listing')): ?>
             <?php $active = strpos(request()->route()->getAction()['as'], 'admin.sliders') > -1; ?>
             <li class="nav-item">

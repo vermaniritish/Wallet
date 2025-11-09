@@ -16,14 +16,14 @@
 									<i class="fas fa-ellipsis-v"></i>
 								</a>
 								<div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-									<?php if(Permissions::hasPermission('coupons', 'update')): ?>
+									<?php /*if(Permissions::hasPermission('coupons', 'update')): ?>
 										<a class="dropdown-item" href="<?php echo route('admin.coupons.edit', ['id' => $page->id]) ?>">
 											<i class="fas fa-pencil-alt text-info"></i>
 											<span class="status">Edit</span>
 										</a>
-										<?php endif; ?>
-									<?php if(Permissions::hasPermission('coupons', 'delete')): ?>
 										<div class="dropdown-divider"></div>
+									<?php endif;*/ ?>
+									<?php if(Permissions::hasPermission('coupons', 'delete')): ?>
 										<a 
 											class="dropdown-item _delete" 
 											href="javascript:;"
@@ -63,15 +63,6 @@
 									<th>Title</th>
 									<td><?php echo $page->title ?></td>
 								</tr>
-								
-								<tr>
-									<th>Maximum Use</th>
-									<td><?php echo $page->max_use ?></td>
-								</tr>
-								<tr>
-									<th>Used</th>
-									<td><?php echo $page->used ?></td>
-								</tr>
 								<tr>
 									<th>End Date</th>
 									<td><?php echo _d($page->end_date) ?></td>
@@ -81,13 +72,38 @@
 									<td><?php echo $page->description ?></td>
 								</tr>
 								<tr>
-									<th>Codes</th>
-									<td>
-										@foreach($coupons as $c)
-										<p class="m-0"><?php echo $c ?></p>
-										@endforeach
-									</td>
+									<th>Amount</th>
+									<td><?php echo $page->is_percentage ? $page->amount . '%' :  _currency($page->amount) ?></td>
 								</tr>
+								<tr>
+									<th>Minimum Order Amount</th>
+									<td><?php echo _currency($page->min_amount) ?></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<div class="card">
+					<div class="card-header">
+						<h3 class="mb-0">Coupons</h3>
+					</div>
+					<div class="table-responsive">
+						<table class="table table-bordered table-striped mt-3">
+							<thead>
+								<tr>
+									<th>Code</th>
+									<th>Max Usage Limit</th>
+									<th>Used</th>
+								</tr>
+							</thead>
+							<tbody>
+								@foreach ($coupons as $coupon)
+								<tr>
+									<td>{{ $coupon->coupon_code }}</td>
+									<td>{{ $coupon->max_use }}</td>
+									<td>{{ $coupon->used }}</td>
+								</tr>
+								@endforeach
 							</tbody>
 						</table>
 					</div>

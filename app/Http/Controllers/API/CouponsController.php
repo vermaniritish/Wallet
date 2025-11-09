@@ -15,11 +15,21 @@ class CouponsController extends BaseController
 {
     public function index(Request $request)
     {
-        $coupon = Coupons::where('coupon_code', 'LIKE', $request->get('code'))->where('status', 1)->limit(1)->first();
+        $coupon = Coupons::where('coupon_code', $request->get('code'))
+            ->where('status', 1)
+            ->whereColumn('used', '<', 'max_use')
+            ->first();
         if (!$coupon) {
-            return $this->error(trans('CATEGORY_NOT_FOUND'), Response::HTTP_NOT_FOUND);
+            return Response()->json(['status' => false]);
         }
+        
+        $coupon->amount = $coupon->amount * 1;
+        $coupon->is_percentage = $coupon->is_percentage * 1;
 
-        return $this->_index($request, APICoupons::class, new CouponsResource($coupon), ['usageNotExceeded','notExpired']);
+        return Response()
+			->json([
+				'status' => true,
+				'coupon' => $coupon
+			]);
     }
 }

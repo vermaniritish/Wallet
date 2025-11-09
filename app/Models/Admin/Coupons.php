@@ -54,9 +54,11 @@ class Coupons extends AppModel
         $listing = Coupons::select([
                 'coupons.*',
                 'owner.first_name as owner_first_name',
-                'owner.last_name as owner_last_name'
+                'owner.last_name as owner_last_name',
+                'schools.name as school_name'
             ])
             ->leftJoin('admins as owner', 'owner.id', '=', 'coupons.created_by')
+            ->leftJoin('schools', 'schools.id', '=', 'coupons.school_id')
             ->groupBy('uuid')
             ->orderBy($orderBy, $direction);
 

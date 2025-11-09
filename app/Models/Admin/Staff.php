@@ -15,9 +15,11 @@ class Staff extends AppModel
     protected $primaryKey = 'id';
     public $timestamps = false;
 
-    /**** ONLY USE FOR MAIN TALBLES NO NEED TO USE FOR RELATION TABLES OR DROPDOWNS OR SMALL SECTIONS ***/
-    use SoftDeletes;
 
+    protected $casts = [
+        'shops' => 'json',
+    ];
+    
     /**
     * Get resize images
     *
@@ -265,21 +267,12 @@ class Staff extends AppModel
     public static function remove($id)
     {
     	$staff = Staff::find($id);
-        $images = $staff->getResizeImagesAttribute();
-    	if($staff->delete())
+        $i = $staff->image;
+        if($staff->delete())
         {
-            if($images)
+            if($i && is_dir(public_path($i)) && file_exists(public_path($i)))
             {
-                foreach($images as $img)
-                {
-                    foreach($img as $i)
-                    {
-                        if($i && is_dir(public_path($i)) && file_exists(public_path($i)))
-                        {
-                            unlink(public_path($i));
-                        }
-                    }
-                }
+                unlink(public_path($i));
             }
             return true;
         }

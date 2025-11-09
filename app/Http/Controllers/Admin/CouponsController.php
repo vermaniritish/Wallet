@@ -17,6 +17,7 @@ use App\Models\Admin\Permissions;
 use App\Models\Admin\Coupons;
 use App\Models\Admin\Admins;
 use App\Models\Admin\BlogCategories;
+use App\Models\Admin\Schools;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Str;
 use App\Libraries\FileSystem;
@@ -24,6 +25,7 @@ use App\Libraries\General;
 use App\Models\Admin\Settings;
 use App\Http\Controllers\Admin\AppController;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 
 class CouponsController extends AppController
 {
@@ -48,8 +50,9 @@ class CouponsController extends AppController
     		$where['(
 				coupons.id LIKE ? or
 				coupons.title LIKE ? or
+				coupons.coupon_code LIKE ? or
 			 	owner.first_name LIKE ? or 
-				owner.last_name LIKE ?)'] = [$search, $search, $search, $search];
+				owner.last_name LIKE ?)'] = [$search, $search, $search, $search, $search];
     	}
 
     	if($request->get('created_on'))
@@ -70,6 +73,13 @@ class CouponsController extends AppController
     		$admins = $request->get('admins');
     		$admins = $admins ? implode(',', $admins) : 0;
     		$where[] = 'coupons.created_by IN ('.$admins.')';
+    	}
+
+		$schools = $request->get('schools') ? $request->get('schools') : [];
+		if($schools && array_filter($schools))
+    	{
+    		$schools = $schools ? implode(',', $schools) : 0;
+    		$where[] = 'coupons.school_id IN ('.$schools.')';
     	}
 
     	if($request->get('status') !== "" && $request->get('status') !== null)
@@ -105,7 +115,8 @@ class CouponsController extends AppController
 	    		"admin/coupons/index", 
 	    		[
 	    			'listing' => $listing,
-	    			'admins' => $filters['admins']
+	    			'admins' => $filters['admins'],
+					'schools' => Schools::where('status', 1)->orderBy('name', 'asc')->get()
 	    		]
 	    	);
 	    }
@@ -150,14 +161,16 @@ class CouponsController extends AppController
     		$validator = Validator::make(
 	            $request->toArray(),
 	            [
+					'school_id' => 'required',
 					'number_of_coupons' => 'required|integer|min:1',
 	                'title' => ['required'],
-					'coupon_code' => ['required', 'regex:/^[A-Za-z0-9]*[0-9]$/', Rule::unique('coupons','coupon_code')->whereNull('deleted_at')],
+					'coupon_code' => ['required', 'regex:/^[A-Z]+$/', Rule::unique('coupons','coupon_code')->whereNull('deleted_at')],
 					'max_use' => ['required', 'integer'],
 					'end_date' => 'required|date|after_or_equal:today',
 	                'description' => 'nullable',
 					'is_percentage' => ['required','boolean'],
-					'amount' => ['required']
+					'min_amount' => ['required', 'numeric'],
+        			'amount' => ['required', 'numeric', 'gte:min_amount'],
 	            ]
 	        );
 	        if(!$validator->fails())
@@ -166,25 +179,27 @@ class CouponsController extends AppController
 				unset($data['number_of_coupons']);
 				$formattedDateTime = date('Y-m-d H:i:s', strtotime($request->get('end_date')));
 				$data['end_date'] = $formattedDateTime;
-				$code = $request->coupon_code;
+				$prefix = $request->coupon_code;
 				$inserted = 0;
 				$data['uuid'] = General::hash();
-				for($i = 0; $i < $noCoupons; $i++)
-				{
-					if($i > 0)
-					{
-						$alpha = preg_replace('/[0-9]/', '', $code);
-						$numeric = preg_replace('/[^0-9]/', '', $code);
-						$num = $numeric !== '' ? intval($numeric) : 0;
-						$num++;
-						$newNumeric = str_pad($num, strlen($numeric), '0', STR_PAD_LEFT);
-						$newCode = $alpha . $newNumeric;
-						$code = $newCode;
-					}
-					$data['coupon_code'] = $code;
-	        		$page = Coupons::create($data);
-					$inserted++;
+				for ($i = 0; $i < $noCoupons; $i++) {
+					$randomLength = 10;           // random number size: 8 digits
+					do {
+						$randomNumber = mt_rand(
+							pow(10, $randomLength - 1),
+							pow(10, $randomLength) - 1
+						);
+
+						$couponCode = $prefix . $randomNumber;
+						$exists = Coupons::where('coupon_code', $couponCode)->exists();
+
+					} while ($exists); // repeat until UNIQUE
+
+					// Now store coupon
+					$data['coupon_code'] = $couponCode;
+					Coupons::create($data);
 				}
+
 
 				$request->session()->flash('success', $inserted . ' coupons created.');
 				return redirect()->route('admin.coupons');
@@ -197,7 +212,8 @@ class CouponsController extends AppController
 		}
 
 	    return view("admin/coupons/add", [
-	    		]);
+				'schools' => Schools::where('status', 1)->orderBy('name', 'asc')->get()
+	    	]);
     }
 
     function view(Request $request, $id)
@@ -211,11 +227,13 @@ class CouponsController extends AppController
     	$page = Coupons::get($id);
     	if($page)
     	{
-			$coupons = Coupons::select(['coupon_code'])
+			$coupons = Coupons::select([
+					'id', 'coupon_code', 'used', 'max_use',
+					DB::raw("(SELECT COUNT(orders.id) FROM orders WHERE orders.coupon_id = coupons.id) as count")
+				])
 				->where('uuid', $page->uuid)
 				->orderBy('coupon_code', 'asc')
-				->pluck('coupon_code')
-				->toArray();
+				->get();
 
 	    	return view("admin/coupons/view", [
     			'page' => $page,
@@ -230,6 +248,7 @@ class CouponsController extends AppController
 
     function edit(Request $request, $id)
     {
+		abort(404);
     	if(!Permissions::hasPermission('coupons', 'update'))
     	{
     		$request->session()->flash('error', 'Permission denied.');
@@ -398,7 +417,6 @@ class CouponsController extends AppController
 			$mpdf->showImageErrors = true;
 			$logo = Settings::get('logo');
 			foreach ($coupons as $index => $page) {
-
 				// Pass coupon data to blade
 				$html = view('admin.coupons.pdf', [
 					'page' => $page,

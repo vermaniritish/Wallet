@@ -103,6 +103,16 @@
 										<i class="fas fa-sort" data-field="staff.id" data-sort="asc"></i>
 										<?php endif; ?>
 									</th>
+									<th class="sort" width="15%">
+										Auth Id
+										<?php if(isset($_GET['sort']) && $_GET['sort'] == 'staff.password' && isset($_GET['direction']) && $_GET['direction'] == 'asc'): ?>
+										<i class="fas fa-sort-down active" data-field="staff.password" data-sort="asc"></i>
+										<?php elseif(isset($_GET['sort']) && $_GET['sort'] == 'staff.password' && isset($_GET['direction']) && $_GET['direction'] == 'desc'): ?>
+										<i class="fas fa-sort-up active" data-field="staff.password" data-sort="desc"></i>
+										<?php else: ?>
+										<i class="fas fa-sort" data-field="staff.password"></i>
+										<?php endif; ?>
+									</th>
 									<th class="sort" width="20%">
 										Name
 										<?php if(isset($_GET['sort']) && $_GET['sort'] == 'staff.first_name' && isset($_GET['direction']) && $_GET['direction'] == 'asc'): ?>
@@ -111,16 +121,6 @@
 										<i class="fas fa-sort-up active" data-field="staff.first_name" data-sort="desc"></i>
 										<?php else: ?>
 										<i class="fas fa-sort" data-field="staff.first_name"></i>
-										<?php endif; ?>
-									</th>
-									<th class="sort" width="20%">
-										Phone Number
-										<?php if(isset($_GET['sort']) && $_GET['sort'] == 'staff.phone_number' && isset($_GET['direction']) && $_GET['direction'] == 'asc'): ?>
-										<i class="fas fa-sort-down active" data-field="staff.phone_number" data-sort="asc"></i>
-										<?php elseif(isset($_GET['sort']) && $_GET['sort'] == 'staff.phone_number' && isset($_GET['direction']) && $_GET['direction'] == 'desc'): ?>
-										<i class="fas fa-sort-up active" data-field="staff.phone_number" data-sort="desc"></i>
-										<?php else: ?>
-										<i class="fas fa-sort" data-field="staff.phone_number"></i>
 										<?php endif; ?>
 									</th>
 									<th class="sort" width="15%">
@@ -133,16 +133,7 @@
 										<i class="fas fa-sort" data-field="staff.email"></i>
 										<?php endif; ?>
 									</th>
-									<th class="sort" width="15%">
-										Aadhar Card Number
-										<?php if(isset($_GET['sort']) && $_GET['sort'] == 'staff.aadhar_card_number' && isset($_GET['direction']) && $_GET['direction'] == 'asc'): ?>
-										<i class="fas fa-sort-down active" data-field="staff.aadhar_card_number" data-sort="asc"></i>
-										<?php elseif(isset($_GET['sort']) && $_GET['sort'] == 'staff.aadhar_card_number' && isset($_GET['direction']) && $_GET['direction'] == 'desc'): ?>
-										<i class="fas fa-sort-up active" data-field="staff.aadhar_card_number" data-sort="desc"></i>
-										<?php else: ?>
-										<i class="fas fa-sort" data-field="staff.aadhar_card_number"></i>
-										<?php endif; ?>
-									</th>
+									
 									<th class="sort" width="5%">
 										Status
 										<?php if(isset($_GET['sort']) && $_GET['sort'] == 'staff.status' && isset($_GET['direction']) && $_GET['direction'] == 'asc'): ?>

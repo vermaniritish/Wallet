@@ -17,12 +17,14 @@ use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use App\Models\Admin\Settings;
+use App\Models\Admin\Coupons;
 use App\Libraries\General;
 use App\Libraries\PositionStack;
 use App\Models\API\SearchSugessions;
 use App\Models\API\Products;
 use App\Models\API\ApiAuth;
 use App\Models\API\UsersMatches;
+use App\Models\Admin\Addresses;
 use App\Models\API\ProductCategories;
 use App\Models\Admin\Offers;
 use App\Models\Admin\ProductCategoryRelation;
@@ -169,6 +171,7 @@ class HomeController extends AppController
 	        		'first_name' => $request->get('first_name'),
 	        		'last_name' => $request->get('last_name'),
 	        		'email' => $request->get('email'),
+	        		'phonenumber' => $request->get('phone'),
 	        		'password' => $request->get('password'),
 	        		'token' => General::hash(64)
 	        	];
@@ -203,6 +206,7 @@ class HomeController extends AppController
 			$order->company = $request->get('company');
 			$order->customer_email = $request->get('email');
 			$order->customer_phone = $request->get('phone');
+			$order->note = $request->get('note');
 
 			if($order->customer_email || $order->customer_phone)
 			{
@@ -218,12 +222,14 @@ class HomeController extends AppController
 					$order->ship_zip = $request->get('ship_zip');
 					$order->ship_different_address = 1;
 				}
-
+				$order->shipping_gateway = $request->get('shipping_gateway');
 				$order->address = $data['address'];
 				$order->area = ($data['address2'] ? $data['address2'] : null);
 				$order->city = $data['city'];
 				$order->postcode = $data['postalcode'];
 				$order->coupon = isset($data['coupon']) && $data['coupon'] ? json_encode($data['coupon']) : null;
+				$order->coupon_id = isset($data['coupon']['id']) && $data['coupon']['id'] ? $data['coupon']['id'] : null;
+				$order->coupon_code = isset($data['coupon']['coupon_code']) && $data['coupon']['coupon_code'] ? $data['coupon']['coupon_code'] : null;
 				$order->status = 'pending';
 				$order->created = date('Y-m-d H:i:s');
 
@@ -236,6 +242,23 @@ class HomeController extends AppController
 					$order->prefix_id = 'PSW-'.(Settings::get('order_prefix') + $order->id);
 					$order->save();
 
+					if(isset($data['coupon']['id']) && $data['coupon']['id'])
+					{
+						Coupons::where('id', $data['coupon']['id'])->increment('used');
+					}
+
+					Addresses::where('user_id', $order->customer_id)->delete();
+					Addresses::create([
+						'user_id' => $order->customer_id,
+						'title' => $order->first_name . ' ' . $order->last_name,
+						'address' => $order->address,
+						'area' => $order->area,
+						'city' => $order->city,
+						'state' => $order->state,
+						'postcode' => $order->postcode
+					]);
+					
+
 					$products = [];
 					$discount = 0;
 					$subtotal = 0;
@@ -243,6 +266,8 @@ class HomeController extends AppController
 					$includeTravelCharges = 0;
 					foreach($data['cart'] as $c)
 					{
+						$image = isset($c['image']) && $c['image'] ? json_decode($c['image'], true) : null;
+						$image = $image && is_array($image) ? $image[0] : $image;
 						$logo = isset($c['customization']) && $c['customization'] ? $c['customization'] : [];
 						$products[] = [
 							'order_id' => $order->id,
@@ -255,9 +280,10 @@ class HomeController extends AppController
 							'product_description' => $c['size_title'] . ' ' . $c['from_cm'] . ' - ' . $c['to_cm']."\nChest:" . (isset($c['chest']) && $c['chest'] ? $c['chest'] : '') ."Waist: ".(isset($c['waist']) && $c['waist'] ? $c['waist'] : '')." Hip:".(isset($c['hip']) && $c['hip'] ? $c['hip'] : ''),
 							'amount' => $c['price'],
 							'quantity' => $c['quantity'],
-							'logo_data' => json_encode($logo)
+							'logo_data' => json_encode($logo),
+							'non_exchange' => isset($c['non_exchange']) && $c['non_exchange'] ? 1 : 0,
+							'image' => $image
 						];
-
 						$subtotal += $this->offerPrice($c)['price'];
 					}
 
@@ -397,7 +423,7 @@ class HomeController extends AppController
 		foreach($cart as $c)
 		{
 			$totalCost = isset($c['customization']) && $c['customization'] ? array_sum(Arr::pluck($c['customization'], 'cost')) : 0;
-			$cost += $totalCost > 0 ? $totalCost : 0;
+			$cost += ($totalCost > 0 ? $totalCost : 0)*$c['quantity'];
 		}
 		return [
 			'cost' => $cost,

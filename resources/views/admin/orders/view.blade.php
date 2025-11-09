@@ -4,7 +4,7 @@
 
 use App\Models\Admin\Permissions;
 use App\Models\Admin\Settings;
-	$currency = Settings::get('currency_symbol'); 
+$currency = Settings::get('currency_symbol'); 
 ?>
 	<div class="header bg-primary pb-6">
 		<div class="container-fluid">
@@ -44,9 +44,22 @@ use App\Models\Admin\Settings;
 										<th>Id</th>
 										<td><?php echo $page->prefix_id ?></td>
 									</tr>
+									@if($page->shop)									
 									<tr>
 										<th>Employee Auth Id</th>
 										<td><?php echo $page->employee_id ?></td>
+									</tr>
+									@endif
+
+									<tr>
+										<th>Customer</th>
+										<td>
+											@if($page->customer_id && $page->customer)
+											<a href="{{route('admin.users.view', [ 'id' => $page->customer_id ])}}" >{{ $page->customer->first_name }} {{ $page->customer->last_name }}</a>
+											@else
+											<span class="text-danger">Not Registered</span>
+											@endif
+										</td>
 									</tr>
 									<tr>
 										<th>Store</th>
@@ -55,8 +68,8 @@ use App\Models\Admin\Settings;
 									<tr>
 										<th>Customer Name</th>
 										<td>
-											<b><?php echo $page->company; ?></b><br />
-											<?php echo $page->first_name . ' ' . $page->last_name; ?><br />
+											<b><?php echo $page->company; ?><br />
+											<?php echo $page->first_name . ' ' . $page->last_name; ?></b><br />
 											<?php echo 'Email: ' . $page->customer_email; ?><br />
 											<?php echo 'Phone: ' . $page->customer_phone; ?>
 										</td>
@@ -70,6 +83,14 @@ use App\Models\Admin\Settings;
 										<a href="https://maps.google.com/maps?q={{$page->latitude}},{{$page->longitude }}&z=17&hl=en">Click to see location {{$page->latitude}} {{$page->longitude }}</a>
 										<br /><small>Right click and "Copy link url" to share the location with staff.</small>
 										<?php endif; ?>
+										</td>
+									</tr>
+									<tr>
+										<th>Shipping Address</th>
+										<td>
+											<strong>{{ $page->ship_fname }} {{ $page->ship_lname }}</strong><br />
+											<strong>{{ $page->ship_company }}</strong><br />	
+											<?php echo implode(', ', array_filter([$page->ship_address1, $page->ship_address2, $page->ship_city, $page->ship_state, $page->ship_zip])); ?>
 										</td>
 									</tr>
 									<tr>
@@ -141,6 +162,10 @@ use App\Models\Admin\Settings;
 									<tr>
 										<th>Dispatch Date</th>
 										<td><?php echo $page->dispatch_date ? _dt($page->dispatch_date) : '-' ?></td>
+									</tr>
+									<tr>
+										<th>Ship Mode</th>
+										<td><?php echo $page->shipping_gateway ? ($page->shipping_gateway) : '-' ?></td>
 									</tr>
 								</tbody>
 							</table>

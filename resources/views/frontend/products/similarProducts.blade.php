@@ -1,3 +1,4 @@
+<?php use App\Models\Admin\HomePage; ?>
 <?php if($products && $products->count() > 0 ): ?>
 <div class="row mt-60">
     <div class="col-12">
@@ -44,9 +45,13 @@
 </div>
 <?php endif; ?>
 <div class="banner-img banner-big wow fadeIn f-none animated mt-50">
-    <img class="border-radius-10" src="{{ url('/frontend/assets/imgs/banner/banner-4.png') }}" alt="">
-    <div class="banner-text">
-        <h4 class="mb-15 mt-40">Hoodies</h4>
-        <h2 class="fw-600 mb-20">Get the multi-color hoodies <br>in discounted price</h2>
+    <?php $image = HomePage::get('banner_1_image'); ?>
+    <img src="{{ url($image ? $image : '/frontend/assets/imgs/banner/banner-4.png')}}" alt="">
+    <div class="banner-text d-md-block d-none">
+        <h4 class="mb-15 mt-40 text-brand">{{ HomePage::get('banner_1_label') }}</h4>
+        <h1 class="fw-600 mb-20"><?php echo nl2br(HomePage::get('banner_1_heading')) ?></h1>
+        @if(HomePage::get('banner_1_button_status'))
+        <a href="{{HomePage::get('banner_1_button_url')}}" class="btn">{{HomePage::get('banner_1_button_title')}} <i class="fi-rs-arrow-right"></i></a>
+        @endif
     </div>
 </div>

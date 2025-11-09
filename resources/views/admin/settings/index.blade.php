@@ -51,7 +51,15 @@
 
 							<div class="form-group">
 								<label class="form-control-label" for="input-first-name">Hotline Number</label>
-								<input type="text" class="form-control" name="company_address" required placeholder="Hotline Number" value="{{ Settings::get('hotline_number') }}">
+								<input type="text" class="form-control" name="hotline_number" required placeholder="Hotline Number" value="{{ Settings::get('hotline_number') }}">
+								@error('hotline_number')
+								    <small class="text-danger">{{ $message }}</small>
+								@enderror
+							</div>
+
+							<div class="form-group">
+								<label class="form-control-label" for="input-first-name">Business Hours</label>
+								<input type="text" class="form-control" name="business_hours" required placeholder="Business Hours" value="{{ Settings::get('business_hours') }}">
 								@error('hotline_number')
 								    <small class="text-danger">{{ $message }}</small>
 								@enderror
@@ -132,7 +140,7 @@
 						<div class="pl-lg-4">
 							<div class="row">
 								
-								<div class="col-md-6">
+								<div class="col-md-6 d-none">
 									<div class="form-group">
 										<label class="form-control-label" for="input-first-name">Pagination Method</label>
 										<?php $method = Settings::get('pagination_method') ?>
@@ -196,6 +204,46 @@
 										<label class="form-control-label" for="input-first-name">Tax Percentage</label>
 										<input type="text" class="form-control" name="tax_percentage" required placeholder="$" value="{{ Settings::get('tax_percentage') }}">
 										@error('tax_percentage')
+										    <small class="text-danger">{{ $message }}</small>
+										@enderror
+									</div>
+								</div>
+								<div class="col-md-6">
+								</div>
+								<div class="col-md-6">
+									<div class="form-group">
+										<div class="d-flex flex-row align-items-center justify-content-between">
+											<label class="form-control-label" for="input-first-name">Shipping Cost DPD</label>
+											<div class="custom-control">
+												<label class="custom-toggle">
+													<input type="hidden" name="shipping_dpd" value="0">
+													<input type="checkbox" name="shipping_dpd" value="1" <?php echo ( Settings::get('shipping_dpd') ? 'checked' : '') ?>>
+													<span class="custom-toggle-slider rounded-circle" data-label-off="No" data-label-on="Yes"></span>
+												</label>
+												<label class="custom-control-label"></label>
+											</div>
+										</div>
+										<input type="text" class="form-control" name="shipping_cost_dpd" required placeholder="$" value="{{ Settings::get('shipping_cost_dpd') }}">
+										@error('shipping_cost_dpd')
+										    <small class="text-danger">{{ $message }}</small>
+										@enderror
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-group">
+										<div class="d-flex flex-row align-items-center justify-content-between">
+											<label class="form-control-label" for="input-first-name">Shipping Cost Parcel Force</label>
+											<div class="custom-control">
+												<label class="custom-toggle">
+													<input type="hidden" name="shipping_parcelforce" value="0">
+													<input type="checkbox" name="shipping_parcelforce" value="1" <?php echo ( Settings::get('shipping_parcelforce') ? 'checked' : '') ?> />
+													<span class="custom-toggle-slider rounded-circle" data-label-off="No" data-label-on="Yes"></span>
+												</label>
+												<label class="custom-control-label"></label>
+											</div>
+										</div>
+										<input type="text" class="form-control" name="shipping_cost_parcelforce" required placeholder="$" value="{{ Settings::get('shipping_cost_parcelforce') }}">
+										@error('shipping_cost_parcelforce')
 										    <small class="text-danger">{{ $message }}</small>
 										@enderror
 									</div>

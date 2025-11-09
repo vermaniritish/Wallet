@@ -49,6 +49,16 @@
 										value="{{ old('number_of_coupons') }}"
 									>
 								</div>
+								<div class="col-md-6">
+									<label class="form-control-label" for="input-first-name">Schools</label>
+									<select class="form-control" name="school_id" required>
+										<option value=""></option>
+										@foreach($schools as $s)
+										<option value="{{ $s->id }}">{{ $s->name }}</option>
+										@endforeach
+									</select>
+									
+								</div>
 							</div>
 							<hr class="my-4" />
 							<div class="row">
@@ -65,7 +75,7 @@
 									<div class="form-group">
 										<label class="form-control-label" for="input-first-name">Code</label>
 										<input type="text" class="form-control" name="coupon_code" required placeholder="Coupon Code" value="{{ old('coupon_code') }}"    pattern="^[A-Za-z0-9]*[0-9]$">
-										<p class="small text-muted">Start with a letter and end with a number. To generate auto incremented. e.g. (ABC123)</p>
+										<p class="small text-muted">Enter only uppercase alphabets e.g. (ABC)</p>
 										@error('coupon_code')
 											<small class="text-danger">{{ $message }}</small>
 										@enderror

@@ -214,19 +214,47 @@
 									@include('admin.pages.bannerarea', ['key' => 'deal_day', 'imagesize' => '700*511', 'subheading' => true])
 									<hr class="my-2">
 									<div class="row">
-										<div class="col-md-4">
+										<div class="col-md-12">
+											<div class="form-group">
+												<label class="form-control-label" for="input-first-name">Enable Pricing</label>
+												<?php $enable  = HomePage::get('deal_day_price_enable'); ?>	
+												<div class="custom-control">
+													<label class="custom-toggle">
+														<input type="hidden" name="deal_day_price_enable" value="0">
+														<input type="checkbox" id="dealEnalbe" value="1" name="deal_day_price_enable" {{ $enable ? 'checked=""' : '' }}>
+														<span class="custom-toggle-slider rounded-circle" data-label-off="No" data-label-on="Yes"></span>
+													</label>
+													<label class="custom-control-label">Active/Inactive</label>
+												</div>
+											</div>
+										</div>
+										<div class="col-md-6">
 											<div class="form-group">
 												<label class="form-control-label" for="input-first-name">Sale Price</label>
 												<input type="number" class="form-control" name="{{'deal_day_sale_price'}}"  placeholder="$" value="{{ HomePage::get('deal_day_sale_price') }}">
 											</div>
 										</div>
-										<div class="col-md-4">
+										<div class="col-md-6">
 											<div class="form-group">
 												<label class="form-control-label" for="input-first-name">Actual Price</label>
 												<input type="number" class="form-control" name="{{'deal_day_actual_price'}}"  placeholder="$" value="{{ HomePage::get('deal_day_actual_price') }}">
 											</div>
 										</div>
-										<div class="col-md-4">
+										<div class="col-md-6">
+											<div class="form-group">
+												<label class="form-control-label" for="input-first-name">Enable Countdown</label>
+												<?php $enable  = HomePage::get('deal_day_offer_days_enable'); ?>	
+												<div class="custom-control">
+													<label class="custom-toggle">
+														<input type="hidden" name="deal_day_offer_days_enable" value="0">
+														<input type="checkbox" id="dealEnalbe" value="1" name="deal_day_offer_days_enable" {{ $enable ? 'checked=""' : '' }}>
+														<span class="custom-toggle-slider rounded-circle" data-label-off="No" data-label-on="Yes"></span>
+													</label>
+													<label class="custom-control-label">Active/Inactive</label>
+												</div>
+											</div>
+										</div>
+										<div class="col-md-6">
 											<div class="form-group">
 												<label class="form-control-label" for="input-first-name">Offer till</label>
 												<input type="date" min="{{ date('Y-m-d 23:59:59') }}" class="form-control" name="{{'deal_day_offer_days'}}"  placeholder="12" value="{{ HomePage::get('deal_day_offer_days') }}">
@@ -251,19 +279,47 @@
 									@include('admin.pages.bannerarea', ['key' => 'deal_day_2', 'imagesize' => '700*511', 'subheading' => true])
 									<hr class="my-2">
 									<div class="row">
-										<div class="col-md-4">
+										<div class="col-md-12">
+											<div class="form-group">
+												<label class="form-control-label" for="input-first-name">Enable Pricing</label>
+												<?php $enable  = HomePage::get('deal_day_2_price_enable'); ?>	
+												<div class="custom-control">
+													<label class="custom-toggle">
+														<input type="hidden" name="deal_day_2_price_enable" value="0">
+														<input type="checkbox" id="dealEnalbe" value="1" name="deal_day_2_price_enable" {{ $enable ? 'checked=""' : '' }}>
+														<span class="custom-toggle-slider rounded-circle" data-label-off="No" data-label-on="Yes"></span>
+													</label>
+													<label class="custom-control-label">Active/Inactive</label>
+												</div>
+											</div>
+										</div>
+										<div class="col-md-6">
 											<div class="form-group">
 												<label class="form-control-label" for="input-first-name">Sale Price</label>
 												<input type="number" class="form-control" name="{{'deal_day_2_sale_price'}}"  placeholder="$" value="{{ HomePage::get('deal_day_2_sale_price') }}">
 											</div>
 										</div>
-										<div class="col-md-4">
+										<div class="col-md-6">
 											<div class="form-group">
 												<label class="form-control-label" for="input-first-name">Actual Price</label>
 												<input type="number" class="form-control" name="{{'deal_day_2_actual_price'}}"  placeholder="$" value="{{ HomePage::get('deal_day_2_actual_price') }}">
 											</div>
 										</div>
-										<div class="col-md-4">
+										<div class="col-md-6">
+											<div class="form-group">
+												<label class="form-control-label" for="input-first-name">Enable Countdown</label>
+												<?php $enable  = HomePage::get('deal_day_2_offer_days_enable'); ?>	
+												<div class="custom-control">
+													<label class="custom-toggle">
+														<input type="hidden" name="deal_day_2_offer_days_enable" value="0">
+														<input type="checkbox" id="dealEnalbe" value="1" name="deal_day_2_offer_days_enable" {{ $enable ? 'checked=""' : '' }}>
+														<span class="custom-toggle-slider rounded-circle" data-label-off="No" data-label-on="Yes"></span>
+													</label>
+													<label class="custom-control-label">Active/Inactive</label>
+												</div>
+											</div>
+										</div>
+										<div class="col-md-6">
 											<div class="form-group">
 												<label class="form-control-label" for="input-first-name">Offer till</label>
 												<input type="date" min="{{ date('Y-m-d 23:59:59') }}" class="form-control" name="{{'deal_day_2_offer_days'}}"  placeholder="12" value="{{ HomePage::get('deal_day_2_offer_days') }}">

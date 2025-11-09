@@ -43,28 +43,25 @@
                 </div>
                 <form method="post">
                     <div class="form-group">
-                        <input type="text" required="" name="fname" placeholder="First name *" v-model="checkout.first_name">
+                        <input type="text" required="" id="fname" name="fname" placeholder="First name *" v-model="checkout.first_name">
                         <small class="text-danger" v-if="errors && errors.first_name == ``">This field is required.</small>
-
                     </div>
                     <div class="form-group">
-                        <input type="text" required="" name="lname" placeholder="Last name *" v-model="checkout.last_name">
+                        <input type="text" required="" id="lname" name="lname" placeholder="Last name *" v-model="checkout.last_name">
                         <small class="text-danger" v-if="errors && errors.last_name == ``">This field is required.</small>
-
                     </div>
                     <div class="form-group">
                         <input required="" type="text" name="cname" placeholder="Company Name"  v-model="checkout.company">
                         <small class="text-danger" v-if="errors && errors.company == ``">This field is required.</small>
-
                     </div>
                     
                     <div class="form-group">
-                        <input type="text" name="billing_address" required="" placeholder="Address *" v-model="checkout.address">
+                        <input type="text" id="address" name="billing_address" required="" placeholder="Address *" v-model="checkout.address">
                         <small class="text-danger" v-if="errors && errors.address == ``">This field is required.</small>
 
                     </div>
                     <div class="form-group">
-                        <input type="text" name="billing_address2" placeholder="Address line2"  v-model="checkout.address2">
+                        <input type="text" id="address2" name="billing_address2" placeholder="Address line2"  v-model="checkout.address2">
                         <small class="text-danger" v-if="errors && errors.address2 == ``">This field is required.</small>
 
                     </div>
@@ -169,8 +166,12 @@
 @endsection
 @push("scripts")
 <script>
+var parcelforceEnable = {{($settings['shipping_parcelforce'] ? $settings['shipping_parcelforce'] : 0)}};
 var parcelforceCost = {{($settings['shipping_cost_parcelforce'] ? $settings['shipping_cost_parcelforce'] : 0)}};
+var dpdEnable = {{($settings['shipping_dpd'] ? $settings['shipping_dpd'] : 0)}}; 
 var dpdCost = {{($settings['shipping_cost_dpd'] ? $settings['shipping_cost_dpd'] : 0)}}; 
-var loginuseremail = '{{ $user ? $user->email : '' }}';
+var loginuseremail = '{{ $user && $user->email ? $user->email : '' }}';
+var loginuserphone = '{{ $user && $user->phonenumber ? $user->phonenumber : '' }}';
+var shops = '{{ $shops }}';
 </script>
 @endpush

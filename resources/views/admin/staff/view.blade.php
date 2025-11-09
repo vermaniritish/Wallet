@@ -15,7 +15,6 @@ use App\Models\Admin\Settings;
 					</div>
 					<div class="col-lg-6 col-5 text-right">
 						<a href="<?php echo route('admin.staff') ?>" class="btn btn-neutral"><i class="fa fa-arrow-left"></i> Back</a>
-						<a href="#" class="btn btn-neutral" target="_blank"><i class="fa fa-eye"></i> View Page</a>
 						<?php if(Permissions::hasPermission('brands', 'update') || Permissions::hasPermission('brands', 'delete')): ?>
 							<div class="dropdown" data-toggle="tooltip" data-title="More Actions">
 								<a class="btn btn-neutral" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -71,6 +70,10 @@ use App\Models\Admin\Settings;
 										<td><?php echo $page->id ?></td>
 									</tr>
 									<tr>
+										<th>Auth Id</th>
+										<td><?php echo $page->password ?></td>
+									</tr>
+									<tr>
 										<th>Staff Name</th>
 										<td><?php echo $page->first_name. ' ' .$page->last_name ?></td>
 									</tr>
@@ -82,39 +85,10 @@ use App\Models\Admin\Settings;
 										<th>Email</th>
 										<td><?php echo $page->email ?></td>
 									</tr>
-									<tr>
-										<th>ID Number</th>
-										<td><?php echo $page->aadhar_card_number ?></td>
-									</tr>
 								</tbody>
 							</table>
 						</div>
 					</div>
-					<?php if(Permissions::hasPermission('products', 'listing')): ?>
-					<div class="card listing-block">
-						<div class="card-header">
-							<div class="row align-items-center">
-								<div class="col-md-6">
-									<h3 class="mb-0">Orders Assigned</h3>
-								</div>
-								<div class="col-md-4">
-									<div class="input-group input-group-alternative input-group-merge">
-										<div class="input-group-prepend">
-											<span class="input-group-text"><i class="fas fa-search"></i></span>
-										</div>
-										<input class="form-control listing-search" placeholder="Search" type="text" value="<?php echo (isset($_GET['search']) && $_GET['search'] ? $_GET['search'] : '') ?>">
-									</div>
-								</div>
-								<div class="col-md-2">
-								@include('admin.staff.orders.filters',['id' => $page->id])
-								</div>
-							</div>
-						</div>
-						<div class="card-body p-0">
-							@include('admin.staff.orders.index',['listing' => $listing])
-						</div>
-					</div>
-				<?php endif; ?>
 				</div>
 				<div class="col-xl-4 order-xl-1">
 					<?php if($page->image): ?>

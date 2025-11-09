@@ -26,7 +26,7 @@
                                 <td><span class="{{ $o->paid ? 'text-success' : 'text-danger'}}">{{ $o->paid ? 'Paid' : 'Unpaid'}}</span></td>
                                 <td><span class="badge" style="{{ Orders::getStatuses($o->status)['styles'] }}" >{{ Orders::getStatuses($o->status)['label'] }}</td>
                                 <td>{{ _currency($o->total_amount) }}</td>
-                                <td><a href="{{ route('invoice', ['id' => $o->prefix_id]) }}" target="_blank" class="btn-small d-block">View</a></td>
+                                <td><a href="{{ route('admin.orders.download', ['id' => $o->prefix_id]) }}" target="_blank" class="btn-small d-block">View</a></td>
                             </tr>
                             <?php endforeach; ?>
                         @else

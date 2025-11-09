@@ -11,6 +11,19 @@
 			<div class="dropdown-item">
 				<div class="row">
 					<div class="col-md-12">
+						<label class="form-control-label">School</label>
+						<select class="form-control" name="schools[]" multiple>
+					      	<?php foreach($schools as $c): ?>
+					      		<option value="<?php echo $c->id ?>" <?php echo isset($_GET['schools']) && in_array($c->id, $_GET['schools'])  ? 'selected' : '' ?>><?php echo $c->name ?></option>
+					  		<?php endforeach; ?>
+					    </select>
+					</div>
+				</div>
+			</div>
+			<div class="dropdown-divider"></div>
+			<div class="dropdown-item">
+				<div class="row">
+					<div class="col-md-12">
 						<label class="form-control-label">Created By</label>
 						<select class="form-control" name="admins[]" multiple>
 					      	<?php foreach($admins as $c): ?>

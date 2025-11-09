@@ -102,6 +102,17 @@
 										<i class="fas fa-sort" data-field="coupons.title"></i>
 										<?php endif; ?>
 									</th>
+
+									<th width="15%" class="sort">
+										School
+										<?php if(isset($_GET['sort']) && $_GET['sort'] == 'school_name' && isset($_GET['direction']) && $_GET['direction'] == 'asc'): ?>
+										<i class="fas fa-sort-down active" data-field="school_name" data-sort="asc"></i>
+										<?php elseif(isset($_GET['sort']) && $_GET['sort'] == 'school_name' && isset($_GET['direction']) && $_GET['direction'] == 'desc'): ?>
+										<i class="fas fa-sort-up active" data-field="school_name" data-sort="desc"></i>
+										<?php else: ?>
+										<i class="fas fa-sort" data-field="school_name"></i>
+										<?php endif; ?>
+									</th>
 									
 									<th width="10%" class="sort">
 										Max Use

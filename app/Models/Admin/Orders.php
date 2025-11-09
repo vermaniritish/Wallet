@@ -274,6 +274,20 @@ class Orders extends AppModel
             }
         }
 
+        if($request->has('schools'))
+        {
+            $schools = $request->get('schools');
+            $schools = $schools ? array_filter($schools) : [];
+            $schools = $schools ? $schools : [0];
+            if($schools)
+            {
+                $listing->join('order_products', 'order_products.order_id', '=', 'orders.id')
+                    ->leftJoin('products', 'products.id', '=', 'order_products.product_id')
+                    ->whereIn('products.school_id', $schools)
+                    ->groupBy('orders.id');
+            }
+        }
+
         // Put offset and limit in case of pagination
         if($page !== null && $page !== "" && $limit !== null && $limit !== "")
         {
@@ -345,10 +359,26 @@ class Orders extends AppModel
                             'last_name'
                         ]);
                 },
+                'shop' => function($query) {
+                    $query->select([
+                            'id',
+                            'name'
+                        ]);
+                },
                 'customer' => function($query) {
                     $query->select([
                             'id',
+                            'first_name',
+                            'last_name',
+                            'email',
                             'phonenumber',
+                        ]);
+                },
+                'staff' => function($query) {
+                    $query->select([
+                            'id',
+                            'first_name',
+                            'last_name',
                         ]);
                 },
                 'statusBy' => function($query) {
