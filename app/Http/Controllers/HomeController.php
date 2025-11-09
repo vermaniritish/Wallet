@@ -110,6 +110,7 @@ class HomeController extends BaseController
 				'sizes.vat', 
 				'products.title as title', 
 				'products.slug',
+				'products.non_exchange',
 				DB::raw('(CASE WHEN products.image is NOT NULL THEN products.image ELSE parent_product.image END) as image'),
 				'products.sku_number', 'colours.title as color'
 			])
