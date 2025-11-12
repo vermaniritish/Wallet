@@ -69,13 +69,15 @@ $shipOptions = Orders::getShippingOptions();?>
     
 </div>
 <?php 
-$shipped = Arr::pluck($listing->items(), 'shipment_tracking');
-$shipped = array_map(function($i) {
-    return $i ? true : false;
-}, $shipped);
-$shipped = array_filter($shipped);
+$shipped = $page->shipment_tracking;
+// $shipped = Arr::pluck($listing->items(), 'shipment_tracking');
+// $shipped = array_map(function($i) {
+//     return $i ? true : false;
+// }, $shipped);
+// $shipped = array_filter($shipped);
+// if( count($shipped) < $listing->count()): 
+if(!$shipped): 
 ?>
-<?php if( count($shipped) < $listing->count()): ?>
 <div class="row p-4">
     <div class="col-sm-4">
         <small>No. of parcel</small><br />
@@ -85,6 +87,7 @@ $shipped = array_filter($shipped);
         <small>Ship Options</small><br />
         <select class="form-control" id="ship-options">
             <option value=""></option>
+            <option value="DPD">DPD</option>
             <?php foreach($shipOptions as $c => $s): ?>
             <option value="{{ $c }}">{{ $s }}</option>
             <?php endforeach; ?>

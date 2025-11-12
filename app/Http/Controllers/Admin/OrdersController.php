@@ -901,9 +901,13 @@ class OrdersController extends AppController
 
 	public function ship(Request $request, $id)
 	{
-		if($request->get('ship'))
+		$shipOption = $request->get('options');
+		if($request->get('ship') && $shipOption == 'DPD')
 		{
-			$shipOption = $request->get('options');
+			
+		}
+		elseif($request->get('ship') && $shipOption)
+		{
 			$PFELENDPOINT = "https://expresslink.parcelforce.net/ws";
 			$PFELUSERNAME = "EL_WDMEOQK";
 			$PFELPWD = "zzj033se";

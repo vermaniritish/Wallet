@@ -3108,11 +3108,11 @@ table .product-thumbnail img {
   top: 30%;
 }
 
-.banner-img.banner-1.home-3 {
+.banner-img.banner-1.home-3, .banner-img.banner-2 {
   margin-bottom: 24px;
   border-radius: 10px;
   overflow: hidden;
-  max-height: 348px;
+  height: 249px;
 }
 
 .banner-img.banner-2 .banner-text {

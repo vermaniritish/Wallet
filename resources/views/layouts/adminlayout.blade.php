@@ -92,6 +92,7 @@ $version = 3.1;
 		<!-- Core -->
 		<script>
 			var site_url = "<?php echo url("/") ?>";
+			var shop_url = "http://localhost:3001/api";
 			var admin_url = "<?php echo url("/admin/") ?>";
 			var current_url = "<?php echo url()->current(); ?>";
 			var current_full_url = "<?php echo url()->full(); ?>";

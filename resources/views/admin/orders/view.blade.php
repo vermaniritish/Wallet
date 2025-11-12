@@ -163,10 +163,7 @@ $currency = Settings::get('currency_symbol');
 										<th>Dispatch Date</th>
 										<td><?php echo $page->dispatch_date ? _dt($page->dispatch_date) : '-' ?></td>
 									</tr>
-									<tr>
-										<th>Ship Mode</th>
-										<td><?php echo $page->shipping_gateway ? ($page->shipping_gateway) : '-' ?></td>
-									</tr>
+									
 									<tr>
 										<th>Order Note</th>
 										<td><?php echo $page->note ? ($page->note) : '-' ?></td>
@@ -249,7 +246,40 @@ $currency = Settings::get('currency_symbol');
 				</div>
 			</div>
 			<div class="col-xl-5 order-xl-1">	
-			<div class="card">
+				<div class="card">
+					<div class="card-header">
+						<div class="row align-items-center">
+							<div class="col">
+								<h3 class="mb-0">Shipping Details</h3>
+							</div>
+						</div>
+					</div>
+					<div class="card-body p-0 m-0">
+						<table class="table align-items-center table-flush">
+							<tbody>
+								<tr>
+									<th>Ship Mode</th>
+									<td><?php echo $page->shipping_gateway ? ($page->shipping_gateway) : '-' ?></td>
+								</tr>
+								<tr>
+									<th>Parcels</th>
+									<td><?php echo $page->parcels ? $page->parcels : '-' ?></td>
+								</tr>
+								<tr>
+									<th>Tracnking Number</th>
+									<td><?php echo $page->shipment_tracking ? ($page->shipment_tracking) : '-' ?></td>
+								</tr>
+								@if($page->shipping_gateway == 'DPD' && $page->shipment_tracking)
+								<tr>
+									<th>Label</th>
+									<td><a href="javascript:;" onclick="downloadLabel('{{$page->id}}', '{{$page->shipment_tracking}}')" class="btn btn-sm btn-primary">View</a></td>
+								</tr>
+								@endif
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<div class="card">
 					<div class="card-header">
 						<div class="row align-items-center">
 							<div class="col">
@@ -286,18 +316,19 @@ $currency = Settings::get('currency_symbol');
 								<tr>
 									<th>Paypal Response</th>
 									<td><code style="
-    max-width: 200px;
-    overflow: scroll;
-    display: block;
-    word-break: break-all;
-    text-wrap: auto;
-    height: 200px;
-">{{ $page->paypal_payment_data }}</code></td>
+										max-width: 200px;
+										overflow: scroll;
+										display: block;
+										word-break: break-all;
+										text-wrap: auto;
+										height: 200px;
+									">{{ $page->paypal_payment_data }}</code></td>
 								</tr>
 							</tbody>
 						</table>
 					</div>
 				</div>
+				
 				<div class="card">
 					<div class="card-header">
 						<div class="row align-items-center">

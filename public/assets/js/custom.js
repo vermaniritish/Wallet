@@ -1110,30 +1110,42 @@ $('#ship-products').on('click', async function() {
             set_notification('error', 'Please select ship option.'); return false;
         }
 
+        let noOfParcels = $('#parcel').val() ? $('#parcel').val()  : 1;
+        let shipOption = $('#ship-options').val();
         let shipped = [];
         $('#ordered-products .listing_check:checked').each(function() {
             shipped.push($(this).val());
         });
         let id = $('#ordered-products').attr('data-id');
-        let response = await fetch(admin_url + '/orders/'+id+'/ship', 
-            {
-                method: 'POST',
-                headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(
-                    {
-                        _token: csrf_token(),
-                        options:  $('#ship-options').val(),
-                        parcel: $('#parcel').val() ? $('#parcel').val()  : 1,
-                        ship: shipped,
-                        total: $('#ordered-products .listing_check').length
-                    }
-                )
-            }
-        );
-        response = await response.json();
+        let response = null;
+        if(shipOption == 'DPD')
+        {
+            response = await fetch(shop_url + `/create-dpd-shipment?ids=${id}&parcels=${noOfParcels}`);
+            response = await response.json();
+        }
+        else
+        {
+            response = await fetch(admin_url + '/orders/'+id+'/ship', 
+                {
+                    method: 'POST',
+                    headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(
+                        {
+                            _token: csrf_token(),
+                            options: shipOption,
+                            parcel: $('#parcel').val() ? $('#parcel').val()  : 1,
+                            ship: shipped,
+                            total: $('#ordered-products .listing_check').length
+                        }
+                    )
+                }
+            );
+            response = await response.json();
+        }
+        
         if(response && response.status)
         {
             set_notification('success', response.message);
@@ -1208,4 +1220,9 @@ if($('.free-logo-fields').length)
     }
     $('input[name=free_logo]').on('change', fl)
     fl();
+}
+
+function downloadLabel(id, sm)
+{
+    window.open(shop_url + `/dpd-label?sn=${sm}&id=${id}`);
 }
