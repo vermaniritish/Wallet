@@ -152,5 +152,7 @@
             </div>
         </div>
     </div>
+    <!-- <div id="paypal-button-container"></div> -->
+    
     <a href="javascript:;" v-on:click="submit" class="btn btn-fill-out btn-block mt-30"><i class="fa fa-spin fa-spinner" v-if="saving"></i> Place Order</a>
 </div>
