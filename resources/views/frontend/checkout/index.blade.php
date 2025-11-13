@@ -175,56 +175,53 @@ var loginuserphone = '{{ $user && $user->phonenumber ? $user->phonenumber : '' }
 var shops = '{{ $shops }}';
 </script>
 <script src="https://www.paypal.com/sdk/js?client-id=AcHH3SOCSzLpPXioPVl5m15be29_PrHru6j0v6aVpcQdx9padzQ3EXfXVPkBStFVx-7FZZ4ZJzDNKxKh&currency=GBP"></script>
+
 <script>
-    paypal.Buttons({
-        createOrder: async function(data, actions) {
-            let response = await checkoutPage.submit();
-            if(response && response.status && response.orderId)
-            {
-                return fetch('{{url("/paypal/create-order")}}', {
+window.addEventListener('load', function() {
+    if (typeof paypal !== 'undefined' && paypal.Buttons) {
+        paypal.Buttons({
+            createOrder: async function(data, actions) {
+                let response = await checkoutPage.submit();
+                if(response && response.status && response.orderId) {
+                    return fetch('{{url("/paypal/create-order")}}', {
+                        method: 'post',
+                        headers: {
+                            'content-type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        body: JSON.stringify({
+                            amount: response.amount,
+                            id: response.orderId
+                        })
+                    }).then(res => res.json())
+                      .then(orderData => orderData?.result?.id || null);
+                }
+                return Promise.reject(new Error('API request failed'));
+            },
+            onApprove: function(data, actions) {
+                return fetch('{{ url("/paypal/capture-order")}}', {
                     method: 'post',
                     headers: {
                         'content-type': 'application/json',
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}' // Add CSRF token for Laravel
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
                     },
                     body: JSON.stringify({
-                        amount: response.amount,
-                        id: response.orderId
+                        orderId: data.orderID
                     })
-                }).then(function(res) {
-                    return res.json();
-                }).then(function(orderData) {
-                    return orderData && orderData.result ? orderData.result.id : null; // Use the key returned from your server to set up the transaction
-                });
+                }).then(res => res.json())
+                  .then(details => {
+                      if(details?.status && details?.id) {
+                          localStorage.clear();
+                          window.location.href = site_url + "/paypal/success?id=" + details.id;
+                      } else {
+                          window.location.href = site_url + "/paypal/error";
+                      }
+                  });
             }
-
-            return Promise.reject(new Error('API request failed'));
-        },
-        onApprove: function(data, actions) {
-            return fetch('{{ url("/paypal/capture-order")}}', {
-                method: 'post',
-                headers: {
-                    'content-type': 'application/json'
-                },
-                body: JSON.stringify({
-                    _token: csrf_token(),
-                    orderId: data.orderID
-                })
-            }).then(function(res) {
-                return res.json();
-            }).then(function(details) {
-                if(details && details.status && details.id)
-                {
-                    localStorage.removeItem('orderId');
-                    localStorage.removeItem('cart');
-                    localStorage.removeItem('coupon');
-                    localStorage.removeItem('checkout');
-                    window.location.href = site_url + "/paypal/success?id=" + details.id;
-                }
-                else
-                    window.location.href = site_url + "/paypal/error";
-            });
-        }
-    }).render('#paypal-button-container');
+        }).render('#paypal-button-container');
+    } else {
+        console.error("PayPal SDK failed to load.");
+    }
+});
 </script>
 @endpush
