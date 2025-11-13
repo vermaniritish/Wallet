@@ -174,7 +174,6 @@ var loginuseremail = '{{ $user && $user->email ? $user->email : '' }}';
 var loginuserphone = '{{ $user && $user->phonenumber ? $user->phonenumber : '' }}';
 var shops = '{{ $shops }}';
 </script>
-<?php /*
 <script src="https://www.paypal.com/sdk/js?client-id=AcHH3SOCSzLpPXioPVl5m15be29_PrHru6j0v6aVpcQdx9padzQ3EXfXVPkBStFVx-7FZZ4ZJzDNKxKh&currency=GBP"></script>
 <script>
     paypal.Buttons({
@@ -228,5 +227,4 @@ var shops = '{{ $shops }}';
         }
     }).render('#paypal-button-container');
 </script>
-*/ ?>
 @endpush

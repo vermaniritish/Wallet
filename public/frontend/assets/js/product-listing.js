@@ -1540,8 +1540,6 @@ checkoutPage = new Vue({
                 {
                     localStorage.setItem('orderId', response.orderId);
                     this.orderPlaced = response.orderId;
-                    // localStorage.removeItem('cart');
-                    // localStorage.removeItem('coupon');
                     await sleep(400);
                     window.scrollTo(0,0)
                 }
