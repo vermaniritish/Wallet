@@ -175,7 +175,6 @@ var loginuserphone = '{{ $user && $user->phonenumber ? $user->phonenumber : '' }
 var shops = '{{ $shops }}';
 const initPaypal = function()
 {
-    alert(`initPaypal`);
     if (typeof paypal !== 'undefined' && paypal.Buttons) {
         paypal.Buttons({
             createOrder: async function(data, actions) {
