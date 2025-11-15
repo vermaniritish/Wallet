@@ -148,7 +148,7 @@
                 <label class="form-check-label" for="exampleRadios5" data-bs-toggle="collapse" data-target="#paypal" aria-controls="paypal">Paypal</label>
                 <div class="form-group collapse in" id="paypal">
                     <p class="text-muted mt-5">Pay via PayPal; you can pay with your credit card if you don't have a PayPal account.</p>
-                </div>
+                </div>  
             </div>
         </div>
     </div>

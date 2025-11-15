@@ -92,8 +92,7 @@ $version = '2.0';
     <script src="{{ url('frontend/assets/js/auth.js?v='.$version) }}"></script>
     <script src="{{ url('frontend/assets/js/product-listing.js?v='.$version) }}"></script>
 
-    <script src="https://www.paypal.com/sdk/js?client-id=AcHH3SOCSzLpPXioPVl5m15be29_PrHru6j0v6aVpcQdx9padzQ3EXfXVPkBStFVx-7FZZ4ZJzDNKxKh&currency=GBP"></script>
-
+    <script src="https://www.paypal.com/sdk/js?client-id=AcHH3SOCSzLpPXioPVl5m15be29_PrHru6j0v6aVpcQdx9padzQ3EXfXVPkBStFVx-7FZZ4ZJzDNKxKh&currency=USD&intent=capture"></script>
     <script>
     window.addEventListener('load', function() {
         if (typeof paypal !== 'undefined' && paypal.Buttons) {
