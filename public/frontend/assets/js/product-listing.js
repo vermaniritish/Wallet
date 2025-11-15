@@ -1574,6 +1574,8 @@ checkoutPage = new Vue({
         this.initAddressSearch('#lname');
         this.initAddressSearch('#address');
         this.initAddressSearch('#address2');
+        await sleep(1000);
+        initPaypal();
         // let addressInfo = localStorage.getItem('addressInfo');
         // if(addressInfo) {
         //     addressInfo = JSON.parse(addressInfo);

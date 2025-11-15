@@ -165,6 +165,7 @@
 </section>
 @endsection
 @push("scripts")
+<script src="https://www.paypal.com/sdk/js?client-id=AYXlDi-lHWz99toobrKV0fzLCeQanEV5z4UnJB1fsSZN6r-xzqEacYY4KnESQuEyVgu-ARJ47y_YEkKb&currency=INR"></script>
 <script>
 var parcelforceEnable = {{($settings['shipping_parcelforce'] ? $settings['shipping_parcelforce'] : 0)}};
 var parcelforceCost = {{($settings['shipping_cost_parcelforce'] ? $settings['shipping_cost_parcelforce'] : 0)}};
@@ -173,5 +174,54 @@ var dpdCost = {{($settings['shipping_cost_dpd'] ? $settings['shipping_cost_dpd']
 var loginuseremail = '{{ $user && $user->email ? $user->email : '' }}';
 var loginuserphone = '{{ $user && $user->phonenumber ? $user->phonenumber : '' }}';
 var shops = '{{ $shops }}';
+const initPaypal = function()
+{
+    alert(`initPaypal`);
+    if (typeof paypal !== 'undefined' && paypal.Buttons) {
+        paypal.Buttons({
+            createOrder: async function(data, actions) {
+                let response = await checkoutPage.submit();
+                if(response && response.status && response.orderId) {
+                    return fetch('{{url("/paypal/create-order")}}', {
+                        method: 'post',
+                        headers: {
+                            'content-type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        body: JSON.stringify({
+                            amount: response.amount,
+                            id: response.orderId
+                        })
+                    }).then(res => res.json())
+                    .then(orderData => orderData?.result?.id || null);
+                }
+                return Promise.reject(new Error('API request failed'));
+            },
+            onApprove: function(data, actions) {
+                return fetch('{{ url("/paypal/capture-order")}}', {
+                    method: 'post',
+                    headers: {
+                        'content-type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({
+                        orderId: data.orderID
+                    })
+                }).then(res => res.json())
+                .then(details => {
+                    if(details?.status && details?.id) {
+                        localStorage.clear();
+                        window.location.href = site_url + "/paypal/success?id=" + details.id;
+                    } else {
+                        window.location.href = site_url + "/paypal/error";
+                    }
+                });
+            }
+        }).render('#paypal-button-container');
+    } else {
+        console.error("PayPal SDK failed to load.");
+    }
+}
 </script>
+
 @endpush
