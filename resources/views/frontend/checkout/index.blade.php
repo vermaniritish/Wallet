@@ -165,7 +165,7 @@
 </section>
 @endsection
 @push("scripts")
-<script src="https://www.paypal.com/sdk/js?client-id=AYXlDi-lHWz99toobrKV0fzLCeQanEV5z4UnJB1fsSZN6r-xzqEacYY4KnESQuEyVgu-ARJ47y_YEkKb&currency=INR"></script>
+<script src="https://www.paypal.com/sdk/js?client-id=AYXlDi-lHWz99toobrKV0fzLCeQanEV5z4UnJB1fsSZN6r-xzqEacYY4KnESQuEyVgu-ARJ47y_YEkKb&currency=GBP"></script>
 <script>
 var parcelforceEnable = {{($settings['shipping_parcelforce'] ? $settings['shipping_parcelforce'] : 0)}};
 var parcelforceCost = {{($settings['shipping_cost_parcelforce'] ? $settings['shipping_cost_parcelforce'] : 0)}};
