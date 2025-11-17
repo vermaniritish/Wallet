@@ -19,7 +19,7 @@ class PayPalController extends Controller
 
     public function createOrder(Request $request)
     {
-        $booking = Orders::select(['id', 'paypal_payment_data' ])->where('prefix_id', $request->get('id'))->limit(1)->first();
+        $booking = Orders::select(['id', 'paypal_payment_data'])->where('prefix_id', $request->get('id'))->limit(1)->first();
         $amount = $request->input('amount');
         $amount = round($amount, 2);
         $order = $this->payPalService->createOrder($request->get('id'), $amount);
