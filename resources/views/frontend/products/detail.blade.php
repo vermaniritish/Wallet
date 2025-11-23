@@ -214,8 +214,7 @@ $nonExchange = $product->non_exchange || $product->sizes->filter(function ($size
 										<div class="bt-1 border-color-1 mt-30 mb-30"></div>
 										@endif
                                         
-										@if($nonExchange)
-										<div class="form-group">
+										<div class="form-group" v-if="nonExchangeable">
 											<div class="checkbox">
 												<div class="custome-checkbox">
 													<input class="form-check-input" type="checkbox" name="iacknowledge" id="iacknowledge" v-model="accept">
@@ -223,7 +222,6 @@ $nonExchange = $product->non_exchange || $product->sizes->filter(function ($size
 												</div>
 											</div>
 										</div>
-                                        @endif
                                         
 										 <div class="product-extra-link2">
                                                 <button type="submit" class="button button-add-to-cart" v-on:click="addToCart(null)"><i class="fa fa-spin fa-spinner" v-if="adding && !buyNow"></i><i class="fa fa-check text-success" v-else-if="!buyNow && adding === false"></i> Add to cart</button>

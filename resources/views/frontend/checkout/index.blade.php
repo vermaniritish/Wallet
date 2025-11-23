@@ -210,7 +210,8 @@ const initPaypal = function()
                 }).then(res => res.json())
                 .then(details => {
                     if(details?.status && details?.id) {
-                        localStorage.clear();
+                        localStorage.setItem('cart', "");
+                        localStorage.setItem('coupon', "");
                         window.location.href = site_url + "/paypal/success?id=" + details.id;
                     } else {
                         window.location.href = site_url + "/paypal/error";

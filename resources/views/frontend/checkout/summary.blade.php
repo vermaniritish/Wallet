@@ -128,29 +128,6 @@
         <div class="mb-25">
             <h5>Payment</h5>
         </div>
-        <div class="payment_option">
-            <div class="custome-radio">
-                <input class="form-check-input" required="" type="radio" name="payment_option" id="exampleRadios3" checked="">
-                <label class="form-check-label" for="exampleRadios3" data-bs-toggle="collapse" data-target="#bankTranfer" aria-controls="bankTranfer">Direct Bank Transfer</label>
-                <div class="form-group collapse in" id="bankTranfer">
-                    <p class="text-muted mt-5">There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration. </p>
-                </div>
-            </div>
-            <div class="custome-radio">
-                <input class="form-check-input" required="" type="radio" name="payment_option" id="exampleRadios4" checked="">
-                <label class="form-check-label" for="exampleRadios4" data-bs-toggle="collapse" data-target="#checkPayment" aria-controls="checkPayment">Check Payment</label>
-                <div class="form-group collapse in" id="checkPayment">
-                    <p class="text-muted mt-5">Please send your cheque to Store Name, Store Street, Store Town, Store State / County, Store Postcode. </p>
-                </div>
-            </div>
-            <div class="custome-radio">
-                <input class="form-check-input" required="" type="radio" name="payment_option" id="exampleRadios5" checked="">
-                <label class="form-check-label" for="exampleRadios5" data-bs-toggle="collapse" data-target="#paypal" aria-controls="paypal">Paypal</label>
-                <div class="form-group collapse in" id="paypal">
-                    <p class="text-muted mt-5">Pay via PayPal; you can pay with your credit card if you don't have a PayPal account.</p>
-                </div>  
-            </div>
-        </div>
     </div>
     <div id="paypal-button-container"></div>
     <!-- <a href="javascript:;" v-on:click="submit" class="btn btn-fill-out btn-block mt-30"><i class="fa fa-spin fa-spinner" v-if="saving"></i> Place Order</a> -->
