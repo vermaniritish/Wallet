@@ -191,7 +191,7 @@ const initPaypal = function()
                             id: response.orderId
                         })
                     }).then(res => {
-                        res.json();
+                        return res.json();
                     })
                     .then(orderData => orderData?.result?.id || null);
                 }
