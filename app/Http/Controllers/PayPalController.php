@@ -75,7 +75,7 @@ class PayPalController extends Controller
                     if($phone){
                         $sent = \App\Libraries\SMSGateway::send(
                             $phone,  
-                            "Thank you for ordering with Pinder's Workwear. Your order no. is {$order->prefix_id}. Please check you Invoice at \n " . route('admin.orders.download', ['id' => $order->id])
+                            "Thank you for ordering with Pinder's Schoolwear. Your order no. is {$order->prefix_id}. Please check you Invoice at \n " . route('admin.orders.download', ['id' => $order->id])
                         );
                     }
                 }
@@ -98,12 +98,13 @@ class PayPalController extends Controller
 		$where = ['order_products.order_id' => $page->id];
 		$listing = OrderProductRelation::getListing($request, $where);
 		$html = view(
-			"admin/orders/pdf", 
-			[
-				'page' => $page,
-				'listing' => $listing
-			]
-		)->render();
+            "admin/orders/pdf", 
+            [
+                'page' => $page,
+                'listing' => $listing,
+                'logo' => Settings::get('logo')
+            ]
+        )->render();
 		$mpdf = new \Mpdf\Mpdf([
 			'tempDir' => public_path('/uploads'),
 			'mode' => 'utf-8', 
@@ -126,7 +127,8 @@ class PayPalController extends Controller
 				$page->customer_email,
 				'order-placed',
 				$codes,
-				file_exists(public_path($path)) ? [$path] : null
+				file_exists(public_path($path)) ? [$path] : 
+                null
 			);	
 		}
 

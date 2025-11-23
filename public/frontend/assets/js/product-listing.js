@@ -1538,7 +1538,10 @@ checkoutPage = new Vue({
 				response = await response.json();
                 if(response && response.status)
                 {
-                    
+                    // localStorage.setItem('orderId', response.orderId);
+                    // this.orderPlaced = response.orderId;
+                    // await sleep(400);
+                    // window.scrollTo(0,0)
                 }
                 else if(response && response.message)
                 {

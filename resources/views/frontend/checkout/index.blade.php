@@ -190,7 +190,9 @@ const initPaypal = function()
                             amount: response.amount,
                             id: response.orderId
                         })
-                    }).then(res => res.json())
+                    }).then(res => {
+                        res.json();
+                    })
                     .then(orderData => orderData?.result?.id || null);
                 }
                 return Promise.reject(new Error('API request failed'));
