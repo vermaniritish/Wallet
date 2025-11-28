@@ -18,7 +18,7 @@
                                 @if($brand->image)
                                 <p class="text-brand"><img src="{{ url($brand->image) }}" alt="{{ $brand->title }}" style="height: 60px;"></p>
                                 @endif
-                                <p>{{ $brand->title }}</p>
+                                <p  class="text-brand">{{ $brand->title }}</p>
                             </div>
                         </div>
                         <div class="shop-product-fillter">
