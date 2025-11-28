@@ -775,3 +775,48 @@ function set_notification(type, text, placementFrom, placementAlign, animateEnte
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
+
+if($('#school-search').length)
+{
+    $('#school-search').autocomplete({
+        source: function (request, response) {
+            $.ajax({
+                url: site_url + `/search-school`,
+                type: 'GET',
+                dataType: 'json',
+                data: {
+                    search: request.term
+                },
+                success: function (data) {
+                    if (data.status && data.schools) {
+                        response($.map(data.schools, function (item) {
+                            return {...item, ...{
+                                label: item.name,
+                                value: item.name
+                            }};
+                        }));
+                    } else {
+                        response([]);
+                    }
+                }
+            });
+        },
+        minLength: 2,
+        search: function() {
+            checkoutPage.checkout.address_id = null;
+        },
+        select: function (event, ui) {
+            let item = ui.item;
+            console.log(item)
+        }
+    }).data("ui-autocomplete")._renderItem = function (ul, item) {
+        return $("<li>")
+            .append(`
+                <div class="ui-menu-item-wrapper d-flex flex-column gap-0 align-items-start">
+                    <div class="autocomplete-product-title strong">${item.title}</div>
+                    <div class="autocomplete-product-title small">${item.schooltype}</div>
+                </div>
+            `)
+            .appendTo(ul);
+    };
+}

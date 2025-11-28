@@ -47,7 +47,13 @@
                         
                     </div>
 					<div class="col-md-2"><h2>OR</h2></div>
-					<div class="col-md-5"></div>
+					<div class="col-md-5">
+						<h3 style="color:#2A694F"><b>SEARCH YOUR SCHOOL NAME</b></h3>										
+						<p>Search your school name by typing below in the box</p>
+						<div>
+							<input type="text" class="form-control" placeholder="Search..." id="school-search" />
+						</div>
+					</div>
 					
                    
                 </div>

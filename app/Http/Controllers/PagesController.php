@@ -75,6 +75,23 @@ class PagesController extends BaseController
         ]);
     }
 
+    public function searchSchools(Request $request)
+    {
+        $search = $request->get('search');
+        $schools = Schools::select(['schooltype', 'name'])->where('status', 1)
+            ->where(function($q) use ($search) {
+                return $q->orWhere('name', 'LIKE', '%'.$search.'%');
+            })
+            ->orderBy('id', 'desc')
+            ->limit(50)
+            ->get();
+        
+        return Response()->json([
+            'status' => true,
+            'schools' => $schools
+        ]);
+    }
+
     public function myAccount(Request $request) 
     {
         $user = Users::find($request->session()->get('user')->id);
