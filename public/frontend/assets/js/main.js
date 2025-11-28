@@ -802,9 +802,6 @@ if($('#school-search').length)
             });
         },
         minLength: 2,
-        search: function() {
-            checkoutPage.checkout.address_id = null;
-        },
         select: function (event, ui) {
             let item = ui.item;
             console.log(item)
