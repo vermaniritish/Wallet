@@ -214,7 +214,12 @@ const initPaypal = function()
                         localStorage.removeItem('coupon');
                         window.location.href = site_url + "/paypal/success?id=" + details.id;
                     } else {
-                        window.location.href = site_url + "/paypal/error";
+                        if(details && !details.status && details.message) {
+                            set_notification('error', details.message);
+                        }
+                        setTimout(function() {
+                            window.location.href = site_url + "/paypal/error";
+                        }, 1000);
                     }
                 });
             }
