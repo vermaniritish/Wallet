@@ -1563,6 +1563,20 @@ checkoutPage = new Vue({
         }
     },
     mounted: async function() {
+        if(billingAddress) {
+            let item = billingAddress;
+            let name = item.title.split(" ");
+            let lname = JSON.parse(JSON.stringify(name[name.length-1]));
+            delete name[name.length-1];
+            name = name.join(" ");
+            this.checkout.first_name = name;
+            this.checkout.last_name = lname;
+            this.checkout.address_id = item.id;
+            this.checkout.address = item.address;
+            this.checkout.address2 = item.area;
+            this.checkout.city = item.city;
+            this.checkout.postalcode = item.postcode;
+        }
         this.parcelforceEnable = parcelforceEnable;
         this.dpdEnable = dpdEnable;
         this.parcelforceCost = parcelforceCost*1;
