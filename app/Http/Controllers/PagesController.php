@@ -42,7 +42,7 @@ class PagesController extends BaseController
         return view('frontend.checkout.index', [
             'page' => null,
             'user' => $user,
-            'address' => Addresses::where('user_id', $user->id)->limit(1)->first(),
+            'address' => $user && $user->id ? Addresses::where('user_id', $user->id)->limit(1)->first() : null,
             'shops' => $shops,
             'settings' => [
                 'shipping_cost_parcelforce' => Settings::get('shipping_cost_parcelforce'),
