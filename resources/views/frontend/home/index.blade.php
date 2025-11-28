@@ -259,7 +259,9 @@
                 </div>
             </div>
         </section>
-        <?php $brands = HomePage::get('featured_brands');
+        <?php 
+        $brands = HomePage::get('featured_brands');
+        $brandLinks = HomePage::get('brand_links');
         $brands = $brands ? json_decode($brands) : [];
         ?>
         @if($brands)
@@ -269,9 +271,16 @@
                 <div class="carausel-6-columns-cover position-relative wow fadeIn animated">
                     <div class="slider-arrow slider-arrow-2 carausel-6-columns-arrow" id="carausel-6-columns-3-arrows"></div>
                     <div class="carausel-6-columns text-center" id="carausel-6-columns-3">
-                        @foreach($brands as $b)
+                        @foreach($brands as $k => $b)
                         <div class="brand-logo">
+                            @if(isset($brandLinks[$k]) && $brandLinks[$k])
+                            <a href="{{$brandLinks[$k]}}">
+                                <img class="img-grey-hover" src="{{ url($b) }}" alt="">
+                            </a>
+                            @else
                             <img class="img-grey-hover" src="{{ url($b) }}" alt="">
+                            @endif
+                            
                         </div>
                         @endforeach
                     </div>
