@@ -403,7 +403,7 @@ var productListing = new Vue({
             let categoryId = typeof cId !== 'undefined' && cId ? cId : ``;
             this.fetching = true;
             this.empty = false; 
-            let response = await fetch(site_url + `/api/products/listing?salePage=${this.salePage ? `1` : ``}${this.search ? `&search=${this.search}` : ''}&brands=${this.filters.brands ? this.filters.brands.join(',') : ``}&cId=${categoryId}&categories=${this.filters.categories ? this.filters.categories.join(',') : ``}&gender=${this.filters.gender ? this.filters.gender.join(',') : ``}&price_from=${this.filters.fromPrice ? this.filters.fromPrice : ``}&price_to=${this.filters.toPrice ? this.filters.toPrice : ``}${this.schoolId ? `&school_id=`+this.schoolId : ``}&page=${this.page}&limit=${this.selectedOption}&sort=${this.sort_by ? this.sort_by : ``}`);
+            let response = await fetch(site_url + `/api/products/listing?salePage=${this.salePage ? `1` : ``}${this.search ? `&search=${this.search}` : ''}&brands=${brandSlug ? brandSlug : ``}&cId=${categoryId}&categories=${this.filters.categories ? this.filters.categories.join(',') : ``}&gender=${this.filters.gender ? this.filters.gender.join(',') : ``}&price_from=${this.filters.fromPrice ? this.filters.fromPrice : ``}&price_to=${this.filters.toPrice ? this.filters.toPrice : ``}${this.schoolId ? `&school_id=`+this.schoolId : ``}&page=${this.page}&limit=${this.selectedOption}&sort=${this.sort_by ? this.sort_by : ``}`);
             response = await response.json();
             if(response && response.status)
             {

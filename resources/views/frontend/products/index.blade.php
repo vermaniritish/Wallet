@@ -69,4 +69,5 @@
 @endsection
 @push('scripts')
 <script>var cId = "{{$category ? $category->id : ''}}";</script>
+<script>var brandSlug = "{{$brand ? $brand->slug : ''}}";</script>
 @endpush
