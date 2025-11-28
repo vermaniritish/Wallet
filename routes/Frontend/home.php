@@ -55,7 +55,7 @@ Route::get('/checkout', '\App\Http\Controllers\PagesController@checkout')
 Route::get('/search-addresses', '\App\Http\Controllers\PagesController@searchAddresses')
     ->name('addresses.search');
 
-Route::get('/search-schools', '\App\Http\Controllers\PagesController@searchSchools')
+Route::get('/search-school', '\App\Http\Controllers\PagesController@searchSchools')
     ->name('schools.search');
 
 Route::post('/newsletter-subscribe', '\App\Http\Controllers\HomeController@newsletter')
