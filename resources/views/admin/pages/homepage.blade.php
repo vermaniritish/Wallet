@@ -358,8 +358,8 @@
 											<!-- INPUT WITH FILE URL -->
 											<?php $image = HomePage::get('featured_brands'); ?>
 											<textarea class="d-none" name="<?php echo 'featured_brands' ?>"><?php echo $image ?></textarea>
-											<div class="show-section <?php echo !$image ? 'd-none' : "" ?>">
-												@include('admin.partials.previewFileRender', ['file' =>  $image])
+											<div class="d-flex flex-column gap-2 show-section <?php echo !$image ? 'd-none' : "" ?>">
+												@include('admin.pages.imageWithLink', ['file' =>  $image])
 											</div>
 										</div>
 									</div>
