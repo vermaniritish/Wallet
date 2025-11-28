@@ -18,7 +18,7 @@ if($file)
 				if($imageSrc)
 				{
 					echo '
-                    <div class="d-flex flex-row gap-4 align-items-center">
+                    <div class="d-flex flex-row gap-4 align-items-center" style="gap:40px">
                         <div class="single-image ">
                             <a href="javascript:;" class="fileRemover single-cross image" data-relation="'.(isset($relationType) && $relationType ? $relationType : null).'" data-id="'.(isset($relationId) && $relationId ? $relationId : null).'" data-path="'.$oldFile.'"><i class="fas fa-times"></i></a><img src="'.url($imageSrc).'">
                         </div>
