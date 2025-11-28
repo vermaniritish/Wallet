@@ -1,9 +1,10 @@
 <?php 
 use App\Libraries\FileSystem;
+use App\Models\Admin\Settings;
 // CHAGE THE LOGIN AS PER YOUR FILE TYPE AND HANDLE MLTIPLE OR SINGLE IMAGE CASE
 if($file)
 {
-
+    $brandLinks = Settings::get('brand_images');
 	$multiple = json_decode($file, true);
 	$allFiles = $multiple && is_array($multiple) ? $multiple : ($file ? [$file] : null);
 	if($allFiles)
