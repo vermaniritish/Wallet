@@ -17,6 +17,7 @@ use App\Models\Admin\Addresses;
 use App\Models\Admin\Schools;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 class PagesController extends BaseController
 {
     public function aboutUs(Request $request)
@@ -79,7 +80,7 @@ class PagesController extends BaseController
     public function searchSchools(Request $request)
     {
         $search = $request->get('search');
-        $schools = Schools::select(['schooltype', 'name'])->where('status', 1)
+        $schools = Schools::select(['id', 'schooltype', 'name'])->where('status', 1)
             ->where(function($q) use ($search) {
                 $search = explode(' ', $search);
                 foreach($search as $a){
@@ -89,7 +90,11 @@ class PagesController extends BaseController
             })
             ->orderBy('id', 'desc')
             ->limit(50)
-            ->get();
+            ->get()
+            ->map(function ($school) {
+                $school->slug = Str::slug($school->name) . '-' . $school->id;
+                return $school;
+            });
         
         return Response()->json([
             'status' => true,

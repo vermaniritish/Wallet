@@ -804,13 +804,13 @@ if($('#school-search').length)
         minLength: 2,
         select: function (event, ui) {
             let item = ui.item;
-            console.log(item)
+            window.location.href = site_url + `/school/${item.slug}/uniforms`;
         }
     }).data("ui-autocomplete")._renderItem = function (ul, item) {
         return $("<li>")
             .append(`
                 <div class="ui-menu-item-wrapper d-flex flex-column gap-0 align-items-start">
-                    <div class="autocomplete-product-title strong">${item.title}</div>
+                    <div class="autocomplete-product-title strong">${item.name}</div>
                     <div class="autocomplete-product-title small">${item.schooltype}</div>
                 </div>
             `)
