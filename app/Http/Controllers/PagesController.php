@@ -269,7 +269,6 @@ class PagesController extends BaseController
                         'address' => 'required',
                         'area' => 'required',
                         'city' => 'required',
-                        'state' => 'required',
                         'postcode' => 'required',
                     ]
             );
