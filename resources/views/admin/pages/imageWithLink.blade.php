@@ -18,11 +18,11 @@ if($file)
 				if($imageSrc)
 				{
 					echo '
-                    <div class="d-flex flex-row gap-3">
+                    <div class="d-flex flex-row gap-4 align-items-center">
                         <div class="single-image ">
                             <a href="javascript:;" class="fileRemover single-cross image" data-relation="'.(isset($relationType) && $relationType ? $relationType : null).'" data-id="'.(isset($relationId) && $relationId ? $relationId : null).'" data-path="'.$oldFile.'"><i class="fas fa-times"></i></a><img src="'.url($imageSrc).'">
                         </div>
-                        <input type="text" class="form-control" placeholder="Link" name="brand_links[]" />
+                        <input type="text" class="form-control" placeholder="Link" name="brand_links[]" class="w-50" />
                     </div>
                     ';
 				}
