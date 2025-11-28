@@ -604,11 +604,11 @@ class AuthController extends AppController
 	        				'{recovery_link}' => Settings::get('website_url') . '/recover-password/' . $user->token
 	        			];
 
-	        			// General::sendTemplateEmail(
-	        			// 	$user->email,
-	        			// 	'forgot-password',
-	        			// 	$codes
-	        			// );
+	        			General::sendTemplateEmail(
+	        				$user->email,
+	        				'admin-forgot-password',
+	        				$codes
+	        			);
 
 	    				return Response()->json([
 						    	'status' => true,
