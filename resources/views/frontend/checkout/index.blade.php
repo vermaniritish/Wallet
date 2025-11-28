@@ -166,6 +166,7 @@
 @endsection
 @push("scripts")
 <script>
+var billingAddress = {{$address}};
 var parcelforceEnable = {{($settings['shipping_parcelforce'] ? $settings['shipping_parcelforce'] : 0)}};
 var parcelforceCost = {{($settings['shipping_cost_parcelforce'] ? $settings['shipping_cost_parcelforce'] : 0)}};
 var dpdEnable = {{($settings['shipping_dpd'] ? $settings['shipping_dpd'] : 0)}}; 
@@ -210,11 +211,16 @@ const initPaypal = function()
                 }).then(res => res.json())
                 .then(details => {
                     if(details?.status && details?.id) {
-                        localStorage.setItem('cart', "");
-                        localStorage.setItem('coupon', "");
+                        localStorage.removeItem('cart');
+                        localStorage.removeItem('coupon');
                         window.location.href = site_url + "/paypal/success?id=" + details.id;
                     } else {
-                        window.location.href = site_url + "/paypal/error";
+                        if(details && !details.status && details.message) {
+                            set_notification('error', details.message);
+                        }
+                        setTimout(function() {
+                            window.location.href = site_url + "/paypal/error";
+                        }, 1000);
                     }
                 });
             }

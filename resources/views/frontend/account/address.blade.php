@@ -38,13 +38,6 @@
                     @enderror
                 </div>
                 <div class="form-group">
-                    <p class="mb-10 font-sm">State / County</p>
-                    <input required="" type="text" name="state" value="{{$address->state}}">
-                    @error('state')
-                        <small class="text-danger">{{ $message }}</small>
-                    @enderror
-                </div>
-                <div class="form-group">
                     <p class="mb-10 font-sm">Postcode / ZIP</p>
                     <input required="" type="text" name="postcode" value="{{$address->postcode}}">
                     @error('postalcode')

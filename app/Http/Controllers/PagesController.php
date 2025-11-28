@@ -42,6 +42,7 @@ class PagesController extends BaseController
         return view('frontend.checkout.index', [
             'page' => null,
             'user' => $user,
+            'address' => Addresses::where('user_id', $user->id)->limit(1)->first(),
             'shops' => $shops,
             'settings' => [
                 'shipping_cost_parcelforce' => Settings::get('shipping_cost_parcelforce'),
@@ -269,7 +270,6 @@ class PagesController extends BaseController
                         'address' => 'required',
                         'area' => 'required',
                         'city' => 'required',
-                        'state' => 'required',
                         'postcode' => 'required',
                     ]
             );

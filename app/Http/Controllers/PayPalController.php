@@ -23,7 +23,11 @@ class PayPalController extends Controller
         $amount = $request->input('amount');
         $amount = round($amount, 2);
         $order = $this->payPalService->createOrder($request->get('id'), $amount);
-        if($order && $order->result && $order->result->id && $booking)
+        if($order && is_array($order) && isset($order['status']) && !$order['status'])
+        {
+            return response()->json(['status'=> false, 'message' => $order['message']]);
+        }
+        elseif($order && $order->result && $order->result->id && $booking)
         {
             $booking->paypal_payment_data = $order->result->id;
             $booking->save();
@@ -41,7 +45,11 @@ class PayPalController extends Controller
         $capture = $this->payPalService->captureOrder($orderId);
         $order = Orders::where('paypal_payment_data', $orderId)->limit(1)->first();
         
-        if($capture && $capture->result && in_array($capture->result->status, ['APPROVED', 'COMPLETED']))
+        if($capture  && is_array($capture) && isset($capture['status']) && !$capture['status'])
+        {
+            return response()->json(['status'=> false, 'message' => $capture['message']]);
+        }
+        elseif($capture && $capture->result && in_array($capture->result->status, ['APPROVED', 'COMPLETED']))
         {
             if($order)
             {
