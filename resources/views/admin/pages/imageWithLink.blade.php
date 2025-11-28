@@ -17,10 +17,14 @@ if($file)
 				$imageSrc = isset($sizesFiles['small']) && $sizesFiles['small'] ? $sizesFiles['small'] : $oldFile;
 				if($imageSrc)
 				{
-					echo '<div class="single-image d-flex flex-row gap-3">
-                        <a href="javascript:;" class="fileRemover single-cross image" data-relation="'.(isset($relationType) && $relationType ? $relationType : null).'" data-id="'.(isset($relationId) && $relationId ? $relationId : null).'" data-path="'.$oldFile.'"><i class="fas fa-times"></i></a><img src="'.url($imageSrc).'">
+					echo '
+                    <div class="d-flex flex-row gap-3">
+                        <div class="single-image ">
+                            <a href="javascript:;" class="fileRemover single-cross image" data-relation="'.(isset($relationType) && $relationType ? $relationType : null).'" data-id="'.(isset($relationId) && $relationId ? $relationId : null).'" data-path="'.$oldFile.'"><i class="fas fa-times"></i></a><img src="'.url($imageSrc).'">
+                        </div>
                         <input type="text" class="form-control" placeholder="Link" name="brand_links[]" />
-                    </div>';
+                    </div>
+                    ';
 				}
 			}
 			else
