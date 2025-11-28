@@ -194,7 +194,7 @@ class HomeController extends BaseController
         if($brand)
         {
             return view('frontend.products.index', [
-				'brand' => [],
+				'brand' => $brand,
 				'category' => [],
                 'subCategory' => [],
                 'brands' => [],
