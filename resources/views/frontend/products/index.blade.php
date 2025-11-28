@@ -13,7 +13,8 @@
             <div class="container">
                 <div class="row flex-row-reverse">
                     <div class="{{ $brandPage ? 'col-lg-12' : 'col-lg-9' }}">
-                        <div class="shop-product-fillter">
+                        @if($brandPage)
+                        <div class="shop-product-fillter mb-2">
                             <div class="totall-product d-flex flex-row align-items-center gap-2">
                                 @if($brand->image)
                                 <p class="text-brand"><img src="{{ url($brand->image) }}" alt="{{ $brand->title }}" style="height: 60px;"></p>
@@ -21,6 +22,7 @@
                                 <p  class="text-brand">{{ $brand->title }}</p>
                             </div>
                         </div>
+                        @endif
                         <div class="shop-product-fillter">
                             <div class="totall-product">
                                 <p v-html="paginationMessage"></p>
