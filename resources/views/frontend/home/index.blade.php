@@ -261,8 +261,9 @@
         </section>
         <?php 
         $brands = HomePage::get('featured_brands');
-        $brandLinks = HomePage::get('brand_links');
         $brands = $brands ? json_decode($brands) : [];
+        $brandLinks = HomePage::get('brand_links');
+        $brandLinks = $brandLinks ? json_decode($brandLinks) : [];
         ?>
         @if($brands)
         <section class="section-padding">
@@ -274,7 +275,7 @@
                         @foreach($brands as $k => $b)
                         <div class="brand-logo">
                             @if(isset($brandLinks[$k]) && $brandLinks[$k])
-                            <a href="{{$brandLinks[$k]}}">
+                            <a href="{{ $brandLinks[$k] }}">
                                 <img class="img-grey-hover" src="{{ url($b) }}" alt="">
                             </a>
                             @else
