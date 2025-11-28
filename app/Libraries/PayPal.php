@@ -43,7 +43,7 @@ class PayPal
         try {
             $response = $this->client->execute($request);
             return $response;
-        } catch (\Exception $ex) {
+        } catch (\HttpException $ex) {
             // Handle the exception
            return ['status' => false, 'message' => $ex->getMessage()];
         }
@@ -57,7 +57,7 @@ class PayPal
         try {
             $response = $this->client->execute($request);
             return $response;
-        } catch (\Exception $ex) {
+        } catch (\HttpException $ex) {
             // Handle the exception
            return ['status' => false, 'message' => $ex->getMessage()];
         }
