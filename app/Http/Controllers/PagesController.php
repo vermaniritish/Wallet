@@ -81,7 +81,11 @@ class PagesController extends BaseController
         $search = $request->get('search');
         $schools = Schools::select(['schooltype', 'name'])->where('status', 1)
             ->where(function($q) use ($search) {
-                return $q->orWhere('name', 'LIKE', '%'.$search.'%');
+                $search = explode(' ', $search);
+                foreach($search as $a){
+                    $q->orWhere('name', 'LIKE', '%'.$a.'%');
+                }
+                return $q;
             })
             ->orderBy('id', 'desc')
             ->limit(50)
