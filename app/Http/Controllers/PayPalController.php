@@ -29,6 +29,10 @@ class PayPalController extends Controller
             $booking->save();
             return response()->json($order);
         }
+        elseif($order && isset($order['status']) && !$order['status'])
+        {
+            return response()->json(['status'=> false, 'message' => $order['message']]);
+        }
         else
         {
             return response()->json(['status'=> false]);
@@ -85,6 +89,10 @@ class PayPalController extends Controller
                 }
             }
             return response()->json(['status' => true, 'id' => $order->prefix_id]);
+        }
+        elseif($capture && isset($capture['status']) && !$capture['status'])
+        {
+            return response()->json(['status'=> false, 'message' => $capture['message']]);
         }
         else
         {
