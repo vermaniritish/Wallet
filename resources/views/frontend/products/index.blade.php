@@ -15,6 +15,14 @@
                     <div class="{{ $brandPage ? 'col-lg-12' : 'col-lg-9' }}">
                         <div class="shop-product-fillter">
                             <div class="totall-product">
+                                @if($brand->image)
+                                <p><img src="{{ url($brand->image) }}" alt="{{ $brand->title }}" style="height: 100px;"></p>
+                                @endif
+                                <p>{{ $brand->title }}</p>
+                            </div>
+                        </div>
+                        <div class="shop-product-fillter">
+                            <div class="totall-product">
                                 <p v-html="paginationMessage"></p>
                                 
                             </div>
