@@ -79,6 +79,6 @@
 @endsection
 @push('scripts')
 <script>var cId = "{{$category ? $category->id : ''}}";</script>
-<script>var brandSlug = "{{$brand ? $brand->slug : ''}}";</script>
+<script>var brandSlug = "{{isset($brand) && $brand ? $brand->slug : ''}}";</script>
 <script>var brandPage = "{{$brandPage ? 'true' : 'false'}}";</script>
 @endpush
