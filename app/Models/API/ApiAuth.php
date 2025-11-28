@@ -5,16 +5,16 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Models\User;
+use App\Models\API\Admins;
 use App\Libraries\FileSystem;
 use App\Libraries\General;
 use App\Models\Admin\Settings;
 
-class ApiAuth extends User
+class ApiAuth extends Admins
 {
 
     protected $hidden = ['token', 'password'];
-    protected $table = 'users';
+    protected $table = 'admins';
     protected $primaryKey = 'id';
     public $timestamps = false;
 
@@ -36,7 +36,7 @@ class ApiAuth extends User
     * @param $where
     * @param $orderBy
     */
-    public static function getRow($where = [], $orderBy = 'users.id desc')
+    public static function getRow($where = [], $orderBy = 'admins.id desc')
     {
         $record = ApiAuth::orderByRaw($orderBy);
 
@@ -79,29 +79,29 @@ class ApiAuth extends User
     public static function makeLoginSession(Request $request, $user)
     {
         //Make login
-        if($user)
+        if($admin)
         {
             if(Settings::get('client_multi_device_logins'))
             {
                 if($request->bearerToken())
                 {
-                    UsersTokens::where( 'token', trim($request->bearerToken()) )->where('user_id', $user->id)->delete();
+                    UsersTokens::where( 'token', trim($request->bearerToken()) )->where('user_id', $admin->id)->delete();
                 }
 
                 if($request->get('device_id'))
                 {
-                    UsersTokens::where('device_id', $request->get('device_id'))->where('user_id', $user->id)->delete();
+                    UsersTokens::where('device_id', $request->get('device_id'))->where('user_id', $admin->id)->delete();
                 }
             }
             else
             {
-                UsersTokens::where('user_id', $user->id)->delete();
+                UsersTokens::where('user_id', $admin->id)->delete();
             }
 
             $expireMins = Settings::get('session_expires_in_minutes');
             $token = General::hash(64);
             $token = UsersTokens::create([
-                'user_id' => $user->id,
+                'user_id' => $admin->id,
                 'token' => $token,
                 'device_id' => $request->get('device_id') ? $request->get('device_id') : null,
                 'device_type' => $request->get('device_type') ? $request->get('device_type') : 'web',
@@ -112,14 +112,14 @@ class ApiAuth extends User
 
             if(!empty($token))
             {
-                Users::modify($user->id, ['last_login' => date('Y-m-d H:i:s')]);
+                Admins::modify($admin->id, ['last_login' => date('Y-m-d H:i:s')]);
                 
-                $user->access = [
+                $admin->access = [
                     'id' => $token->id,
                     'token' => $token->token
                 ];
 
-                return $user;
+                return $admin;
             }
         }
 
@@ -164,7 +164,7 @@ class ApiAuth extends User
         $userId = UsersTokens::getUserId($request->bearerToken());
         if($userId)
         {
-            $record = Users::select(['first_name', 'last_name'])
+            $record = Admins::select(['first_name', 'last_name'])
                 ->where('id', $userId)
                 ->first();
             return $record ? $record->first_name . ' ' . $record->last_name : "";
@@ -181,7 +181,7 @@ class ApiAuth extends User
         $userId = UsersTokens::getUserId($request->bearerToken());
         if($userId)
         {
-            $record = Users::select(['image'])
+            $record = Admins::select(['image'])
                 ->where('id', $userId)
                 ->first();
             return $record && $record->image && isset($record->image['small']) && $record->image['small'] ? $record->image['small'] : (isset($record->image['original']) && $record->image['original'] ? $record->image['original'] : null);

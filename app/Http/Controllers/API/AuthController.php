@@ -17,6 +17,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use App\Models\Admin\Settings;
+use App\Models\API\Admins;
+use App\Models\API\AdminAuth;
 use App\Models\API\Users;
 use App\Models\API\ApiAuth;
 use App\Models\API\UsersWishlist;
@@ -50,8 +52,121 @@ class AuthController extends AppController
 		}
 	}
 
+	// function signup(Request $request)
+	// {
+	// 	$allowed = ['email', 'password', 'first_name', 'last_name', 'device_id', 'device_type', 'device_name', 'fcm_token'];
+    // 	if($request->has($allowed))
+    // 	{
+    // 		$validator = Validator::make(
+	//             $request->toArray(),
+	//             [
+	//             	'first_name' => 'required',
+	//                 'device_type' => 'required',
+	//                 'device_id' => Rule::requiredIf(function () use ($request) {
+	// 			        return $request->get('device_type') != 'web';
+	// 			    }),
+	// 			    'device_name' => Rule::requiredIf(function () use ($request) {
+	// 			        return $request->get('device_type') != 'web';
+	// 			    }),
+	// 			    'fcm_token' => Rule::requiredIf(function () use ($request) {
+	// 			        return $request->get('device_type') != 'web';
+	// 			    }),
+	// 			    'email' => [
+	// 			    	'required',
+	// 			    	'email',
+	// 			    	Rule::unique('users')->whereNull('deleted_at'),
+	// 			    ],
+	//                 'password' => [
+	//                 	'required',
+	// 				    'min:8',
+	//                 ],
+	//             ]
+	//         );
+
+	//         if(!$validator->fails())
+	//         {
+	//         	$password = $request->get('password');
+
+	//         	$user = [
+	//         		'first_name' => $request->get('first_name'),
+	//         		'last_name' => $request->get('last_name'),
+	//         		'email' => $request->get('email'),
+	//         		'password' => $request->get('password'),
+	//         		'token' => General::hash(64)
+	//         	];
+
+	//         	if($user = Users::create($user))
+	//         	{
+    //     			$link = Settings::get('website_url') . '/email-verification/' . $user['token'];
+    //     			$codes = [
+    //     				'{first_name}' => $user->first_name,
+    //     				'{last_name}' => $user->last_name,
+    //     				'{email}' => $user->email,
+    //     				'{password}' => $password,
+    //     				'{verification_link}' => General::urlToAnchor($link)
+    //     			];
+
+    //     			General::sendTemplateEmail(
+    //     				$user->email,
+    //     				'registratadmin,
+    //     				$codes
+    //     			);
+
+    //     			if(Settings::get('direct_login_after_registration'))
+    //     			{
+    //     				$user = ApiAuth::makeLoginSession($request, $user);
+    //     				if($user)
+    //     				{
+    //     admin	return Response()->json([
+	// 					    	'status' => true,
+	// 					  adminmessage' => 'Registration successfully! An email having verification link has sent to your email address. Please verify.',
+	// 					    	'user' => $user
+	// 		admin   ]);
+    //     admin}
+    //     adminelse
+    //     				{
+    //     					return Response()->json([
+	// 					    	'status' => false,
+	// 					    	'message' => 'Unable to register new user. Please try again.'
+	// 					  admin 400);
+    //     				}
+    //     			}
+    //     			else
+    //     			{
+    //     				return Response()->json([
+	// 				    	'status' => true,
+	// 				   adminessage' =>admingistration successfully! An email having verification link has sent to your email address. Please verify.',
+	// 				    ]);
+    //     			}
+	//         	}
+	//         	else
+	//         	{
+	//         		return Response()->json([
+	// 			 admin'status' => false,
+	// 			    	'message' => 'Unable to register new user. Please try again.'
+	// 			    ], 400);
+	//         	}
+	// 	    }
+	// 	    else
+	// 	    {
+	// 	    	return Response()->json([
+	// 		    	'status' => false,
+	// 		    	'message' => current( current( $validator->errors()->getMessages() ) )
+	// 		    ], 400);
+	// 	    }
+	//     }
+	//     else
+	//     {
+	//     	return Response()->json([
+	// 	    	'status' => false,
+	// 	    	'message' => 'Some of inputs are invalid in request.',
+	// 	    ], 400);
+	//     }
+	// }
+
 	function signup(Request $request)
 	{
+		// pr($request->all()); die;
 		$allowed = ['email', 'password', 'first_name', 'last_name', 'device_id', 'device_type', 'device_name', 'fcm_token'];
     	if($request->has($allowed))
     	{
@@ -85,7 +200,7 @@ class AuthController extends AppController
 	        {
 	        	$password = $request->get('password');
 
-	        	$user = [
+	        	$admin = [
 	        		'first_name' => $request->get('first_name'),
 	        		'last_name' => $request->get('last_name'),
 	        		'email' => $request->get('email'),
@@ -93,32 +208,32 @@ class AuthController extends AppController
 	        		'token' => General::hash(64)
 	        	];
 
-	        	if($user = Users::create($user))
+	        	if($admin = Admin::create($admin))
 	        	{
-        			$link = Settings::get('website_url') . '/email-verification/' . $user['token'];
+        			$link = Settings::get('website_url') . '/email-verification/' . $admin['token'];
         			$codes = [
-        				'{first_name}' => $user->first_name,
-        				'{last_name}' => $user->last_name,
-        				'{email}' => $user->email,
+        				'{first_name}' => $admin->first_name,
+        				'{last_name}' => $admin->last_name,
+        				'{email}' => $admin->email,
         				'{password}' => $password,
         				'{verification_link}' => General::urlToAnchor($link)
         			];
 
         			General::sendTemplateEmail(
-        				$user->email,
+        				$admin->email,
         				'registration',
         				$codes
         			);
 
         			if(Settings::get('direct_login_after_registration'))
         			{
-        				$user = ApiAuth::makeLoginSession($request, $user);
-        				if($user)
+        				$admin = ApiAuth::makeLoginSession($request, $admin);
+        				if($admin)
         				{
         					return Response()->json([
 						    	'status' => true,
 						    	'message' => 'Registration successfully! An email having verification link has sent to your email address. Please verify.',
-						    	'user' => $user
+						    	'admin' => $admin
 						    ]);
         				}
         				else
@@ -162,54 +277,55 @@ class AuthController extends AppController
 	    }
 	}
 
-    function login(Request $request)
-    {	
-		$validator = Validator::make(
-			$request->toArray(),
-			[
-				'phonenumber' => 'required',
-			]
-		);
+	public function login(Request $request)
+	{
+	    if (!$request->isMethod('post')) {
+	        return response()->json([
+	            'status' => false,
+	            'message' => 'Invalid request method.'
+	        ], 405);
+	    }
 
-		if(!$validator->fails())
-		{
-			$user = Users::where('phonenumber', $request->get('phonenumber'))->limit(1)->first();
-			if(!$user)
-			{
-				$user = new Users();
-				$user->first_name = $request->get('name');
-				$user->phonenumber = $request->get('phonenumber');
-				$user->status = 1;
-			}
-			$otp = mt_rand(1000, 9999);
-			$user->otp = $otp;
-			$user->token = General::hash(64);
-			$user->token_expiry = null;
-			if($user->save())
-			{
-				
-				return Response()->json([
-					'status' => true,
-					'message' => 'We have sent an OTP on your phone number.',
-					'hash' => $user->token
-				]);
-			}
-			else
-			{
-				return Response()->json([
-					'status' => false,
-					'message' => 'Session could not be establised. Please try again.',
-				], 400);
-			}
-		}
-		else
-		{
-			return Response()->json([
-				'status' => false,
-				'message' => current( current( $validator->errors()->getMessages() ) )
-			], 400);
-		}
-    }
+	    // Validate request inputs
+	    $validator = Validator::make($request->all(), [
+	        'email'    => 'required|email',
+	        'password' => 'required'
+	    ]);
+
+	    if ($validator->fails()) {
+	        return response()->json([
+	            'status' => false,
+	            'message' => $validator->errors()->first()
+	        ], 400);
+	    }
+
+	    // Attempt login
+	    $user = AdminAuth::attemptLogin($request);
+
+	    if (!$user) {
+	        return response()->json([
+	            'status' => false,
+	            'message' => "The credentials you've entered don't match any account."
+	        ], 400);
+	    }
+
+	    // Make login session or token
+	    $sessionUser = AdminAuth::makeLoginSession($request, $user);
+
+	    if (!$sessionUser) {
+	        return response()->json([
+	            'status' => false,
+	            'message' => 'Session could not be established. Please try again.'
+	        ], 500);
+	    }
+
+	    // ⭐ Successful API Login Response
+	    return response()->json([
+	        'status'  => true,
+	        'message' => 'Login successful.',
+	        'data'    => $sessionUser  // yaha aap token ya user detail bhi bhej sakte ho
+	    ], 200);
+	}
 
     function secondAuth(Request $request, $token)
     {
@@ -471,7 +587,7 @@ class AuthController extends AppController
 	    	if($request->get('email'))
 	    	{
 	    		$email = $request->get('email');
-	    		$user = Users::getRow([
+	    		$user = Admins::getRow([
 	    			'email LIKE ?' => [$email],
 	    			'status' => 1
 	    		]);
@@ -488,11 +604,11 @@ class AuthController extends AppController
 	        				'{recovery_link}' => Settings::get('website_url') . '/recover-password/' . $user->token
 	        			];
 
-	        			General::sendTemplateEmail(
-	        				$user->email,
-	        				'forgot-password',
-	        				$codes
-	        			);
+	        			// General::sendTemplateEmail(
+	        			// 	$user->email,
+	        			// 	'forgot-password',
+	        			// 	$codes
+	        			// );
 
 	    				return Response()->json([
 						    	'status' => true,
@@ -626,7 +742,7 @@ class AuthController extends AppController
 
     function emailVerification(Request $request, $hash, $email = null)
     {
-    	$user = Users::getRow([
+    	$user = Admins::getRow([
 				'token like ?' => [$hash]
 			]);
 

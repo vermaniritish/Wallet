@@ -28,7 +28,7 @@ Route::middleware(['guest:api'])->group(function () {
 });
 
 Route::middleware(['apiAuth'])->group(function () {
-    // include "API/users.php";
+    include "API/auth.php";
     // include "API/wishlist.php";
     // include "API/messages.php";
 });
