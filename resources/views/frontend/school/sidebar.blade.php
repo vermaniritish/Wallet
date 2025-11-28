@@ -4,7 +4,7 @@
                     <div class="col-lg-12 col-mg-6"></div>
                 </div>
                 <div class="widget-category mb-30">
-                    <h5 class="section-title style-1 mb-30 wow fadeIn animated">Shop By Category</h5>
+                    <h5 class="section-title style-1 mb-30 wow fadeIn animated">Explore Our Full Collection</h5>
                     <ul class="categories">
                         @foreach($categories as $c)
                         <li><a href="{{ url('/'.$c->slug) }}">{{ $c->title }}</li>
