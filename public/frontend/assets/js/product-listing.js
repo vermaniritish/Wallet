@@ -505,7 +505,7 @@ var productListing = new Vue({
         {
             this.schoolId = schoolPageId;
         }
-        else if(!brandSlug)
+        else if(!brandPage)
         {
             let pathname = window.location.pathname.split('/');
             if(window.location.pathname.indexOf('/sale') > -1)
