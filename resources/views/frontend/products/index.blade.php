@@ -68,5 +68,5 @@
 </div>
 @endsection
 @push('scripts')
-<script>var cId = "{{$category->id}}";</script>
+<script>var cId = "{{$category ? $category->id : ''}}";</script>
 @endpush
