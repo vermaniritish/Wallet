@@ -65,6 +65,9 @@ Route::get('/search', '\App\Http\Controllers\HomeController@search')
 Route::get('/sale', '\App\Http\Controllers\HomeController@sale')
     ->name('home.sale');
 
+Route::get('/brand/{slug}', '\App\Http\Controllers\HomeController@brands')
+    ->name('home.brand');
+
 Route::get('/{category}', '\App\Http\Controllers\HomeController@listing')
     ->name('home.listing');
 

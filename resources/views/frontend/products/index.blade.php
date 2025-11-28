@@ -12,7 +12,7 @@
         <section class="mt-50 mb-50">
             <div class="container">
                 <div class="row flex-row-reverse">
-                    <div class="col-lg-9">
+                    <div class="{{ $brandPage ? 'col-lg-12' : 'col-lg-9' }}">
                         <div class="shop-product-fillter">
                             <div class="totall-product">
                                 <p v-html="paginationMessage"></p>
@@ -57,9 +57,11 @@
                             </nav>
                         </div>
                     </div>
+                    @if(!$brandPage)
                     <div class="col-lg-3 primary-sidebar sticky-sidebar" v-if="!searchPage">
 						@include('frontend.products.sidebar')
                     </div>
+                    @endif
                 </div>
             </div>
         </section>

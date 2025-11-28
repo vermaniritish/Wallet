@@ -262,6 +262,7 @@
         <?php 
         $brands = HomePage::get('featured_brands');
         $brands = $brands ? json_decode($brands) : [];
+        
         $brandLinks = HomePage::get('brand_links');
         $brandLinks = $brandLinks ? json_decode($brandLinks) : [];
         ?>

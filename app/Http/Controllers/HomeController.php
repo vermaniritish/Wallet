@@ -183,6 +183,19 @@ class HomeController extends BaseController
                 'subCategory' => $subCategory,
                 'brands' => $brands,
                 'categories' => $categories,
+				'brandPage' => false
+            ]);
+        }
+    }
+
+	public function brands(Request $request, $slug)
+    {
+        $brand = Brands::where('slug', 'LIKE', $slug)->where('status', 1)->limit(1)->first();
+        if($brand)
+        {
+            return view('frontend.products.index', [
+				'brand' => $brand,
+				'brandPage' => true
             ]);
         }
     }
