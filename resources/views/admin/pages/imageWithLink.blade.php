@@ -4,7 +4,7 @@ use App\Models\Admin\HomePage;
 // CHAGE THE LOGIN AS PER YOUR FILE TYPE AND HANDLE MLTIPLE OR SINGLE IMAGE CASE
 if($file)
 {
-    $brandLinks = HomePage::get('brand_images');
+    $brandLinks = HomePage::get('brand_links');
     $brandLinks = $brandLinks ? json_decode($brandLinks) : [];
 	$multiple = json_decode($file, true);
 	$allFiles = $multiple && is_array($multiple) ? $multiple : ($file ? [$file] : null);
