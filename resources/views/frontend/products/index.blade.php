@@ -14,7 +14,7 @@
                 <div class="row flex-row-reverse">
                     <div class="{{ $brandPage ? 'col-lg-12' : 'col-lg-9' }}">
                         <div class="shop-product-fillter">
-                            <div class="totall-product">
+                            <div class="totall-product d-flex flex-row align-items-center gap-2">
                                 @if($brand->image)
                                 <p><img src="{{ url($brand->image) }}" alt="{{ $brand->title }}" style="height: 100px;"></p>
                                 @endif
