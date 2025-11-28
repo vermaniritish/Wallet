@@ -23,7 +23,7 @@ class PayPalController extends Controller
         $amount = $request->input('amount');
         $amount = round($amount, 2);
         $order = $this->payPalService->createOrder($request->get('id'), $amount);
-        if($order && isset($order['status']) && !$order['status'])
+        if($order && is_array($order) && isset($order['status']) && !$order['status'])
         {
             return response()->json(['status'=> false, 'message' => $order['message']]);
         }
@@ -45,7 +45,7 @@ class PayPalController extends Controller
         $capture = $this->payPalService->captureOrder($orderId);
         $order = Orders::where('paypal_payment_data', $orderId)->limit(1)->first();
         
-        if($capture && isset($capture['status']) && !$capture['status'])
+        if($capture  && is_array($capture) && isset($capture['status']) && !$capture['status'])
         {
             return response()->json(['status'=> false, 'message' => $capture['message']]);
         }
