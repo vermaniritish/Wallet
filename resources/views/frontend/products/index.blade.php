@@ -16,7 +16,7 @@
                         <div class="shop-product-fillter">
                             <div class="totall-product d-flex flex-row align-items-center gap-2">
                                 @if($brand->image)
-                                <p><img src="{{ url($brand->image) }}" alt="{{ $brand->title }}" style="height: 60px;"></p>
+                                <p class="text-brand"><img src="{{ url($brand->image) }}" alt="{{ $brand->title }}" style="height: 60px;"></p>
                                 @endif
                                 <p>{{ $brand->title }}</p>
                             </div>
