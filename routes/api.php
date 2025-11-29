@@ -27,8 +27,13 @@ Route::middleware(['guest:api'])->group(function () {
     Route::post('/orders/{id}/ship', [\App\Http\Controllers\Admin\OrdersController::class, 'ship'])->name('admin.orders.ship');
 });
 
+Route::middleware(['adminApiAuth'])->group(function () {
+    include "API/inventoryProducts.php";
+});
+
 Route::middleware(['apiAuth'])->group(function () {
     include "API/auth.php";
+    // include "API/inventoryProducts.php";
     // include "API/wishlist.php";
     // include "API/messages.php";
 });
