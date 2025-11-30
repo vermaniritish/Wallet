@@ -9,6 +9,8 @@ $colorIds = Arr::pluck($product->colors, 'id');
 $nonExchange = $product->non_exchange || $product->sizes->filter(function ($size) {
     return $size->non_exchange == 1;
 })->count() > 0;
+
+pr($product->categories); die;
 ?>
 <div id="product-page">
 <div class="page-header breadcrumb-wrap">
@@ -17,7 +19,6 @@ $nonExchange = $product->non_exchange || $product->sizes->filter(function ($size
                     <a href="index.html" rel="nofollow">Home</a>
                     @if($product->school_id)
                     <span></span> <a :href="site_url + `/school/{{Str::slug($product->school_name . '-' . $product->school_id)}}/uniforms`" rel="nofollow">{{ $product->school_name }}</a>
-                    
                     @elseif($product->categories)
                     <span></span> <a :href="site_url + `/{{$product->categories->slug}}`" rel="nofollow">{{ $product->categories && $product->categories->title ? $product->categories->title : ''}}</a>
                     @endif
