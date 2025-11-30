@@ -161,4 +161,39 @@ class InventoryProductController extends BaseController
 	    ]);
 	}
 
+
+	public function getProductSearch(Request $request)
+	{
+	    // Validate request
+	    $validator = Validator::make($request->all(), [
+	        'product_title' => 'required',
+	    ]);
+
+	    if ($validator->fails()) {
+	        return response()->json([
+	            'status' => false,
+	            'message' => current(current($validator->errors()->getMessages()))
+	        ], 400);
+	    }
+
+	    $title = $request->product_title;
+
+	    // Find product by title
+	    $product = Products::where('title', 'LIKE', "%{$title}%")->first();
+
+	    if (!$product) {
+	        return response()->json([
+	            'status' => false,
+	            'message' => 'Product not found with this title.'
+	        ], 404);
+	    }
+	    return response()->json([
+	        'status' => true,
+	        'message' => 'Product colors fetched successfully.',
+	        'data' => [
+	            'product' => $product
+	        ]
+	    ]);
+	}
+
 }

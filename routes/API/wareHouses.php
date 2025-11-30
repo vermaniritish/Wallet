@@ -3,9 +3,12 @@
 Route::get('/ware-houses/listing', '\App\Http\Controllers\API\WareHouseController@index')
     ->name('api.wareHouse.index');
 
-Route::match(['get','post'],'/ware-houses/create', '\App\Http\Controllers\API\WareHouseController@add')
-    ->name('admin.wareHouse.add');
+Route::match(['get','post'],'/ware-houses/create', '\App\Http\Controllers\API\WareHouseController@createSupplier')
+    ->name('admin.wareHouse.createSupplier');
 
+Route::match(['get','post'],'/ware-houses/update/{id}', '\App\Http\Controllers\API\WareHouseController@updateSupplier')
+    ->name('admin.wareHouse.updateSupplier');
+    
 Route::post('/products/upload-file', '\App\Http\Controllers\API\ProductsController@uploadFile')
     ->name('admin.products.uploadFile');
 

@@ -44,65 +44,85 @@ class WareHouseController extends BaseController
 	    	'listing' => $listing->items(),
 	    ]);
 	}
-	
-    function add(Request $request)
-	{	
-		$userId = AdminAuth::getLoginId(); 
-        // if($userId)
-        // {		
-			$allowed = ['title','manager_name','phone','email','address'];
-			if($request->has($allowed))
-			{ 
-				$data = $request->toArray();
-				$validator = Validator::make(
-		            $request->toArray(),
-		            [
-						'title'        => 'required',
-		            ]
-		        );
 
-		        if(!$validator->fails())
-		        {
-		        	$data['user_id'] = $userId;
-	        		if($info = WareHouse::createApi($data))
-		        	{
-                        $getWareHouse = WareHouse::getWareHouse($info->id);
-						return Response()->json([
-					    	'status' 	=> true,
-					    	'message' 	=> 'Address saved successfully',
-					    	'data' 		=> $getWareHouse
-					    ]);	
-		        	}
-		        	else
-		        	{
-		        		return Response()->json([
-					    	'status' 	=> false,
-					    	'message' 	=> 'Unable to save address. Please try again.'
-					    ], 400);
-		        	}
-		        }    	
-			    else
-			    {
-			    	return Response()->json([
-				    	'status' 	=> false,
-				    	'message' 	=> current( current( $validator->errors()->getMessages() ) )
-				    ], 400);
-			    }
-		    }
-		    else
-		    {
-		    	return Response()->json([
-			    	'status' 	=> false,
-			    	'message' 	=> 'Some of inputs are invalid in request.',
-			    ], 400);
-		    }
-		// }
-		// else
-		// {
-		// 	return Response()->json([
-		//     	'status' 	=> false,
-		//     	'message' 	=> 'User not found.',
-		//     ], 400);
-		// }
+	public function createSupplier(Request $request)
+	{
+	    $validator = Validator::make($request->all(), [
+	        'title' => 'required|string|max:255',
+	        'manager_name' => 'required|string|max:255',
+	        'phone' => 'required',
+	        'email' => 'required|email',
+	        'address' => 'required|string',
+	    ]);
+
+	    if ($validator->fails()) {
+	        return response()->json([
+	            'status' => false,
+	            'message' => $validator->errors()->first()
+	        ], 422);
+	    }
+
+	    $adminId = AdminAuth::getLoginId(); // ← get admin id
+
+	    $supplier = WareHouse::create([
+	        'title'        => $request->title,
+	        'manager_name' => $request->manager_name,
+	        'phone'        => $request->phone,
+	        'email'        => $request->email,
+	        'address'      => $request->address,
+	        'created_by'   => $adminId,
+	    ]);
+
+	    return response()->json([
+	        'status' => true,
+	        'message' => 'Supplier created successfully',
+	        'data' => $supplier
+	    ]);
 	}
+
+	public function updateSupplier(Request $request, $id)
+	{
+	    $validator = Validator::make($request->all(), [
+	        'title' => 'required|string|max:255',
+	        'manager_name' => 'required|string|max:255',
+	        'phone' => 'required',
+	        'email' => 'required|email',
+	        'address' => 'required|string',
+	    ]);
+
+	    if ($validator->fails()) {
+	        return response()->json([
+	            'status' => false,
+	            'message' => $validator->errors()->first()
+	        ], 422);
+	    }
+
+	    $warehouse = WareHouse::find($id);
+
+	    if (!$warehouse) {
+	        return response()->json([
+	            'status' => false,
+	            'message' => 'Ware house not found'
+	        ], 404);
+	    }
+
+	    $adminId = AdminAuth::getLoginId();
+
+	    // Manual update (No fillable needed)
+	    $warehouse->title        = $request->title;
+	    $warehouse->manager_name = $request->manager_name;
+	    $warehouse->phone        = $request->phone;
+	    $warehouse->email        = $request->email;
+	    $warehouse->address      = $request->address;
+	    $warehouse->created_by   = $adminId;
+
+	    $warehouse->save();
+
+	    return response()->json([
+	        'status' => true,
+	        'message' => 'Ware house updated successfully',
+	        'data' => $warehouse
+	    ]);
+	}
+
 }

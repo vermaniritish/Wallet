@@ -14,3 +14,6 @@ Route::get('/products/size/search', '\App\Http\Controllers\API\InventoryProductC
 
 Route::get('/products/color/search', '\App\Http\Controllers\API\InventoryProductController@getProductColor')
     ->name('admin.products.getProductColor');
+
+Route::get('/products/search', '\App\Http\Controllers\API\InventoryProductController@getProductSearch')
+    ->name('admin.products.getProductSearch');
