@@ -18,6 +18,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Models\API\ApiAuth;
 use App\Models\API\Products;
+use App\Models\Admin\ProductSizeRelation;
+use App\Models\Admin\ProductColors;
 use App\Models\API\ProductCategories;
 use App\Models\API\UsersWishlist;
 use App\Models\API\ProductReports;
@@ -89,6 +91,74 @@ class InventoryProductController extends BaseController
 	    $product->delete();
 
 	    return $this->success(['message' => trans('PRODUCT_DELETED_SUCCESSFULLY')], Response::HTTP_OK);
+	}
+
+	public function getProductSizes(Request $request)
+	{
+	    // Validate request
+	    $validator = Validator::make($request->all(), [
+	        'product_id' => 'required',
+	    ]);
+
+	    if ($validator->fails()) {
+	        return response()->json([
+	            'status' => false,
+	            'message' => current(current($validator->errors()->getMessages()))
+	        ], 400);
+	    }
+
+	    $productId = $request->product_id;
+
+	    // Get product sizes
+	    $sizes = ProductSizeRelation::where('product_id', $productId)
+	                ->get();
+
+	    if ($sizes->isEmpty()) {
+	        return response()->json([
+	            'status' => false,
+	            'message' => 'No sizes found for this product.',
+	        ], 404);
+	    }
+
+	    return response()->json([
+	        'status' => true,
+	        'message' => 'Product sizes fetched successfully.',
+	        'data' => $sizes
+	    ]);
+	}
+
+	public function getProductColor(Request $request)
+	{
+	    // Validate request
+	    $validator = Validator::make($request->all(), [
+	        'product_id' => 'required',
+	    ]);
+
+	    if ($validator->fails()) {
+	        return response()->json([
+	            'status' => false,
+	            'message' => current(current($validator->errors()->getMessages()))
+	        ], 400);
+	    }
+
+	    $productId = $request->product_id;
+
+	    // Get product sizes
+	    $sizes = ProductColors::where('product_id', $productId)
+	                ->get();
+
+	    if ($sizes->isEmpty()) {
+	        return response()->json([
+	            'status' => false,
+	            'message' => 'No color found for this product.',
+	        ], 404);
+	    }
+
+	    return response()->json([
+	        'status' => true,
+	        'message' => 'Product color fetched successfully.',
+	        'data' => $sizes
+	    ]);
 	}
 
 }

@@ -29,6 +29,8 @@ Route::middleware(['guest:api'])->group(function () {
 
 Route::middleware(['adminApiAuth'])->group(function () {
     include "API/inventoryProducts.php";
+    include "API/wareHouses.php";
+    include "API/adminUser.php";
 });
 
 Route::middleware(['apiAuth'])->group(function () {
