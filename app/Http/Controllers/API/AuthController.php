@@ -612,7 +612,8 @@ class AuthController extends AppController
 
 	    				return Response()->json([
 						    	'status' => true,
-						    	'message' => 'We have sent you a recovery link on your email. Please follow the email.'
+						    	'message' => 'We have sent you a recovery link on your email. Please follow the email.',
+						    	'token' => $user->token
 						    ]);
 	    			}
 	    			else
@@ -651,7 +652,7 @@ class AuthController extends AppController
 
     function recoverPassword(Request $request, $hash)
     {
-    	$user = Users::getRow([
+    	$user = Admins::getRow([
     			'token like ?' => [$hash]
     		]);
 
@@ -659,7 +660,7 @@ class AuthController extends AppController
     	{
     		if($request->isMethod('post'))
 	    	{
-		    	$allowed = ['new_password', 'confirm_password'];
+		    	$allowed = ['password', 'confirm_password'];
 		    	if($request->has($allowed))
 			    {
 			    	
@@ -668,7 +669,7 @@ class AuthController extends AppController
 		            $validator = Validator::make(
 			            $request->toArray(),
 			            [
-			                'new_password' => [
+			                'password' => [
 			                	'required',
 							    'min:8'
 			                ],
@@ -681,9 +682,9 @@ class AuthController extends AppController
 
 			        if(!$validator->fails())
 			        {
-		        		if($data['new_password'] && $data['confirm_password'] && $data['new_password'] == $data['confirm_password'])
+		        		if($data['password'] && $data['confirm_password'] && $data['password'] == $data['confirm_password'])
 		        		{
-		        			$user->password = $data['new_password'];
+		        			$user->password = $data['password'];
 		        			$user->token = null;
 		        			if($user->save())
 		        			{
@@ -707,18 +708,14 @@ class AuthController extends AppController
 							    	'message' => 'Password did not match.'
 							    ], 400);
 		        		}
-				    }
-				    else
-				    {
+				    } else {
 				    	return Response()->json([
 						    	'status' => false,
 						    	'message' => current( current( $validator->errors()->getMessages() ) )
 						    ], 400);
 				    }
 				
-				}
-				else
-				{
+				} else {
 					return Response()->json([
 				    	'status' => false,
 				    	'message' => 'Some of inputs are invalid in request.',

@@ -71,6 +71,24 @@
                 </a>
             </li>
         <?php endif; ?>
+        <?php if(Permissions::hasPermission('ware_houses', 'listing')): ?>
+            <?php $active = strpos(request()->route()->getAction()['as'], 'admin.wareHouses') > -1; ?>
+            <li class="nav-item">
+                <a class="nav-link<?php echo ($active ? ' active' : '') ?>" href="<?php echo route('admin.wareHouses') ?>">
+                    <i class="fas fa-warehouse"></i>
+                    <span class="nav-link-text">Ware House</span>
+                </a>
+            </li>
+        <?php endif; ?>
+        <?php if(Permissions::hasPermission('suppliers', 'listing')): ?>
+            <?php $active = strpos(request()->route()->getAction()['as'], 'admin.suppliers') > -1; ?>
+            <li class="nav-item">
+                <a class="nav-link<?php echo ($active ? ' active' : '') ?>" href="<?php echo route('admin.suppliers') ?>">
+                    <i class="fas fa-handshake text-cyan"></i>
+                    <span class="nav-link-text">Suppliers</span>
+                </a>
+            </li>
+        <?php endif; ?>
         <?php if(Permissions::hasPermission('schools', 'listing')): ?>
             <?php $active = strpos(request()->route()->getAction()['as'], 'admin.schools') > -1; ?>
             <li class="nav-item">
