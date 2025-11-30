@@ -9,8 +9,6 @@ $colorIds = Arr::pluck($product->colors, 'id');
 $nonExchange = $product->non_exchange || $product->sizes->filter(function ($size) {
     return $size->non_exchange == 1;
 })->count() > 0;
-
-pr($product->categories); die;
 ?>
 <div id="product-page">
 <div class="page-header breadcrumb-wrap">

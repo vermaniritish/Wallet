@@ -97,11 +97,6 @@ class Products extends AdminProducts
         return $this->belongsTo(Users::class, 'user_id', 'id');
     }
 
-    public function categories()
-    {
-        return $this->belongsToMany(ProductCategories::class, 'product_category_relation', 'product_id', 'category_id');
-    }
-
     /**
     * To search and get pagination listing
     * @param Request $request
