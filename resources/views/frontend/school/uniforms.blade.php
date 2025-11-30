@@ -43,4 +43,6 @@
 @endsection
 @push('scripts')
 <script>var schoolPageId = '{{ $schoolId }}';</script>
+<script>var brandSlug = "{{isset($brand) && $brand ? $brand->slug : ''}}";</script>
+<script>var brandPage = "{{ isset($brandPage) && $brandPage ? 'true' : 'false'}}";</script>
 @endpush

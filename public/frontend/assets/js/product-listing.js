@@ -309,11 +309,9 @@ var productDetail = new Vue({
                 : '';
         }
     },
-    mounted: function() 
-    {
+    mounted: function() {
         this.nonExchangeable = nonExchange ? true : false;
         this.customization = $('#customization').length > 0 && $('#customization').text().trim() ? JSON.parse($('#customization').text().trim()) : null;
-        console.log(this.customization);
         this.id  = $('#productId').text().trim();
         let cart = localStorage.getItem('cart');
         cart = cart ? JSON.parse(cart) : [];
