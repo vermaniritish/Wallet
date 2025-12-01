@@ -94,6 +94,5 @@ pr($logos); die;
 	</td>
 </tr>
 <?php endif;*/ ?>
-<?php endif; ?>
 <tr><td colspan="5" style="padding:0;margin:0;"></td></tr>
 <?php endforeach; ?>
