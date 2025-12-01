@@ -616,7 +616,7 @@ else if($('#product-cat-page').length)
                     this.colorTitle = sColor.title;
                 }
             }
-            
+
             for(let i in sizes)
             {
                 let exist = this.cart.filter((item) => {
@@ -630,8 +630,6 @@ else if($('#product-cat-page').length)
             if(!this.color && this.sizes.length > 0) {
                 this.color = this.sizes[0].color_id;
             }
-
-            window.productSlider();
         }
     });
 }
