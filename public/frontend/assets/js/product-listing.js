@@ -119,7 +119,7 @@ if($('#product-page').length)
                 let dataId = e.target.getAttribute("data-id");
                 let index = this.sizes.findIndex((v) => v.id == dataId);
                 let sizeObj = this.sizes.filter((v) => v.id == dataId);
-                let sizeObj = sizeObj.length > 0 ? sizeObj[0] : null;
+                sizeObj = sizeObj.length > 0 ? sizeObj[0] : null;
                 let s = [...this.sizes];
                 s[index].quantity = qty;
                 this.setNonExchange(sizeObj, qty);
@@ -410,7 +410,8 @@ else if($('#product-cat-page').length)
                 let qty = e.target.value;
                 let dataId = e.target.getAttribute("data-id");
                 let index = this.sizes.findIndex((v) => v.id == dataId);
-                let sizeObj = sizeObj.length > 0 ? sizeObj[0] : null;
+                let sizeObj = this.sizes.filter((v) => v.id == dataId);
+                sizeObj = sizeObj.length > 0 ? sizeObj[0] : null;
                 let s = [...this.sizes];
                 s[index].quantity = qty;
                 this.setNonExchange(sizeObj, qty);
