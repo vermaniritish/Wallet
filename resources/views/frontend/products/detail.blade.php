@@ -211,7 +211,9 @@ $nonExchange = $product->non_exchange || $product->sizes->filter(function ($size
 											</div>
 										</div>
 										<div class="bt-1 border-color-1 mt-30 mb-30"></div>
-										@endif
+										@elseif($product->embroidered_logo || $product->printed_logo)
+                                            @include('frontend.products.logo_option')
+                                        @endif
                                         
 										<div class="form-group" v-if="nonExchangeable">
 											<div class="checkbox">
