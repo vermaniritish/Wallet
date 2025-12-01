@@ -462,7 +462,8 @@
 											</div>
 											<input type="hidden" name="printed_logo" value="0">
 											<input type="hidden" name="embroidered_logo" value="0">
-											<!-- <div class="custom-control">
+											
+											<div class="custom-control">
 												<label class="custom-toggle">
 													<input type="hidden" name="printed_logo" value="0">
 													<input type="checkbox" name="printed_logo" v-model="printed_logo" value="1" <?php echo (old('printed_logo') != '0' ? 'checked' : '') ?>>
@@ -477,7 +478,7 @@
 													<span class="custom-toggle-slider rounded-circle" data-label-off="No" data-label-on="Yes"></span>
 												</label>
 												<label class="custom-control-label">Embroidered Logo</label>
-											</div> -->
+											</div>
 										</div>
 									</div>
 								</div>
