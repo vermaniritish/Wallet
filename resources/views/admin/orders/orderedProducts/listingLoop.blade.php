@@ -23,9 +23,7 @@
 	</td>
 </tr>
 <?php 
-pr($row->logo_data);
 $logos = $row->logo_data ? (substr($row->logo_data, 0, 1) == '{' ? json_decode('['.$row->logo_data.']') : json_decode($row->logo_data)) : []; 
-pr($logos);
 ?>
 @foreach($logos as $logo)
 <?php if((isset($logo->title) && $logo->title)) continue; ?>
