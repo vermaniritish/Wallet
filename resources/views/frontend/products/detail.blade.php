@@ -10,7 +10,7 @@ $nonExchange = $product->non_exchange || $product->sizes->filter(function ($size
     return $size->non_exchange == 1;
 })->count() > 0;
 ?>
-<div id="product-page">
+<div id="{{ $isUniformPage ? 'product-page' : 'product-cat-page' }}">
 <div class="page-header breadcrumb-wrap">
             <div class="container">
                 <div class="breadcrumb">

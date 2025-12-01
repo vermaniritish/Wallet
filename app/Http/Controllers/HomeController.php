@@ -157,6 +157,7 @@ class HomeController extends BaseController
 				$logooption = null;
             return view('frontend.products.detail', [
                 'product' => $product,
+				'isUniformPage' => $product->school_id,
                 'similarProducts' => $similarProducts,
                 'logoOptions' => [
                     'category' => $logooption,
