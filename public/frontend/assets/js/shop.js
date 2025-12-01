@@ -62,12 +62,7 @@ var initSlickZoom = function() {
     }
 }
 var destroySlickZoom = function() {
-    var $img = $('.product-image-slider .slick-active img');
-    if ($img.data('elevateZoom')) {
-        $img.data('elevateZoom').destroy();   // destroy plugin
-        $img.removeData('elevateZoom');       // remove stored data
-        $('.zoomContainer').remove();         // remove zoom container from DOM
-    }
+    $('.zoomContainer').remove();
 }
 /* WOW active */
 new WOW().init();
