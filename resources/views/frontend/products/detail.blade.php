@@ -150,7 +150,7 @@ $nonExchange = $product->non_exchange || $product->sizes->filter(function ($size
 
                                     <span id="productId" class="d-none">{{ $product->id }}</span>
                                     <pre id="product-sizes" class="d-none">{{ json_encode($product->sizes ? $product->sizes : []) }}</pre>
-                                    <pre id="default-color" class="d-none">{{ json_encode($product->colors && count($product->colors) > 0 ? $product->colors[0] : [])}}</div>
+                                    <pre id="default-color" class="d-none">{{ json_encode($product->colors && count($product->colors) > 0 ? $product->colors[0] : [])}}</pre>
                                     <div style="padding-bottom:10px;">
                                     <strong class="mr-10">Color</strong>: @{{ colorTitle ? colorTitle : '' }}
                                     </div>
@@ -233,7 +233,25 @@ $nonExchange = $product->non_exchange || $product->sizes->filter(function ($size
                                 <!-- Detail Info -->
                             </div>
                         </div>
-                        
+                        <div class="row">
+                            <div class="col-lg-10 m-auto entry-main-content">
+                                @if($product->description)
+                                <h2 class="section-title style-1 mb-30">Description</h2>
+                                <div class="description mb-50">
+                                    <?php echo $product->description; ?>
+                                </div>
+                                @endif
+                                
+                                <div class="social-icons single-share">
+                                    <ul class="text-grey-5 d-inline-block">
+                                        <li><strong class="mr-10">Share this:</strong></li>
+                                        <li class="social-facebook"><a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u={{url()->current()}}"><img src="{{ url('/frontend/assets/imgs/theme/icons/icon-facebook.svg') }}" alt=""></a></li>
+                                        <li class="social-instagram"><a href="instagram://camera"><img src="{{ url('/frontend/assets/imgs/theme/icons/icon-instagram.svg') }}" alt=""></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        @include('frontend.products.similarProducts', ['products' => $similarProducts, 'title' => 'Related Products'])
                     </div>
                 </div>
             </div>
