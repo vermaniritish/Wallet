@@ -527,7 +527,7 @@ else if($('#product-cat-page').length)
                     await sleep(350);
                     minicart.updateCartCount();
                     this.adding = false;
-                    window.location.href = '/cart';
+                    // window.location.href = '/cart';
                 }
                 else
                 {
