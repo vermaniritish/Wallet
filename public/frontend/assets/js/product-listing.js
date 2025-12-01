@@ -127,7 +127,6 @@ if($('#product-page').length)
                 let id = sizeObj.id;
                 let index = this.sizes.findIndex((v) => v.id == id);
                 let s = [...this.sizes];
-
                 if(s[index].quantity && (s[index].quantity * 1) > 0){
                     s[index].quantity = (s[index].quantity*1) + 1;
                 }
@@ -417,7 +416,6 @@ else if($('#product-cat-page').length)
             increment(id) {
                 let index = this.sizes.findIndex((v) => v.id == id);
                 let s = [...this.sizes];
-
                 if(s[index].quantity && (s[index].quantity * 1) > 0){
                     s[index].quantity = (s[index].quantity*1) + 1;
                 }
