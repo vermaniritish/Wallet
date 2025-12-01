@@ -69,7 +69,7 @@ $logos = $row->logo_data ? (substr($row->logo_data, 0, 1) == '{' ? json_decode('
 				<span class="text-muted">Initial:</span> <?php echo $logo->initial ?><br />
 			</div>
 			<div class="col-sm-4">
-				<span class="text-muted">Quantity:</span> <?php echo ($logo->quantity) ?><br />
+				<span class="text-muted">Quantity:</span> <?php echo ($row->quantity) ?><br />
 				<span class="text-muted">Cost:</span> <?php echo _currency($logo->cost) ?><br />
 			</div>
 			<div class="col-sm-4">
