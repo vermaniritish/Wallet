@@ -540,6 +540,7 @@ else if($('#product-cat-page').length)
             {
                 this.editLogo = true;
                 $('body').addClass('overflow-hidden');
+                destroySlickZoom();
                 let response = await fetch(site_url + `/api/products/fetch-logo-prices`);
                 response = await response.json();
                 if(response && response.status)
@@ -550,6 +551,7 @@ else if($('#product-cat-page').length)
             closeModal() {
                 this.editLogo = false;
                 $('body').removeClass('overflow-hidden');
+                initSlickZoom();
             },
             addMoreLogo(k) 
             {

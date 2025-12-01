@@ -45,6 +45,15 @@
             });
         });
         //Elevate Zoom
+        
+        //Filter color/Size
+
+        $('.dropdown-menu .cart_list').on('click', function (event) {
+            event.stopPropagation();
+        });
+    };
+
+    var initSlickZoom = function() {
         if ( $(".product-image-slider").length ) {
             $('.product-image-slider .slick-active img').elevateZoom({
                 zoomType: "inner",
@@ -53,18 +62,22 @@
                 zoomWindowFadeOut: 750
             });
         }
-        //Filter color/Size
-
-        $('.dropdown-menu .cart_list').on('click', function (event) {
-            event.stopPropagation();
-        });
-    };
+    }
+    var destroySlickZoom = function() {
+        var $img = $('.product-image-slider .slick-active img');
+        if ($img.data('elevateZoom')) {
+            $img.data('elevateZoom').destroy();   // destroy plugin
+            $img.removeData('elevateZoom');       // remove stored data
+            $('.zoomContainer').remove();         // remove zoom container from DOM
+        }
+    }
     /* WOW active */
     new WOW().init();
 
     //Load functions
     $(document).ready(function () {
         productDetails();
+        initSlickZoom();
     });
 
 })(jQuery);
