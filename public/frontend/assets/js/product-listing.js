@@ -1784,12 +1784,76 @@ checkoutPage = new Vue({
         calcaualteLogoCost()
         {
             let cost = 0;
+            let haveLogo = 0;
+            let appliedDiscount = 0;
+            let logoDiscount = 0;
             for(let c of this.cart )
             {
+                let freeLogo = this.offerPrice(c).freeLogo;
+                if(c.logo)
+                {
+                    for(let item of c.logo)
+                    {
+                        if( (item.image || item.text) && !item.already_uploaded && item.category != 'None' )
+                        {
+                            haveLogo += (c.quantity*1);
+                        }
+
+                        if(item && item.category != 'None' && (item.price*1) > 0)
+                        {
+                            cost += item.price*c.quantity;
+
+                            if(freeLogo > 0)
+                            {
+                                discountQty = c.quantity > freeLogo ? freeLogo : c.quantity;
+                                appliedDiscount += discountQty;
+                                logoDiscount += item.price*discountQty;
+                            }
+                        }
+                    }
+                }
+                if(c.customization)
                 cost += this.getCustomizationCost(c.customization)*c.quantity*1;
             }
-            
-            return {cost};
+            if(appliedDiscount < 1 && haveLogo > 0)
+            {
+                let subtotal = this.cart.map((item) => {
+                    if(item.offer && item.offer)
+                    {
+                        return this.offerPrice(item).price;
+                        // return item.quantity*item.price;
+                    }
+                    else
+                    {
+                        return item.quantity*item.price;
+                    }
+                });
+                subtotal = subtotal.reduce((partialSum, a) => partialSum + a, 0);
+                let prices = [];
+                for(let c of this.cart )
+                {
+                    for(let item of c.logo)
+                    {
+                        for(let i = 0; i < (c.quantity*1); i++)
+                        prices.push(item.price);
+                    }
+                }
+                let discount = freeLogoDiscount ? freeLogoDiscount : null;
+                if(discount &&  (subtotal*1) >= (discount.min_cart_price*1) && prices.length >= discount.quantity)
+                {
+                    const sortedPrices = prices.sort((a, b) => a - b);
+                    const topPrices = sortedPrices.slice(0, discount.quantity);
+                
+                    logoDiscount = topPrices.reduce((acc, price) => acc + price, 0);
+                    appliedDiscount = discount.quantity;
+                }
+            }
+            return {
+                cost,
+                haveLogo: haveLogo > 0 ? true : false,
+                logoDiscount,
+                appliedDiscount
+            };
         },
         freeDelivery(){
             let subtotal = this.cart.map((item) => {
