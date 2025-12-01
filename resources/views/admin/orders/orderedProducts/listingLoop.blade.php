@@ -62,7 +62,7 @@ pr($logos);
 @endforeach
 @foreach($logos as $logo)
 <?php if(!(isset($logo->title) && $logo->title)) continue; ?>
-<tr class="table-borderless d-none">
+<tr class="table-borderless">
 	<td colspan="5" style="padding:0;">
 		<table class="table">
 			<thead class="thead-light">
