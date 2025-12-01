@@ -423,7 +423,7 @@ class HomeController extends AppController
 		foreach($cart as $c)
 		{
 			$freeLogo = $this->offerPrice($c)['freeLogo'];
-			if($c['logo'])
+			if(isset($c['logo']) && $c['logo'])
 			{
 				foreach($c['logo'] as $item)
 				{
