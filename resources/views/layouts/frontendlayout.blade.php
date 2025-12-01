@@ -65,6 +65,7 @@ $version = '2.3';
     <script src="{{ url('frontend/assets/js/vendor/modernizr-3.6.0.min.js') }}"></script>
     <script src="{{ url('frontend/assets/js/vendor/jquery-3.6.0.min.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.min.js"></script>
+    <script src="<?php echo url('assets/js/jquery.form.min.js') ?>"></script>
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
     <script src="<?php echo url('assets/js/bootstrap-notify.js') ?>"></script>
     <script src="{{ url('frontend/assets/js/vendor/jquery-migrate-3.3.0.min.js') }}"></script>
