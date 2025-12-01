@@ -60,28 +60,22 @@ $logos = $row->logo_data ? (substr($row->logo_data, 0, 1) == '{' ? json_decode('
 @endforeach
 @foreach($logos as $logo)
 <?php if(!(isset($logo->title) && $logo->title)) continue; ?>
-<tr class="table-borderless">
-	<td colspan="5" style="padding:0;">
-		<table class="table">
-			<thead class="thead-light">
-			<tr>
-				<th width="30%">Title</th>
-				<th width="30%">Initial</th>
-				<th>Cost</th>
-				<th>Qty</th>
-				<th>Total</th>
-			</tr>
-			</thead>
-			@foreach($logos as $logo)
-			<tr>
-				<td>{{ $logo->title }}</td>
-				<td>{{ $logo->initial }}</td>
-				<td>{{ _currency($logo->cost) }}</td>
-				<td>{{ $row->quantity }}</td>
-				<td>{{ _currency($logo->cost * $row->quantity) }}</td>
-			</tr>
-			@endforeach
-		</table>
+<tr>
+	<td></td>
+	<td colspan="4">
+		<div class="row">
+			<div class="col-sm-4">
+				<span class="text-muted">Title:</span> <?php echo $logo->title ?><br />
+				<span class="text-muted">Initial:</span> <?php echo $logo->initial ?><br />
+			</div>
+			<div class="col-sm-4">
+				<span class="text-muted">Quantity:</span> <?php echo ($logo->quantity) ?><br />
+				<span class="text-muted">Cost:</span> <?php echo _currency($logo->cost) ?><br />
+			</div>
+			<div class="col-sm-4">
+				<span class="text-muted">Total:</span> {{ _currency($logo->cost * $row->quantity) }}<br />
+			</div>
+		</div>
 	</td>
 </tr>
 @endforeach
