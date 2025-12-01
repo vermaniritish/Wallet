@@ -28,7 +28,8 @@ $logos = $row->logo_data ? (substr($row->logo_data, 0, 1) == '{' ? json_decode('
 pr($logos);
 ?>
 @foreach($logos as $logo)
-<?php if(!( (isset($logo->text) && $logo->text) || $logo->image || $logo->category || $logo->postion)) continue; ?>
+<?php if((isset($logo->title) && $logo->title)) continue; ?>
+<?php if(!( (isset($logo->text) && $logo->text) || (isset($logo->image) && $logo->image) || $logo->category || $logo->postion)) continue; ?>
 <tr class="table-borderless">
 	<td></td>
 	<td colspan="4">
@@ -60,7 +61,7 @@ pr($logos);
 </tr>
 @endforeach
 @foreach($logos as $logo)
-<?php if(!($logo->title)) continue; ?>
+<?php if(!(isset($logo->title) && $logo->title)) continue; ?>
 <tr class="table-borderless d-none">
 	<td colspan="5" style="padding:0;">
 		<table class="table">
