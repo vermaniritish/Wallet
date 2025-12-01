@@ -238,6 +238,7 @@ if($('#product-page').length)
                 }
                 else
                 {
+                    this.adding = false;
                     set_notification('error', 'Please select size to proceed.');
                     return false;
                 }
@@ -415,6 +416,7 @@ else if($('#product-cat-page').length)
             },
             increment(id) {
                 let index = this.sizes.findIndex((v) => v.id == id);
+                console.log(`index`, index, this.sizes);
                 let s = [...this.sizes];
                 if(s[index].quantity && (s[index].quantity * 1) > 0){
                     s[index].quantity = (s[index].quantity*1) + 1;
@@ -525,6 +527,7 @@ else if($('#product-cat-page').length)
                 }
                 else
                 {
+                    this.adding = false;
                     set_notification('error', 'Please select size to proceed.');
                     return false;
                 }
