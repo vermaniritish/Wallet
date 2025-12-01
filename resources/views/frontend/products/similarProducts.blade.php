@@ -22,8 +22,6 @@
                                 @endif
                             </a>
                         </div>
-                        
-                        
                     </div>
                     <div class="product-content-wrap">
                         <h2><a href="{{ url('/'.$p->slug) }}">{{ $p->title }}</a></h2>
