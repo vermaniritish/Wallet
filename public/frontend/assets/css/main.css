@@ -10090,7 +10090,7 @@ color: #FFF;
 }
 
 /*# sourceMappingURL=main.css.map */
-
+/** Dev **/
 .ui-autocomplete {
     max-height: 300px;
     overflow-y: auto;
@@ -10147,4 +10147,85 @@ color: #FFF;
 
 .ui-widget.ui-widget-content {
   z-index: 99999;
+}
+
+
+.overlay {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.7);
+  transition: opacity 500ms;
+  visibility: hidden;
+  opacity: 0;
+}
+.overlay.show {
+  visibility: visible;
+  opacity: 1;
+}
+
+.popup {
+  margin: 70px auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 5px;
+  width: 60%;
+  position: relative;
+  transition: all 5s ease-in-out;
+}
+
+.popup h2 {
+  margin-top: 0;
+  color: #333;
+  font-size:20px;
+  line-height: 2rem;
+}
+.formhead{
+  color:#C69D5F;
+  font-size:12px;
+  text-transform:uppercase;
+  font-weight:500;
+}
+.popup .close {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  transition: all 200ms;
+  font-size: 30px;
+  font-weight: bold;
+  text-decoration: none;
+  color: #ee2761;
+}
+.popup .close:hover {
+  color: #333;
+}
+.popup .headerstyl{
+  padding: 5px;
+  width:95%;
+  border: 3px solid #fae1dd;
+  margin-bottom: 20px;
+  border-radius: 10px;
+  background-color: #f8edeb;
+}
+.popup .headerstyl p{
+	margin-bottom:0px;
+}
+.popup .headerstyl span{
+	font-size:13px;
+	color:#000;
+}
+.popup .content {
+  height: 390px;
+  overflow-y: auto;
+}
+.popup label {
+  display: inline-block;
+}
+.popupproductheading{
+  font-size: 14px !important;
+  color: #2F3751 !important;
+  font-weight: 600 !important;
+  line-height:17px !important;
 }
