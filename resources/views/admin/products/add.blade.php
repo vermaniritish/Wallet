@@ -462,7 +462,7 @@
 											</div>
 											<input type="hidden" name="printed_logo" value="0">
 											<input type="hidden" name="embroidered_logo" value="0">
-											
+											@if(!isset($uniformPage) || !$uniformPage)
 											<div class="custom-control">
 												<label class="custom-toggle">
 													<input type="hidden" name="printed_logo" value="0">
@@ -479,6 +479,7 @@
 												</label>
 												<label class="custom-control-label">Embroidered Logo</label>
 											</div>
+											@endif
 										</div>
 									</div>
 								</div>

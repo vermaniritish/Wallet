@@ -413,7 +413,8 @@ class UniformsController extends AppController
 			'colors' => $colors,
 			'sizes' => $sizes,
 			'schools' => $schools,
-			'product' => $unifromId ? Products::find($unifromId)  : null
+			'product' => $unifromId ? Products::find($unifromId)  : null,
+			'uniformPage' => true
 		]);
     }
 
