@@ -404,8 +404,7 @@ else if($('#product-cat-page').length)
                 // return this.sizes;
                 return this.sizes.filter((i) => ((i.quantity*1) > 0) );
             },
-            manualQty(e) {
-                console.log(e, e.target.value);
+            manualQty(e, sizeObj) {
                 let qty = e.target.value;
                 let dataId = e.target.getAttribute("data-id");
                 let index = this.sizes.findIndex((v) => v.id == dataId);
@@ -414,9 +413,9 @@ else if($('#product-cat-page').length)
                 this.setNonExchange(sizeObj, qty);
                 this.sizes = JSON.parse(JSON.stringify(s));
             },
-            increment(id) {
+            increment(sizeObj) {
+                let id = sizeObj.id;
                 let index = this.sizes.findIndex((v) => v.id == id);
-                console.log(`index`, index, this.sizes);
                 let s = [...this.sizes];
                 if(s[index].quantity && (s[index].quantity * 1) > 0){
                     s[index].quantity = (s[index].quantity*1) + 1;
@@ -427,10 +426,11 @@ else if($('#product-cat-page').length)
                 this.setNonExchange(sizeObj, s[index].quantity);
                 this.sizes = JSON.parse(JSON.stringify(s));
             },
-            decrement(id) {
+            decrement(sizeObj) {
+                let id = sizeObj.id;
                 let index = this.sizes.findIndex((v) => v.id == id);
                 let s = [...this.sizes];
-
+                
                 if(s[index].quantity && (s[index].quantity * 1) > 0){
                     s[index].quantity = (s[index].quantity*1) - 1;
                 }
