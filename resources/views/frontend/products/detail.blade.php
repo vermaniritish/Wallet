@@ -256,6 +256,7 @@ $nonExchange = $product->non_exchange || $product->sizes->filter(function ($size
                 </div>
             </div>
         </section>
+        @include('frontend.products.personlizedModal', ['product' => $product])
 </div>
 @endsection
 @push("scripts")
