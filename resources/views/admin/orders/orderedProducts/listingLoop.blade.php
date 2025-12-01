@@ -28,7 +28,7 @@ $logos = $row->logo_data ? (substr($row->logo_data, 0, 1) == '{' ? json_decode('
 pr($logos); die;
 ?>
 @foreach($logos as $logo)
-<?php if(!($logo->text || $logo->image || $logo->category || $logo->postion)) continue; ?>
+<?php if(!( (isset($logo->text) && $logo->text) || $logo->image || $logo->category || $logo->postion)) continue; ?>
 <tr class="table-borderless">
 	<td></td>
 	<td colspan="4">
