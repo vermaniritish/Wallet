@@ -331,14 +331,14 @@ if($('#product-page').length)
                     this.colorTitle = sColor.title;
                 }
             }
-            for(let i in sizes)
-            {
-                let exist = this.cart.filter((item) => {
-                    return item.id == sizes[i].id
-                });
-                sizes[i].logo = exist && exist.length > 0 && exist[0].logo ? exist[0].logo : [...this.logo];
-                sizes[i].quantity = exist && exist.length > 0 && exist[0].quantity ? exist[0].quantity : 0;
-            }
+            // for(let i in sizes)
+            // {
+            //     let exist = this.cart.filter((item) => {
+            //         return item.id == sizes[i].id
+            //     });
+            //     sizes[i].logo = exist && exist.length > 0 && exist[0].logo ? exist[0].logo : [...this.logo];
+            //     sizes[i].quantity = exist && exist.length > 0 && exist[0].quantity ? exist[0].quantity : 0;
+            // }
             this.sizes = sizes;
             this.logoOptions = $('#logo-options').text().trim() ? JSON.parse($('#logo-options').text().trim()) : [];
             if(!this.color && this.sizes.length > 0) {
@@ -622,14 +622,14 @@ else if($('#product-cat-page').length)
                 }
             }
 
-            for(let i in sizes)
-            {
-                let exist = this.cart.filter((item) => {
-                    return item.id == sizes[i].id
-                });
-                sizes[i].logo = exist && exist.length > 0 && exist[0].logo ? exist[0].logo : [...this.logo];
-                sizes[i].quantity = exist && exist.length > 0 && exist[0].quantity ? exist[0].quantity : 0;
-            }
+            // for(let i in sizes)
+            // {
+            //     let exist = this.cart.filter((item) => {
+            //         return item.id == sizes[i].id
+            //     });
+            //     sizes[i].logo = exist && exist.length > 0 && exist[0].logo ? exist[0].logo : [...this.logo];
+            //     sizes[i].quantity = exist && exist.length > 0 && exist[0].quantity ? exist[0].quantity : 0;
+            // }
             this.sizes = sizes;
             this.logoOptions = $('#logo-options').text().trim() ? JSON.parse($('#logo-options').text().trim()) : [];
             if(!this.color && this.sizes.length > 0) {
