@@ -1,14 +1,4 @@
 <?php
-/**
- * Products Class
- *
- * @package    ProductsController
- 
- 
- * @version    Release: 1.0.0
- * @since      Class available since Release 1.0.0
- */
-
 
 namespace App\Http\Controllers\API;
 
@@ -45,7 +35,7 @@ class WareHouseController extends BaseController
 	    ]);
 	}
 
-	public function createSupplier(Request $request)
+	public function createWareHouse(Request $request)
 	{
 	    $validator = Validator::make($request->all(), [
 	        'title' => 'required|string|max:255',
@@ -64,7 +54,7 @@ class WareHouseController extends BaseController
 
 	    $adminId = AdminAuth::getLoginId(); // ← get admin id
 
-	    $supplier = WareHouse::create([
+	    $warehouse = WareHouse::create([
 	        'title'        => $request->title,
 	        'manager_name' => $request->manager_name,
 	        'phone'        => $request->phone,
@@ -75,12 +65,12 @@ class WareHouseController extends BaseController
 
 	    return response()->json([
 	        'status' => true,
-	        'message' => 'Supplier created successfully',
-	        'data' => $supplier
+	        'message' => 'Ware house created successfully',
+	        'data' => $warehouse
 	    ]);
 	}
 
-	public function updateSupplier(Request $request, $id)
+	public function updateWareHouse(Request $request, $id)
 	{
 	    $validator = Validator::make($request->all(), [
 	        'title' => 'required|string|max:255',
@@ -122,6 +112,44 @@ class WareHouseController extends BaseController
 	        'status' => true,
 	        'message' => 'Ware house updated successfully',
 	        'data' => $warehouse
+	    ]);
+	}
+
+	public function viewWareHouse(Request $request, $id)
+	{
+	    $warehouse = WareHouse::find($id);
+
+	    if (!$warehouse) {
+	        return response()->json([
+	            'status' => false,
+	            'message' => 'Ware house not found',
+	        ], 404);
+	    }
+
+	    return response()->json([
+	        'status' => true,
+	        'message' => 'Ware house details fetched successfully',
+	        'data' => $warehouse
+	    ]);
+	}
+
+	public function deleteWareHouse(Request $request, $id)
+	{
+	    $warehouse = WareHouse::find($id);
+
+	    if (!$warehouse) {
+	        return response()->json([
+	            'status' => false,
+	            'message' => 'Ware house not found',
+	        ], 404);
+	    }
+
+	    // Delete warehouse
+	    $warehouse->delete();
+
+	    return response()->json([
+	        'status' => true,
+	        'message' => 'Ware house deleted successfully',
 	    ]);
 	}
 
