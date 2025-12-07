@@ -345,4 +345,17 @@ class PagesController extends BaseController
             'categories' => $categories
         ]);
     }
+
+    function fetchSubCategories(Request $request, $id)
+    {
+        $subcategories = ProductSubCategoryRelation::select(['sub_categories.id', 'sub_categories.category_id', 'sub_categories.slug', 'sub_categories.image', 'sub_categories.title'])
+            ->leftJoin('sub_categories', 'sub_categories.id', '=', 'product_sub_category_relation.sub_category_id')
+            ->where('product_sub_category_relation.category_id', $id)->whereNotNull('product_sub_category_relation.sub_category_id')
+            ->get();
+
+        return Response()->json([
+            'status' => true,
+            'subcategories' => $subcategories
+        ]);
+    }
 }

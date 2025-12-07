@@ -9,7 +9,7 @@
         </div>
     </div>
 </div>
-<section class="mt-50 mb-50">
+<section class="mt-50 mb-50" id="customize-product-page">
     <div class="container">
         <div class="row g-4">
             <div class="col-lg-12">
@@ -24,9 +24,9 @@
                             @foreach($categories as $c)
                             <div class="card-1">
                                 <figure class="img-hover-scale overflow-hidden">
-                                    <a href="{{ $c->slug ? '/'.$c->slug : ''}}"><img src="{{ $c->image ? url($c->image) : '/frontend/assets/imgs/shop/product-3-2.jpg' }}" alt=""></a>
+                                    <a href="javascript:;" @click="fetchSubcategories('{{$c->id}}')"><img src="{{ $c->image ? url($c->image) : '/frontend/assets/imgs/shop/product-3-2.jpg' }}" alt=""></a>
                                 </figure>
-                                <h5><a href="{{ $c->slug ? '/'.$c->slug : ''}}">{{$c->title}}</a></h5>
+                                <h5><a href="javascript:;" @click="fetchSubcategories('{{$c->id}}')">{{$c->title}}</a></h5>
                             </div>
                             @endforeach
                         </div>

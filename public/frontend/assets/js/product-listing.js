@@ -2026,3 +2026,63 @@ checkoutPage = new Vue({
         // }
     }
 });
+
+
+var productDetail = new Vue({
+    el: '#customize-product-page',
+    data: {
+
+    },
+    methods: {
+        async fetchSubcategories(id) {
+            let response = await fetch(site_url + '/fetch-sub-categories/' + id);
+            response = await response.json();
+            console.log(response);
+        },
+        initSlider(sliderID)
+        {
+            $(sliderID).slick({
+                dots: false,
+                infinite: true,
+                speed: 1000,
+                arrows: true,
+                autoplay: true,
+                slidesToShow: 6,
+                slidesToScroll: 1,
+                loop: true,
+                adaptiveHeight: true,
+                responsive: [
+                    {
+                        breakpoint: 1025,
+                        settings: {
+                            slidesToShow: 4,
+                            slidesToScroll: 1,
+                        }
+                    },
+                    {
+                        breakpoint: 768,
+                        settings: {
+                            slidesToShow: 3,
+                            slidesToScroll: 1,
+                        }
+                    },
+                    {
+                        breakpoint: 480,
+                        settings: {
+                            slidesToShow: 1,
+                            slidesToScroll: 1
+                        }
+                    }
+                ],
+                prevArrow: '<span class="slider-btn slider-prev"><i class="fi-rs-angle-left"></i></span>',
+                nextArrow: '<span class="slider-btn slider-next"><i class="fi-rs-angle-right"></i></span>',
+                appendArrows:  (appendArrowsClassName),
+            });
+        },
+    },
+    mounted: function() {
+        setTimeout(async () => {
+            await this.initSlider('#carausel-6-columns-arrows');
+        }, 300);
+    }
+});
