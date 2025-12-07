@@ -344,7 +344,6 @@ class PagesController extends BaseController
         $subcategories = ProductSubCategoryRelation::distinct()
             ->select(['product_categories.id', 'product_categories.slug', 'product_categories.image', 'product_categories.title'])
             ->leftJoin('product_categories', 'product_categories.id', '=', 'product_sub_category_relation.category_id')
-            ->where('product_sub_category_relation.category_id', $id)
             ->whereNotNull('product_sub_category_relation.sub_category_id')
             ->where('product_categories.status', 1)
             ->get();
