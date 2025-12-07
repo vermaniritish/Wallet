@@ -13,7 +13,7 @@
     <div class="container">
         <div class="row g-4">
             <div class="col-lg-12">
-                <img src="url('/frontend/assets/imgs/personalise.jpg')" alt="Personalise Your Apparel" />
+                <img src="{{url('/frontend/assets/imgs/personalise.jpg')}}" alt="Personalise Your Apparel" />
             </div>
             @if($categories)
             <section class="popular-categories section-padding mt-15">
