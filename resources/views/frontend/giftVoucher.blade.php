@@ -16,42 +16,43 @@
         <div class="row g-4">
             <!-- Form Section -->
             <div class="col-md-6">
-                <div class="card p-4 shadow">
-                    
+                <div id="" class="card p-4 shadow">
                     <div class="mb-3">
                         <label class="form-label">Your Name<span class="alert">*</span></label>
-                        <input type="text" class="form-control" id="name" placeholder="Enter name">
+                        <input type="text" class="form-control" v-model="form.name">
+                        <small v-if="errors.name" class="text-danger">{{ errors.name }}</small>
                     </div>
-                    
+
                     <div class="mb-3">
                         <label class="form-label">Your Email<span class="alert">*</span></label>
-                        <input type="email" class="form-control" placeholder="example@email.com">
+                        <input type="email" class="form-control" v-model="form.email">
+                        <small v-if="errors.email" class="text-danger">{{ errors.email }}</small>
                     </div>
 
-                    <!-- Receiver Mobile -->
                     <div class="mb-3">
                         <label class="form-label">Your Mobile<span class="alert">*</span></label>
-                        <input type="tel" class="form-control" placeholder="Enter mobile number">
-                    </div>
-                    
-                    <h5 class="mb-3 text-brand">Voucher Details</h5>
-                
-                    <!-- Coupon Amount -->
-                    <div class="mb-3">
-                        <label class="form-label">Select Voucher Amount<span class="alert">*</span></label>
-                        <select class="form-select" id="amount" onchange="updatePreview()">
-                            <option value="£500">£10</option>
-                            <option value="£1000">£20</option>
-                            <option value="£1500">£30</option>
-                            <option value="£2000">£50</option>
-                            <option value="£2500">£100</option>
-                        </select>
+                        <input type="tel" class="form-control" v-model="form.mobile">
+                        <small v-if="errors.mobile" class="text-danger">{{ errors.mobile }}</small>
                     </div>
 
-                    <!-- Delivery Mode -->
+                    <h5 class="mb-3 text-brand">Voucher Details</h5>
+
+                    <div class="mb-3">
+                        <label class="form-label">Select Voucher Amount<span class="alert">*</span></label>
+                        <select class="form-select" v-model="form.amount">
+                            <option disabled value="">Select Amount</option>
+                            <option value="10">£10</option>
+                            <option value="20">£20</option>
+                            <option value="30">£30</option>
+                            <option value="50">£50</option>
+                            <option value="100">£100</option>
+                        </select>
+                        <small v-if="errors.amount" class="text-danger">{{ errors.amount }}</small>
+                    </div>
+
                     <div class="mb-3">
                         <label class="form-label">Delivery Mode</label>
-                        <select class="form-select">
+                        <select class="form-select" v-model="form.delivery_mode">
                             <option>Email</option>
                             <option>SMS</option>
                             <option>Both</option>
@@ -60,36 +61,36 @@
 
                     <h5 class="mt-4 mb-3 text-brand">Receiver Details</h5>
 
-                    <!-- Receiver Name -->
                     <div class="mb-3">
                         <label class="form-label">Receiver's Name<span class="alert">*</span></label>
-                        <input type="text" class="form-control" id="rname" oninput="updatePreview()" placeholder="Enter name">
+                        <input type="text" class="form-control" v-model="form.receiver_name">
+                        <small v-if="errors.receiver_name" class="text-danger">{{ errors.receiver_name }}</small>
                     </div>
 
-                    <!-- Receiver Email -->
                     <div class="mb-3">
                         <label class="form-label">Receiver's Email<span class="alert">*</span></label>
-                        <input type="email" class="form-control" placeholder="example@email.com">
+                        <input type="email" class="form-control" v-model="form.receiver_email">
+                        <small v-if="errors.receiver_email" class="text-danger">{{ errors.receiver_email }}</small>
                     </div>
 
-                    <!-- Receiver Mobile -->
                     <div class="mb-3">
                         <label class="form-label">Receiver's Mobile</label>
-                        <input type="tel" class="form-control" placeholder="Enter mobile number">
+                        <input type="tel" class="form-control" v-model="form.receiver_mobile">
                     </div>
 
-                    <!-- Message -->
                     <div class="mb-3">
                         <label class="form-label">Message for Receiver (max 200 chars)</label>
-                        <textarea class="form-control" id="msg" maxlength="200" oninput="updatePreview()" rows="3"></textarea>
+                        <textarea class="form-control" maxlength="200" rows="3" v-model="form.message"></textarea>
                     </div>
 
-                    <!-- Pay Now -->
-                    <button class="btn btn-primary w-100 btn-lg mt-3">
-                        Pay Now
+                    <button class="btn btn-primary w-100 btn-lg mt-3"
+                            @click="submitForm"
+                            :disabled="loading">
+                        {{ loading ? 'Processing...' : 'Pay Now' }}
                     </button>
 
                 </div>
+
             </div>
 
             <!-- Voucher Preview Section -->
@@ -128,19 +129,3 @@
     </div>
 </section>
 @endsection
-
-@push('scripts')
-<!-- Script to update live preview -->
-<script>
-function updatePreview() {
-    document.getElementById("previewAmount").innerText = document.getElementById("amount").value;
-
-    let name = document.getElementById("rname").value;
-    document.getElementById("previewName").innerText = name ? name : "Receiver Name";
-
-    let msg = document.getElementById("msg").value;
-    document.getElementById("previewMsg").innerText = msg ? msg : "Your special gift message will appear here.";
-}
-</script>
-
-@endpush

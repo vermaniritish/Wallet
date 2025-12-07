@@ -2092,3 +2092,66 @@ var productDetail = new Vue({
         }, 300);
     }
 });
+
+var voucherApp = new Vue({
+    el: "#voucherApp",
+    data: {
+        form: {
+            name: "",
+            email: "",
+            mobile: "",
+            amount: "",
+            delivery_mode: "Email",
+            receiver_name: "",
+            receiver_email: "",
+            receiver_mobile: "",
+            message: ""
+        },
+        errors: {},
+        loading: false
+    },
+    methods: {
+
+        validateForm() {
+            this.errors = {};
+
+            if (!this.form.name) this.errors.name = "Name is required";
+            if (!this.form.email) this.errors.email = "Email is required";
+            else if (!/\S+@\S+\.\S+/.test(this.form.email)) this.errors.email = "Enter a valid email";
+
+            if (!this.form.mobile) this.errors.mobile = "Mobile number required";
+            else if (!/^[0-9]{10}$/.test(this.form.mobile)) this.errors.mobile = "Enter valid 10 digit mobile";
+
+            if (!this.form.amount) this.errors.amount = "Select voucher amount";
+
+            if (!this.form.receiver_name) this.errors.receiver_name = "Receiver name is required";
+
+            if (!this.form.receiver_email) this.errors.receiver_email = "Receiver email is required";
+            else if (!/\S+@\S+\.\S+/.test(this.form.receiver_email)) this.errors.receiver_email = "Invalid email";
+
+            return Object.keys(this.errors).length === 0;
+        },
+
+        async submitForm() {
+            if (!this.validateForm()) return;
+
+            this.loading = true;
+
+            try {
+                const response = await fetch("/voucher-submit", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(this.form)
+                });
+
+                const result = await response.json();
+                alert(result.message || "Form submitted successfully!");
+
+            } catch (e) {
+                alert("Something went wrong, please try again.");
+            }
+
+            this.loading = false;
+        }
+    }
+});
