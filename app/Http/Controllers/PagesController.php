@@ -344,6 +344,9 @@ class PagesController extends BaseController
         $categories = ProductSubCategoryRelation::distinct()
             ->select(['product_categories.id', 'product_categories.slug', 'product_categories.image', 'product_categories.title'])
             ->leftJoin('product_categories', 'product_categories.id', '=', 'product_sub_category_relation.category_id')
+            ->leftJoin('products', 'products.id', '=', 'product_sub_category_relation.product_id')
+            ->whereRaw('(printed_logo = 1 or embroidered_logo = 1)')
+            ->where('products.is_uniform', 0)
             ->whereNotNull('product_sub_category_relation.sub_category_id')
             ->where('product_categories.status', 1)
             ->get();
@@ -357,7 +360,9 @@ class PagesController extends BaseController
         $subcategories = ProductSubCategoryRelation::distinct()->select(['sub_categories.id', 'sub_categories.category_id', 'product_categories.slug as cat_slug', 'sub_categories.slug', 'sub_categories.image', 'sub_categories.title'])
             ->leftJoin('product_categories', 'product_categories.id', '=', 'product_sub_category_relation.category_id')
             ->leftJoin('sub_categories', 'sub_categories.id', '=', 'product_sub_category_relation.sub_category_id')
+            ->leftJoin('products', 'products.id', '=', 'product_sub_category_relation.product_id')
             ->where('product_sub_category_relation.category_id', $id)
+            ->where('products.is_uniform', 0)
             ->whereNotNull('product_sub_category_relation.sub_category_id')
             ->where('sub_categories.status', 1)
             ->get();
