@@ -349,8 +349,8 @@ class PagesController extends BaseController
 
     function fetchSubCategories(Request $request, $id)
     {
-        $subcategories = ProductSubCategoryRelation::distinct()->select(['sub_categories.id', 'sub_categories.category_id', 'categories.slug as cat_slug', 'sub_categories.slug', 'sub_categories.image', 'sub_categories.title'])
-            ->leftJoin('categories', 'categories.id', '=', 'product_sub_category_relation.category_id')
+        $subcategories = ProductSubCategoryRelation::distinct()->select(['sub_categories.id', 'sub_categories.category_id', 'product_categories.slug as cat_slug', 'sub_categories.slug', 'sub_categories.image', 'sub_categories.title'])
+            ->leftJoin('product_categories', 'product_categories.id', '=', 'product_sub_category_relation.category_id')
             ->leftJoin('sub_categories', 'sub_categories.id', '=', 'product_sub_category_relation.sub_category_id')
             ->where('product_sub_category_relation.category_id', $id)->whereNotNull('product_sub_category_relation.sub_category_id')
             ->get();
