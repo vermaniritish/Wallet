@@ -46,6 +46,7 @@ Route::prefix('admin')->middleware(['adminAuth'])->group(function () {
     include "Admin/schools.php";
     include "Admin/wareHouses.php";
     include "Admin/suppliers.php";
+    include "Admin/giftVouchers.php";
 });
 
 Route::middleware(['guest'])->group(function () {
