@@ -139,6 +139,7 @@ var loginuserphone = '{{ $user && $user->phonenumber ? $user->phonenumber : '' }
 var initPaypal = function()
 {
     if (typeof paypal !== 'undefined' && paypal.Buttons) {
+        console.log('yes');
         paypal.Buttons({
             createOrder: async function(data, actions) {
                 let response = await voucherApp.submit();
