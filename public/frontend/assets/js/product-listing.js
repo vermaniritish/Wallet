@@ -2163,7 +2163,8 @@ var voucherApp = new Vue({
             this.loading = false;
         }
     },
-    mounted: function() {
+    mounted: async function() {
+        await sleep(1000);
         initPaypal();
     }
 });
