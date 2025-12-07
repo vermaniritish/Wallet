@@ -132,7 +132,8 @@
 						</table>
 					</div>
 				</div>
-
+				<?php $payDetails = $page->paypal_payment_data ? json_decode($page->paypal_payment_data) : null; ?>
+				@if($payDetails)
 				<div class="card">
 					<div class="card-header">
 						<div class="row align-items-center">
@@ -144,7 +145,6 @@
 					<div class="card-body p-0 m-0">
 						<table class="table align-items-center table-flush">
 							<tbody>
-								<?php $payDetails = $page->paypal_payment_data ? json_decode($page->paypal_payment_data) : null; ?>
 								@if($payDetails)
 								<tr>
 									<th>Paypal Transaction No.</th>
@@ -174,6 +174,7 @@
 						</table>
 					</div>
 				</div>
+				@endif
 			</div>
 		</div>
 	</div>
