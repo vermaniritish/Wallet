@@ -2084,6 +2084,6 @@ var productDetail = new Vue({
     mounted: function() {
         setTimeout(async () => {
             await this.initSlider('carausel-6-columns');
-        }, 300);
+        }, 1000);
     }
 });
