@@ -2094,7 +2094,7 @@ var productDetail = new Vue({
 });
 
 var voucherApp = new Vue({
-    el: "#voucherApp",
+    el: "#gift-voucher",
     data: {
         form: {
             name: "",
