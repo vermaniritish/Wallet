@@ -76,11 +76,6 @@
 									<th>Expiry Date</th>
 									<td>{{_d($page->expiry_date)}}</td>
 								</tr>
-								<tr>
-									<th>Order Id</th>
-									<td>{{($page->order_id)}}</td>
-								</tr>
-								
 							</tbody>
 						</table>
 					</div>
