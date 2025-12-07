@@ -24,11 +24,28 @@
                             @foreach($categories as $c)
                             <div class="card-1">
                                 <figure class="img-hover-scale overflow-hidden">
-                                    <a href="javascript:;" @click="fetchSubcategories('{{$c->id}}')"><img src="{{ $c->image ? url($c->image) : '/frontend/assets/imgs/shop/product-3-2.jpg' }}" alt=""></a>
+                                    <a href="javascript:;" @click="fetchSubcategories('{{$c->id}}')"><img src="{{ $c->image ? url($c->image) : url('/frontend/assets/imgs/shop/product-3-2.jpg') }}" alt=""></a>
                                 </figure>
                                 <h5><a href="javascript:;" @click="fetchSubcategories('{{$c->id}}')">{{$c->title}}</a></h5>
                             </div>
                             @endforeach
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="popular-categories section-padding mt-15">
+                <div class="container wow fadeIn animated">
+                    <h3 class="section-title mb-20"><span>Select</span> Sub Categories</h3>
+                    <div class="customzise-sub-cover position-relative">
+                        <div class="slider-arrow slider-arrow-2 customzise-sub-arrow" id="customzise-sub-arrows"></div>
+                        <div class="customzise-sub" id="customzise-sub">
+                            <div class="card-1" v-for="s in subcats">
+                                <figure class="img-hover-scale overflow-hidden">
+                                    <a href="javascript:;"><img :src="'{{ url('/') }}' + (s.image ? s.image : '/frontend/assets/imgs/shop/product-3-2.jpg' )" alt=""></a>
+                                </figure>
+                                <h5><a href="javascript:;">{{$c->title}}</a></h5>
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -2031,13 +2031,13 @@ checkoutPage = new Vue({
 var productDetail = new Vue({
     el: '#customize-product-page',
     data: {
-
+        subcats: []
     },
     methods: {
         async fetchSubcategories(id) {
             let response = await fetch(site_url + '/fetch-sub-categories/' + id);
             response = await response.json();
-            console.log(response);
+            this.subcats = response.subcategories;
         },
         initSlider(sliderID)
         {
