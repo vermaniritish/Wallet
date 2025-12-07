@@ -31,7 +31,7 @@
 
                     <div class="mb-3">
                         <label class="form-label">Your Mobile<span class="alert">*</span></label>
-                        <input type="tel" class="form-control" v-model="form.mobile">
+                        <input type="tel" class="form-control" v-model="form.mobile"  @input="form.mobile = form.mobile.replace(/[^0-9]/g, '')">
                         <small v-if="errors.mobile" class="text-danger">@{{ errors.mobile }}</small>
                     </div>
 
@@ -75,7 +75,7 @@
 
                     <div class="mb-3">
                         <label class="form-label">Receiver's Mobile</label>
-                        <input type="tel" class="form-control" v-model="form.receiver_mobile">
+                        <input type="tel" class="form-control" v-model="form.receiver_mobile"  @input="form.mobile = form.mobile.replace(/[^0-9]/g, '')">
                         <small v-if="errors.receiver_mobile" class="text-danger">@{{ errors.receiver_mobile }}</small>
                     </div>
 
