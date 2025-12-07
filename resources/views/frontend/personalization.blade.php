@@ -3,7 +3,7 @@
 <div class="page-header breadcrumb-wrap">
     <div class="container">
         <div class="breadcrumb">
-            <a href="{{ url('/frontend/assets/imgs/personalise.jpg') }}" rel="nofollow">Home</a>
+            <a href="{{ url('/') }}" rel="nofollow">Home</a>
             <span></span> Shop
             <span></span> Customize Your Apparel
         </div>
@@ -13,7 +13,7 @@
     <div class="container">
         <div class="row g-4">
             <div class="col-lg-12">
-                <img src="personalise.jpg" alt="Personalise Your Apparel" />
+                <img src="url('/frontend/assets/imgs/personalise.jpg')" alt="Personalise Your Apparel" />
             </div>
             <section class="popular-categories section-padding mt-15">
                 <div class="container wow fadeIn animated">
