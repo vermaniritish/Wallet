@@ -76,11 +76,13 @@
                     <div class="mb-3">
                         <label class="form-label">Receiver's Mobile</label>
                         <input type="tel" class="form-control" v-model="form.receiver_mobile">
+                        <small v-if="errors.receiver_mobile" class="text-danger">@{{ errors.receiver_mobile }}</small>
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label">Message for Receiver (max 200 chars)</label>
                         <textarea class="form-control" maxlength="200" rows="3" v-model="form.message"></textarea>
+                        <small v-if="errors.message" class="text-danger">@{{ errors.message }}</small>
                     </div>
 
                     <button class="btn btn-primary w-100 btn-lg mt-3"
