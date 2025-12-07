@@ -143,7 +143,7 @@ var initPaypal = function()
         console.log('yes');
         paypal.Buttons({
             createOrder: async function(data, actions) {
-                let response = await voucherApp.submit();
+                let response = await voucherApp.submitForm();
                 if(response && response.status && response.voucher_id) {
                     return fetch('{{url("/paypal/create-order")}}', {
                         method: 'post',
