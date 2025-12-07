@@ -37,7 +37,7 @@
             <section class="popular-categories section-padding mt-15">
                 <div class="container wow fadeIn animated">
                     <h3 class="section-title mb-20"><span>Select</span> Sub Categories</h3>
-                    <div class="customzise-sub-cover position-relative">
+                    <div class="customzise-sub-cover position-relative" v-if="subcats && subcats.length > 0">
                         <div class="slider-arrow slider-arrow-2 customzise-sub-arrow" id="customzise-sub-arrows"></div>
                         <div class="customzise-sub" id="customzise-sub">
                             <div class="card-1" v-for="s in subcats">
@@ -47,6 +47,9 @@
                                 <h5><a href="javascript:;">{{$c->title}}</a></h5>
                             </div>
                         </div>
+                    </div>
+                    <div class="" v-else>
+                        <p style="color:#088178;">There is no record availble.</p>
                     </div>
                 </div>
             </section>
