@@ -2164,5 +2164,7 @@ var voucherApp = new Vue({
         }
     },
     mounted: async function() {
+        await sleep(1000);
+        initPaypal();
     }
 });

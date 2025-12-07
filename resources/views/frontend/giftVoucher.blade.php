@@ -134,6 +134,7 @@
 </section>
 @endsection
 @push('afterscripts')
+<script>
 var loginuseremail = '{{ $user && $user->email ? $user->email : '' }}';
 var loginuserphone = '{{ $user && $user->phonenumber ? $user->phonenumber : '' }}';
 var initPaypal = function()
@@ -191,7 +192,5 @@ var initPaypal = function()
         console.error("PayPal SDK failed to load.");
     }
 }
-setTimeout(function() {
-    initPaypal();
-}, 5000);
+</script>
 @endpush
