@@ -34,7 +34,7 @@
                 </div>
             </section>
 
-            <section class="popular-categories section-padding mt-15">
+            <section class="popular-categories section-padding mt-15" v-if="fetched">
                 <div class="container wow fadeIn animated">
                     <h3 class="section-title mb-20"><span>Select</span> Sub Categories</h3>
                     <div class="customzise-sub-cover position-relative" v-if="subcats && subcats.length > 0">
