@@ -27,7 +27,13 @@
 		<?php echo $row->receiver_mobile ?>
 	</td>
 	<td>
-		{{ucwords($row->status == 'pending' && strtotime($row->created) < strtotime(date('Y-m-d 00:00:01')) ? 'Failed' : $row->status)}}
+		@if( $row->status && $row->status == 'pending' && strtotime($row->created) < strtotime(date('Y-m-d 00:00:01')) )
+		<span class="text-danger">Failed</span>
+		@elseif( $row->status && $row->status == 'completed')
+		<span class="text-success">Completed</span>
+		@else
+		<span class="text-warning">Pending</span>
+		@endif
 	</td>
 	<td>
 		<?php echo _dt($row->created) ?>
