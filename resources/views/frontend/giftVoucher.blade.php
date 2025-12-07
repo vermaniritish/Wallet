@@ -133,7 +133,7 @@
     </div>
 </section>
 @endsection
-@push('scripts')
+@push('afterscripts')
 var loginuseremail = '{{ $user && $user->email ? $user->email : '' }}';
 var loginuserphone = '{{ $user && $user->phonenumber ? $user->phonenumber : '' }}';
 var initPaypal = function()

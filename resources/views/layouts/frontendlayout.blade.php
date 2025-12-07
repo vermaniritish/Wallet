@@ -90,7 +90,7 @@ $version = '2.4';
     <script src="{{ url('frontend/assets/js/shop.js?v='.$version) }}"></script>
     <script src="{{ url('frontend/assets/js/auth.js?v='.$version) }}"></script>
     <script src="{{ url('frontend/assets/js/product-listing.js?v='.$version) }}"></script>
-
+    @stack('afterscripts')
 </body>
 
 </html>
