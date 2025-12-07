@@ -8,7 +8,7 @@
         </div>
     </div>
 </div>
-<section class="mt-50 mb-50" id="gift-voucher">
+<section class="mb-50" id="gift-voucher">
     <div class="container py-5">
 
         <h2 class="text-center mb-4">Create Your Gift Voucher</h2>
