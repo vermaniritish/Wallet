@@ -94,10 +94,10 @@
                     <div id="paypal-button-container"></div>
 
                 </div>
-                <div class="" v-else>
+                <div class="card p-4 shadow" v-else>
                     <p class="text-success text-center" style="font-size: 100px;"><i class="far fa-check-circle"></i></p>
-                    <h3 class="text-center my-4">Congratulations!</h3>
-                    <p class="text-center mb-1">Gift Card link is shared with Recipent.</p>
+                    <h3 class="text-center my-4">Sent!</h3>
+                    <p class="text-center mb-1">Gift Voucher is shared with Recipent.</p>
                     <p class="text-center mb-1">For order realted queries, feel free to contact us at <a href="mailto:info@pindersschoolwear.com">info@pindersschoolwear.com</a> </p>
                 </div>
             </div>
@@ -179,9 +179,9 @@ var initPaypal = function()
                     })
                 }).then(res => res.json())
                 .then(details => {
-                    console.log(details);
                     if(details?.status && details?.id) {
                         voucherApp.paid = true;
+                        window.scrollTo(0,0);
                     } else {
                         if(details && !details.status && details.message) {
                             set_notification('error', details.message);
