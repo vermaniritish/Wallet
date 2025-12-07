@@ -103,7 +103,7 @@
 										Status
 									</th>
 									<td>
-										@if( $page->status && $page->status == 'pending' && strtotimepagerow->created) < strtotime(date('Y-m-d 00:00:01')) )
+										@if( $page->status && $page->status == 'pending' && strtotime($page->created) < strtotime(date('Y-m-d 00:00:01')) )
 										<span class="text-danger">Failed</span>
 										@elseif( $page->status && $page->status == 'completed')
 										<span class="text-success">Completed</span>
