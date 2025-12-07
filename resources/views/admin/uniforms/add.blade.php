@@ -312,9 +312,8 @@
 											data-type="image"
 											data-multiple="true"
 											data-path="products"
-											data-resize-large="580*630"
-											data-resize-small="282*310"
-
+											data-resize-large="1100*1286"
+											data-resize-small="257*300"
 										>
 											<div class="upload-section">
 												<div class="mb-3">
@@ -323,7 +322,7 @@
 														<span class="btn-inner--icon"><i class="fas fa-upload"></i></span>
 														<span class="btn-inner--text">Upload Image</span>
 														</button>
-													<p><small>Recommend Size: 580*630</small></p>
+													<p><small>Recommend Size: 1100*1286</small></p>
 												</div>
 												<!-- PROGRESS BAR -->
 												<div class="progress d-none">
@@ -351,8 +350,8 @@
 												data-type="image"
 												data-multiple="true"
 												data-path="products"
-												data-resize-large="580*630"
-												data-resize-small="282*310"
+												data-resize-large="1100*1286"
+												data-resize-small="257*300"
 											>
 												<div class="upload-section">
 													<div class="button-ref mb-3">
@@ -360,7 +359,7 @@
 															<span class="btn-inner--icon"><i class="fas fa-upload"></i></span>
 															<span class="btn-inner--text">Upload Image</span>
 															</button>
-														<p><small>Recommend Size: 580*630</small></p>
+														<p><small>Recommend Size: 1100*1286</small></p>
 													</div>
 													<!-- PROGRESS BAR -->
 													<div class="progress d-none">

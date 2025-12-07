@@ -257,9 +257,9 @@ a:hover {
   padding: 0;
   list-style: none;
   display: grid;
-  grid-template-columns: repeat(4,104px);
-  grid-auto-rows: 136px;
-  gap: 8px;
+  grid-template-columns: repeat(5,104px);
+  grid-auto-rows: 108px;
+  gap: 28px;
 }
 .productsizessinglebox {
   width: 104px;
@@ -293,7 +293,11 @@ a:hover {
   font-size: 14px;
   padding-bottom: 3px;
   text-align: center;
-  letter-spacing: 2px;
+  letter-spacing: 0px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  border: 1px solid #e4e4e4;
+  border-bottom: none;
 }
 
 .quantity__box {
@@ -342,6 +346,7 @@ input.quantity__number {
   padding-left:5px;
   width: 40px;
   height: 3rem;
+  border-radius: 0px;
 }
 input.quickview__value--number {
   height: 2.5rem;
@@ -9548,6 +9553,12 @@ span.fi-rs-apps {
   .download-app {
     margin-bottom: 0 !important;
   }
+  
+  .productsizesboxUL {
+    grid-template-columns: repeat(3, 1fr); /* 3 per row */
+  }
+  
+  .productsizesboxContainer{max-height:none;}
 }
 
 @media only screen and (min-width: 768px) and (max-width: 992px) {

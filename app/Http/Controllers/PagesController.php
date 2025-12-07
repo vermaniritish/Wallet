@@ -335,4 +335,14 @@ class PagesController extends BaseController
         else
             abort(404);
     }
+
+
+    function personalization(Request $request)
+    {
+        $categories = ProductCategories::select(['id', 'slug', 'image', 'title'])->where('status', 1)->get();
+
+        return view('frontend.personalization', [
+            'categories' => $categories
+        ]);
+    }
 }
