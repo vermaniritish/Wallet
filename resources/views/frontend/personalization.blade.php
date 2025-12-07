@@ -44,7 +44,7 @@
                                 <figure class="img-hover-scale overflow-hidden">
                                     <a :href="`{{ url('/') }}/${s.cat_slug}/${s.slug}`"><img :src="'{{ url('/') }}' + (s.image ? s.image : '/frontend/assets/imgs/shop/product-3-2.jpg' )" alt=""></a>
                                 </figure>
-                                <h5><a :href="`{{ url('/') }}/${s.cat_slug}/${s.slug}`">{{$c->title}}</a></h5>
+                                <h5><a :href="`{{ url('/') }}/${s.cat_slug}/${s.slug}`">@{{s.title}}</a></h5>
                             </div>
                         </div>
                     </div>
