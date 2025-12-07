@@ -8,9 +8,6 @@
 						<h6 class="h2 text-white d-inline-block mb-0">Manage Gift Vouchers</h6>
 					</div>
 					<div class="col-lg-6 col-5 text-right">
-					<?php if(Permissions::hasPermission('gift_voucher', 'create')): ?>
-						<a href="<?php echo route('admin.gift_voucher.add') ?>" class="btn btn-neutral"><i class="fas fa-plus"></i> New</a>
-					<?php endif; ?>	
 						@include('admin.gift_voucher.filters')
 					</div>
 				</div>
