@@ -341,7 +341,7 @@ class PagesController extends BaseController
 
     function personalization(Request $request)
     {
-        $subcategories = ProductSubCategoryRelation::distinct()
+        $categories = ProductSubCategoryRelation::distinct()
             ->select(['product_categories.id', 'product_categories.slug', 'product_categories.image', 'product_categories.title'])
             ->leftJoin('product_categories', 'product_categories.id', '=', 'product_sub_category_relation.category_id')
             ->whereNotNull('product_sub_category_relation.sub_category_id')
