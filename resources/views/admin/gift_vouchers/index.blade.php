@@ -34,47 +34,6 @@
 								</div>
 								<input class="form-control listing-search" placeholder="Search" type="text" value="<?php echo (isset($_GET['search']) && $_GET['search'] ? $_GET['search'] : '') ?>">
 							</div>
-							<?php if(Permissions::hasPermission('gift_voucher', 'update') || Permissions::hasPermission('gift_voucher', 'delete')): ?>
-								<div class="dropdown" data-toggle="tooltip" data-title="Bulk Actions">
-									<a class="btn btn-sm btn-icon-only text-warning" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-										<i class="fas fa-ellipsis-v"></i>
-									</a>
-									<div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-										<?php if(Permissions::hasPermission('gift_voucher', 'update')): ?>
-											<a 
-												class="dropdown-item" 
-												href="javascript:;"
-												onclick="bulk_actions('<?php echo route('admin.gift_voucher.bulkActions', ['action' => 'active']) ?>', 'active');"
-											>
-												<span class="badge badge-dot mr-4">
-													<i class="bg-success"></i>
-													<span class="status">Active</span>
-												</span>
-											</a>
-											<a 
-												class="dropdown-item" 
-												href="javascript:;"
-												onclick="bulk_actions('<?php echo route('admin.gift_voucher.bulkActions', ['action' => 'inactive']) ?>', 'inactive');"
-											>
-												<span class="badge badge-dot mr-4">
-													<i class="bg-warning"></i>
-													<span class="status">Inactive</span>
-												</span>
-											</a>
-											<div class="dropdown-divider"></div>
-										<?php endif; ?>
-										<?php if(Permissions::hasPermission('gift_voucher', 'delete')): ?>
-											<a 
-												href="javascript:void(0);" 
-												class="waves-effect waves-block dropdown-item text-danger" 
-												onclick="bulk_actions('<?php echo route('admin.gift_voucher.bulkActions', ['action' => 'delete']) ?>', 'delete');">
-													<i class="fas fa-times text-danger"></i>
-													<span class="status text-danger">Delete</span>
-											</a>
-										<?php endif; ?>
-									</div>
-								</div>
-							<?php endif; ?>
 						</div>
 					</div>
 					<div class="table-responsive">
