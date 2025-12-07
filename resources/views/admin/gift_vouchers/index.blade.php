@@ -8,7 +8,7 @@
 						<h6 class="h2 text-white d-inline-block mb-0">Manage Gift Vouchers</h6>
 					</div>
 					<div class="col-lg-6 col-5 text-right">
-						@include('admin.gift_voucher.filters')
+						@include('admin.gift_vouchers.filters')
 					</div>
 				</div>
 			</div>
