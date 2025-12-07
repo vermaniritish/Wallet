@@ -71,6 +71,9 @@ Route::get('/sale', '\App\Http\Controllers\HomeController@sale')
 Route::get('/customize-your-apparel', '\App\Http\Controllers\PagesController@personalization')
     ->name('home.personalization');
 
+Route::get('/gift-voucher', '\App\Http\Controllers\PagesController@giftVoucher')
+    ->name('home.giftVoucher');
+
 Route::get('/fetch-sub-categories/{id}', '\App\Http\Controllers\PagesController@fetchSubCategories')
     ->name('home.fetchSubCategories');
 

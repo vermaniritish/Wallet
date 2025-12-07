@@ -4,7 +4,6 @@
     <div class="container">
         <div class="breadcrumb">
             <a href="{{ url('/') }}" rel="nofollow">Home</a>
-            <span></span> Shop
             <span></span> Customize Your Apparel
         </div>
     </div>

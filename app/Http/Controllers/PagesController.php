@@ -372,4 +372,11 @@ class PagesController extends BaseController
             'subcategories' => $subcategories
         ]);
     }
+
+    function giftVoucher(Request $request)
+    {
+        return view('frontend.giftVoucher', [
+            
+        ]);
+    }
 }
