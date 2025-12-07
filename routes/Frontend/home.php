@@ -74,6 +74,9 @@ Route::get('/customize-your-apparel', '\App\Http\Controllers\PagesController@per
 Route::get('/gift-voucher', '\App\Http\Controllers\PagesController@giftVoucher')
     ->name('home.giftVoucher');
 
+Route::post('/voucher-submit', '\App\Http\Controllers\PagesController@giftVoucher')
+    ->name('home.giftVoucher');
+
 Route::get('/fetch-sub-categories/{id}', '\App\Http\Controllers\PagesController@fetchSubCategories')
     ->name('home.fetchSubCategories');
 

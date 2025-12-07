@@ -2143,18 +2143,19 @@ var voucherApp = new Vue({
 
             this.loading = true;
 
-            try {
-                const response = await fetch("/voucher-submit", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(this.form)
-                });
+            const response = await fetch(site_url+"/voucher-submit", {
+                method: "POST",
+                headers: { "Content-Type": "application/json",
+                    "X-CSRF-TOKEN": csrf_token()
+                 },
+                body: JSON.stringify(this.form)
+            });
 
-                const result = await response.json();
-                alert(result.message || "Form submitted successfully!");
+            const data = await response.json();
 
-            } catch (e) {
-                alert("Something went wrong, please try again.");
+            if (data.status) {
+                // redirect to payment gateway with data.voucher_id
+                initiatePayment(data.voucher_id, data.amount);
             }
 
             this.loading = false;

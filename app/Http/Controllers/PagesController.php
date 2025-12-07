@@ -375,6 +375,46 @@ class PagesController extends BaseController
 
     function giftVoucher(Request $request)
     {
+        if($request->isMethod('post'))
+    	{
+            $user = $request->session()->get('user');
+            $validated = $request->validate([
+                'name'              => 'required|string|max:100',
+                'email'             => 'required|email',
+                'mobile'            => 'required|digits:10',
+                'amount'            => 'required|numeric',
+                'delivery_mode'     => 'required|string',
+                'receiver_name'     => 'required|string|max:100',
+                'receiver_email'    => 'required|email',
+                'receiver_mobile'   => 'required|digits:10',
+                'message'           => 'required|max:200'
+            ]);
+
+            // Create pending voucher
+            $voucher = GiftVoucher::create([
+                'user_id' => $user ? $user->id : null,
+                'sender_name'       => $request->name,
+                'sender_email'      => $request->email,
+                'sender_mobile'     => $request->mobile,
+                'amount'            => $request->amount,
+                'delivery_mode'     => $request->delivery_mode,
+                'receiver_name'     => $request->receiver_name,
+                'receiver_email'    => $request->receiver_email,
+                'receiver_mobile'   => $request->receiver_mobile,
+                'message'           => $request->message,
+                'status'            => 'pending',
+                'applied' => 0,
+                'expiry_date' => date('Y-m-d', strtotime('+1 year'))
+            ]);
+
+            // Send to payment gateway by returning order params
+            return response()->json([
+                'status' => true,
+                'message' => 'Voucher saved as pending, proceed to payment',
+                'voucher_id' => $voucher->id,
+                'amount' => $voucher->amount,
+            ]);
+        }
         return view('frontend.giftVoucher', [
             
         ]);
