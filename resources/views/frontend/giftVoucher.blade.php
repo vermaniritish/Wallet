@@ -192,5 +192,5 @@ var initPaypal = function()
 }
 setTimeout(function() {
     initPaypal();
-}, 2000);
+}, 5000);
 @endpush
