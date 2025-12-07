@@ -136,7 +136,7 @@
 @push('scripts')
 var loginuseremail = '{{ $user && $user->email ? $user->email : '' }}';
 var loginuserphone = '{{ $user && $user->phonenumber ? $user->phonenumber : '' }}';
-const initPaypal = function()
+var initPaypal = function()
 {
     if (typeof paypal !== 'undefined' && paypal.Buttons) {
         paypal.Buttons({
