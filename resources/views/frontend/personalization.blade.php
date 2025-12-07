@@ -53,7 +53,7 @@
                     </div>
                 </div>
             </section>
-            @endif
+            @else
 
             <section class="popular-categories section-padding mt-15">
                 <div class="container wow fadeIn animated">
@@ -63,6 +63,7 @@
                     </div>
                 </div>
             </section>
+            @endif
         </div>
     </div>
 </section>
