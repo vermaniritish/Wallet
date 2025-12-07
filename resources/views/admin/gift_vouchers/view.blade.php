@@ -29,7 +29,7 @@
 						<!-- Projects table -->
 						<table class="table align-items-center table-flush">
 							<tbody>
-								<tr>
+								<tr style="width: 30%;">
 									<th>Id</th>
 									<td><?php echo $page->id ?></td>
 								</tr>
