@@ -2040,6 +2040,9 @@ var productDetail = new Vue({
             response = await response.json();
             this.subcats = response.subcategories;
             this.fetched = true;
+            setTimeout(async () => {
+                await this.initSlider('customzise-sub');
+            }, 300);
         },
         initSlider(sliderID)
         {
