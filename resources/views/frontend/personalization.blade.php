@@ -24,9 +24,9 @@
                             @foreach($categories as $c)
                             <div class="card-1">
                                 <figure class=" img-hover-scale overflow-hidden">
-                                    <a href="{{$c->slug ? '/'.$c->slug : ''}}"><img src="{{ $c->image ? url($c->image) : '/frontend/assets/imgs/shop/product-3-2.jpg'}}" alt=""></a>
+                                    <a href="{{ $c->slug ? '/'.$c->slug : ''}}"><img src="{{ $c->image ? url($c->image) : '/frontend/assets/imgs/shop/product-3-2.jpg' }}" alt=""></a>
                                 </figure>
-                                <h5><a href="{{$c->slug ? '/'.$c->slug : ''}}">{{$c->title}}</a></h5>
+                                <h5><a href="{{ $c->slug ? '/'.$c->slug : ''}}">{{$c->title}}</a></h5>
                             </div>
                             @endforeach
                         </div>

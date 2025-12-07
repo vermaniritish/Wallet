@@ -341,6 +341,7 @@ class PagesController extends BaseController
     function personalization(Request $request)
     {
         $categories = ProductCategories::select(['id', 'slug', 'image', 'title'])->where('status', 1)->get();
+        pr($categories->toArray()); die;
 
         return view('frontend.personalization', [
             'categories' => $categories
