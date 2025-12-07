@@ -2107,6 +2107,7 @@ var voucherApp = new Vue({
             receiver_mobile: "",
             message: ""
         },
+        paid: false,
         errors: {},
         loading: false
     },

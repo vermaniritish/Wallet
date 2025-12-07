@@ -16,7 +16,7 @@
         <div class="row g-4">
             <!-- Form Section -->
             <div class="col-md-6">
-                <div id="" class="card p-4 shadow">
+                <div id="" class="card p-4 shadow" v-if="!paid">
                     <div class="mb-3">
                         <label class="form-label">Your Name<span class="alert">*</span></label>
                         <input type="text" class="form-control" v-model="form.name">
@@ -94,7 +94,12 @@
                     <div id="paypal-button-container"></div>
 
                 </div>
-
+                <div class="" v-else>
+                    <p class="text-success text-center" style="font-size: 100px;"><i class="far fa-check-circle"></i></p>
+                    <h3 class="text-center my-4">Congratulations!</h3>
+                    <p class="text-center mb-1">Gift Card link is shared with Recipent.</p>
+                    <p class="text-center mb-1">For order realted queries, feel free to contact us at <a href="mailto:info@pindersschoolwear.com">info@pindersschoolwear.com</a> </p>
+                </div>
             </div>
 
             <!-- Voucher Preview Section -->
@@ -176,7 +181,7 @@ var initPaypal = function()
                 .then(details => {
                     console.log(details);
                     if(details?.status && details?.id) {
-                        
+                        voucherApp.paid = true;
                     } else {
                         if(details && !details.status && details.message) {
                             set_notification('error', details.message);
