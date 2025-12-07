@@ -391,30 +391,59 @@ class PagesController extends BaseController
                 'message'           => 'required|max:200'
             ]);
 
-            // Create pending voucher
-            $voucher = GiftVoucher::create([
-                'user_id' => $user ? $user->id : null,
-                'sender_name'       => $request->name,
-                'sender_email'      => $request->email,
-                'sender_mobile'     => $request->mobile,
-                'amount'            => $request->amount,
-                'delivery_mode'     => $request->delivery_mode,
-                'receiver_name'     => $request->receiver_name,
-                'receiver_email'    => $request->receiver_email,
-                'receiver_mobile'   => $request->receiver_mobile,
-                'message'           => $request->message,
-                'status'            => 'pending',
-                'applied' => 0,
-                'expiry_date' => date('Y-m-d', strtotime('+1 year'))
-            ]);
+            $data = $request->toArray();
+    		unset($data['_token']);
+    		$validator = Validator::make(
+	            $request->toArray(),
+	            [
+	                'title' => ['required', Rule::unique('brands', 'title')->whereNull('deleted_at')],
+	                'description' => 'nullable',
+					'image' => ['nullable'],
+	            ]
+	        );
+	        if(!$validator->fails())
+	        {
+                // Create pending voucher
+                $voucher = GiftVoucher::create([
+                    'user_id' => $user ? $user->id : null,
+                    'sender_name'       => $request->name,
+                    'sender_email'      => $request->email,
+                    'sender_mobile'     => $request->mobile,
+                    'amount'            => $request->amount,
+                    'delivery_mode'     => $request->delivery_mode,
+                    'receiver_name'     => $request->receiver_name,
+                    'receiver_email'    => $request->receiver_email,
+                    'receiver_mobile'   => $request->receiver_mobile,
+                    'message'           => $request->message,
+                    'status'            => 'pending',
+                    'applied' => 0,
+                    'expiry_date' => date('Y-m-d', strtotime('+1 year'))
+                ]);
 
-            // Send to payment gateway by returning order params
-            return response()->json([
-                'status' => true,
-                'message' => 'Voucher saved as pending, proceed to payment',
-                'voucher_id' => $voucher->id,
-                'amount' => $voucher->amount,
-            ]);
+                if($voucher)
+                {
+                    return response()->json([
+                        'status' => true,
+                        'message' => 'Voucher saved as pending, proceed to payment',
+                        'voucher_id' => $voucher->id,
+                        'amount' => $voucher->amount,
+                    ]);
+                }
+                else
+                {
+                    return response()->json([
+                        'status' => true,
+                        'message' => 'Voucher could not be processed. Please try again.',
+                    ]);
+                }
+            }
+            else
+            {
+                return response()->json([
+                    'status' => false,
+                    'message' => current(current($validator->errors())),
+                ]);
+            }
         }
         return view('frontend.giftVoucher', [
             

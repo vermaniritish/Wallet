@@ -2154,8 +2154,10 @@ var voucherApp = new Vue({
             const data = await response.json();
 
             if (data.status) {
-                // redirect to payment gateway with data.voucher_id
-                initiatePayment(data.voucher_id, data.amount);
+                console.log(data);
+            }
+            else {
+                set_notification('error', data.message);
             }
 
             this.loading = false;
