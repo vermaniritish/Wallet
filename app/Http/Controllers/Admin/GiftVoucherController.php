@@ -148,7 +148,7 @@ class GiftVoucherController extends AppController
     		return redirect()->route('admin.dashboard');
     	}
 
-    	$page = GiftVoucher::get($id);
+    	$page = GiftVoucher::find($id);
     	if($page)
     	{
 	    	return view("admin/gift_vouchers/view", [

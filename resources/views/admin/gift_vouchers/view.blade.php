@@ -5,37 +5,7 @@
 			<div class="header-body">
 				<div class="row align-items-center py-4">
 					<div class="col-lg-6 col-7">
-						<h6 class="h2 text-white d-inline-block mb-0">Manage Pages</h6>
-					</div>
-					<div class="col-lg-6 col-5 text-right">
-						<a href="<?php echo route('admin.brands') ?>" class="btn btn-neutral"><i class="fa fa-arrow-left"></i> Back</a>
-						<a href="<?php echo url('/search?brand='.$row->slug) ?>" class="btn btn-neutral" target="_blank"><i class="fa fa-eye"></i> View Page</a>
-						<?php if(Permissions::hasPermission('brands', 'update') || Permissions::hasPermission('brands', 'delete')): ?>
-							<div class="dropdown" data-toggle="tooltip" data-title="More Actions">
-								<a class="btn btn-neutral" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-									<i class="fas fa-ellipsis-v"></i>
-								</a>
-								<div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-									<?php if(Permissions::hasPermission('brands', 'update')): ?>
-										<a class="dropdown-item" href="<?php echo route('admin.brands.edit', ['id' => $page->id]) ?>">
-											<i class="fas fa-pencil-alt text-info"></i>
-											<span class="status">Edit</span>
-										</a>
-										<?php endif; ?>
-									<?php if(Permissions::hasPermission('brands', 'delete')): ?>
-										<div class="dropdown-divider"></div>
-										<a 
-											class="dropdown-item _delete" 
-											href="javascript:;"
-											data-link="<?php echo route('admin.brands.delete', ['id' => $page->id]) ?>"
-										>
-											<i class="fas fa-times text-danger"></i>
-											<span class="status text-danger">Delete</span>
-										</a>
-									<?php endif; ?>
-								</div>
-							</div>
-						<?php endif; ?>
+						<h6 class="h2 text-white d-inline-block mb-0">Gift Vouchers</h6>
 					</div>
 				</div>
 			</div>
@@ -51,7 +21,7 @@
 					<div class="card-header">
 						<div class="row align-items-center">
 							<div class="col-8">
-								<h3 class="mb-0">Brand Information</h3>
+								<h3 class="mb-0">Gift Voucher Information</h3>
 							</div>
 						</div>
 					</div>
@@ -64,29 +34,59 @@
 									<td><?php echo $page->id ?></td>
 								</tr>
 								<tr>
-									<th>Title</th>
-									<td><?php echo $page->title ?></td>
+									<th>Code</th>
+									<td><span class="badge badge-primary"><?php echo $page->code ?></span></td>
 								</tr>
 								<tr>
-									<td colspan="2">
-										<h2>Description</h2>
-										<?php echo $page->description ?>
+									<th>Sender </th>
+									<td>
+										<b><?php echo $page->sender_name ?></b><br />
+										<?php echo $page->sender_email ?><br />
+										<?php echo $page->sender_mobile ?>
 									</td>
 								</tr>
+								<tr>
+									<th>Receiver </th>
+									<td>
+										<b><?php echo $page->receiver_name ?></b><br />
+										<?php echo $page->receiver_email ?><br />
+										<?php echo $page->receiver_mobile ?>
+									</td>
+								</tr>
+								<tr>
+									<th>Amount</th>
+									<td><b><?php echo _currency($page->amount) ?></b></td>
+								</tr>
+								<tr>
+									<th>Balance</th>
+									<td><b><?php echo _currency($page->amount - $page->applied_amount) ?></b></td>
+									@if($page->applied > 1)
+									<span class="text-primary">Applied twice, remaining balance cannot be used by customer.</span>
+									@endif
+								</tr>
+								<tr>
+									<th>Amount</th>
+									<td>{{$page->delivery_mode}}</td>
+								</tr>
+								<tr>
+									<th>Amount</th>
+									<td>{{$page->message}}</td>
+								</tr>
+								<tr>
+									<th>Expiry Date</th>
+									<td>{{_d($page->expiry_date)}}</td>
+								</tr>
+								<tr>
+									<th>Order Id</th>
+									<td>{{($page->order_id)}}</td>
+								</tr>
+								
 							</tbody>
 						</table>
 					</div>
 				</div>
 			</div>
 			<div class="col-xl-4 order-xl-1">
-				<?php if($page->image): ?>
-				<div class="card">
-					<div class="card-body">
-						<img src="<?php echo url($page->image) ?>">
-					</div>
-				</div>
-				<?php endif; ?>
-
 				<div class="card">
 					<div class="card-header">
 						<div class="row align-items-center">
@@ -96,7 +96,6 @@
 						</div>
 					</div>
 					<div class="table-responsive">
-						<!-- Projects table -->
 						<table class="table align-items-center table-flush">
 							<tbody>
 								<tr>
@@ -104,15 +103,21 @@
 										Status
 									</th>
 									<td>
-										<?php echo $page->status ? '<span class="badge badge-success">Published</span>' : '<span class="badge badge-danger">Unpublished</span>' ?>
+										@if( $page->status && $page->status == 'pending' && strtotimepagerow->created) < strtotime(date('Y-m-d 00:00:01')) )
+										<span class="text-danger">Failed</span>
+										@elseif( $page->status && $page->status == 'completed')
+										<span class="text-success">Completed</span>
+										@else
+										<span class="text-warning">Pending</span>
+										@endif
 									</td>
 								</tr>
 								<tr>
 									<th scope="row">
-										Created By
+										Registerd User
 									</th>
 									<td>
-										<?php echo isset($page->owner) ? $page->owner->first_name . ' ' . $page->owner->last_name : "-" ?>
+										<?php echo isset($page->user) ? $page->user->first_name . ' ' . $page->user->last_name : "-" ?>
 									</td>
 								</tr>
 								<tr>
@@ -123,14 +128,48 @@
 										<?php echo _dt($page->created) ?>
 									</td>
 								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+
+				<div class="card">
+					<div class="card-header">
+						<div class="row align-items-center">
+							<div class="col">
+								<h3 class="mb-0">Payment Details</h3>
+							</div>
+						</div>
+					</div>
+					<div class="card-body p-0 m-0">
+						<table class="table align-items-center table-flush">
+							<tbody>
+								<?php $payDetails = $page->paypal_payment_data ? json_decode($page->paypal_payment_data) : null; ?>
+								@if($payDetails)
 								<tr>
-									<th scope="row">
-										Last Modified
-									</th>
-									<td>
-										<?php echo _dt($page->modified) ?>
-									</td>
+									<th>Paypal Transaction No.</th>
+									<td><span>{{ $payDetails && $payDetails->id ? $payDetails->id : '' }}</span></td>
 								</tr>
+								<tr>
+									<th>Paypal Intent</th>
+									<td><span>{{ $payDetails && $payDetails->intent ? $payDetails->intent : '' }}</span></td>
+								</tr>
+								<tr>
+									<th>Paypal Status</th>
+									<td><span>{{ $payDetails && $payDetails->status ? $payDetails->status : '' }}</span></td>
+								</tr>
+								<tr>
+									<th>Paypal Response</th>
+									<td><code style="
+										max-width: 200px;
+										overflow: scroll;
+										display: block;
+										word-break: break-all;
+										text-wrap: auto;
+										height: 200px;
+									">{{ $page->paypal_payment_data }}</code></td>
+								</tr>
+								@endif
 							</tbody>
 						</table>
 					</div>

@@ -19,7 +19,7 @@ class GiftVoucher extends AppModel
         'user_id', 'sender_name', 'sender_email', 'sender_mobile', 'amount',
         'delivery_mode', 'receiver_name', 'receiver_email',
         'receiver_mobile', 'message', 'order_id', 'status',
-        'expiry_date', 'applied'
+        'expiry_date', 'applied','paypal_payment_data'
     ];
 
     public function user()
