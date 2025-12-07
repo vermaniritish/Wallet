@@ -2085,6 +2085,6 @@ var productDetail = new Vue({
     mounted: function() {
         setTimeout(async () => {
             await this.initSlider('customzise-p');
-        }, 5000);
+        }, 300);
     }
 });
