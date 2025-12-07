@@ -29,8 +29,8 @@
 	<td>
 		@if( $row->status && $row->status == 'pending' && strtotime($row->created) < strtotime(date('Y-m-d 00:00:01')) )
 		<span class="text-danger">Failed</span>
-		@elseif( $row->status && $row->status == 'completed')
-		<span class="text-success">Completed</span>
+		@elseif( $row->status && $row->status == 'paid')
+		<span class="text-success">Paid</span>
 		@else
 		<span class="text-warning">Pending</span>
 		@endif

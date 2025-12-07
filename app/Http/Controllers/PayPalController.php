@@ -78,7 +78,7 @@ class PayPalController extends Controller
             elseif($capture && $capture->result && in_array($capture->result->status, ['APPROVED', 'COMPLETED']))
             {
                 $order->paypal_payment_data = json_encode($capture->result);
-                $order->status = 'completed';
+                $order->status = 'paid';
                 $order->save();
                 return response()->json(['status' => true, 'id' => $order->id]);
             }
