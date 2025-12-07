@@ -190,5 +190,7 @@ var initPaypal = function()
         console.error("PayPal SDK failed to load.");
     }
 }
-initPaypal();
+setTimeout(function() {
+    initPaypal();
+}, 2000);
 @endpush
