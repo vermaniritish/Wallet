@@ -2044,7 +2044,6 @@ var productDetail = new Vue({
         initSlider(sliderID)
         {
             var appendArrowsClassName = '#'+sliderID+'-arrows';
-            alert('#'+sliderID);
             $('#'+sliderID).slick({
                 dots: false,
                 infinite: true,
