@@ -58,7 +58,7 @@
 										<i class="fas fa-sort" data-field="gift_voucher.id" data-sort="asc"></i>
 										<?php endif; ?>
 									</th>
-									<th class="sort" width="26.6%">
+									<th class="sort" width="18%">
 										Code
 										<?php if(isset($_GET['sort']) && $_GET['sort'] == 'gift_voucher.code' && isset($_GET['direction']) && $_GET['direction'] == 'asc'): ?>
 										<i class="fas fa-sort-down active" data-field="gift_voucher.code" data-sort="asc"></i>
@@ -69,7 +69,7 @@
 										<?php endif; ?>
 									</th>
 
-									<th class="sort" width="26.6%">
+									<th class="sort" width="18%">
 										Sender
 										<?php if(isset($_GET['sort']) && $_GET['sort'] == 'gift_voucher.sender_name' && isset($_GET['direction']) && $_GET['direction'] == 'asc'): ?>
 										<i class="fas fa-sort-down active" data-field="gift_voucher.sender_name" data-sort="asc"></i>
@@ -79,7 +79,7 @@
 										<i class="fas fa-sort" data-field="gift_voucher.sender_name"></i>
 										<?php endif; ?>
 									</th>
-									<th class="sort" width="26.6%">
+									<th class="sort" width="18%">
 										Receiver
 										<?php if(isset($_GET['sort']) && $_GET['sort'] == 'gift_voucher.receiver_name' && isset($_GET['direction']) && $_GET['direction'] == 'asc'): ?>
 										<i class="fas fa-sort-down active" data-field="gift_voucher.receiver_name" data-sort="asc"></i>
@@ -89,7 +89,7 @@
 										<i class="fas fa-sort" data-field="gift_voucher.receiver_name"></i>
 										<?php endif; ?>
 									</th>
-									<th class="sort" width="26.6%">
+									<th class="sort" width="18%">
 										Payment
 										<?php if(isset($_GET['sort']) && $_GET['sort'] == 'gift_voucher.status' && isset($_GET['direction']) && $_GET['direction'] == 'asc'): ?>
 										<i class="fas fa-sort-down active" data-field="gift_voucher.status" data-sort="asc"></i>
@@ -99,7 +99,7 @@
 										<i class="fas fa-sort" data-field="gift_voucher.status"></i>
 										<?php endif; ?>
 									</th>
-									<th class="sort" width="26.6%">
+									<th class="sort" width="18%">
 										Created ON
 										<?php if(isset($_GET['sort']) && $_GET['sort'] == 'gift_voucher.created' && isset($_GET['direction']) && $_GET['direction'] == 'asc'): ?>
 										<i class="fas fa-sort-down active" data-field="gift_voucher.created" data-sort="asc"></i>
