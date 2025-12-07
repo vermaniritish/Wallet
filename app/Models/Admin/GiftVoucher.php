@@ -71,12 +71,20 @@ class GiftVoucher extends AppModel
     public static function create($data)
     {
     	$product = new GiftVoucher();
+
     	foreach($data as $k => $v)
     	{
     		$product->{$k} = $v;
     	}
     	$product->created = date('Y-m-d H:i:s');
     	$product->modified = date('Y-m-d H:i:s');
-	    return $product;
+	    if($product->save())
+	    {
+	    	return $product;
+	    }
+	    else
+	    {
+	    	return null;
+	    }
     }
 }
