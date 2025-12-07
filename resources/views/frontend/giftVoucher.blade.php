@@ -9,7 +9,7 @@
     </div>
 </div>
 <section class="mb-50" id="gift-voucher">
-    <div class="container py-5">
+    <div class="container py-3">
 
         <h2 class="text-center mb-4">Create Your Gift Voucher</h2>
 
