@@ -379,27 +379,21 @@ class PagesController extends BaseController
         if($request->isMethod('post'))
     	{
             $user = $request->session()->get('user');
-            $validated = $request->validate([
-                'name'              => 'required|string|max:100',
-                'email'             => 'required|email',
-                'mobile'            => 'required|digits:10',
-                'amount'            => 'required|numeric',
-                'delivery_mode'     => 'required|string',
-                'receiver_name'     => 'required|string|max:100',
-                'receiver_email'    => 'required|email',
-                'receiver_mobile'   => 'required|digits:10',
-                'message'           => 'required|max:200'
-            ]);
-
             $data = $request->toArray();
     		unset($data['_token']);
     		$validator = Validator::make(
 	            $request->toArray(),
 	            [
-	                'title' => ['required', Rule::unique('brands', 'title')->whereNull('deleted_at')],
-	                'description' => 'nullable',
-					'image' => ['nullable'],
-	            ]
+                    'name'              => 'required|string|max:100',
+                    'email'             => 'required|email',
+                    'mobile'            => 'required|digits:10',
+                    'amount'            => 'required|numeric',
+                    'delivery_mode'     => 'required|string',
+                    'receiver_name'     => 'required|string|max:100',
+                    'receiver_email'    => 'required|email',
+                    'receiver_mobile'   => 'required|digits:10',
+                    'message'           => 'required|max:200'
+                ]
 	        );
 	        if(!$validator->fails())
 	        {
