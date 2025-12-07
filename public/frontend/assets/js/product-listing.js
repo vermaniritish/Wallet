@@ -2162,5 +2162,8 @@ var voucherApp = new Vue({
 
             this.loading = false;
         }
+    },
+    mounted: function() {
+        initPaypal();
     }
 });
