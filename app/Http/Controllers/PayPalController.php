@@ -68,7 +68,7 @@ class PayPalController extends Controller
     {
         if($request->get('voucher_id'))
         {
-            $orderId = $request->input('orderId');
+            $orderId = $request->input('voucher_id');
             $capture = $this->payPalService->captureOrder($orderId);
             $order = GiftVoucher::where('paypal_payment_data', $orderId)->limit(1)->first();
             if($capture  && is_array($capture) && isset($capture['status']) && !$capture['status'])
