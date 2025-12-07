@@ -42,9 +42,9 @@
                         <div class="customzise-sub" id="customzise-sub">
                             <div class="card-1" v-for="s in subcats">
                                 <figure class="img-hover-scale overflow-hidden">
-                                    <a href="javascript:;"><img :src="'{{ url('/') }}' + (s.image ? s.image : '/frontend/assets/imgs/shop/product-3-2.jpg' )" alt=""></a>
+                                    <a :href="`{{ url('/') }}/${s.cat_slug}/${s.slug}`"><img :src="'{{ url('/') }}' + (s.image ? s.image : '/frontend/assets/imgs/shop/product-3-2.jpg' )" alt=""></a>
                                 </figure>
-                                <h5><a href="javascript:;">{{$c->title}}</a></h5>
+                                <h5><a :href="`{{ url('/') }}/${s.cat_slug}/${s.slug}`">{{$c->title}}</a></h5>
                             </div>
                         </div>
                     </div>
