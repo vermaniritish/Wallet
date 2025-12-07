@@ -106,16 +106,16 @@
                     
                     <div class="voucher-title">Gift Voucher</div>
 
-                    <div class="amount" id="previewAmount">£100</div>
+                    <div class="amount" id="previewAmount">@{{ form.amount ? `£` + form.amount : '£---'  }}</div>
 
                     <div class="code-box">
                         CODE: <span>GV-XXXX-YYYY</span>
                     </div>
-                    <p><span id="previewName">This voucher entitles the bearer to make purchases worth <strong>£100</strong> on our <strong><a href="https://www.pindersschoolwear.com/" target="_blank">website</a></strong> or stores.</span><br><br></p>
-                    <p><strong>Issued To:</strong> <span id="previewName">Receiver Name</span></p>
-                    <p><strong>Message:</strong> <span id="previewMsg">Your special gift message will appear here.</span></p>
-                    <strong>Issued By:</strong> <span id="previewMsg">Gifted By Name </span><br>
-                    <strong>Expiry Date:</strong> <span id="previewMsg">31/12/2025 </span><br>
+                    <p><span id="previewName">This voucher entitles the bearer to make purchases worth <strong>@{{ form.amount ? `£` + form.amount : '£---'  }}</strong> on our <strong><a href="https://www.pindersschoolwear.com/" target="_blank">website</a></strong> or stores.</span><br><br></p>
+                    <p><strong>Issued To:</strong> <span id="previewName">@{{ form.receiver_name ? `£` + form.receiver_name : 'Receiver Name'  }}</span></p>
+                    <p><strong>Message:</strong> <span id="previewMsg">@{{ form.message ? form.message : `Your special gift message will appear here.`}}</span></p>
+                    <strong>Issued By:</strong> <span id="previewMsg">@{{ form.name ? `£` + form.name : 'Your Name'  }}</span><br>
+                    <strong>Expiry Date:</strong> <span id="previewMsg">{{ date('d/M/Y', strtotime('+1 Year')) }}</span><br>
 
                     <hr>
 
