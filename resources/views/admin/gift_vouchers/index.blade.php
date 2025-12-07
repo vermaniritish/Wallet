@@ -116,7 +116,7 @@
 							</thead>
 							<tbody class="list">
 								<?php if(!empty($listing->items())): ?>
-									@include('admin.gift_voucher.listingLoop')
+									@include('admin.gift_vouchers.listingLoop')
 								<?php else: ?>
 									<td align="left" colspan="7">
 		                            	No records found!
