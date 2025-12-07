@@ -2042,6 +2042,7 @@ var productDetail = new Vue({
         initSlider(sliderID)
         {
             var appendArrowsClassName = '#'+sliderID+'-arrows';
+            alert('#'+sliderID);
             $('#'+sliderID).slick({
                 dots: false,
                 infinite: true,
@@ -2084,6 +2085,6 @@ var productDetail = new Vue({
     mounted: function() {
         setTimeout(async () => {
             await this.initSlider('carausel-6-columns');
-        }, 1000);
+        }, 5000);
     }
 });
