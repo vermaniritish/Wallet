@@ -2129,6 +2129,12 @@ var voucherApp = new Vue({
             if (!this.form.receiver_email) this.errors.receiver_email = "Receiver email is required";
             else if (!/\S+@\S+\.\S+/.test(this.form.receiver_email)) this.errors.receiver_email = "Invalid email";
 
+            if (!this.form.receiver_mobile) this.errors.receiver_mobile = "Mobile number required";
+            else if (!/^[0-9]{10}$/.test(this.form.receiver_mobile)) this.errors.receiver_mobile = "Enter valid 10 digit mobile";
+
+            if (!this.form.message) this.errors.message = "Message is required";
+
+
             return Object.keys(this.errors).length === 0;
         },
 
