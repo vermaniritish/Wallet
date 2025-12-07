@@ -20,19 +20,19 @@
                     <div class="mb-3">
                         <label class="form-label">Your Name<span class="alert">*</span></label>
                         <input type="text" class="form-control" v-model="form.name">
-                        <small v-if="errors.name" class="text-danger">{{ errors.name }}</small>
+                        <small v-if="errors.name" class="text-danger">@{{ errors.name }}</small>
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label">Your Email<span class="alert">*</span></label>
                         <input type="email" class="form-control" v-model="form.email">
-                        <small v-if="errors.email" class="text-danger">{{ errors.email }}</small>
+                        <small v-if="errors.email" class="text-danger">@{{ errors.email }}</small>
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label">Your Mobile<span class="alert">*</span></label>
                         <input type="tel" class="form-control" v-model="form.mobile">
-                        <small v-if="errors.mobile" class="text-danger">{{ errors.mobile }}</small>
+                        <small v-if="errors.mobile" class="text-danger">@{{ errors.mobile }}</small>
                     </div>
 
                     <h5 class="mb-3 text-brand">Voucher Details</h5>
@@ -47,7 +47,7 @@
                             <option value="50">£50</option>
                             <option value="100">£100</option>
                         </select>
-                        <small v-if="errors.amount" class="text-danger">{{ errors.amount }}</small>
+                        <small v-if="errors.amount" class="text-danger">@{{ errors.amount }}</small>
                     </div>
 
                     <div class="mb-3">
@@ -64,13 +64,13 @@
                     <div class="mb-3">
                         <label class="form-label">Receiver's Name<span class="alert">*</span></label>
                         <input type="text" class="form-control" v-model="form.receiver_name">
-                        <small v-if="errors.receiver_name" class="text-danger">{{ errors.receiver_name }}</small>
+                        <small v-if="errors.receiver_name" class="text-danger">@{{ errors.receiver_name }}</small>
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label">Receiver's Email<span class="alert">*</span></label>
                         <input type="email" class="form-control" v-model="form.receiver_email">
-                        <small v-if="errors.receiver_email" class="text-danger">{{ errors.receiver_email }}</small>
+                        <small v-if="errors.receiver_email" class="text-danger">@{{ errors.receiver_email }}</small>
                     </div>
 
                     <div class="mb-3">
@@ -86,7 +86,7 @@
                     <button class="btn btn-primary w-100 btn-lg mt-3"
                             @click="submitForm"
                             :disabled="loading">
-                        {{ loading ? 'Processing...' : 'Pay Now' }}
+                        @{{ loading ? 'Processing...' : 'Pay Now' }}
                     </button>
 
                 </div>
