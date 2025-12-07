@@ -15,6 +15,7 @@
             <div class="col-lg-12">
                 <img src="url('/frontend/assets/imgs/personalise.jpg')" alt="Personalise Your Apparel" />
             </div>
+            @if($categories)
             <section class="popular-categories section-padding mt-15">
                 <div class="container wow fadeIn animated">
                     <h3 class="section-title mb-20"><span>Select</span> Categories</h3>
@@ -33,7 +34,6 @@
                     </div>
                 </div>
             </section>
-
             <section class="popular-categories section-padding mt-15" v-if="fetched">
                 <div class="container wow fadeIn animated">
                     <h3 class="section-title mb-20"><span>Select</span> Sub Categories</h3>
@@ -49,6 +49,16 @@
                         </div>
                     </div>
                     <div class="" v-else>
+                        <p style="color:#088178;">There is no record availble.</p>
+                    </div>
+                </div>
+            </section>
+            @endif
+
+            <section class="popular-categories section-padding mt-15">
+                <div class="container wow fadeIn animated">
+                    <h3 class="section-title mb-20"><span>Select</span> Categories</h3>
+                    <div class="">
                         <p style="color:#088178;">There is no record availble.</p>
                     </div>
                 </div>
