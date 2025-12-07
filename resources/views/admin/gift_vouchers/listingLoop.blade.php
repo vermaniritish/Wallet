@@ -39,7 +39,7 @@
 		<?php echo _dt($row->created) ?>
 	</td>
 	<td class="text-right">
-		<a class="dropdown-item" href="<?php echo route('admin.gift_voucher.view', ['id' => $row->id]) ?>">
+		<a class="btn btn-sm btn-primary" href="<?php echo route('admin.gift_voucher.view', ['id' => $row->id]) ?>">
 			<i class="fas fa-eye"></i>
 			<span class="status">View</span>
 		</a>
