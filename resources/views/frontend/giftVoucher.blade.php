@@ -85,11 +85,13 @@
                         <small v-if="errors.message" class="text-danger">@{{ errors.message }}</small>
                     </div>
 
-                    <button class="btn btn-primary w-100 btn-lg mt-3"
+                    <!-- <button class="btn btn-primary w-100 btn-lg mt-3"
                             @click="submitForm"
                             :disabled="loading">
                         @{{ loading ? 'Processing...' : 'Pay Now' }}
-                    </button>
+                    </button> -->
+
+                    <div id="paypal-button-container"></div>
 
                 </div>
 
@@ -131,3 +133,62 @@
     </div>
 </section>
 @endsection
+@push('scripts')
+var loginuseremail = '{{ $user && $user->email ? $user->email : '' }}';
+var loginuserphone = '{{ $user && $user->phonenumber ? $user->phonenumber : '' }}';
+var shops = '{{ $shops }}';
+const initPaypal = function(orderId, amount)
+{
+    if (typeof paypal !== 'undefined' && paypal.Buttons) {
+        paypal.Buttons({
+            createOrder: async function(data, actions) {
+                let response = await voucherApp.submit();
+                if(response && response.status && response.voucher_id) {
+                    return fetch('{{url("/paypal/create-order")}}', {
+                        method: 'post',
+                        headers: {
+                            'content-type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        body: JSON.stringify({
+                            amount: response.amount,
+                            voucher_id: response.voucher_id
+                        })
+                    }).then(res => {
+                        return res.json();
+                    })
+                    .then(orderData => orderData?.result?.id || null);
+                }
+                return Promise.reject(new Error('API request failed'));
+            },
+            onApprove: function(data, actions) {
+                return fetch('{{ url("/paypal/capture-order")}}', {
+                    method: 'post',
+                    headers: {
+                        'content-type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({
+                        voucher_id: data.orderID
+                    })
+                }).then(res => res.json())
+                .then(details => {
+                    console.log(details);
+                    if(details?.status && details?.id) {
+                        
+                    } else {
+                        if(details && !details.status && details.message) {
+                            set_notification('error', details.message);
+                        }
+                        else {
+                            set_notification('error', 'Payment could not be processed. Please try again.');
+                        }
+                    }
+                });
+            }
+        }).render('#paypal-button-container');
+    } else {
+        console.error("PayPal SDK failed to load.");
+    }
+}
+@endpush

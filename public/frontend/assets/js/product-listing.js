@@ -2154,7 +2154,7 @@ var voucherApp = new Vue({
             const data = await response.json();
 
             if (data.status) {
-                console.log(data);
+                return data;
             }
             else {
                 set_notification('error', data.message);

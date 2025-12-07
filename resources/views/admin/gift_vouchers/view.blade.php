@@ -29,8 +29,8 @@
 						<!-- Projects table -->
 						<table class="table align-items-center table-flush">
 							<tbody>
-								<tr style="width: 30%;">
-									<th>Id</th>
+								<tr>
+									<th style="width: 30%;">Id</th>
 									<td><?php echo $page->id ?></td>
 								</tr>
 								<tr>

@@ -376,9 +376,9 @@ class PagesController extends BaseController
 
     function giftVoucher(Request $request)
     {
+        $user = $request->session()->get('user');
         if($request->isMethod('post'))
     	{
-            $user = $request->session()->get('user');
             $data = $request->toArray();
     		unset($data['_token']);
     		$validator = Validator::make(
@@ -419,7 +419,7 @@ class PagesController extends BaseController
                     return response()->json([
                         'status' => true,
                         'message' => 'Voucher saved as pending, proceed to payment',
-                        'voucher_id' => $voucher->id,
+                        'voucher_id' => General::encrypt($voucher->id),
                         'amount' => $voucher->amount,
                     ]);
                 }
@@ -440,7 +440,7 @@ class PagesController extends BaseController
             }
         }
         return view('frontend.giftVoucher', [
-            
+            'user' => $user
         ]);
     }
 }
