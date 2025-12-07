@@ -2100,7 +2100,7 @@ var voucherApp = new Vue({
             name: "",
             email: "",
             mobile: "",
-            amount: "",
+            amount: "100",
             delivery_mode: "Email",
             receiver_name: "",
             receiver_email: "",
