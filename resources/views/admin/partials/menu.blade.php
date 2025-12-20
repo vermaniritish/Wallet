@@ -190,6 +190,15 @@
                 </a>
             </li>
         <?php endif; ?>
+        <?php if(Permissions::hasPermission('gift_voucher', 'listing')): ?>
+            <?php $active = strpos(request()->route()->getAction()['as'], 'admin.gift_voucher') > -1; ?>
+            <li class="nav-item">
+                <a class="nav-link<?php echo ($active ? ' active' : '') ?>" href="<?php echo route('admin.gift_voucher') ?>">
+                    <i class="fas fa-percent text-green"></i>
+                    <span class="nav-link-text">Gift Voucher</span>
+                </a>
+            </li>
+        <?php endif; ?>
         <?php if(Permissions::hasPermission('orders', 'listing')): ?>
             <?php $active = strpos(request()->route()->getAction()['as'], 'admin.orders') > -1; ?>
             <li class="nav-item">
