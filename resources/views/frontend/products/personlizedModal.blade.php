@@ -3,7 +3,7 @@
 		<a class="close float-end" style="font-size:24px" href="#" v-on:click="closeModal">&times;</a>
 		<div class="" v-for="(s, i) in sizes" v-if="s && s.logo && (s.quantity*1) > 0">
 			<h1>Customise Your Apparel</h1>
-			<p class="small">@{{s.title}} | @{{s.size_title}} | @{{s.color}}</p>
+			<p>@{{s.title}} | @{{s.size_title}} | @{{s.color}}</p>
 			<template v-for="(lVal, lKey) in s.logo">
 				<div class="section">
 					<label class="title">1. Select Logo / Text Position</label>
