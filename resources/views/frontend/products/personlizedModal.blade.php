@@ -1,4 +1,5 @@
 <div id="popup1" :class="`overlay show` + (!editLogo ? ` d-none` : `` )">
+	<a class="close custom-modal" href="#" v-on:click="closeModal">&times;</a>
 	<div class="container" v-for="(s, i) in sizes" v-if="s && s.logo && (s.quantity*1) > 0">
 		 <h1>Customise Your Apparel</h1>
         <p class="small">@{{s.title}} | @{{s.size_title}} | @{{s.color}}</p>
