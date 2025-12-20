@@ -1,4 +1,4 @@
-<div id="popup1" :class="`overlay show` + (!editLogo ? ` d-none` : `` )">
+<div id="popup1" style="overflow:auto" :class="`overlay show` + (!editLogo ? ` d-none` : `` )">
 	<a class="close" href="#" v-on:click="closeModal">&times;</a>
 	<div class="container custom-modal">
 		<div class="" v-for="(s, i) in sizes" v-if="s && s.logo && (s.quantity*1) > 0">
