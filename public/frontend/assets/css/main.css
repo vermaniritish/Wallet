@@ -10293,7 +10293,9 @@ color: #FFF;
             box-shadow: 0 4px 18px rgba(0,0,0,0.08);
 			background-color: #F5FEFC;
         }
-
+.custom-modal [type="checkbox"], .custom-modal [type="radio"] {
+  height: auto;
+}
         h1 {
             text-align: center;
             margin-bottom: 30px;
