@@ -9,7 +9,7 @@
 					</div>
 					<div class="col-lg-6 col-5 text-right">
 						<a href="<?php echo route('admin.brands') ?>" class="btn btn-neutral"><i class="fa fa-arrow-left"></i> Back</a>
-						<a href="<?php echo url('/search?brand='.$row->slug) ?>" class="btn btn-neutral" target="_blank"><i class="fa fa-eye"></i> View Page</a>
+						<a href="<?php echo route('home.brand', ['slug' => $row->slug]) ?>" class="btn btn-neutral" target="_blank"><i class="fa fa-eye"></i> View Page</a>
 						<?php if(Permissions::hasPermission('brands', 'update') || Permissions::hasPermission('brands', 'delete')): ?>
 							<div class="dropdown" data-toggle="tooltip" data-title="More Actions">
 								<a class="btn btn-neutral" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
