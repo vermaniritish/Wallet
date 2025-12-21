@@ -23,7 +23,11 @@
         </div>
         <div class="product-content-wrap">
             <div class="product-category">
+                @if(isset($product['school']) && $product['school'])
+                <a href="{{ url('/'.$product->slug) }}">{{$product['school']}}</a>
+                @else
                 <a href="{{ url('/'.$product->slug) }}">{{$product['category']}} {{$product['gender'] ? ', '.$product['gender'] : ''}}</a>
+                @endif
             </div>
             <h2><a href="{{ url('/'.$product->slug) }}">{{$product['title']}}</a></h2>
             <div><span>SKU: {{$product['sku_number']}}</span></div>
