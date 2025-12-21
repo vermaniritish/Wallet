@@ -30,7 +30,7 @@
 													</h2>
 													<div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#faqAccordion{{$k}}">
 														<div class="accordion-body">
-															{{$f->description}}
+															<?php echo $f->description ?>
 														</div>
 													</div>
 												</div>
