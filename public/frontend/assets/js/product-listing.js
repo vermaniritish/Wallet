@@ -1403,9 +1403,10 @@ var minicart = new Vue({
                 });
                 subtotal = subtotal.reduce((partialSum, a) => partialSum + a, 0);
                 let prices = [];
-                if(c.logo)
+                
+                for(let c of this.cart )
                 {
-                    for(let c of this.cart )
+                    if(c.logo)
                     {
                         for(let item of c.logo)
                         {
