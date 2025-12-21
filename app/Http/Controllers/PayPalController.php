@@ -79,6 +79,7 @@ class PayPalController extends Controller
             elseif($capture && $capture->result && in_array($capture->result->status, ['APPROVED', 'COMPLETED']))
             {
                 $randomLength = 10;           // random number size: 8 digits
+                $prefix = Settings::get('gift_card_prefix');
                 do {
                     $randomNumber = mt_rand(
                         pow(10, $randomLength - 1),
@@ -89,7 +90,7 @@ class PayPalController extends Controller
                     $exists = GiftVoucher::where('code', $couponCode)->where('status', 'paid')->exists();
 
                 } while ($exists); // repeat until UNIQUE
-                $order->code = Settings::get('gift_card_prefix') . $couponCode;
+                $order->code =  $couponCode;
                 $order->paypal_payment_data = json_encode($capture->result);
                 $order->status = 'paid';
                 $order->save();
