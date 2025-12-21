@@ -1108,10 +1108,13 @@ var minicart = new Vue({
                 let prices = [];
                 for(let c of this.cart )
                 {
-                    for(let item of c.logo)
+                    if(c.logo)
                     {
-                        for(let i = 0; i < (c.quantity*1); i++)
-                        prices.push(item.price);
+                        for(let item of c.logo)
+                        {
+                            for(let i = 0; i < (c.quantity*1); i++)
+                            prices.push(item.price);
+                        }
                     }
                 }
                 let discount = freeLogoDiscount ? freeLogoDiscount : null;
@@ -1855,10 +1858,13 @@ checkoutPage = new Vue({
                 let prices = [];
                 for(let c of this.cart )
                 {
-                    for(let item of c.logo)
+                    if(c.logo)
                     {
-                        for(let i = 0; i < (c.quantity*1); i++)
-                        prices.push(item.price);
+                        for(let item of c.logo)
+                        {
+                            for(let i = 0; i < (c.quantity*1); i++)
+                            prices.push(item.price);
+                        }
                     }
                 }
                 let discount = freeLogoDiscount ? freeLogoDiscount : null;
