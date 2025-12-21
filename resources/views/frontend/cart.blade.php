@@ -85,7 +85,7 @@
                         </tbody>
                     </table>
                 </div>
-             <div class="divider center_icon mt-50 mb-50"><i class="fi-rs-fingerprint"></i></div>
+                <div class="divider center_icon mt-50 mb-50"><i class="fi-rs-fingerprint"></i></div>
                 <div class="row mb-50">
                     <div class="col-lg-6 col-md-12">
                         
