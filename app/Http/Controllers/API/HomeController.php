@@ -459,11 +459,14 @@ class HomeController extends AppController
 
 			foreach($cart as $item)
 			{
-				foreach($item['logo'] as $lItem)
+				if(isset($item['logo']) && $item['logo'])
 				{
-					for($i = 0; $i < ($item['quantity']*1); $i++)
+					foreach($item['logo'] as $lItem)
 					{
-						$prices[] = $lItem['price'];
+						for($i = 0; $i < ($item['quantity']*1); $i++)
+						{
+							$prices[] = $lItem['price'];
+						}
 					}
 				}
 				
