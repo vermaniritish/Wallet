@@ -2,6 +2,7 @@
 namespace App\Http\Controllers;
 
 use App\Libraries\General;
+use App\Libraries\SMSGateway;
 use App\Libraries\PayPal;
 use App\Models\Admin\OrderProductRelation;
 use App\Models\Admin\Orders;
@@ -92,6 +93,49 @@ class PayPalController extends Controller
                 $order->paypal_payment_data = json_encode($capture->result);
                 $order->status = 'paid';
                 $order->save();
+                General::sendTemplateEmail( 
+                    $order->user && $order->user->email ? $order->user->email : $order->sender_email, 
+                    'gift-card-order-placed',
+                    [
+                        "{order_id}" => $order->order_id,
+                        "{code}" => $order->code,
+                        "{sender_name}" => $order->sender_name,
+                        "{sender_email}" => $order->sender_email,
+                        "{sender_mobile}" => $order->sender_mobile,
+                        "{amount}" => $order->amount,
+                        "{receiver_name}" => $order->receiver_name,
+                        "{receiver_email}" => $order->receiver_email,
+                        "{receiver_mobile}" => $order->receiver_mobile,
+                        "{message}" =>  $order->message
+                    ]
+                );
+                
+                if($order->delivery_mode == 'SMS')
+                {
+                    SMSGateway::send($order->receiver_mobile, "Congratulations! A Pinder Gift Card sent by {$order->sender_name}. Code is {$order->code}");
+                }
+                else
+                {
+                    General::sendTemplateEmail( 
+                        $order->user && $order->user->email ? $order->user->email : $order->sender_email, 
+                        'gift-card',
+                        [
+                            "{order_id}" => $order->order_id,
+                            "{code}" => $order->code,
+                            "{sender_name}" => $order->sender_name,
+                            "{sender_email}" => $order->sender_email,
+                            "{sender_mobile}" => $order->sender_mobile,
+                            "{amount}" => $order->amount,
+                            "{receiver_name}" => $order->receiver_name,
+                            "{receiver_email}" => $order->receiver_email,
+                            "{receiver_mobile}" => $order->receiver_mobile,
+                            "{message}" =>  $order->message
+                        ]
+                    );
+                }
+
+                
+
                 return response()->json(['status' => true, 'id' => $order->id]);
             }
             else

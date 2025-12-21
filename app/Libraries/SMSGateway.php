@@ -21,19 +21,24 @@ class SMSGateway
 			'content' => $message . "\n - Pinder's WorkWear"
 		);
 
-		
-		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-			'Content-Type: application/json',
-			'Authorization:'.$Authorization
-		));
-		curl_setopt($ch, CURLOPT_URL, "https://api.thesmsworks.co.uk/v1/message/send" );
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1 );
-		curl_setopt($ch, CURLOPT_POST, 1 );
-		curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($jsonData));
+		try {
+			$ch = curl_init();
+			curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+				'Content-Type: application/json',
+				'Authorization:'.$Authorization
+			));
+			curl_setopt($ch, CURLOPT_URL, "https://api.thesmsworks.co.uk/v1/message/send" );
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1 );
+			curl_setopt($ch, CURLOPT_POST, 1 );
+			curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($jsonData));
 
-		$result=curl_exec($ch);
-		curl_close($ch);
+			$result=curl_exec($ch);
+			curl_close($ch);
+		}
+		catch(\Exception $e)
+		{
+			$result = $e->getMessage();
+		}
 		DB::table('sms_logs')->insert([
 			'log' => json_encode([
 				'request' => $jsonData,
