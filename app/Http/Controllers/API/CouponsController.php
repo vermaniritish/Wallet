@@ -19,17 +19,36 @@ class CouponsController extends BaseController
             ->where('status', 1)
             ->whereColumn('used', '<', 'max_use')
             ->first();
-        if (!$coupon) {
-            return Response()->json(['status' => false]);
+        if ($coupon) 
+        {
+            $coupon->amount = $coupon->amount * 1;
+            $coupon->is_percentage = $coupon->is_percentage * 1;
+            return Response()
+                ->json([
+                    'status' => true,
+                    'coupon' => $coupon
+			    ]);
         }
-        
-        $coupon->amount = $coupon->amount * 1;
-        $coupon->is_percentage = $coupon->is_percentage * 1;
+        else
+        {
+            $coupon = GiftVoucher::where('code', $request->get('code'))
+                ->where('status', 'Paid')
+                ->where('applied', '<', 2)
+                ->first();
+            if($coupon)
+            {
+                return Response()
+                ->json([
+                    'status' => true,
+                    'coupon' => [
+                        'coupon_code' => $coupon->code,
+                        'description' => "Gift voucher is applied.",
+                        'title' => "Gift Voucher"
+                    ]
+			    ]);
+            }
+        }
 
-        return Response()
-			->json([
-				'status' => true,
-				'coupon' => $coupon
-			]);
+        return Response()->json(['status' => false]);
     }
 }
