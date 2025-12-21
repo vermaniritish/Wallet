@@ -85,6 +85,85 @@
                         </tbody>
                     </table>
                 </div>
+             <div class="divider center_icon mt-50 mb-50"><i class="fi-rs-fingerprint"></i></div>
+                <div class="row mb-50">
+                    <div class="col-lg-6 col-md-12">
+                        
+                        <div class="mb-30 mt-50">
+                            <div class="heading_s1 mb-3">
+                                <h4>Apply Coupon</h4>
+                            </div>
+                            <div class="total-amount">
+                                <div class="left">
+                                    <div class="coupon">
+                                        <form action="#" target="_blank">
+                                            <div class="form-row row justify-content-center">
+                                                <div class="form-group col-lg-6">
+                                                    <input class="font-medium" name="Coupon" placeholder="Enter Your Coupon" v-model="coupon" :disabled="appliedCoupon ? true : false">
+                                                    <small class="text-danger" v-if="couponError">@{{couponError}}</small>
+                                                </div>
+                                                <div class="form-group col-lg-6">
+                                                    <button type="button" class="btn  btn-sm btn-danger"  v-on:click="removeCoupon" v-if="appliedCoupon"><i class="fi-rs-cross-small"></i>  Remove</button>
+                                                    <button type="button" class="btn  btn-sm" v-on:click="applyCoupon" v-else><i class="fi-rs-label mr-10"></i>Apply</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-12">
+                        <textarea class="d-none cart__note--textarea border-radius-5" v-model="note"></textarea>
+                        <div class="border p-md-4 p-30 border-radius cart-totals">
+                            <div class="heading_s1 mb-3">
+                                <h4>Cart Totals</h4>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <tbody>
+                                        <tr v-if="calculate().logo_cost > 0">
+                                            <td class="cart_total_label">Product Costs</td>
+                                            <td class="cart_total_amount"><span class="font-lg fw-900 text-brand">£@{{formatMoney(calculate().product_cost)}}</span></td>
+                                        </tr>
+                                        <tr v-if="calculate().logo_cost > 0">
+                                            <td class="cart_total_label">Customization Cost</td>
+                                            <td class="cart_total_amount"><span class="font-lg fw-900 text-brand">£@{{formatMoney(calculate().logo_cost)}}</span></td>
+                                        </tr>
+                                        <tr v-if="calculate().logo_discount > 0">
+                                            <td class="cart_total_label">Customization Discount <br /><small v-if="calculate().applied_logo_discount > 0" style="color:#ee2761">@{{ `(${calculate().applied_logo_discount} logo(s))`}}</small></td>
+                                            <td class="cart_total_amount"><span class="font-lg fw-900 text-brand">- £@{{formatMoney(calculate().logo_discount)}}</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="cart_total_label">Subtotal</td>
+                                            <td class="cart_total_amount"><span class="font-lg fw-900 text-brand">£@{{formatMoney(calculate().subtotal)}}</span></td>
+                                        </tr>
+                                        <tr v-if="calculate().discount > 0">
+                                            <td class="cart_total_label">Discount</td>
+                                            <td class="cart_total_amount"><span class="font-lg fw-900 text-brand">- £@{{formatMoney(calculate().discount)}}</span></td>
+                                        </tr>
+                                        <tr v-if="freeDelivery()">
+                                            <td class="cart_total_label">Delivery</td>
+                                            <td class="cart_total_amount"><span class="font-lg fw-900 text-brand">Free</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="cart_total_label">VAT (@{{gstTax}}%)</td>
+                                            <td class="cart_total_amount"><span class="font-lg fw-900 text-brand">£@{{formatMoney(calculate().tax)}}</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="cart_total_label">GRAND TOTAL</td>
+                                            <td class="cart_total_amount"><span class="font-lg fw-900 text-brand">£@{{formatMoney(calculate().total)}}</span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="d-flex gap-2 align-items-center justify-content-between">
+                                <a class="btn" href="{{url('/')}}"><i class="fi-rs-shopping-bag mr-10"></i>Continue Shopping</a>
+                                <a href="{{url('/checkout')}}" class="btn "> <i class="fi-rs-box-alt mr-10"></i> Proceed To CheckOut</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
