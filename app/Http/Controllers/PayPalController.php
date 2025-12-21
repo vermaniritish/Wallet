@@ -109,12 +109,13 @@ class PayPalController extends Controller
                         "{message}" =>  $order->message
                     ]
                 );
-                
-                if($order->delivery_mode == 'SMS')
+
+                if($order->delivery_mode == 'SMS' || $order->delivery_mode == 'BOTH')
                 {
                     SMSGateway::send($order->receiver_mobile, "Congratulations! A Pinder Gift Card sent by {$order->sender_name}. Code is {$order->code}");
                 }
-                else
+
+                if($order->delivery_mode == 'Email' || $order->delivery_mode == 'BOTH')
                 {
                     General::sendTemplateEmail( 
                         $order->user && $order->user->email ? $order->user->email : $order->sender_email, 
