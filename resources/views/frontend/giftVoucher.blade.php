@@ -108,7 +108,7 @@
                 <div class="voucher-preview shadow">
 
                     <div class="logo">
-                        <img src="assets/imgs/theme/logo.jpg" alt="Pinders Schoolwear">
+                        <img src="{{ url(Settings::get('logo')) }}" alt="Pinders Schoolwear">
                     </div>
                     
                     <div class="voucher-title">Gift Voucher</div>
