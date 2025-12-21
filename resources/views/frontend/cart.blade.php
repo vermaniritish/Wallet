@@ -36,29 +36,7 @@
                                     <p class="font-xs">SKU: @{{c.sku_number}}<br> Size:  @{{c.size_title}}<br/> Color: @{{c.color}} </p>
                                     
                                     <div class="font-xs">
-                                        <span class="position-relative popover-block">
-                                            <span 
-                                                class="text-danger font-xs" 
-                                                v-if="c.customization && c.customization.length > 0"
-                                            >@{{ c.customization.length }} customization added worth £@{{(c.quantity * getCustomizationCost(c.customization)).toFixed(2)}}.</span>
-                                            <span 
-                                                v-else-if="c.logo" 
-                                                class="text-danger font-xs" style="color:#ee2761" 
-                                                v-html="renderLogoInfo(c)"></span>
-
-                                            <div v-if="c.customization && c.customization.length > 0" class="popover bs-popover-auto fade show" data-popper-placement="right" role="tooltip" id="popover995992" style="position: absolute; inset: 0px auto auto 0px; margin: 0px;bottom: unset;top: -50px;right: -80%;left: unset;display:none;">
-                                                <div class="popover-arrow" style="position: absolute; transform: translate(0px, 47px);"></div>
-                                                <h3 class="popover-header">Customization</h3>
-                                                <div class="popover-body pt-2">
-                                                    <ul>
-                                                        <li v-for="l in c.customization" style="border-bottom: 1px solid #eee;padding: 5px 0;">
-                                                            <span class="text-muted">@{{ l.title }} | @{{ formatMoney(l.cost) }}</span><br />
-                                                            <strong>@{{ l.initial }}</strong>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </span>
+                                        
                                     </div>
                                 </td>
                                 <td class="price" data-title="Price"><span>£@{{c.price}}</span></td>
