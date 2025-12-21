@@ -55,9 +55,10 @@ const oneTimeProductObject = function(cart) {
         text: (txtCost !== null ? txtCost*1 : 0)
     }
 }
+var productDetail;
 if($('#product-page').length)
 {
-    var productDetail = new Vue({
+    productDetail = new Vue({
         el: '#product-page',
         data: {
             id: null,
@@ -256,7 +257,7 @@ if($('#product-page').length)
                     set_notification('error', 'Please select size to proceed.');
                     return false;
                 }
-                
+
                 this.editLogo = true;
                 $('body').addClass('overflow-hidden');
                 let response = await fetch(site_url + `/api/products/fetch-logo-prices`);
@@ -358,7 +359,7 @@ if($('#product-page').length)
 }
 else if($('#product-cat-page').length)
 {
-    var productDetail = new Vue({
+    productDetail = new Vue({
         el: '#product-cat-page',
         data: {
             id: null,
