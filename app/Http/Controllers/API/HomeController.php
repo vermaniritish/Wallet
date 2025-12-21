@@ -268,7 +268,7 @@ class HomeController extends AppController
 					{
 						$image = isset($c['image']) && $c['image'] ? json_decode($c['image'], true) : null;
 						$image = $image && is_array($image) ? $image[0] : $image;
-						$logo = isset($c['customization']) && $c['customization'] ? $c['customization'] : [];
+						$logo = isset($c['customization']) && $c['customization'] ? $c['customization'] : (isset($c['logo']) ? $c['logo'] : []);
 						$products[] = [
 							'order_id' => $order->id,
 							'product_id' => $c['product_id'],
@@ -422,8 +422,65 @@ class HomeController extends AppController
 		$logoDiscount = 0;
 		foreach($cart as $c)
 		{
-			$totalCost = isset($c['customization']) && $c['customization'] ? array_sum(Arr::pluck($c['customization'], 'cost')) : 0;
-			$cost += ($totalCost > 0 ? $totalCost : 0)*$c['quantity'];
+			$freeLogo = $this->offerPrice($c)['freeLogo'];
+			if(isset($c['logo']) && $c['logo'])
+			{
+				foreach($c['logo'] as $item)
+				{
+					if( ($item['image'] || $item['text']) && !$item['already_uploaded'] && $item['category'] != 'None' )
+					{
+						$haveLogo += ($c['quantity']*1);
+					}
+
+					if($item && $item['category'] != 'None' && isset($item['price']) && ($item['price']*1) > 0)
+					{
+						$cost += $item['price']*$c['quantity'];
+
+						if($freeLogo > 0)
+						{
+							$discountQty = $c['quantity'] > $freeLogo ? $freeLogo : $c['quantity'];
+							$appliedDiscount += $discountQty;
+							$logoDiscount += $item['price']*$discountQty;
+						}
+					}
+				}
+			}
+
+			if(isset($c['customization']) && $c['customization']) {
+				$totalCost = array_sum(Arr::pluck($c['customization'], 'cost'));
+				$cost += ($totalCost > 0 ? $totalCost : 0)*$c['quantity'];
+			}
+		}
+		if($appliedDiscount < 1 && $haveLogo > 0)
+		{
+			$freeLogoDiscount = Settings::get('free_logo_discount');
+			$subtotal = 0;
+			$prices = [];
+
+			foreach($cart as $item)
+			{
+				foreach($item['logo'] as $lItem)
+				{
+					for($i = 0; $i < ($item['quantity']*1); $i++)
+					{
+						$prices[] = $lItem['price'];
+					}
+				}
+				
+
+				$subtotal += $this->offerPrice($item)['price'];
+			}
+			
+			$discount = $freeLogoDiscount ? json_decode($freeLogoDiscount, true) : null;
+			if($discount && ($subtotal*1) >= ($discount['min_cart_price']*1) && count($prices) >= $discount['quantity'])
+			{
+				sort($prices);
+				$topPrices = array_slice($prices, 0, $discount['quantity']);
+				$logoDiscount = array_reduce($topPrices, function($acc, $price) {
+					return $acc + $price;
+				}, 0);
+				$appliedDiscount = $discount['quantity'];
+			}
 		}
 		return [
 			'cost' => $cost,

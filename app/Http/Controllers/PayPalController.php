@@ -5,6 +5,7 @@ use App\Libraries\General;
 use App\Libraries\PayPal;
 use App\Models\Admin\OrderProductRelation;
 use App\Models\Admin\Orders;
+use App\Models\Admin\GiftVoucher;
 use App\Models\Admin\Settings;
 use Illuminate\Http\Request;
 
@@ -19,28 +20,80 @@ class PayPalController extends Controller
 
     public function createOrder(Request $request)
     {
-        $booking = Orders::select(['id', 'paypal_payment_data'])->where('prefix_id', $request->get('id'))->limit(1)->first();
-        $amount = $request->input('amount');
-        $amount = round($amount, 2);
-        $order = $this->payPalService->createOrder($request->get('id'), $amount);
-        if($order && is_array($order) && isset($order['status']) && !$order['status'])
+        if($request->get('voucher_id'))
         {
-            return response()->json(['status'=> false, 'message' => $order['message']]);
-        }
-        elseif($order && $order->result && $order->result->id && $booking)
-        {
-            $booking->paypal_payment_data = $order->result->id;
-            $booking->save();
-            return response()->json($order);
+            $booking = GiftVoucher::select(['id', 'paypal_payment_data'])->where('id', General::decrypt($request->get('voucher_id')) )->limit(1)->first();
+            $amount = $request->input('amount');
+            $amount = round($amount, 2);
+            $order = $this->payPalService->createOrder($request->get('voucher_id'), $amount);
+            if($order && is_array($order) && isset($order['status']) && !$order['status'])
+            {
+                return response()->json(['status'=> false, 'message' => $order['message']]);
+            }
+            elseif($order && $order->result && $order->result->id && $booking)
+            {
+                $booking->paypal_payment_data = $order->result->id;
+                $booking->save();
+                return response()->json($order);
+            }
+            else
+            {
+                return response()->json(['status'=> false]);
+            }
         }
         else
         {
-            return response()->json(['status'=> false]);
+            $booking = Orders::select(['id', 'paypal_payment_data'])->where('prefix_id', $request->get('id'))->limit(1)->first();
+            $amount = $request->input('amount');
+            $amount = round($amount, 2);
+            $order = $this->payPalService->createOrder($request->get('id'), $amount);
+            if($order && is_array($order) && isset($order['status']) && !$order['status'])
+            {
+                return response()->json(['status'=> false, 'message' => $order['message']]);
+            }
+            elseif($order && $order->result && $order->result->id && $booking)
+            {
+                $booking->paypal_payment_data = $order->result->id;
+                $booking->save();
+                return response()->json($order);
+            }
+            else
+            {
+                return response()->json(['status'=> false]);
+            }
         }
     }
 
     public function captureOrder(Request $request)
     {
+        if($request->get('voucher_id'))
+        {
+            $orderId = $request->input('voucher_id');
+            $capture = $this->payPalService->captureOrder($orderId);
+            $order = GiftVoucher::where('paypal_payment_data', $orderId)->limit(1)->first();
+            if($capture  && is_array($capture) && isset($capture['status']) && !$capture['status'])
+            {
+                return response()->json(['status'=> false, 'message' => $capture['message']]);
+            }
+            elseif($capture && $capture->result && in_array($capture->result->status, ['APPROVED', 'COMPLETED']))
+            {
+                $order->paypal_payment_data = json_encode($capture->result);
+                $order->status = 'paid';
+                $order->save();
+                return response()->json(['status' => true, 'id' => $order->id]);
+            }
+            else
+            {
+                return response()->json(['status' => false]);
+            }
+        }
+        else
+        {
+            return $this->processCapturedOrder($request);
+        }
+    }
+
+    public function processCapturedOrder(Request $request){
         $orderId = $request->input('orderId');
         $capture = $this->payPalService->captureOrder($orderId);
         $order = Orders::where('paypal_payment_data', $orderId)->limit(1)->first();

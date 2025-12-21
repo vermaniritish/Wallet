@@ -74,7 +74,6 @@
         var id=$(this).attr("id");
         var sliderID='#'+id;
         var appendArrowsClassName = '#'+id+'-arrows'
-
         $(sliderID).slick({
             dots: false,
             infinite: true,

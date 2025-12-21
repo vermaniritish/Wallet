@@ -56,293 +56,590 @@ const oneTimeProductObject = function(cart) {
     }
 }
 if($('#product-page').length)
-var productDetail = new Vue({
-    el: '#product-page',
-    data: {
-        id: null,
-        logoPrices: [],
-        editLogo: false,
-        sizes: [],
-        color: null,
-        colorTitle: null,
-        selectedSizes: {},
-        uploading: null,
-        buyNow: false,
-        logo: [{
-            category: null,
-            postion: null,
-            text: ``,
-            image: null,
-            already_uploaded: false
-        }],
-        logoOptions: {
-            category: [],
-            postions: null
+{
+    var productDetail = new Vue({
+        el: '#product-page',
+        data: {
+            id: null,
+            logoPrices: [],
+            editLogo: false,
+            sizes: [],
+            color: null,
+            colorTitle: null,
+            selectedSizes: {},
+            uploading: null,
+            buyNow: false,
+            logo: [{
+                category: null,
+                postion: null,
+                text: ``,
+                image: null,
+                already_uploaded: false
+            }],
+            logoOptions: {
+                category: [],
+                postions: null
+            },
+            skuNumber: null,
+            fileSizeError: null,
+            adding: null,
+            accept: false,
+            customization: [],
+            customizationErrors: {},
+            nonExchangeable: false
         },
-        skuNumber: null,
-        fileSizeError: null,
-        adding: null,
-        accept: false,
-        customization: [],
-        customizationErrors: {},
-        nonExchangeable: false
-    },
-    methods: {       
-        currency(a) {
-            return '£' + (a*1).toFixed(2);
-        },
-        renderActiveColor(id) {
-            return this.color == id ? `active` : ``;
-        },
-        selectColor(id, title) {
-            this.color = id;
-            this.colorTitle = title;
-            let c = $('.slider-thumb[data-item="'+id+'"]').index();
-            $('.product-image-slider').slick('slickGoTo', c);
-            $('.slider-nav-thumbnails').slick('slickGoTo', c); // Goes to 3rd slide
-        },
-        renderSizes() {
-            if(this.color) {
-                return this.sizes.filter((i) => i.color_id == this.color );
-            }
-            else {
-                return [];
-            }
-        },
-        renderAllAddedSizes() {
-            // return this.sizes;
-            return this.sizes.filter((i) => ((i.quantity*1) > 0) );
-        },
-        manualQty(e, sizeObj) {
-            let qty = e.target.value;
-            let dataId = e.target.getAttribute("data-id");
-            let index = this.sizes.findIndex((v) => v.id == dataId);
-            let s = [...this.sizes];
-            s[index].quantity = qty;
-            this.setNonExchange(sizeObj, qty);
-            this.sizes = JSON.parse(JSON.stringify(s));
-        },
-        increment(sizeObj) {
-            let id = sizeObj.id;
-            let index = this.sizes.findIndex((v) => v.id == id);
-            let s = [...this.sizes];
-
-            if(s[index].quantity && (s[index].quantity * 1) > 0){
-                s[index].quantity = (s[index].quantity*1) + 1;
-            }
-            else {
-                s[index].quantity = 1;
-            }
-            this.setNonExchange(sizeObj, s[index].quantity);
-            this.sizes = JSON.parse(JSON.stringify(s));
-        },
-        decrement(sizeObj) {
-            let id = sizeObj.id;
-            let index = this.sizes.findIndex((v) => v.id == id);
-            let s = [...this.sizes];
-            
-            if(s[index].quantity && (s[index].quantity * 1) > 0){
-                s[index].quantity = (s[index].quantity*1) - 1;
-            }
-            else {
-                s[index].quantity = 0;
-            }
-            this.setNonExchange(sizeObj, s[index].quantity);
-            this.sizes = JSON.parse(JSON.stringify(s));
-        },
-        setNonExchange(sizeObj, qty)
-        {
-            if(sizeObj.non_exchange && (qty > 0)) {
-                this.nonExchangeable = true;
-            }
-            else if(nonExchange) {
-                this.nonExchangeable = true;
-            }
-            else {
-                this.nonExchangeable = false;
-            }
-        },
-        handleFileUpload(sizeIndex, logoKey) {
-            this.uploading = {sizeIndex, logoKey};
-            $('#fileUploadForm input[type=file]').click();
-        },
-        uploadFile() 
-        {
-            $('#fileUploadForm').ajaxSubmit({
-                beforeSend: function() {
-                },
-                uploadProgress: function(event, position, total, percentComplete) {
-                },
-                success: function(response) {
-                    if(response.status == 'success')
-                    {
-                        productDetail.sizes[productDetail.uploading.sizeIndex].logo[productDetail.uploading.logoKey].image = response.path;
-                    }
-                    else
-                    {
-                        set_notification('error', response.message);
-                    }
-                    productDetail.uploading = null;
-                },
-                complete: function() {
+        methods: {       
+            currency(a) {
+                return '£' + (a*1).toFixed(2);
+            },
+            renderActiveColor(id) {
+                return this.color == id ? `active` : ``;
+            },
+            selectColor(id, title) {
+                this.color = id;
+                this.colorTitle = title;
+                let c = $('.slider-thumb[data-item="'+id+'"]').index();
+                $('.product-image-slider').slick('slickGoTo', c);
+                $('.slider-nav-thumbnails').slick('slickGoTo', c); // Goes to 3rd slide
+            },
+            renderSizes() {
+                if(this.color) {
+                    return this.sizes.filter((i) => i.color_id == this.color );
                 }
-            });
-        },
-        async addToCart(buyNow) 
-        {
-            if(this.nonExchangeable && !this.accept) {
-                set_notification('error', 'Please acknowledge to proceed.');
-                return false;
-            }
-            if(this.adding) return false;
-            this.buyNow = buyNow ? true : false;
-            this.editLogo = false;
-            $('body').removeClass('overflow-hidden');
-            this.adding = true;
-            let scart = this.sizes.filter((item) => {
-                return (item.quantity && (item.quantity*1) > 0)
-            });
-            if(scart.length > 0) 
+                else {
+                    return [];
+                }
+            },
+            renderAllAddedSizes() {
+                // return this.sizes;
+                return this.sizes.filter((i) => ((i.quantity*1) > 0) );
+            },
+            manualQty(e) {
+                let qty = e.target.value;
+                let dataId = e.target.getAttribute("data-id");
+                let index = this.sizes.findIndex((v) => v.id == dataId);
+                let sizeObj = this.sizes.filter((v) => v.id == dataId);
+                sizeObj = sizeObj.length > 0 ? sizeObj[0] : null;
+                let s = [...this.sizes];
+                s[index].quantity = qty;
+                this.setNonExchange(sizeObj, qty);
+                this.sizes = JSON.parse(JSON.stringify(s));
+            },
+            increment(sizeObj) {
+                let id = sizeObj.id;
+                let index = this.sizes.findIndex((v) => v.id == id);
+                let s = [...this.sizes];
+                if(s[index].quantity && (s[index].quantity * 1) > 0){
+                    s[index].quantity = (s[index].quantity*1) + 1;
+                }
+                else {
+                    s[index].quantity = 1;
+                }
+                this.setNonExchange(sizeObj, s[index].quantity);
+                this.sizes = JSON.parse(JSON.stringify(s));
+            },
+            decrement(sizeObj) {
+                let id = sizeObj.id;
+                let index = this.sizes.findIndex((v) => v.id == id);
+                let s = [...this.sizes];
+                
+                if(s[index].quantity && (s[index].quantity * 1) > 0){
+                    s[index].quantity = (s[index].quantity*1) - 1;
+                }
+                else {
+                    s[index].quantity = 0;
+                }
+                this.setNonExchange(sizeObj, s[index].quantity);
+                this.sizes = JSON.parse(JSON.stringify(s));
+            },
+            setNonExchange(sizeObj, qty)
             {
-                scart = [...scart, ...this.cart];
-                let custmomization = this.customization ? this.customization.filter((v) => v.initial && v.initial.trim()).map((v) => ({cost:v.cost, title: v.title, initial: v.initial})) : null;
-                let response = await fetch(site_url + '/api/orders/add-to-cart', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
+                if(sizeObj.non_exchange && (qty > 0)) {
+                    this.nonExchangeable = true;
+                }
+                else if(nonExchange) {
+                    this.nonExchangeable = true;
+                }
+                else {
+                    this.nonExchangeable = false;
+                }
+            },
+            handleFileUpload(sizeIndex, logoKey) {
+                this.uploading = {sizeIndex, logoKey};
+                $('#fileUploadForm input[type=file]').click();
+            },
+            uploadFile() 
+            {
+                $('#fileUploadForm').ajaxSubmit({
+                    beforeSend: function() {
                     },
-                    body: JSON.stringify({cart: scart, customization: custmomization}),
+                    uploadProgress: function(event, position, total, percentComplete) {
+                    },
+                    success: function(response) {
+                        if(response.status == 'success')
+                        {
+                            productDetail.sizes[productDetail.uploading.sizeIndex].logo[productDetail.uploading.logoKey].image = response.path;
+                        }
+                        else
+                        {
+                            set_notification('error', response.message);
+                        }
+                        productDetail.uploading = null;
+                    },
+                    complete: function() {
+                    }
                 });
+            },
+            async addToCart(buyNow) 
+            {
+                if(this.nonExchangeable && !this.accept) {
+                    set_notification('error', 'Please acknowledge to proceed.');
+                    return false;
+                }
+                if(this.adding) return false;
+                this.buyNow = buyNow ? true : false;
+                this.editLogo = false;
+                $('body').removeClass('overflow-hidden');
+                this.adding = true;
+                let scart = this.sizes.filter((item) => {
+                    return (item.quantity && (item.quantity*1) > 0)
+                });
+                if(scart.length > 0) 
+                {
+                    scart = [...scart, ...this.cart];
+                    let custmomization = this.customization ? this.customization.filter((v) => v.initial && v.initial.trim()).map((v) => ({cost:v.cost, title: v.title, initial: v.initial})) : null;
+                    let response = await fetch(site_url + '/api/orders/add-to-cart', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({cart: scart, customization: custmomization}),
+                    });
+                    response = await response.json();
+                    if(response && response.status)
+                    {
+                        this.cart = response.cart;
+                    }
+                    let cart = localStorage.getItem('cart');
+                    cart = cart ? JSON.parse(cart) : [];
+                    if(cart && cart.length > 0) {
+                        cart = cart.filter((item) => {
+                            return item.product_id != this.id;
+                        })
+                        cart = [...cart, ...this.cart];
+                        localStorage.setItem('cart', JSON.stringify(cart));
+                    }
+                    else {
+                        cart = this.cart;
+                        localStorage.setItem('cart', JSON.stringify(cart));
+                    }
+                    await sleep(350);
+                    minicart.updateCartCount();
+                    this.adding = false;
+                    window.location.href = '/cart';   
+                }
+                else
+                {
+                    this.adding = false;
+                    set_notification('error', 'Please select size to proceed.');
+                    return false;
+                }
+                
+            },
+            async openLogoModal() 
+            {
+                this.editLogo = true;
+                $('body').addClass('overflow-hidden');
+                let response = await fetch(site_url + `/api/products/fetch-logo-prices`);
                 response = await response.json();
                 if(response && response.status)
                 {
-                this.cart = response.cart;
+                    this.logoPrices = response.prices;
                 }
-                let cart = localStorage.getItem('cart');
-                cart = cart ? JSON.parse(cart) : [];
-                if(cart && cart.length > 0) {
-                    cart = cart.filter((item) => {
-                        return item.product_id != this.id;
-                    })
-                    cart = [...cart, ...this.cart];
-                    localStorage.setItem('cart', JSON.stringify(cart));
+            },
+            closeModal() {
+                this.editLogo = false;
+                $('body').removeClass('overflow-hidden');
+            },
+            addMoreLogo(k) 
+            {
+                let sizes = {...this.sizes[k]};
+                let logo = JSON.parse(JSON.stringify(sizes.logo));
+                logo = Object.values(logo);
+                logo.push({...this.logo[0]});
+                sizes.logo = logo;
+                this.$set(this.sizes, k, sizes);
+            },
+            onChange(index, size, category, logoKey)
+            {
+                let price = 0;
+                let logo = size.logo[logoKey];
+                if(category){
+                    size.logo[logoKey].category = category;
                 }
-                else {
-                    cart = this.cart;
-                    localStorage.setItem('cart', JSON.stringify(cart));
-                }
-                await sleep(350);
-                minicart.updateCartCount();
-                this.adding = false;
-                window.location.href = '/cart';   
-            }
-            else
-            {
-                set_notification('error', 'Please select size to proceed.');
-                return false;
-            }
-            
-        },
-        async openLogoModal() 
-        {
-            this.editLogo = true;
-            $('body').addClass('overflow-hidden');
-            let response = await fetch(site_url + `/api/products/fetch-logo-prices`);
-            response = await response.json();
-            if(response && response.status)
-            {
-                this.logoPrices = response.prices;
-            }
-        },
-        closeModal() {
-            this.editLogo = false;
-            $('body').removeClass('overflow-hidden');
-        },
-        addMoreLogo(k) 
-        {
-            let sizes = {...this.sizes[k]};
-            let logo = JSON.parse(JSON.stringify(sizes.logo));
-            logo = Object.values(logo);
-            logo.push({...this.logo[0]});
-            sizes.logo = logo;
-            this.$set(this.sizes, k, sizes);
-        },
-        onChange(index, size, category, logoKey)
-        {
-            let price = 0;
-            let logo = size.logo[logoKey];
-            if(category){
-                size.logo[logoKey].category = category;
-            }
-            if(size.logo[logoKey] && size.logo[logoKey].postion && (category || size.logo[logoKey].category))
-            {
-                category = category ? category : size.logo[logoKey].category;
-                const pos = size.logo[logoKey].postion;
-                logo.category = category;
-                console.log(pos, this.logoPrices);
-                if(category != 'None')
+                if(size.logo[logoKey] && size.logo[logoKey].postion && (category || size.logo[logoKey].category))
                 {
-                    let logoPriceApply = this.logoPrices.filter((val) => {
-                        console.log(val.position, this.convertToSlug(pos), val.option, this.convertToSlug(category));
-                        return val.position == this.convertToSlug(pos) && val.option == this.convertToSlug(category) && size.quantity >= val.from_quantity && size.quantity <= val.to_quantity;
-                    });
-                    logo.price = logoPriceApply && logoPriceApply.length > 0 ? (logoPriceApply[0].price*1) : 0;
+                    category = category ? category : size.logo[logoKey].category;
+                    const pos = size.logo[logoKey].postion;
+                    logo.category = category;
+                    console.log(pos, this.logoPrices);
+                    if(category != 'None')
+                    {
+                        let logoPriceApply = this.logoPrices.filter((val) => {
+                            console.log(val.position, this.convertToSlug(pos), val.option, this.convertToSlug(category));
+                            return val.position == this.convertToSlug(pos) && val.option == this.convertToSlug(category) && size.quantity >= val.from_quantity && size.quantity <= val.to_quantity;
+                        });
+                        logo.price = logoPriceApply && logoPriceApply.length > 0 ? (logoPriceApply[0].price*1) : 0;
+                    }
+                    else
+                    {
+                        logo.price = 0;
+                    }
                 }
                 else
                 {
                     logo.price = 0;
                 }
+                size.logo[logoKey] = logo;
+            },
+            convertToSlug(text) {
+                return text ? text
+                    .toLowerCase()
+                    .normalize("NFD").replace(/[\u0300-\u036f]/g, "") // Remove accents
+                    .replace(/[^a-z0-9]+/g, '-') // Replace non-alphanumeric with dash
+                    .replace(/^-+|-+$/g, '')     // Trim dashes from start/end
+                    .replace(/--+/g, '-')        // Replace multiple dashes with one
+                    : '';
             }
-            else
-            {
-                logo.price = 0;
-            }
-            size.logo[logoKey] = logo;
         },
-        convertToSlug(text) {
-            return text ? text
-                .toLowerCase()
-                .normalize("NFD").replace(/[\u0300-\u036f]/g, "") // Remove accents
-                .replace(/[^a-z0-9]+/g, '-') // Replace non-alphanumeric with dash
-                .replace(/^-+|-+$/g, '')     // Trim dashes from start/end
-                .replace(/--+/g, '-')        // Replace multiple dashes with one
-                : '';
-        }
-    },
-    mounted: function() {
-        this.nonExchangeable = nonExchange ? true : false;
-        this.customization = $('#customization').length > 0 && $('#customization').text().trim() ? JSON.parse($('#customization').text().trim()) : null;
-        this.id  = $('#productId').text().trim();
-        let cart = localStorage.getItem('cart');
-        cart = cart ? JSON.parse(cart) : [];
-        this.cart = cart.filter((item) => {
-            return item.product_id == this.id;
-        });
-        let sizes = $('#product-sizes').text().trim();
-        sizes = sizes ? JSON.parse(sizes) : [];
-        if(sizes.length > 0){
-            let sColor = JSON.parse($('#default-color').text().trim());
-            if(sColor)
-            {
-                this.color = sColor.id;
-                this.colorTitle = sColor.title;
+        mounted: function() {
+            this.nonExchangeable = nonExchange ? true : false;
+            this.customization = $('#customization').length > 0 && $('#customization').text().trim() ? JSON.parse($('#customization').text().trim()) : null;
+            this.id  = $('#productId').text().trim();
+            let cart = localStorage.getItem('cart');
+            cart = cart ? JSON.parse(cart) : [];
+            this.cart = cart.filter((item) => {
+                return item.product_id == this.id;
+            });
+            let sizes = $('#product-sizes').text().trim();
+            sizes = sizes ? JSON.parse(sizes) : [];
+            if(sizes.length > 0){
+                let sColor = JSON.parse($('#default-color').text().trim());
+                if(sColor)
+                {
+                    this.color = sColor.id;
+                    this.colorTitle = sColor.title;
+                }
+            }
+            // for(let i in sizes)
+            // {
+            //     let exist = this.cart.filter((item) => {
+            //         return item.id == sizes[i].id
+            //     });
+            //     sizes[i].logo = exist && exist.length > 0 && exist[0].logo ? exist[0].logo : [...this.logo];
+            //     sizes[i].quantity = exist && exist.length > 0 && exist[0].quantity ? exist[0].quantity : 0;
+            // }
+            this.sizes = sizes;
+            this.logoOptions = $('#logo-options').text().trim() ? JSON.parse($('#logo-options').text().trim()) : [];
+            if(!this.color && this.sizes.length > 0) {
+                this.color = this.sizes[0].color_id;
             }
         }
-        // for(let i in sizes)
-        // {
-        //     let exist = this.cart.filter((item) => {
-        //         return item.id == sizes[i].id
-        //     });
-        //     sizes[i].logo = exist && exist.length > 0 && exist[0].logo ? exist[0].logo : [...this.logo];
-        //     sizes[i].quantity = exist && exist.length > 0 && exist[0].quantity ? exist[0].quantity : 0;
-        // }
-        this.sizes = sizes;
-        this.logoOptions = $('#logo-options').text().trim() ? JSON.parse($('#logo-options').text().trim()) : [];
-        if(!this.color && this.sizes.length > 0) {
-            this.color = this.sizes[0].color_id;
+    });
+}
+else if($('#product-cat-page').length)
+{
+    var productDetail = new Vue({
+        el: '#product-cat-page',
+        data: {
+            id: null,
+            logoPrices: [],
+            editLogo: false,
+            sizes: [],
+            color: null,
+            colorTitle: null,
+            selectedSizes: {},
+            uploading: null,
+            buyNow: false,
+            logo: [{
+                category: null,
+                postion: null,
+                text: ``,
+                image: null,
+                already_uploaded: false
+            }],
+            logoOptions: {
+                category: [],
+                postions: null
+            },
+            fileSizeError: null,
+            adding: null,
+            accept: false,
+            customization: [],
+            customizationErrors: {},
+            nonExchangeable: false
+            
+        },
+        methods: {
+            currency(a) {
+                return '£' + (a*1).toFixed(2);
+            },
+            renderActiveColor(id) {
+                return this.color == id ? `active` : ``;
+            },
+            selectColor(id, title) {
+                this.color = id;
+                this.colorTitle = title;
+                let c = $('.slider-thumb[data-item="'+id+'"]').index();
+                $('.product-image-slider').slick('slickGoTo', c);
+                $('.slider-nav-thumbnails').slick('slickGoTo', c);
+            },
+            renderSizes() {
+                if(this.color) {
+                    return this.sizes.filter((i) => i.color_id == this.color );
+                }
+                else {
+                    return this.sizes;
+                }
+            },
+            renderAllAddedSizes() {
+                // return this.sizes;
+                return this.sizes.filter((i) => ((i.quantity*1) > 0) );
+            },
+            manualQty(e) {
+                let qty = e.target.value;
+                let dataId = e.target.getAttribute("data-id");
+                let index = this.sizes.findIndex((v) => v.id == dataId);
+                let sizeObj = this.sizes.filter((v) => v.id == dataId);
+                sizeObj = sizeObj.length > 0 ? sizeObj[0] : null;
+                let s = [...this.sizes];
+                s[index].quantity = qty;
+                this.setNonExchange(sizeObj, qty);
+                this.sizes = JSON.parse(JSON.stringify(s));
+            },
+            increment(sizeObj) {
+                let id = sizeObj.id;
+                let index = this.sizes.findIndex((v) => v.id == id);
+                let s = [...this.sizes];
+                if(s[index].quantity && (s[index].quantity * 1) > 0){
+                    s[index].quantity = (s[index].quantity*1) + 1;
+                }
+                else {
+                    s[index].quantity = 1;
+                }
+                this.setNonExchange(sizeObj, s[index].quantity);
+                this.sizes = JSON.parse(JSON.stringify(s));
+            },
+            decrement(sizeObj) {
+                let id = sizeObj.id;
+                let index = this.sizes.findIndex((v) => v.id == id);
+                let s = [...this.sizes];
+                
+                if(s[index].quantity && (s[index].quantity * 1) > 0){
+                    s[index].quantity = (s[index].quantity*1) - 1;
+                }
+                else {
+                    s[index].quantity = 0;
+                }
+                this.setNonExchange(sizeObj, s[index].quantity);
+                this.sizes = JSON.parse(JSON.stringify(s));
+            },
+            setNonExchange(sizeObj, qty)
+            {
+                if(sizeObj.non_exchange && (qty > 0)) {
+                    this.nonExchangeable = true;
+                }
+                else if(nonExchange) {
+                    this.nonExchangeable = true;
+                }
+                else {
+                    this.nonExchangeable = false;
+                }
+            },
+            handleFileUpload(sizeIndex, logoKey) {
+                this.uploading = {sizeIndex, logoKey};
+                $('#fileUploadForm input[type=file]').click();
+            },
+            uploadFile() 
+            {
+                $('#fileUploadForm').ajaxSubmit({
+                    beforeSend: function() {
+                    },
+                    uploadProgress: function(event, position, total, percentComplete) {
+                    },
+                    success: function(response) {
+                        if(response.status == 'success')
+                        {
+                            productDetail.sizes[productDetail.uploading.sizeIndex].logo[productDetail.uploading.logoKey].image = response.path;
+                        }
+                        else
+                        {
+                            set_notification('error', response.message);
+                        }
+                        productDetail.uploading = null;
+                    },
+                    complete: function() {
+                    }
+                });
+            },
+            async addToCart(buyNow) 
+            {
+                if(this.nonExchangeable && !this.accept) {
+                    set_notification('error', 'Please acknowledge to proceed.');
+                    return false;
+                }
+                if(this.adding) return false;
+                this.buyNow = buyNow ? true : false;
+                this.editLogo = false;
+                $('body').removeClass('overflow-hidden');
+                this.adding = true;
+                let scart = this.sizes.filter((item) => {
+                    return (item.quantity && (item.quantity*1) > 0)
+                });
+                if(scart.length > 0) 
+                {
+                    scart = [...scart, ...this.cart];
+                    let response = await fetch(site_url + '/api/orders/add-to-cart', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({cart: scart}),
+                    });
+                    response = await response.json();
+                    if(response && response.status)
+                    {
+                        this.cart = response.cart;
+                    }
+                    let cart = localStorage.getItem('cart');
+                    cart = cart ? JSON.parse(cart) : [];
+                    if(cart && cart.length > 0) {
+                        cart = cart.filter((item) => {
+                            return item.product_id != this.id;
+                        })
+                        cart = [...cart, ...this.cart];
+                        localStorage.setItem('cart', JSON.stringify(cart));
+                    }
+                    else {
+                        cart = this.cart;
+                        localStorage.setItem('cart', JSON.stringify(cart));
+                    }
+                    await sleep(350);
+                    minicart.updateCartCount();
+                    this.adding = false;
+                    // window.location.href = '/cart';
+                }
+                else
+                {
+                    this.adding = false;
+                    set_notification('error', 'Please select size to proceed.');
+                    return false;
+                }
+            },
+            async openLogoModal() 
+            {
+                this.editLogo = true;
+                $('body').addClass('overflow-hidden');
+                destroySlickZoom();
+                let response = await fetch(site_url + `/api/products/fetch-logo-prices`);
+                response = await response.json();
+                if(response && response.status)
+                {
+                    this.logoPrices = response.prices;
+                }
+            },
+            closeModal() {
+                this.editLogo = false;
+                $('body').removeClass('overflow-hidden');
+                initSlickZoom();
+            },
+            addMoreLogo(k) 
+            {
+                let sizes = {...this.sizes[k]};
+                let logo = JSON.parse(JSON.stringify(sizes.logo));
+                logo = Object.values(logo);
+                logo.push({...this.logo[0]});
+                sizes.logo = logo;
+                this.$set(this.sizes, k, sizes);
+            },
+            onChange(index, size, category, logoKey)
+            {
+                let price = 0;
+                let logo = size.logo[logoKey];
+                if(category){
+                    size.logo[logoKey].category = category;
+                }
+                if(size.logo[logoKey] && size.logo[logoKey].postion && (category || size.logo[logoKey].category))
+                {
+                    category = category ? category : size.logo[logoKey].category;
+                    const pos = size.logo[logoKey].postion;
+                    logo.category = category;
+                    console.log(pos, this.logoPrices);
+                    if(category != 'None')
+                    {
+                        let logoPriceApply = this.logoPrices.filter((val) => {
+                            console.log(val.position, this.convertToSlug(pos), val.option, this.convertToSlug(category));
+                            return val.position == this.convertToSlug(pos) && val.option == this.convertToSlug(category) && size.quantity >= val.from_quantity && size.quantity <= val.to_quantity;
+                        });
+                        logo.price = logoPriceApply && logoPriceApply.length > 0 ? (logoPriceApply[0].price*1) : 0;
+                    }
+                    else
+                    {
+                        logo.price = 0;
+                    }
+                }
+                else
+                {
+                    logo.price = 0;
+                }
+                size.logo[logoKey] = logo;
+            },
+            convertToSlug(text) {
+                return text ? text
+                    .toLowerCase()
+                    .normalize("NFD").replace(/[\u0300-\u036f]/g, "") // Remove accents
+                    .replace(/[^a-z0-9]+/g, '-') // Replace non-alphanumeric with dash
+                    .replace(/^-+|-+$/g, '')     // Trim dashes from start/end
+                    .replace(/--+/g, '-')        // Replace multiple dashes with one
+                    : '';
+            }
+        },
+        mounted: function() 
+        {
+            this.nonExchangeable = nonExchange ? true : false;
+            this.id  = $('#productId').text().trim();
+            let cart = localStorage.getItem('cart');
+            cart = cart ? JSON.parse(cart) : [];
+            this.cart = cart.filter((item) => {
+                return item.product_id == this.id;
+            });
+            let sizes = $('#product-sizes').text().trim();
+            sizes = sizes ? JSON.parse(sizes) : [];
+            if(sizes.length > 0){
+                let sColor = JSON.parse($('#default-color').text().trim());
+                if(sColor)
+                {
+                    this.color = sColor.id;
+                    this.colorTitle = sColor.title;
+                }
+            }
+
+            for(let i in sizes)
+            {
+                let exist = this.cart.filter((item) => {
+                    return item.id == sizes[i].id
+                });
+                sizes[i].logo = exist && exist.length > 0 && exist[0].logo ? exist[0].logo : [...this.logo];
+                // sizes[i].quantity = exist && exist.length > 0 && exist[0].quantity ? exist[0].quantity : 0;
+            }
+            this.sizes = sizes;
+            this.logoOptions = $('#logo-options').text().trim() ? JSON.parse($('#logo-options').text().trim()) : [];
+            if(!this.color && this.sizes.length > 0) {
+                this.color = this.sizes[0].color_id;
+            }
         }
-    }
-});
+    });
+}
 
 if($('#product-listing-vue').length)
 var productListing = new Vue({
@@ -1041,12 +1338,82 @@ var minicart = new Vue({
         calcaualteLogoCost()
         {
             let cost = 0;
+            let haveLogo = 0;
+            let appliedDiscount = 0;
+            let logoDiscount = 0;
             for(let c of this.cart )
             {
+                let freeLogo = this.offerPrice(c).freeLogo;
+                if(c.logo)
+                {
+                    for(let item of c.logo)
+                    {
+                        if( (item.image || item.text) && !item.already_uploaded && item.category != 'None' )
+                        {
+                            haveLogo += (c.quantity*1);
+                        }
+                        if(item && item.category != 'None' && (item.price*1) > 0)
+                        {
+                            cost += item.price*c.quantity;
+
+                            if(freeLogo > 0)
+                            {
+                                discountQty = c.quantity > freeLogo ? freeLogo : c.quantity;
+                                appliedDiscount += discountQty;
+                                logoDiscount += item.price*discountQty;
+                            }
+                        }
+                    }
+                }
+                
+                if(c.customization)
                 cost += this.getCustomizationCost(c.customization)*c.quantity*1;
             }
-            
-            return {cost};
+            if(appliedDiscount < 1 && haveLogo > 0)
+            {
+                let subtotal = this.cart.map((item) => {
+                    if(item.offer && item.offer)
+                    {
+                        return this.offerPrice(item).price;
+                        // return item.quantity*item.price;
+                    }
+                    else
+                    {
+                        return item.quantity*item.price;
+                    }
+                });
+                subtotal = subtotal.reduce((partialSum, a) => partialSum + a, 0);
+                let prices = [];
+                for(let c of this.cart )
+                {
+                    for(let item of c.logo)
+                    {
+                        for(let i = 0; i < (c.quantity*1); i++)
+                        prices.push(item.price);
+                    }
+                }
+                let discount = freeLogoDiscount ? freeLogoDiscount : null;
+                if(discount &&  (subtotal*1) >= (discount.min_cart_price*1) && prices.length >= discount.quantity)
+                {
+                    const sortedPrices = prices.sort((a, b) => a - b);
+                    const topPrices = sortedPrices.slice(0, discount.quantity);
+                
+                    logoDiscount = topPrices.reduce((acc, price) => acc + price, 0);
+                    appliedDiscount = discount.quantity;
+                }
+            }
+            console.log(`logo`, {
+                cost,
+                haveLogo,
+                logoDiscount,
+                appliedDiscount
+            });
+            return {
+                cost,
+                haveLogo: haveLogo > 0 ? true : false,
+                logoDiscount,
+                appliedDiscount
+            };
         },
         freeDelivery(){
             let subtotal = this.cart.map((item) => {
@@ -1417,12 +1784,76 @@ checkoutPage = new Vue({
         calcaualteLogoCost()
         {
             let cost = 0;
+            let haveLogo = 0;
+            let appliedDiscount = 0;
+            let logoDiscount = 0;
             for(let c of this.cart )
             {
+                let freeLogo = this.offerPrice(c).freeLogo;
+                if(c.logo)
+                {
+                    for(let item of c.logo)
+                    {
+                        if( (item.image || item.text) && !item.already_uploaded && item.category != 'None' )
+                        {
+                            haveLogo += (c.quantity*1);
+                        }
+
+                        if(item && item.category != 'None' && (item.price*1) > 0)
+                        {
+                            cost += item.price*c.quantity;
+
+                            if(freeLogo > 0)
+                            {
+                                discountQty = c.quantity > freeLogo ? freeLogo : c.quantity;
+                                appliedDiscount += discountQty;
+                                logoDiscount += item.price*discountQty;
+                            }
+                        }
+                    }
+                }
+                if(c.customization)
                 cost += this.getCustomizationCost(c.customization)*c.quantity*1;
             }
-            
-            return {cost};
+            if(appliedDiscount < 1 && haveLogo > 0)
+            {
+                let subtotal = this.cart.map((item) => {
+                    if(item.offer && item.offer)
+                    {
+                        return this.offerPrice(item).price;
+                        // return item.quantity*item.price;
+                    }
+                    else
+                    {
+                        return item.quantity*item.price;
+                    }
+                });
+                subtotal = subtotal.reduce((partialSum, a) => partialSum + a, 0);
+                let prices = [];
+                for(let c of this.cart )
+                {
+                    for(let item of c.logo)
+                    {
+                        for(let i = 0; i < (c.quantity*1); i++)
+                        prices.push(item.price);
+                    }
+                }
+                let discount = freeLogoDiscount ? freeLogoDiscount : null;
+                if(discount &&  (subtotal*1) >= (discount.min_cart_price*1) && prices.length >= discount.quantity)
+                {
+                    const sortedPrices = prices.sort((a, b) => a - b);
+                    const topPrices = sortedPrices.slice(0, discount.quantity);
+                
+                    logoDiscount = topPrices.reduce((acc, price) => acc + price, 0);
+                    appliedDiscount = discount.quantity;
+                }
+            }
+            return {
+                cost,
+                haveLogo: haveLogo > 0 ? true : false,
+                logoDiscount,
+                appliedDiscount
+            };
         },
         freeDelivery(){
             let subtotal = this.cart.map((item) => {
@@ -1593,5 +2024,148 @@ checkoutPage = new Vue({
         //     addressInfo = JSON.parse(addressInfo);
         //     this.checkout = {...this.checkout, ...addressInfo}
         // }
+    }
+});
+
+
+var productDetail = new Vue({
+    el: '#customize-product-page',
+    data: {
+        subcats: [],
+        fetched: false,
+    },
+    methods: {
+        async fetchSubcategories(id) {
+            let response = await fetch(site_url + '/fetch-sub-categories/' + id);
+            response = await response.json();
+            this.subcats = response.subcategories;
+            this.fetched = true;
+            setTimeout(async () => {
+                await this.initSlider('customzise-sub');
+            }, 300);
+        },
+        initSlider(sliderID)
+        {
+            var appendArrowsClassName = '#'+sliderID+'-arrows';
+            $('#'+sliderID).slick({
+                dots: false,
+                infinite: true,
+                speed: 1000,
+                arrows: true,
+                autoplay: true,
+                slidesToShow: 6,
+                slidesToScroll: 1,
+                loop: true,
+                adaptiveHeight: true,
+                responsive: [
+                    {
+                        breakpoint: 1025,
+                        settings: {
+                            slidesToShow: 4,
+                            slidesToScroll: 1,
+                        }
+                    },
+                    {
+                        breakpoint: 768,
+                        settings: {
+                            slidesToShow: 3,
+                            slidesToScroll: 1,
+                        }
+                    },
+                    {
+                        breakpoint: 480,
+                        settings: {
+                            slidesToShow: 1,
+                            slidesToScroll: 1
+                        }
+                    }
+                ],
+                prevArrow: '<span class="slider-btn slider-prev"><i class="fi-rs-angle-left"></i></span>',
+                nextArrow: '<span class="slider-btn slider-next"><i class="fi-rs-angle-right"></i></span>',
+                appendArrows:  (appendArrowsClassName),
+            });
+        },
+    },
+    mounted: function() {
+        setTimeout(async () => {
+            await this.initSlider('customzise-p');
+        }, 300);
+    }
+});
+
+var voucherApp = new Vue({
+    el: "#gift-voucher",
+    data: {
+        form: {
+            name: "",
+            email: "",
+            mobile: "",
+            amount: "100",
+            delivery_mode: "Email",
+            receiver_name: "",
+            receiver_email: "",
+            receiver_mobile: "",
+            message: ""
+        },
+        paid: false,
+        errors: {},
+        loading: false
+    },
+    methods: {
+
+        validateForm() {
+            this.errors = {};
+
+            if (!this.form.name) this.errors.name = "Name is required";
+            if (!this.form.email) this.errors.email = "Email is required";
+            else if (!/\S+@\S+\.\S+/.test(this.form.email)) this.errors.email = "Enter a valid email";
+
+            if (!this.form.mobile) this.errors.mobile = "Mobile number required";
+            else if (!/^[0-9]{10}$/.test(this.form.mobile)) this.errors.mobile = "Enter valid 10 digit mobile";
+
+            if (!this.form.amount) this.errors.amount = "Select voucher amount";
+
+            if (!this.form.receiver_name) this.errors.receiver_name = "Receiver name is required";
+
+            if (!this.form.receiver_email) this.errors.receiver_email = "Receiver email is required";
+            else if (!/\S+@\S+\.\S+/.test(this.form.receiver_email)) this.errors.receiver_email = "Invalid email";
+
+            if (!this.form.receiver_mobile) this.errors.receiver_mobile = "Mobile number required";
+            else if (!/^[0-9]{10}$/.test(this.form.receiver_mobile)) this.errors.receiver_mobile = "Enter valid 10 digit mobile";
+
+            if (!this.form.message) this.errors.message = "Message is required";
+
+
+            return Object.keys(this.errors).length === 0;
+        },
+
+        async submitForm() {
+            if (!this.validateForm()) return;
+
+            this.loading = true;
+
+            const response = await fetch(site_url+"/voucher-submit", {
+                method: "POST",
+                headers: { "Content-Type": "application/json",
+                    "X-CSRF-TOKEN": csrf_token()
+                 },
+                body: JSON.stringify(this.form)
+            });
+
+            const data = await response.json();
+
+            if (data.status) {
+                return data;
+            }
+            else {
+                set_notification('error', data.message);
+            }
+
+            this.loading = false;
+        }
+    },
+    mounted: async function() {
+        await sleep(1000);
+        initPaypal();
     }
 });

@@ -36,6 +36,10 @@
                                 </div>
                             </span>
                         </div>
+                        <span 
+                                                v-else-if="c.logo" 
+                                                class="text-danger font-xs" style="color:#ee2761" 
+                                                v-html="renderLogoInfo(c)"></span>
                         <p v-if="c.non_exchange == 1 || c.non_exchange == '1'" class="font-xs" style="color: rgb(209, 0, 31);"> Made to order only. This is a Non-Exchangeable &amp; Non-Refundable product.</p>
                     </td>
                     <td  width="15%">£@{{c.quantity && c.quantity > 0 ? (c.quantity*c.price).toFixed(2) : ``}}</td>

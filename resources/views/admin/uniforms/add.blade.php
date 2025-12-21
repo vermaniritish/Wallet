@@ -312,9 +312,8 @@
 											data-type="image"
 											data-multiple="true"
 											data-path="products"
-											data-resize-large="580*630"
-											data-resize-small="282*310"
-
+											data-resize-large="1100*1286"
+											data-resize-small="257*300"
 										>
 											<div class="upload-section">
 												<div class="mb-3">
@@ -323,7 +322,7 @@
 														<span class="btn-inner--icon"><i class="fas fa-upload"></i></span>
 														<span class="btn-inner--text">Upload Image</span>
 														</button>
-													<p><small>Recommend Size: 580*630</small></p>
+													<p><small>Recommend Size: 1100*1286</small></p>
 												</div>
 												<!-- PROGRESS BAR -->
 												<div class="progress d-none">
@@ -351,8 +350,8 @@
 												data-type="image"
 												data-multiple="true"
 												data-path="products"
-												data-resize-large="580*630"
-												data-resize-small="282*310"
+												data-resize-large="1100*1286"
+												data-resize-small="257*300"
 											>
 												<div class="upload-section">
 													<div class="button-ref mb-3">
@@ -360,7 +359,7 @@
 															<span class="btn-inner--icon"><i class="fas fa-upload"></i></span>
 															<span class="btn-inner--text">Upload Image</span>
 															</button>
-														<p><small>Recommend Size: 580*630</small></p>
+														<p><small>Recommend Size: 1100*1286</small></p>
 													</div>
 													<!-- PROGRESS BAR -->
 													<div class="progress d-none">
@@ -474,7 +473,9 @@
 												</label>
 												<label class="custom-control-label">Non Exchangeable and Refundable</label>
 											</div>
-											<div class="custom-control">
+											<input type="hidden" name="printed_logo" value="0">
+											<input type="hidden" name="embroidered_logo" value="0">
+											<!-- <div class="custom-control">
 												<label class="custom-toggle">
 													<input type="hidden" name="printed_logo" value="0">
 													<input type="checkbox" name="printed_logo" v-model="printed_logo" value="1" <?php echo (old('printed_logo') != '0' ? 'checked' : '') ?>>
@@ -489,7 +490,7 @@
 													<span class="custom-toggle-slider rounded-circle" data-label-off="No" data-label-on="Yes"></span>
 												</label>
 												<label class="custom-control-label">Embroidered Logo</label>
-											</div>
+											</div> -->
 										</div>
 									</div>
 								</div>

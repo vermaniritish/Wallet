@@ -3,7 +3,7 @@
 <div class="page-header breadcrumb-wrap">
     <div class="container">
         <div class="breadcrumb">
-            <a href="index.php" rel="nofollow">Home</a>
+            <a href="{{url('/)}}" rel="nofollow">Home</a>
             <span></span> Shop
             <span></span> Your Cart
         </div>
@@ -34,12 +34,18 @@
                                     <h5 class="product-name"><a :href="'/' + c.slug">@{{ c.title }}</a></h5>
                                     <p v-if="c.non_exchange == 1 || c.non_exchange == '1'" class="font-xs" style="color: rgb(209, 0, 31);"> Made to order only. This is a Non-Exchangeable &amp; Non-Refundable product.</p>
                                     <p class="font-xs">SKU: @{{c.sku_number}}<br> Size:  @{{c.size_title}}<br/> Color: @{{c.color}} </p>
+                                    
                                     <div class="font-xs">
                                         <span class="position-relative popover-block">
                                             <span 
                                                 class="text-danger font-xs" 
                                                 v-if="c.customization && c.customization.length > 0"
                                             >@{{ c.customization.length }} customization added worth £@{{(c.quantity * getCustomizationCost(c.customization)).toFixed(2)}}.</span>
+                                            <span 
+                                                v-else-if="c.logo" 
+                                                class="text-danger font-xs" style="color:#ee2761" 
+                                                v-html="renderLogoInfo(c)"></span>
+
                                             <div v-if="c.customization && c.customization.length > 0" class="popover bs-popover-auto fade show" data-popper-placement="right" role="tooltip" id="popover995992" style="position: absolute; inset: 0px auto auto 0px; margin: 0px;bottom: unset;top: -50px;right: -80%;left: unset;display:none;">
                                                 <div class="popover-arrow" style="position: absolute; transform: translate(0px, 47px);"></div>
                                                 <h3 class="popover-header">Customization</h3>

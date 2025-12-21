@@ -211,25 +211,26 @@ a:hover {
   height: 100vh !important;
 }
 
-.alphabetlinks{
-	  /*color:#C69D5F !important;
-	  font-size: 20px !important;
-	  padding:0px 3px;
-	  font-weight:700;*/
-	display:inline-block;
-	color: #222222 !important;
-    font-size: 34px !important;
-    padding: 0px 3px;
-    font-weight: 398;
-    border-radius: 4px;
-    border: solid 1px #ccc;
-    padding: 7px;
-    margin-bottom: 20px;
-    margin-right: 5px;
-    width: 45px;
-    text-align: center;
-    background-color: #D0F3EC;
-  }
+.alphabetlinks {
+  color: #C69D5F !important;
+  font-size: 20px !important;
+  padding: 0px 3px;
+  font-weight: 700;
+  display: inline-block;
+  color: #222222 !important;
+  font-size: 27px !important;
+  padding: 0px 3px;
+  font-weight: 398;
+  border-radius: 4px;
+  border: solid 1px #ccc;
+  padding: 7px 7px 0px 5px;
+  margin-bottom: 15px;
+  margin-right: 5px;
+  width: 45px;
+  text-align: center;
+  background-color: #D0F3EC;
+  font-weight: 400;
+}
   .alphabetlinks:hover{
 	  color:#D0F3EC !important;
 	  background-color: #222222;
@@ -256,9 +257,9 @@ a:hover {
   padding: 0;
   list-style: none;
   display: grid;
-  grid-template-columns: repeat(4,104px);
-  grid-auto-rows: 136px;
-  gap: 8px;
+  grid-template-columns: repeat(5,104px);
+  grid-auto-rows: 108px;
+  gap: 28px;
 }
 .productsizessinglebox {
   width: 104px;
@@ -292,7 +293,11 @@ a:hover {
   font-size: 14px;
   padding-bottom: 3px;
   text-align: center;
-  letter-spacing: 2px;
+  letter-spacing: 0px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  border: 1px solid #e4e4e4;
+  border-bottom: none;
 }
 
 .quantity__box {
@@ -341,6 +346,7 @@ input.quantity__number {
   padding-left:5px;
   width: 40px;
   height: 3rem;
+  border-radius: 0px;
 }
 input.quickview__value--number {
   height: 2.5rem;
@@ -9547,6 +9553,12 @@ span.fi-rs-apps {
   .download-app {
     margin-bottom: 0 !important;
   }
+  
+  .productsizesboxUL {
+    grid-template-columns: repeat(3, 1fr); /* 3 per row */
+  }
+  
+  .productsizesboxContainer{max-height:none;}
 }
 
 @media only screen and (min-width: 768px) and (max-width: 992px) {
@@ -10090,7 +10102,7 @@ color: #FFF;
 }
 
 /*# sourceMappingURL=main.css.map */
-
+/** Dev **/
 .ui-autocomplete {
     max-height: 300px;
     overflow-y: auto;
@@ -10147,4 +10159,310 @@ color: #FFF;
 
 .ui-widget.ui-widget-content {
   z-index: 99999;
+}
+
+
+.overlay {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.7);
+  transition: opacity 500ms;
+  visibility: hidden;
+  opacity: 0;
+}
+.overlay.show {
+  visibility: visible;
+  opacity: 1;
+}
+
+.popup {
+  margin: 70px auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 5px;
+  width: 60%;
+  position: relative;
+  transition: all 5s ease-in-out;
+}
+
+.popup h2 {
+  margin-top: 0;
+  color: #333;
+  font-size:20px;
+  line-height: 2rem;
+}
+.formhead{
+  color:#C69D5F;
+  font-size:12px;
+  text-transform:uppercase;
+  font-weight:500;
+}
+.popup .close {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  transition: all 200ms;
+  font-size: 30px;
+  font-weight: bold;
+  text-decoration: none;
+  color: #ee2761;
+}
+.popup .close:hover {
+  color: #333;
+}
+.popup .headerstyl{
+  padding: 5px;
+  width:95%;
+  border: 3px solid #fae1dd;
+  margin-bottom: 20px;
+  border-radius: 10px;
+  background-color: #f8edeb;
+}
+.popup .headerstyl p{
+	margin-bottom:0px;
+}
+.popup .headerstyl span{
+	font-size:13px;
+	color:#000;
+}
+.popup .content {
+  height: 390px;
+  overflow-y: auto;
+}
+.popup label {
+  display: inline-block;
+}
+.popupproductheading{
+  font-size: 14px !important;
+  color: #2F3751 !important;
+  font-weight: 600 !important;
+  line-height:17px !important;
+}
+
+
+
+.logo {
+      text-align: center;
+      margin-bottom: 20px;
+  }
+
+  .logo img {
+      width: 160px;
+  }
+.alert{color:#db5d3a;}
+  .voucher-preview {
+      border: 2px dashed #c9a66b;
+      padding: 25px;
+      border-radius: 10px;
+      background: #fff;
+  }
+  .voucher-title {
+      font-size: 28px;
+      font-weight: bold;
+      color: #c9a66b;
+      text-align: center;
+      margin-bottom: 15px;
+  }
+  .amount {
+      font-size: 36px;
+      font-weight: bold;
+      text-align: center;
+      margin-bottom: 20px;
+      color: #333;
+  }
+  .code-box {
+      text-align: center;
+      background: #f8f3e8;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #e5d7b7;
+      font-weight: bold;
+      letter-spacing: 2px;
+      margin-bottom: 20px;
+  }
+
+  .custom-modal.container {
+            max-width: 900px;
+            margin: 40px auto;
+            background: #fff;
+            padding: 35px;
+            border-radius: 14px;
+            box-shadow: 0 4px 18px rgba(0,0,0,0.08);
+			background-color: #F5FEFC;
+        }
+.custom-modal [type="checkbox"], .custom-modal [type="radio"] {
+  height: auto;
+}
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #2b2b2b;
+            font-weight: 600;
+        }
+
+        .section {
+            margin-bottom: 35px;
+        }
+
+        .section label.title {
+            font-size: 17px;
+            font-weight: 600;
+            display: block;
+            margin-bottom: 15px;
+        }
+
+        /* ----- Image Radio Button Cards ----- */
+        .image-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .image-option {
+            width: 90px;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .image-option input {
+            display: none;
+        }
+
+        .image-option img {
+            width: 100%;
+            border: 2px solid transparent;
+            border-radius: 12px;
+            transition: 0.25s;
+        }
+
+        .image-option input:checked + img {
+            border-color: #088178;
+            box-shadow: 0 0 10px rgba(108, 99, 255, 0.4);
+        }
+
+        /* ----- Print / Embroider radio ----- */
+        .radio-group {
+            display: flex;
+            gap: 30px;
+        }
+
+        .radio-group label {
+            cursor: pointer;
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        .radio-group input {
+            margin-right: 8px;
+        }
+
+        /* ----- Upload + Text Row (Equal Height + Decorative Borders) ----- */
+.inline-row {
+    display: flex;
+    gap: 25px;
+    align-items: stretch;
+}
+
+.inline-box {
+    flex: 1;
+    background: #ffffff;
+    border-radius: 14px;
+    padding: 18px;
+
+    /* Decorative border */
+    border: 1px solid rgba(108, 99, 255, 0.25);
+    position: relative;
+    overflow: hidden;
+
+    /* Soft shadow */
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+
+    /* Smooth transitions */
+    transition: 0.3s ease;
+}
+
+/* Corner accents */
+.inline-box::before {
+    content: "";
+    position: absolute;
+    width: 70px;
+    height: 70px;
+    top: -35px;
+    left: -35px;
+    border-radius: 50%;
+    background: rgba(108, 99, 255, 0.15);
+}
+
+.inline-box::after {
+    content: "";
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    bottom: -40px;
+    right: -40px;
+    border-radius: 50%;
+    background: rgba(255, 71, 87, 0.12);
+}
+
+/* Hover glow effect */
+.inline-box:hover {
+    border-color: #088178;
+    box-shadow: 0 6px 15px rgba(108, 99, 255, 0.25);
+    transform: translateY(-3px);
+}
+
+.inline-box input[type="file"],
+.inline-box input[type="text"] {
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background: #fff;
+    font-size: 15px;
+}
+
+.inline-box input[type="file"]:focus,
+.inline-box input[type="text"]:focus {
+    border-color: #088178;
+    outline: none;
+}
+
+.file-note {
+    font-size: 13px;
+    color: #777;
+    margin-top: 8px;
+}
+
+.char-limit {
+    font-size: 13px;
+    color: #777;
+    margin-top: 6px;
+    text-align: right;
+}
+
+/* Submit Button */
+.submit-btn {
+    width: 100%;
+    padding: 15px;
+    background: #088178;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    font-size: 17px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.submit-btn:hover {
+    background: #5b54e6;
+}
+
+/* Responsive stacking */
+@media (max-width: 700px) {
+    .inline-row {
+        flex-direction: column;
+    }
 }

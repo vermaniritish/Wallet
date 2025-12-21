@@ -68,6 +68,18 @@ Route::get('/search', '\App\Http\Controllers\HomeController@search')
 Route::get('/sale', '\App\Http\Controllers\HomeController@sale')
     ->name('home.sale');
 
+Route::get('/customize-your-apparel', '\App\Http\Controllers\PagesController@personalization')
+    ->name('home.personalization');
+
+Route::get('/gift-voucher', '\App\Http\Controllers\PagesController@giftVoucher')
+    ->name('home.giftVoucher');
+
+Route::post('/voucher-submit', '\App\Http\Controllers\PagesController@giftVoucher')
+    ->name('home.giftVoucher');
+
+Route::get('/fetch-sub-categories/{id}', '\App\Http\Controllers\PagesController@fetchSubCategories')
+    ->name('home.fetchSubCategories');
+
 Route::get('/brand/{slug}', '\App\Http\Controllers\HomeController@brands')
     ->name('home.brand');
 

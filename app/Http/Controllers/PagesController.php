@@ -9,11 +9,14 @@ use App\Models\Admin\Pages;
 use App\Models\Admin\Users;
 use App\Libraries\General;
 use App\Models\Admin\ContactUs;
+use App\Models\Admin\ProductCategories;
 use App\Models\Admin\Shops;
 use App\Models\Admin\Faqs;
 use App\Models\Admin\OrderProductRelation;
+use App\Models\Admin\ProductSubCategoryRelation;
 use App\Models\Admin\Settings;
 use App\Models\Admin\Addresses;
+use App\Models\Admin\GiftVoucher;
 use App\Models\Admin\Schools;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
@@ -334,5 +337,110 @@ class PagesController extends BaseController
             return view('frontend.page', ['page' => $page]);
         else
             abort(404);
+    }
+
+
+    function personalization(Request $request)
+    {
+        $categories = ProductSubCategoryRelation::distinct()
+            ->select(['product_categories.id', 'product_categories.slug', 'product_categories.image', 'product_categories.title'])
+            ->leftJoin('product_categories', 'product_categories.id', '=', 'product_sub_category_relation.category_id')
+            ->leftJoin('products', 'products.id', '=', 'product_sub_category_relation.product_id')
+            ->whereRaw('(printed_logo = 1 or embroidered_logo = 1)')
+            ->where('products.is_uniform', 0)
+            ->whereNotNull('product_sub_category_relation.sub_category_id')
+            ->where('product_categories.status', 1)
+            ->get();
+        return view('frontend.personalization', [
+            'categories' => $categories
+        ]);
+    }
+
+    function fetchSubCategories(Request $request, $id)
+    {
+        $subcategories = ProductSubCategoryRelation::distinct()->select(['sub_categories.id', 'sub_categories.category_id', 'product_categories.slug as cat_slug', 'sub_categories.slug', 'sub_categories.image', 'sub_categories.title'])
+            ->leftJoin('product_categories', 'product_categories.id', '=', 'product_sub_category_relation.category_id')
+            ->leftJoin('sub_categories', 'sub_categories.id', '=', 'product_sub_category_relation.sub_category_id')
+            ->leftJoin('products', 'products.id', '=', 'product_sub_category_relation.product_id')
+            ->where('product_sub_category_relation.category_id', $id)
+            ->where('products.is_uniform', 0)
+            ->whereNotNull('product_sub_category_relation.sub_category_id')
+            ->where('sub_categories.status', 1)
+            ->get();
+
+        return Response()->json([
+            'status' => true,
+            'subcategories' => $subcategories
+        ]);
+    }
+
+    function giftVoucher(Request $request)
+    {
+        $user = $request->session()->get('user');
+        if($request->isMethod('post'))
+    	{
+            $data = $request->toArray();
+    		unset($data['_token']);
+    		$validator = Validator::make(
+	            $request->toArray(),
+	            [
+                    'name'              => 'required|string|max:100',
+                    'email'             => 'required|email',
+                    'mobile'            => 'required|digits:10',
+                    'amount'            => 'required|numeric',
+                    'delivery_mode'     => 'required|string',
+                    'receiver_name'     => 'required|string|max:100',
+                    'receiver_email'    => 'required|email',
+                    'receiver_mobile'   => 'required|digits:10',
+                    'message'           => 'required|max:200'
+                ]
+	        );
+	        if(!$validator->fails())
+	        {
+                // Create pending voucher
+                $voucher = GiftVoucher::create([
+                    'user_id' => $user ? $user->id : null,
+                    'sender_name'       => $request->name,
+                    'sender_email'      => $request->email,
+                    'sender_mobile'     => $request->mobile,
+                    'amount'            => $request->amount,
+                    'delivery_mode'     => $request->delivery_mode,
+                    'receiver_name'     => $request->receiver_name,
+                    'receiver_email'    => $request->receiver_email,
+                    'receiver_mobile'   => $request->receiver_mobile,
+                    'message'           => $request->message,
+                    'status'            => 'pending',
+                    'applied' => 0,
+                    'expiry_date' => date('Y-m-d', strtotime('+1 year'))
+                ]);
+
+                if($voucher)
+                {
+                    return response()->json([
+                        'status' => true,
+                        'message' => 'Voucher saved as pending, proceed to payment',
+                        'voucher_id' => General::encrypt($voucher->id),
+                        'amount' => $voucher->amount,
+                    ]);
+                }
+                else
+                {
+                    return response()->json([
+                        'status' => true,
+                        'message' => 'Voucher could not be processed. Please try again.',
+                    ]);
+                }
+            }
+            else
+            {
+                return response()->json([
+                    'status' => false,
+                    'message' => current(current($validator->errors())),
+                ]);
+            }
+        }
+        return view('frontend.giftVoucher', [
+            'user' => $user
+        ]);
     }
 }
