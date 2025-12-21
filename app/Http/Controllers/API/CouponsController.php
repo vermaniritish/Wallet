@@ -43,7 +43,9 @@ class CouponsController extends BaseController
                     'coupon' => [
                         'coupon_code' => $coupon->code,
                         'description' => "Gift voucher is applied.",
-                        'title' => "Gift Voucher"
+                        'title' => "Gift Voucher",
+                        'is_percentage' => 0,
+                        'amount' => $coupon->amount - $coupon->used
                     ]
 			    ]);
             }
