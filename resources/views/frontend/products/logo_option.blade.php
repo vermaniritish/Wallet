@@ -2,7 +2,7 @@
 <div class="product__variant--list mb-20">
     <fieldset class="variant__input--fieldset weight">
         <a href="#" v-on:click="openLogoModal">
-            <legend class="product__variant--title mb-8"><img src="{{ url('/frontend/assets/img/other/open.png')}}" /> Add Personalised Logo :</legend>
+            <legend class="product__variant--title mb-8"><img src="{{ url('/frontend/assets/img/other/open.png')}}" /> Add Personalised Logo</legend>
         </a>
     </fieldset>
 </div>

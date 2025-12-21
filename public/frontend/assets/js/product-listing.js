@@ -248,6 +248,15 @@ if($('#product-page').length)
             },
             async openLogoModal() 
             {
+                let scart = this.sizes.filter((item) => {
+                    return (item.quantity && (item.quantity*1) > 0)
+                });
+                if(scart.length < 1)
+                {
+                    set_notification('error', 'Please select size to proceed.');
+                    return false;
+                }
+                
                 this.editLogo = true;
                 $('body').addClass('overflow-hidden');
                 let response = await fetch(site_url + `/api/products/fetch-logo-prices`);
@@ -538,6 +547,15 @@ else if($('#product-cat-page').length)
             },
             async openLogoModal() 
             {
+                let scart = this.sizes.filter((item) => {
+                    return (item.quantity && (item.quantity*1) > 0)
+                });
+                if(scart.length < 1)
+                {
+                    set_notification('error', 'Please select size to proceed.');
+                    return false;
+                }
+
                 this.editLogo = true;
                 $('body').addClass('overflow-hidden');
                 destroySlickZoom();
