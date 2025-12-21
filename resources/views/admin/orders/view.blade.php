@@ -223,7 +223,7 @@ $currency = Settings::get('currency_symbol');
 										<?php 
 										$coupon = $page->coupon ? json_decode($page->coupon, true) : null;
 										if ($coupon): ?>
-											<span class="badge badge-primary">{{ $coupon['title'] . ' - ' . $coupon['coupon_code'] }}</span>
+											<span class="badge badge-primary">{{ $coupon['title'] . ' | ' . $coupon['coupon_code'] }}</span>
 										<?php endif; ?>
 									</th>
 									<td class="text-success">- <?php echo $currency.$page->discount ?></td>
