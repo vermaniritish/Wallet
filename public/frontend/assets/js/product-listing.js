@@ -2122,79 +2122,82 @@ var customizeProductPage = new Vue({
     }
 });
 
-var voucherApp = new Vue({
-    el: "#gift-voucher",
-    data: {
-        form: {
-            name: "",
-            email: "",
-            mobile: "",
-            amount: "100",
-            delivery_mode: "Email",
-            receiver_name: "",
-            receiver_email: "",
-            receiver_mobile: "",
-            message: ""
+if($("#gift-voucher").length > 0)
+{
+    var voucherApp = new Vue({
+        el: "#gift-voucher",
+        data: {
+            form: {
+                name: "",
+                email: "",
+                mobile: "",
+                amount: "100",
+                delivery_mode: "Email",
+                receiver_name: "",
+                receiver_email: "",
+                receiver_mobile: "",
+                message: ""
+            },
+            paid: false,
+            errors: {},
+            loading: false
         },
-        paid: false,
-        errors: {},
-        loading: false
-    },
-    methods: {
+        methods: {
 
-        validateForm() {
-            this.errors = {};
+            validateForm() {
+                this.errors = {};
 
-            if (!this.form.name) this.errors.name = "Name is required";
-            if (!this.form.email) this.errors.email = "Email is required";
-            else if (!/\S+@\S+\.\S+/.test(this.form.email)) this.errors.email = "Enter a valid email";
+                if (!this.form.name) this.errors.name = "Name is required";
+                if (!this.form.email) this.errors.email = "Email is required";
+                else if (!/\S+@\S+\.\S+/.test(this.form.email)) this.errors.email = "Enter a valid email";
 
-            if (!this.form.mobile) this.errors.mobile = "Mobile number required";
-            else if (!/^[0-9]{10}$/.test(this.form.mobile)) this.errors.mobile = "Enter valid 10 digit mobile";
+                if (!this.form.mobile) this.errors.mobile = "Mobile number required";
+                else if (!/^[0-9]{10}$/.test(this.form.mobile)) this.errors.mobile = "Enter valid 10 digit mobile";
 
-            if (!this.form.amount) this.errors.amount = "Select voucher amount";
+                if (!this.form.amount) this.errors.amount = "Select voucher amount";
 
-            if (!this.form.receiver_name) this.errors.receiver_name = "Receiver name is required";
+                if (!this.form.receiver_name) this.errors.receiver_name = "Receiver name is required";
 
-            if (!this.form.receiver_email) this.errors.receiver_email = "Receiver email is required";
-            else if (!/\S+@\S+\.\S+/.test(this.form.receiver_email)) this.errors.receiver_email = "Invalid email";
+                if (!this.form.receiver_email) this.errors.receiver_email = "Receiver email is required";
+                else if (!/\S+@\S+\.\S+/.test(this.form.receiver_email)) this.errors.receiver_email = "Invalid email";
 
-            if (!this.form.receiver_mobile) this.errors.receiver_mobile = "Mobile number required";
-            else if (!/^[0-9]{10}$/.test(this.form.receiver_mobile)) this.errors.receiver_mobile = "Enter valid 10 digit mobile";
+                if (!this.form.receiver_mobile) this.errors.receiver_mobile = "Mobile number required";
+                else if (!/^[0-9]{10}$/.test(this.form.receiver_mobile)) this.errors.receiver_mobile = "Enter valid 10 digit mobile";
 
-            if (!this.form.message) this.errors.message = "Message is required";
+                if (!this.form.message) this.errors.message = "Message is required";
 
 
-            return Object.keys(this.errors).length === 0;
+                return Object.keys(this.errors).length === 0;
+            },
+
+            async submitForm() {
+                if (!this.validateForm()) return;
+
+                this.loading = true;
+
+                const response = await fetch(site_url+"/voucher-submit", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json",
+                        "X-CSRF-TOKEN": csrf_token()
+                    },
+                    body: JSON.stringify(this.form)
+                });
+
+                const data = await response.json();
+
+                if (data.status) {
+                    return data;
+                }
+                else {
+                    set_notification('error', data.message);
+                }
+
+                this.loading = false;
+            }
         },
-
-        async submitForm() {
-            if (!this.validateForm()) return;
-
-            this.loading = true;
-
-            const response = await fetch(site_url+"/voucher-submit", {
-                method: "POST",
-                headers: { "Content-Type": "application/json",
-                    "X-CSRF-TOKEN": csrf_token()
-                 },
-                body: JSON.stringify(this.form)
-            });
-
-            const data = await response.json();
-
-            if (data.status) {
-                return data;
-            }
-            else {
-                set_notification('error', data.message);
-            }
-
-            this.loading = false;
+        mounted: async function() {
+            await sleep(1000);
+            initPaypal();
         }
-    },
-    mounted: async function() {
-        await sleep(1000);
-        initPaypal();
-    }
-});
+    });
+}
