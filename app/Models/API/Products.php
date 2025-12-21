@@ -123,6 +123,7 @@ class Products extends AdminProducts
             'products.max_price',
             'products.gender',
             'product_categories.title as category',
+            'schools.name as school',
             DB::raw('(Select sale_price from product_sizes where product_sizes.status = 1 and product_sizes.product_id = products.id order by sale_price desc limit 1) as sale_price')
         ];
 
@@ -133,6 +134,7 @@ class Products extends AdminProducts
         }
 
     	$listing = Products::distinct()->select($select)
+            ->leftJoin('schools as schools', 'schools.id', '=', 'products.school_id')
             ->leftJoin('products as parent_product', 'parent_product.id', '=', 'products.parent_id')
             ->leftJoin('product_categories', 'product_categories.id', '=', 'products.category_id');
 
