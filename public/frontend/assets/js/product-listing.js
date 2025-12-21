@@ -1403,12 +1403,15 @@ var minicart = new Vue({
                 });
                 subtotal = subtotal.reduce((partialSum, a) => partialSum + a, 0);
                 let prices = [];
-                for(let c of this.cart )
+                if(c.logo)
                 {
-                    for(let item of c.logo)
+                    for(let c of this.cart )
                     {
-                        for(let i = 0; i < (c.quantity*1); i++)
-                        prices.push(item.price);
+                        for(let item of c.logo)
+                        {
+                            for(let i = 0; i < (c.quantity*1); i++)
+                            prices.push(item.price);
+                        }
                     }
                 }
                 let discount = freeLogoDiscount ? freeLogoDiscount : null;
