@@ -60,6 +60,7 @@
                         <ul class="footer-list wow fadeIn animated mb-sm-5 mb-md-0">
                             <li><a href="{{ url('/about-us') }}">About Us</a></li>
                             <li><a href="{{ url('/delivery-information') }}">Delivery Information</a></li>
+                            <li><a href="{{ url('/faqs') }}">FAQs</a></li>
                             <li><a href="{{ url('/privacy-policy') }}">Privacy Policy</a></li>
                             <li><a href="{{ url('/terms-conditions') }}">Terms &amp; Conditions</a></li>
                             <li><a href="{{ url('/contact-us') }}">Contact Us</a></li>
