@@ -2047,7 +2047,7 @@ checkoutPage = new Vue({
 });
 
 
-var productDetail = new Vue({
+var customizeProductPage = new Vue({
     el: '#customize-product-page',
     data: {
         subcats: [],
