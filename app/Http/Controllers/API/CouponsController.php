@@ -6,6 +6,7 @@ use App\Http\Controllers\API\BaseController;
 use Illuminate\Http\Request;
 use App\Http\Resources\CouponsResource;
 use App\Models\Admin\Coupons;
+use App\Models\Admin\GiftVoucher;
 use App\Models\API\Coupons as APICoupons;
 use Illuminate\Http\Response;
 use Illuminate\Support\Str;
