@@ -1,5 +1,6 @@
 @extends('layouts.frontendlayout')
 @section('content')
+<?php use App\Models\Admin\Settings; ?>
 <div class="page-header breadcrumb-wrap">
     <div class="container">
         <div class="breadcrumb">
