@@ -24,7 +24,7 @@ class PayPalController extends Controller
     {
         if($request->get('wallet_id'))
         {
-            $wallet = Wallet::where( 'token', General::decrypt($request->get('wallet_id')) )->where('payment_status', 'pending')->limit(1)->first();
+            $wallet = Wallet::where( 'payment_token', General::decrypt($request->get('wallet_id')) )->where('payment_status', 'pending')->limit(1)->first();
             if($wallet)
             {
                 $amount = $wallet->amount;
