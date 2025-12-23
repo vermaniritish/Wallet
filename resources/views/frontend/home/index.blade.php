@@ -73,7 +73,7 @@
                     @for($k = 1; $k <= 6; $k++)
                      <div class="col-lg-2 col-md-4 mb-md-3 mb-lg-0">
                         <div class="banner-features wow fadeIn animated hover-up animated">
-                            <a href="HomePage::get('grid_link_'.$k)">
+                            <a href="{{ HomePage::get('grid_link_'.$k) }}">
                                 <img src="{{ url(HomePage::get('grid_image_'.$k)) }}" alt="">
                                 <h4 class="bg-2">{{HomePage::get('grid_title_'.$k)}}</h4>
                             </a>
