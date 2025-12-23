@@ -125,7 +125,7 @@
             </div>
 
             <div class="modal-footer">
-                <button class="btn btn-success w-100" id="addMoneyBtn" @click="addMoney">
+                <button class="btn btn-success w-100" id="addMoneyBtn" @click="submitForm">
                     Add Money
                 </button>
             </div>
