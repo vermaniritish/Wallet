@@ -69,14 +69,14 @@
 <!-- Add Money Modal -->
 <div class="modal fade" id="addMoneyModal" tabindex="-1" aria-labelledby="addMoneyLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
+        <div class="modal-content" id="walletApp">
             <div class="modal-header">
                 <h5 class="modal-title" id="addMoneyLabel">Add Money to Wallet</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
 
             <div class="modal-body">
-                <div id="walletApp">
+                <div>
                     <!-- Amount Buttons -->
                     <div class="d-flex flex-wrap gap-2 mb-3">
                         <button
