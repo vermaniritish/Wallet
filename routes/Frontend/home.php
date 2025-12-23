@@ -31,6 +31,9 @@ Route::get('/my-account', '\App\Http\Controllers\PagesController@myAccount')
 Route::get('/wallet', '\App\Http\Controllers\PagesController@wallet')
     ->name('wallet')->middleware('userAuth');
 
+Route::post('/wallet', '\App\Http\Controllers\PagesController@wallet')
+    ->name('wallet')->middleware('userAuth');
+
 Route::get('/edit-account', '\App\Http\Controllers\PagesController@editAccount')
     ->name('editAccount')->middleware('userAuth');
 

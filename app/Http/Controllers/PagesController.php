@@ -450,7 +450,35 @@ class PagesController extends BaseController
         $user = Users::find($request->session()->get('user')->id);
         if($user)
         {
-            $wallet = Wallet::where('user_id', $user->id)->orderBy('id', 'desc')->get();
+            if($request->isMethod('post'))
+            {
+                $data = $request->toArray();
+                unset($data['_token']);
+                if(isset($data['amount']) && $data['amount'] >= 20)
+                {
+                    $token = General::hash();
+                    Wallet::create([
+                        'user_id' => $user->id,
+                        'amount' => $data['amount'],
+                        'mode' => 'add',
+                        'payment_status' => 'pending',
+                        'payment_token' => $token
+                    ]);
+
+                    return Response()->json([
+                        'status' => true,
+                        'token' => $token,
+                        'amount' => $data['amount']
+                    ]);
+                }
+                else {
+                    return Response()->json([
+                        'status' => false,
+                        'message' => "Miminum order of €20 needed to make payment."
+                    ]);
+                }
+            }
+            $wallet = Wallet::where('user_id', $user->id)->whereNull('payment_token')->orderBy('id', 'desc')->get();
             return view('frontend.account.index', [
                 'user' => $user,
                 'wallet' => $wallet,

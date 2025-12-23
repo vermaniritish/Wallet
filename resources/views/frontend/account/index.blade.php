@@ -48,7 +48,7 @@
 @if(isset($screen) && $screen == 'wallet')
 @push('afterscripts')
 <script>
-    new Vue({
+var walletApp = new Vue({
     el: '#walletApp',
     data: {
         amounts: [20, 50, 100, 500, 1000],
@@ -77,25 +77,94 @@
         },
         validateCustomAmount() {
             if (this.customAmount < 20) {
-                this.error = 'Minimum amount is €20';
+                this.error = 'Minimum amount is €20 need to add.';
             } else {
                 this.error = '';
             }
         },
-        addMoney() {
+        async submitForm() {
             if (this.finalAmount < 20) {
-                this.error = 'Minimum amount is €20';
+                this.error = 'Minimum amount is €20 need to add.';
                 return;
             }
-
-            // ✅ API / Payment Gateway call
-            console.log('Adding amount:', this.finalAmount);
-
-            // Example:
-            // axios.post('/wallet/add', { amount: this.finalAmount })
+            let response = await fetch('{{ url("/wallet") }}', {
+                method: 'post',
+                headers: {
+                    'content-type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({
+                    amount: this.finalAmount,
+                })
+            });
+            if(response && response.status && response.token)
+            {
+                return response;
+            }
+            else
+            {
+                set_notification('error', response.message);
+                return null;
+            }
         }
     }
 });
+var initPaypal = function()
+{
+    if (typeof paypal !== 'undefined' && paypal.Buttons) {
+        console.log('yes');
+        paypal.Buttons({
+            createOrder: async function(data, actions) {
+                let response = await walletApp.submitForm();
+                if(response && response.status && response.token) {
+                    return fetch('{{url("/paypal/create-order")}}', {
+                        method: 'post',
+                        headers: {
+                            'content-type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        body: JSON.stringify({
+                            amount: response.amount,
+                            wallet_id: response.token
+                        })
+                    }).then(res => {
+                        return res.json();
+                    })
+                    .then(orderData => orderData?.result?.id || null);
+                }
+                return Promise.reject(new Error('API request failed'));
+            },
+            onApprove: function(data, actions) {
+                return fetch('{{ url("/paypal/capture-order")}}', {
+                    method: 'post',
+                    headers: {
+                        'content-type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({
+                        voucher_id: data.orderID
+                    })
+                }).then(res => res.json())
+                .then(details => {
+                    if(details?.status && details?.id) {
+                        voucherApp.paid = true;
+                        window.scrollTo(0,0);
+                    } else {
+                        if(details && !details.status && details.message) {
+                            set_notification('error', details.message);
+                        }
+                        else {
+                            set_notification('error', 'Payment could not be processed. Please try again.');
+                        }
+                    }
+                });
+            }
+        }).render('#paypal-button-container');
+    } else {
+        console.error("PayPal SDK failed to load.");
+    }
+}
+initPaypal();
 </script>
 
 @endpush

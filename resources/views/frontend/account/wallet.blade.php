@@ -86,7 +86,7 @@
                             :class="selectedAmount === amt ? 'btn-primary' : 'btn-outline-primary'"
                             @click="selectAmount(amt)"
                         >
-                            +@{{ amt }}
+                            + €@{{ amt }}
                         </button>
 
                         <!-- Custom Button -->
@@ -121,16 +121,11 @@
                         Amount to Add:
                         <strong>€@{{ finalAmount }}</strong>
                     </div>
-
-                    <!-- Add Money Button -->
-                    <button class="btn btn-success w-100" @click="addMoney">
-                        Add Money
-                    </button>
                 </div>
             </div>
 
             <div class="modal-footer">
-                <button class="btn btn-success w-100" id="addMoneyBtn">
+                <button class="btn btn-success w-100" id="addMoneyBtn" @click="addMoney">
                     Add Money
                 </button>
             </div>
