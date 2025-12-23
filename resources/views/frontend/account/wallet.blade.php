@@ -48,7 +48,7 @@
                                 </td>
                                 <td>
                                     @if($o->payment_status == 'paid')
-                                        <span class="text-success">Paid/</span>
+                                        <span class="text-success">Paid</span>
                                     @else
                                         <span class="text-danger">Pending / Failed</span>
                                     @endif
