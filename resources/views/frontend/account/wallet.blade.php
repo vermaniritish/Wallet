@@ -1,15 +1,15 @@
 <?php use App\Models\Admin\Orders; ?>
 <div class="tab-pane fade active show" id="orders">
-    <div class="card">
+    <div class="card w-50">
         <div class="card-header">
             <h5 class="mb-0">Add Money to Your Wallet</h5>
         </div>
         <div class="card-body">
             <div class="d-flex flex-row align-items-center ">
-                <div><i class="fas fa-wallet"></i></div>
+                <div><i style="font-size: 40px;" class="fas fa-wallet"></i></div>
                 <div>
-                    <h4>Balance</h4>
-                    <p class="strong">{{ _currency($user->wallet ? $user->wallet : 0) }}</p>
+                    <p class="strong mb-1">Balance</p>
+                    <h4>{{ _currency($user->wallet ? $user->wallet : 0) }}</h4>
                 </div>
             </div>
             <div class="d-flex flex-row">
