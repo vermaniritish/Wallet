@@ -159,7 +159,9 @@ $currency = Settings::get('currency_symbol');
                                                         </div>
                                                         @endif
                                                         <div class="col-sm-5">
+                                                            @if($logoD['text'])
                                                             <span class="text-muted">Text:</span> <?php echo $logoD['text'] ?><br />
+                                                            @endif
                                                             <span class="text-muted">Category:</span> <?php echo $logoD['category'] ?><br />
                                                             <span class="text-muted">Position:</span> <?php echo $logoD['postion'] ?><br />
                                                         </div>
