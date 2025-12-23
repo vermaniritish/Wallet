@@ -35,7 +35,7 @@
                             @endif
 
                             @if(isset($screen) && $screen == 'wallet')
-                                @include('frontend.account.account', ['screen' => 'wallet'])
+                                @include('frontend.account.wallet', ['screen' => 'wallet'])
                             @endif
                         </div>
                     </div>
