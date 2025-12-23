@@ -162,16 +162,10 @@ class Wallet extends AppModel
     		$category->{$k} = $v;
     	}
 
-        $category->created_by = AdminAuth::getLoginId();
     	$category->created = date('Y-m-d H:i:s');
     	$category->modified = date('Y-m-d H:i:s');
 	    if($category->save())
 	    {
-            if(isset($data['title']) && $data['title'])
-            {
-                $category->slug = Str::slug($category->title) . '-' . General::encode($category->id);
-                $category->save();
-            }
 	    	return $category;
 	    }
 	    else
@@ -196,11 +190,6 @@ class Wallet extends AppModel
     	$category->modified = date('Y-m-d H:i:s');
 	    if($category->save())
 	    {
-            if(isset($data['title']) && $data['title'])
-            {
-                $category->slug = Str::slug($category->title) . '-' . General::encode($category->id);
-                $category->save();
-            }
 	    	return $category;
 	    }
 	    else
