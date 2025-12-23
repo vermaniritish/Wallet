@@ -146,6 +146,7 @@ $cats = ProductCategories::select(['id', 'slug', 'title'])->where('status', 1)->
                                             @endif
                                         </li>
                                     @endforeach
+                                    <li><a target="_blank" href="https://www.pindersworkwear.com/">Workwear</a></li>
                                 </ul>
                             </nav>
                         </div>
@@ -276,6 +277,7 @@ $cats = ProductCategories::select(['id', 'slug', 'title'])->where('status', 1)->
                                     @endif
                                 </li>
                             @endforeach
+                            <li><a target="_blank" href="https://www.pindersworkwear.com/">Workwear</a></li>
                         </ul>
                     </nav>
                     <!-- mobile menu end -->
