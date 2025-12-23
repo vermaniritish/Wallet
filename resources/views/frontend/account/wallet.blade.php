@@ -125,6 +125,7 @@
             </div>
 
             <div class="modal-footer">
+                <div id="paypal-button-container"></div>
                 <button class="btn btn-success w-100" id="addMoneyBtn" @click="submitForm">
                     Add Money
                 </button>
