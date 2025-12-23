@@ -21,7 +21,35 @@ class PayPalController extends Controller
 
     public function createOrder(Request $request)
     {
-        if($request->get('voucher_id'))
+        if($request->get('wallet_id'))
+        {
+            $wallet = Wallet::where( 'token', General::decrypt($request->get('wallet_id')) )->where('payment_status', 'pending')->limit(1)->first();
+            if($wallet)
+            {
+                $amount = $wallet->amount;
+                $amount = round($amount, 2);
+                $order = $this->payPalService->createOrder($request->get('voucher_id'), $amount);
+                if($order && is_array($order) && isset($order['status']) && !$order['status'])
+                {
+                    return response()->json(['status'=> false, 'message' => $order['message']]);
+                }
+                elseif($order && $order->result && $order->result->id && $wallet)
+                {
+                    $wallet->paypal_payment_data = $order->result->id;
+                    $wallet->save();
+                    return response()->json($order);
+                }
+                else
+                {
+                    return response()->json(['status'=> false]);
+                }
+            }
+            else 
+            {
+                return response()->json(['status'=> false]);
+            }
+        }
+        elseif($request->get('voucher_id'))
         {
             $booking = GiftVoucher::select(['id', 'paypal_payment_data'])->where('id', General::decrypt($request->get('voucher_id')) )->limit(1)->first();
             $amount = $request->input('amount');
@@ -67,36 +95,100 @@ class PayPalController extends Controller
 
     public function captureOrder(Request $request)
     {
-        if($request->get('voucher_id'))
+        if($request->get('wallet_id'))
         {
-            $orderId = $request->input('voucher_id');
-            $capture = $this->payPalService->captureOrder($orderId);
-            $order = GiftVoucher::where('paypal_payment_data', $orderId)->limit(1)->first();
-            if($capture  && is_array($capture) && isset($capture['status']) && !$capture['status'])
+            return $this->processCapturedWallet($request);
+        }
+        elseif($request->get('voucher_id'))
+        {
+            return $this->processCapturedGiftCard($request);
+        }
+        else
+        {
+            return $this->processCapturedOrder($request);
+        }
+    }
+
+    public function processCapturedWallet(Request $request)
+    {
+        $orderId = $request->input('wallet_id');
+        $capture = $this->payPalService->captureOrder($orderId);
+        $order = Wallet::where('paypal_payment_data', $orderId)->limit(1)->first();
+        if($capture  && is_array($capture) && isset($capture['status']) && !$capture['status'])
+        {
+            return response()->json(['status'=> false, 'message' => $capture['message']]);
+        }
+        elseif($capture && $capture->result && in_array($capture->result->status, ['APPROVED', 'COMPLETED']))
+        {
+            $order->paypal_payment_data = json_encode($capture->result);
+            $order->payment_status = 'paid';
+            $order->payment_token = null;
+            $order->save();
+            $user = Users::find($order->user_id);
+            $user->wallet = $user->wallet + $order->amount;
+            $user->save();
+            return response()->json(['status' => true, 'id' => $order->id]);
+        }
+        else
+        {
+            return response()->json(['status' => false]);
+        }
+    }
+
+    public function processCapturedGiftCard(Request $request)
+    {
+        $orderId = $request->input('voucher_id');
+        $capture = $this->payPalService->captureOrder($orderId);
+        $order = GiftVoucher::where('paypal_payment_data', $orderId)->limit(1)->first();
+        if($capture  && is_array($capture) && isset($capture['status']) && !$capture['status'])
+        {
+            return response()->json(['status'=> false, 'message' => $capture['message']]);
+        }
+        elseif($capture && $capture->result && in_array($capture->result->status, ['APPROVED', 'COMPLETED']))
+        {
+            $randomLength = 10;           // random number size: 8 digits
+            $prefix = Settings::get('gift_card_prefix');
+            do {
+                $randomNumber = mt_rand(
+                    pow(10, $randomLength - 1),
+                    pow(10, $randomLength) - 1
+                );
+
+                $couponCode = $prefix . $randomNumber;
+                $exists = GiftVoucher::where('code', $couponCode)->where('status', 'paid')->exists();
+
+            } while ($exists); // repeat until UNIQUE
+            $order->code =  $couponCode;
+            $order->paypal_payment_data = json_encode($capture->result);
+            $order->status = 'paid';
+            $order->save();
+            General::sendTemplateEmail( 
+                $order->user && $order->user->email ? $order->user->email : $order->sender_email, 
+                'gift-card-order-placed',
+                [
+                    "{order_id}" => $order->order_id,
+                    "{code}" => $order->code,
+                    "{sender_name}" => $order->sender_name,
+                    "{sender_email}" => $order->sender_email,
+                    "{sender_mobile}" => $order->sender_mobile,
+                    "{amount}" => $order->amount,
+                    "{receiver_name}" => $order->receiver_name,
+                    "{receiver_email}" => $order->receiver_email,
+                    "{receiver_mobile}" => $order->receiver_mobile,
+                    "{message}" =>  $order->message
+                ]
+            );
+
+            if($order->delivery_mode == 'SMS' || $order->delivery_mode == 'BOTH')
             {
-                return response()->json(['status'=> false, 'message' => $capture['message']]);
+                SMSGateway::send($order->receiver_mobile, "Congratulations! A Pinder Gift Card sent by {$order->sender_name}. Code is {$order->code}");
             }
-            elseif($capture && $capture->result && in_array($capture->result->status, ['APPROVED', 'COMPLETED']))
+
+            if($order->delivery_mode == 'Email' || $order->delivery_mode == 'BOTH')
             {
-                $randomLength = 10;           // random number size: 8 digits
-                $prefix = Settings::get('gift_card_prefix');
-                do {
-                    $randomNumber = mt_rand(
-                        pow(10, $randomLength - 1),
-                        pow(10, $randomLength) - 1
-                    );
-
-                    $couponCode = $prefix . $randomNumber;
-                    $exists = GiftVoucher::where('code', $couponCode)->where('status', 'paid')->exists();
-
-                } while ($exists); // repeat until UNIQUE
-                $order->code =  $couponCode;
-                $order->paypal_payment_data = json_encode($capture->result);
-                $order->status = 'paid';
-                $order->save();
                 General::sendTemplateEmail( 
                     $order->user && $order->user->email ? $order->user->email : $order->sender_email, 
-                    'gift-card-order-placed',
+                    'gift-card',
                     [
                         "{order_id}" => $order->order_id,
                         "{code}" => $order->code,
@@ -110,44 +202,15 @@ class PayPalController extends Controller
                         "{message}" =>  $order->message
                     ]
                 );
-
-                if($order->delivery_mode == 'SMS' || $order->delivery_mode == 'BOTH')
-                {
-                    SMSGateway::send($order->receiver_mobile, "Congratulations! A Pinder Gift Card sent by {$order->sender_name}. Code is {$order->code}");
-                }
-
-                if($order->delivery_mode == 'Email' || $order->delivery_mode == 'BOTH')
-                {
-                    General::sendTemplateEmail( 
-                        $order->user && $order->user->email ? $order->user->email : $order->sender_email, 
-                        'gift-card',
-                        [
-                            "{order_id}" => $order->order_id,
-                            "{code}" => $order->code,
-                            "{sender_name}" => $order->sender_name,
-                            "{sender_email}" => $order->sender_email,
-                            "{sender_mobile}" => $order->sender_mobile,
-                            "{amount}" => $order->amount,
-                            "{receiver_name}" => $order->receiver_name,
-                            "{receiver_email}" => $order->receiver_email,
-                            "{receiver_mobile}" => $order->receiver_mobile,
-                            "{message}" =>  $order->message
-                        ]
-                    );
-                }
-
-                
-
-                return response()->json(['status' => true, 'id' => $order->id]);
             }
-            else
-            {
-                return response()->json(['status' => false]);
-            }
+
+            
+
+            return response()->json(['status' => true, 'id' => $order->id]);
         }
         else
         {
-            return $this->processCapturedOrder($request);
+            return response()->json(['status' => false]);
         }
     }
 

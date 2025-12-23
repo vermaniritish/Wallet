@@ -467,7 +467,7 @@ class PagesController extends BaseController
 
                     return Response()->json([
                         'status' => true,
-                        'token' => $token,
+                        'token' => General::encrypt($token),
                         'amount' => $data['amount']
                     ]);
                 }

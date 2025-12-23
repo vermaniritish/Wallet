@@ -97,6 +97,7 @@ var walletApp = new Vue({
                     amount: this.finalAmount,
                 })
             });
+            response = await response.json();
             if(response && response.status && response.token)
             {
                 return response;
@@ -142,13 +143,12 @@ var initPaypal = function()
                         'X-CSRF-TOKEN': '{{ csrf_token() }}'
                     },
                     body: JSON.stringify({
-                        voucher_id: data.orderID
+                        wallet_id: data.orderID
                     })
                 }).then(res => res.json())
                 .then(details => {
                     if(details?.status && details?.id) {
-                        voucherApp.paid = true;
-                        window.scrollTo(0,0);
+                        window.location.reload();
                     } else {
                         if(details && !details.status && details.message) {
                             set_notification('error', details.message);
