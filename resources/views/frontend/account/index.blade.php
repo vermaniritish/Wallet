@@ -46,7 +46,7 @@
 </section>
 @endsection
 @if(isset($screen) && $screen == 'wallet')
-@push('stack')
+@push('afterscripts')
 <script>
     new Vue({
     el: '#walletApp',
