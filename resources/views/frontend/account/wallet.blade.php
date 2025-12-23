@@ -76,24 +76,56 @@
             </div>
 
             <div class="modal-body">
-                <!-- Amount Buttons -->
-                <div class="d-flex flex-wrap gap-2 mb-3">
-                    <button class="btn btn-outline-primary amount-btn" data-amount="20">+20</button>
-                    <button class="btn btn-outline-primary amount-btn" data-amount="50">+50</button>
-                    <button class="btn btn-outline-primary amount-btn" data-amount="100">+100</button>
-                    <button class="btn btn-outline-primary amount-btn" data-amount="500">+500</button>
-                    <button class="btn btn-outline-primary amount-btn" data-amount="1000">+1000</button>
-                </div>
+                <div id="walletApp">
+                    <!-- Amount Buttons -->
+                    <div class="d-flex flex-wrap gap-2 mb-3">
+                        <button
+                            v-for="amt in amounts"
+                            :key="amt"
+                            class="btn"
+                            :class="selectedAmount === amt ? 'btn-primary' : 'btn-outline-primary'"
+                            @click="selectAmount(amt)"
+                        >
+                            +{{ amt }}
+                        </button>
 
-                <!-- Custom Amount -->
-                <div class="mb-3">
-                    <label class="form-label">Custom Amount</label>
-                    <input type="number" min="1" class="form-control" id="customAmount" placeholder="Enter amount">
-                </div>
+                        <!-- Custom Button -->
+                        <button
+                            class="btn"
+                            :class="showCustom ? 'btn-primary' : 'btn-outline-primary'"
+                            @click="toggleCustom"
+                        >
+                            Custom
+                        </button>
+                    </div>
 
-                <!-- Selected Amount -->
-                <div class="alert alert-info py-2">
-                    Amount to Add: <strong>₹<span id="finalAmount">0</span></strong>
+                    <!-- Custom Amount Input -->
+                    <div v-if="showCustom" class="mb-3">
+                        <label class="form-label">Custom Amount (€)</label>
+                        <input
+                            type="number"
+                            class="form-control"
+                            min="20"
+                            step="1"
+                            v-model.number="customAmount"
+                            @input="validateCustomAmount"
+                            placeholder="Minimum €20"
+                        >
+                        <small class="text-danger" v-if="error">
+                            {{ error }}
+                        </small>
+                    </div>
+
+                    <!-- Selected Amount -->
+                    <div class="alert alert-info py-2">
+                        Amount to Add:
+                        <strong>€{{ finalAmount }}</strong>
+                    </div>
+
+                    <!-- Add Money Button -->
+                    <button class="btn btn-success w-100" @click="addMoney">
+                        Add Money
+                    </button>
                 </div>
             </div>
 
@@ -108,40 +140,54 @@
 
 @push('stack')
 <script>
-    let selectedAmount = 0;
-
-    document.querySelectorAll('.amount-btn').forEach(btn => {
-        btn.addEventListener('click', function () {
-            selectedAmount = parseInt(this.dataset.amount);
-            document.getElementById('customAmount').value = '';
-            updateAmount();
-
-            document.querySelectorAll('.amount-btn').forEach(b => b.classList.remove('active'));
-            this.classList.add('active');
-        });
-    });
-
-    document.getElementById('customAmount').addEventListener('input', function () {
-        selectedAmount = parseInt(this.value || 0);
-        document.querySelectorAll('.amount-btn').forEach(b => b.classList.remove('active'));
-        updateAmount();
-    });
-
-    function updateAmount() {
-        document.getElementById('finalAmount').innerText = selectedAmount;
-    }
-
-    document.getElementById('addMoneyBtn').addEventListener('click', function () {
-        if (selectedAmount <= 0) {
-            alert('Please select or enter an amount');
-            return;
+    new Vue({
+    el: '#walletApp',
+    data: {
+        amounts: [20, 50, 100, 500, 1000],
+        selectedAmount: 0,
+        customAmount: null,
+        showCustom: false,
+        error: ''
+    },
+    computed: {
+        finalAmount() {
+            return this.showCustom ? (this.customAmount || 0) : this.selectedAmount;
         }
+    },
+    methods: {
+        selectAmount(amount) {
+            this.selectedAmount = amount;
+            this.customAmount = null;
+            this.showCustom = false;
+            this.error = '';
+        },
+        toggleCustom() {
+            this.showCustom = !this.showCustom;
+            this.selectedAmount = 0;
+            this.customAmount = null;
+            this.error = '';
+        },
+        validateCustomAmount() {
+            if (this.customAmount < 20) {
+                this.error = 'Minimum amount is €20';
+            } else {
+                this.error = '';
+            }
+        },
+        addMoney() {
+            if (this.finalAmount < 20) {
+                this.error = 'Minimum amount is €20';
+                return;
+            }
 
-        // TODO: Laravel API / Payment Gateway Call
-        console.log('Adding Amount:', selectedAmount);
+            // ✅ API / Payment Gateway call
+            console.log('Adding amount:', this.finalAmount);
 
-        // Example: axios.post('/wallet/add', { amount: selectedAmount })
-    });
+            // Example:
+            // axios.post('/wallet/add', { amount: this.finalAmount })
+        }
+    }
+});
 </script>
 
 @endpush
