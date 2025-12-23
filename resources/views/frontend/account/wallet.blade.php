@@ -125,10 +125,11 @@
             </div>
 
             <div class="modal-footer">
-                <div id="paypal-button-container"></div>
-                <button class="btn btn-success w-100" id="addMoneyBtn" @click="submitForm">
+                <div id="paypal-button-container" class="w-50"></div>
+                <?php /*<button class="btn btn-success w-100" id="addMoneyBtn" @click="submitForm">
                     Add Money
                 </button>
+                */ ?>
             </div>
         </div>
     </div>
