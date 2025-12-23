@@ -135,11 +135,43 @@ $currency = Settings::get('currency_symbol');
                                 @if($row->logo_data)
                                     @foreach($row->logo_data as $logoD)
                                         <table style="border:1px solid #c7a162;width: 100%; line-height: inherit; text-align: left;font-size:12px;">
+                                            @if(isset($logoD['title']) && $logoD['title'])
                                             <tr style="background: #f7eddd; border-bottom: 1px solid #ddd; font-weight: bold;">
                                                 <td style="width:35%;padding: 5px; vertical-align: top; font-weight: bold;">
                                                 {{$logoD['title']}}: {{$logoD['initial']}}
                                                 </td>
                                             </tr>
+                                            @else
+                                            <tr class="table-borderless">
+                                                <td></td>
+                                                <td colspan="4">
+                                                    <div class="row">
+                                                        @if(isset($logoD['already_uploaded']) && $logoD['already_uploaded'])
+                                                        <div class="col-sm-2">
+                                                            <p class="text-danger">Pinder has already my logo.</p>
+                                                        </div>
+                                                        @else			
+                                                        <div class="col-sm-2">
+                                                            <div class="" style="width: 80px;height:80px;border: 1px solid #ddd;">
+                                                                <?php if(trim($logoD['image'])):?>
+                                                                <img src="{{ $logoD['image'] }}" style="max-width:100%;max-height:100%;">
+                                                                <?php endif; ?>
+                                                            </div>
+                                                        </div>
+                                                        @endif
+                                                        <div class="col-sm-5">
+                                                            <span class="text-muted">Text:</span> <?php echo $logoD['text'] ?><br />
+                                                            <span class="text-muted">Category:</span> <?php echo $logoD['category'] ?><br />
+                                                            <span class="text-muted">Position:</span> <?php echo $logoD['postion'] ?><br />
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <span class="text-muted">Size:</span> <?php echo $row->size_title ?><br />
+                                                            <span class="text-muted">Color:</span> <?php echo $row->color ?><br />
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            @endif
                                         </table>
                                     @endforeach
                                 @endif
@@ -178,7 +210,7 @@ $currency = Settings::get('currency_symbol');
                     <table style="border:1px solid #c7a162;width: 100%; line-height: inherit; text-align: left;font-size:12px;">
                         <tr style="background: #f7eddd; border-bottom: 1px solid #ddd; font-weight: bold;">
                             <td style="width:35%;padding: 5px; vertical-align: top; text-align:right;">
-                            {{ $currency . $logoD['cost'] }}
+                            {{ $currency . (isset($logoD['cost']) ? $logoD['cost'] : (isset($logoD['price']) ? $logoD['price'] : "") ) }}
                             </td>
                         </tr>
                     </table>
@@ -192,7 +224,7 @@ $currency = Settings::get('currency_symbol');
                     <table style="border:1px solid #c7a162;width: 100%; line-height: inherit; text-align: left;font-size:12px;">
                         <tr style="background: #f7eddd; border-bottom: 1px solid #ddd; font-weight: bold;">
                             <td style="width:35%;padding: 5px; vertical-align: top; text-align:right;">
-                            {{$currency . ($logoD['cost'] * $row->quantity)}}
+                            {{$currency . ((isset($logoD['cost']) ? $logoD['cost'] : (isset($logoD['price']) ? $logoD['price'] : 0) ) * $row->quantity)}}
                             </td>
                         </tr>
                     </table>
