@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller as BaseController;
 use App\Models\Admin\Orders;
 use App\Models\Admin\Pages;
+use App\Models\Admin\Wallet;
 use App\Models\Admin\Users;
 use App\Libraries\General;
 use App\Models\Admin\ContactUs;
