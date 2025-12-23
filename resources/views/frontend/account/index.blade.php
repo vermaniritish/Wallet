@@ -45,3 +45,58 @@
     </div>
 </section>
 @endsection
+@if(isset($screen) && $screen == 'wallet')
+@push('stack')
+<script>
+    new Vue({
+    el: '#walletApp',
+    data: {
+        amounts: [20, 50, 100, 500, 1000],
+        selectedAmount: 0,
+        customAmount: null,
+        showCustom: false,
+        error: ''
+    },
+    computed: {
+        finalAmount() {
+            return this.showCustom ? (this.customAmount || 0) : this.selectedAmount;
+        }
+    },
+    methods: {
+        selectAmount(amount) {
+            this.selectedAmount = amount;
+            this.customAmount = null;
+            this.showCustom = false;
+            this.error = '';
+        },
+        toggleCustom() {
+            this.showCustom = !this.showCustom;
+            this.selectedAmount = 0;
+            this.customAmount = null;
+            this.error = '';
+        },
+        validateCustomAmount() {
+            if (this.customAmount < 20) {
+                this.error = 'Minimum amount is €20';
+            } else {
+                this.error = '';
+            }
+        },
+        addMoney() {
+            if (this.finalAmount < 20) {
+                this.error = 'Minimum amount is €20';
+                return;
+            }
+
+            // ✅ API / Payment Gateway call
+            console.log('Adding amount:', this.finalAmount);
+
+            // Example:
+            // axios.post('/wallet/add', { amount: this.finalAmount })
+        }
+    }
+});
+</script>
+
+@endpush
+@endif
