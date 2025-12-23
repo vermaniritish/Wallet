@@ -24,23 +24,24 @@ class PayPal
 
     public function createOrder($orderId, $amount)
     {
-        $request = new OrdersCreateRequest();
-        $request->prefer('return=representation');
-        $request->body = [
-            "intent" => "CAPTURE",
-            "purchase_units" => [
-              [
-                "custom_id" => $orderId,
-                "reference_id" =>  General::hash(),
-                "amount" =>  [
-                  "currency_code" =>  "GBP",
-                  "value" =>  $amount
-                ]
-              ]
-            ]
-          ];
-
         try {
+            $request = new OrdersCreateRequest();
+            $request->prefer('return=representation');
+            $request->body = [
+                "intent" => "CAPTURE",
+                "purchase_units" => [
+                [
+                    "custom_id" => $orderId,
+                    "reference_id" =>  General::hash(),
+                    "amount" =>  [
+                    "currency_code" =>  "GBP",
+                    "value" =>  $amount
+                    ]
+                ]
+                ]
+            ];
+
+        
             $response = $this->client->execute($request);
             return $response;
         } catch (\HttpException $ex) {
@@ -51,10 +52,10 @@ class PayPal
 
     public function captureOrder($orderId)
     {
-        $request = new OrdersCaptureRequest($orderId);
-        $request->prefer('return=representation');
-
         try {
+            $request = new OrdersCaptureRequest($orderId);
+            $request->prefer('return=representation');
+        
             $response = $this->client->execute($request);
             return $response;
         } catch (\HttpException $ex) {
