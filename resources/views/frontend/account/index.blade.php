@@ -33,6 +33,10 @@
                             @if(isset($screen) && $screen == 'account')
                                 @include('frontend.account.account', ['screen' => 'account'])
                             @endif
+
+                            @if(isset($screen) && $screen == 'wallet')
+                                @include('frontend.account.account', ['screen' => 'wallet'])
+                            @endif
                         </div>
                     </div>
                 </div>

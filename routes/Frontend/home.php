@@ -28,6 +28,9 @@ Route::get('/cart', '\App\Http\Controllers\PagesController@cart')
 Route::get('/my-account', '\App\Http\Controllers\PagesController@myAccount')
     ->name('myAccount')->middleware('userAuth');
 
+Route::get('/wallet', '\App\Http\Controllers\PagesController@wallet')
+    ->name('wallet')->middleware('userAuth');
+
 Route::get('/edit-account', '\App\Http\Controllers\PagesController@editAccount')
     ->name('editAccount')->middleware('userAuth');
 

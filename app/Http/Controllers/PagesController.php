@@ -443,4 +443,21 @@ class PagesController extends BaseController
             'user' => $user
         ]);
     }
+
+    function wallet(Request $request)
+    {
+        $user = Users::find($request->session()->get('user')->id);
+        if($user)
+        {
+            $wallet = Wallet::where('user_id', $user->id)->orderBy('id', 'desc')->get();
+            return view('frontend.account.index', [
+                'user' => $user,
+                'wallet' => $wallet,
+                'screen' => 'wallet'
+            ]);
+        }
+        else {
+            abort('404');
+        }
+    }
 }
