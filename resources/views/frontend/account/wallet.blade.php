@@ -5,7 +5,7 @@
             <h5 class="mb-0">Add Money to Your Wallet</h5>
         </div>
         <div class="card-body">
-            <div class="d-flex flex-row align-items-center ">
+            <div class="d-flex flex-row align-items-center justify-content-between">
                 <div><i style="font-size: 40px;" class="fas fa-wallet"></i></div>
                 <div>
                     <p class="strong mb-1">Balance</p>
