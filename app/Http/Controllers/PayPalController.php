@@ -6,6 +6,7 @@ use App\Libraries\SMSGateway;
 use App\Libraries\PayPal;
 use App\Models\Admin\OrderProductRelation;
 use App\Models\Admin\Orders;
+use App\Models\Admin\Wallet;
 use App\Models\Admin\GiftVoucher;
 use App\Models\Admin\Settings;
 use Illuminate\Http\Request;
@@ -124,6 +125,7 @@ class PayPalController extends Controller
             $order->payment_status = 'paid';
             $order->payment_token = null;
             $order->save();
+
             $user = Users::find($order->user_id);
             $user->wallet = $user->wallet + $order->amount;
             $user->save();
