@@ -86,7 +86,7 @@
                             :class="selectedAmount === amt ? 'btn-primary' : 'btn-outline-primary'"
                             @click="selectAmount(amt)"
                         >
-                            +{{ amt }}
+                            +@{{ amt }}
                         </button>
 
                         <!-- Custom Button -->
@@ -112,14 +112,14 @@
                             placeholder="Minimum €20"
                         >
                         <small class="text-danger" v-if="error">
-                            {{ error }}
+                            @{{ error }}
                         </small>
                     </div>
 
                     <!-- Selected Amount -->
                     <div class="alert alert-info py-2">
                         Amount to Add:
-                        <strong>€{{ finalAmount }}</strong>
+                        <strong>€@{{ finalAmount }}</strong>
                     </div>
 
                     <!-- Add Money Button -->
