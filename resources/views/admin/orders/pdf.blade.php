@@ -151,9 +151,9 @@ $currency = Settings::get('currency_symbol');
                                                         </div>
                                                         @else			
                                                         <div class="col-sm-2">
-                                                            <div class="" style="width: 40px;height:40px;border: 1px solid #ddd;">
+                                                            <div class="" style="border: 1px solid #ddd;">
                                                                 <?php if(trim($logoD['image'])):?>
-                                                                <img src="{{ $logoD['image'] }}" style="max-width:90%;max-height:90%;">
+                                                                <img src="{{ $logoD['image'] }}" style="width: 40px;height:40px;">
                                                                 <?php endif; ?>
                                                             </div>
                                                         </div>
