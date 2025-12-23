@@ -143,8 +143,7 @@ $currency = Settings::get('currency_symbol');
                                             </tr>
                                             @else
                                             <tr class="table-borderless">
-                                                <td></td>
-                                                <td colspan="4">
+                                                <td>
                                                     <div class="row">
                                                         @if(isset($logoD['already_uploaded']) && $logoD['already_uploaded'])
                                                         <div class="col-sm-2">
@@ -152,9 +151,9 @@ $currency = Settings::get('currency_symbol');
                                                         </div>
                                                         @else			
                                                         <div class="col-sm-2">
-                                                            <div class="" style="width: 80px;height:80px;border: 1px solid #ddd;">
+                                                            <div class="" style="width: 40px;height:40px;border: 1px solid #ddd;">
                                                                 <?php if(trim($logoD['image'])):?>
-                                                                <img src="{{ $logoD['image'] }}" style="max-width:100%;max-height:100%;">
+                                                                <img src="{{ $logoD['image'] }}" style="max-width:90%;max-height:90%;">
                                                                 <?php endif; ?>
                                                             </div>
                                                         </div>
