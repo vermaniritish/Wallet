@@ -42,7 +42,11 @@
                                                 v-html="renderLogoInfo(c)"></span>
                         <p v-if="c.non_exchange == 1 || c.non_exchange == '1'" class="font-xs" style="color: rgb(209, 0, 31);"> Made to order only. This is a Non-Exchangeable &amp; Non-Refundable product.</p>
                     </td>
-                    <td  width="15%">£@{{c.quantity && c.quantity > 0 ? (c.quantity*c.price).toFixed(2) : ``}}</td>
+                    <td  width="15%">
+                        <span class="old-price" v-if="offerPrice(c).price < (c.quantity * c.price)">£@{{(c.quantity * c.price).toFixed(2)}}</span>
+                        <span v-else>£@{{(c.quantity * c.price).toFixed(2)}}</span>
+                        <span class="discount-price" v-if="offerPrice(c).price < (c.quantity * c.price)">£@{{(offerPrice(c).price).toFixed(2)}}</span>
+                    </td>
                 </tr>
                 <tr>
                     <td colspan="2">Product Costs</td>
