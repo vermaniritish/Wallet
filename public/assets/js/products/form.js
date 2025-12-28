@@ -195,7 +195,7 @@ let order = new Vue({
                                 to_cm: size.to_cm,
                                 price: this.price > 0 ? this.price : 0,
                                 sale_price: this.maxPrice > 0 ? this.maxPrice : ``,
-                                status: !this.id ? true : size.status
+                                status: !this.id ? true : (size.status !== "" && size.status !== null ? size.status : true),
                             });
                         }
                     } 

@@ -457,6 +457,18 @@ class ProductsController extends AppController
 		        	{
 		        		unset($data['image']);
 		        	}
+
+					if(isset($data['size_file']) && $data['size_file'])
+	        		{
+	        			$data['size_file'] = json_decode($data['size_file'], true);
+	        			$product->size_file = $product->size_file ? json_decode($product->size_file) : [];
+		        		$data['size_file'] = array_merge($product->size_file, $data['size_file']);
+		        		$data['size_file'] = json_encode($data['size_file']);
+		        	}
+		        	else
+		        	{
+		        		unset($data['size_file']);
+		        	}
 		        	/** ONLY IN CASE OF MULTIPLE IMAGE USE THIS **/
 					unset($data['brand']);
 					unset($data['sub_category']);

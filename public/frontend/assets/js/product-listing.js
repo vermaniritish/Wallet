@@ -400,7 +400,7 @@ else if($('#product-cat-page').length)
             selectColor(id, title) {
                 this.color = id;
                 this.colorTitle = title;
-                let c = $('.slider-thumb[data-item="'+id+'"]').index();
+                let c = $('.slick-slide[data-item="'+id+'"]').index();
                 $('.product-image-slider').slick('slickGoTo', c);
                 $('.slider-nav-thumbnails').slick('slickGoTo', c);
             },

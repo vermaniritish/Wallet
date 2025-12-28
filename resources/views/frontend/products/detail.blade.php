@@ -81,6 +81,9 @@ $nonExchange = $product->non_exchange || $product->sizes->filter(function ($size
                                             @if($product->categories)
                                             <a href="{{url('/'.$product->categories->slug)}}" alt="{{$product->categories->title}}">{{$product->categories->title}}</a>
                                             @endif
+                                            @if($product->categories && ($product->subCategories && $product->subCategories->count() > 0))
+                                            /
+                                            @endif 
                                             @if($product->subCategories && $product->subCategories->count() > 0)
                                             <a href="{{url('/'.$product->subCategories[0]->title)}}" alt="{{$product->subCategories[0]->title}}">{{$product->subCategories[0]->title}}</a>
                                             @endif
