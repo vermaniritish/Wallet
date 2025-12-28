@@ -2195,6 +2195,7 @@ label {
   text-align: center;
   border: 1px solid #cce7d0;
   border-radius: 20px;
+  margin: 0 5px;
 }
 
 .card-1 figure {
@@ -10475,4 +10476,14 @@ color: #FFF;
     .inline-row {
         flex-direction: column;
     }
+}
+
+.old-price {
+    text-decoration: line-through;
+    margin-right: 6px;
+}
+
+.discount-price {
+    color: #088178;
+    font-weight: 600;
 }
