@@ -264,11 +264,16 @@ class HomeController extends AppController
 					$subtotal = 0;
 					$margin = 0;
 					$includeTravelCharges = 0;
+					$taxPerc = Settings::get('gst');
+					$deductedTax = 0;
 					foreach($data['cart'] as $c)
 					{
 						$image = isset($c['image']) && $c['image'] ? json_decode($c['image'], true) : null;
 						$image = $image && is_array($image) ? $image[0] : $image;
 						$logo = isset($c['customization']) && $c['customization'] ? $c['customization'] : (isset($c['logo']) ? $c['logo'] : []);
+						$finalProPrice = $this->offerPrice($c)['price'];
+						$proTax = isset($c['vat']) && $c['vat'] ? ($finalProPrice * $taxPerc)/100 : 0;
+						$deductedTax += $proTax;
 						$products[] = [
 							'order_id' => $order->id,
 							'product_id' => $c['product_id'],
@@ -282,9 +287,13 @@ class HomeController extends AppController
 							'quantity' => $c['quantity'],
 							'logo_data' => json_encode($logo),
 							'non_exchange' => isset($c['non_exchange']) && $c['non_exchange'] ? 1 : 0,
-							'image' => $image
+							'image' => $image,
+							'tax' => $proTax,
+							'final_price' => $finalProPrice
 						];
-						$subtotal += $this->offerPrice($c)['price'];
+						
+						
+						$subtotal += $finalProPrice;
 					}
 
 					if($products)
@@ -318,7 +327,9 @@ class HomeController extends AppController
 							$discount = $data['coupon']['amount'] > $subtotal ? $subtotal : $data['coupon']['amount'];
 						}
 						$order->discount = $discount;
-						$order->tax_percentage = Settings::get('gst');
+
+
+
 						$order->tax = (($subtotal - $discount) * $order->tax_percentage) / 100;
 						$order->total_amount = ($subtotal - $discount) + $order->tax + $order->delivery_cost;
 						$order->save();
@@ -469,8 +480,6 @@ class HomeController extends AppController
 						}
 					}
 				}
-				
-
 				$subtotal += $this->offerPrice($item)['price'];
 			}
 			
