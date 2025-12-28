@@ -330,7 +330,8 @@ class HomeController extends AppController
 
 
 
-						$order->tax = (($subtotal - $discount) * $order->tax_percentage) / 100;
+						$order->tax = ((($subtotal - $discount) * $order->tax_percentage) / 100) - $deductedTax;
+						$order->tax = $order->tax > 0 ? $order->tax : 0;
 						$order->total_amount = ($subtotal - $discount) + $order->tax + $order->delivery_cost;
 						$order->save();
 					}
