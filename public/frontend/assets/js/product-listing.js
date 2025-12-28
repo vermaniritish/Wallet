@@ -1176,7 +1176,7 @@ var minicart = new Vue({
                 tax = (tax > 0 ? tax / 100 : 0);
                 return tax;
             });
-            deductedTax = subtotal.reduce((partialSum, a) => partialSum + a, 0);
+            deductedTax = deductedTax.reduce((partialSum, a) => partialSum + a, 0);
 
             let tax = (t.subtotal - t.discount) * (this.gstTax > 0 ? this.gstTax : 0);
             tax = (tax > 0 ? tax / 100 : 0);
@@ -1495,7 +1495,7 @@ var minicart = new Vue({
                 tax = (tax > 0 ? tax / 100 : 0);
                 return tax;
             });
-            deductedTax = subtotal.reduce((partialSum, a) => partialSum + a, 0);
+            deductedTax = deductedTax.reduce((partialSum, a) => partialSum + a, 0);
 
             let tax = (t.subtotal - t.discount) * (this.gstTax > 0 ? this.gstTax : 0);
             tax = (tax > 0 ? tax / 100 : 0);
@@ -1955,7 +1955,7 @@ checkoutPage = new Vue({
                 tax = (tax > 0 ? tax / 100 : 0);
                 return tax;
             });
-            deductedTax = subtotal.reduce((partialSum, a) => partialSum + a, 0);
+            deductedTax = deductedTax.reduce((partialSum, a) => partialSum + a, 0);
 
             let tax = (t.subtotal - t.discount) * (this.gstTax > 0 ? this.gstTax : 0);
             tax = (tax > 0 ? tax / 100 : 0);
