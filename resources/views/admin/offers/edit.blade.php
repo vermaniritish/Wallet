@@ -50,10 +50,10 @@
 										<input type="radio" id="case-2" name="type" value="case-2" {{ (old('type', $page->type) != 'case-3' ? 'checked' : '') }} class="custom-control-input">
 										<label class="custom-control-label" for="case-2">Product Offer</label>
 									</div>
-									<div class="custom-control custom-radio custom-control-inline">
+									<!-- <div class="custom-control custom-radio custom-control-inline">
 										<input type="radio" id="case-3" name="type" value="case-3" {{ (old('type', $page->type) == 'case-3' ? 'checked' : '') }} class="custom-control-input">
 										<label class="custom-control-label" for="case-3">Free Logo</label>
-									</div>
+									</div> -->
 								</div>
 							</div>
 							<div class="row my-2">
