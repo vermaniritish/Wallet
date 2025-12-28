@@ -1160,9 +1160,27 @@ var minicart = new Vue({
             return false;
         },
         calculateTax(t) {
+            let deductedTax = this.cart.map((item) => {
+                if((item.vat*1) > 0) return 0;
+                
+                let amount = 0;
+                if(item.offer && item.offer)
+                {
+                    amount = this.offerPrice(item).price;
+                }
+                else
+                {
+                    amount = item.quantity*item.price;
+                }
+                let tax = (amount) * (this.gstTax > 0 ? this.gstTax : 0);
+                tax = (tax > 0 ? tax / 100 : 0);
+                return tax;
+            });
+            deductedTax = subtotal.reduce((partialSum, a) => partialSum + a, 0);
+
             let tax = (t.subtotal - t.discount) * (this.gstTax > 0 ? this.gstTax : 0);
             tax = (tax > 0 ? tax / 100 : 0);
-            return tax;
+            return (tax-deductedTax < 0) ? 0 : tax-deductedTax;
         },
         getImagePath(image) {
             if(image)
@@ -1461,10 +1479,27 @@ var minicart = new Vue({
             return false;
         },
         calculateTax(t) {
-            
+            let deductedTax = this.cart.map((item) => {
+                if((item.vat*1) > 0) return 0;
+                
+                let amount = 0;
+                if(item.offer && item.offer)
+                {
+                    amount = this.offerPrice(item).price;
+                }
+                else
+                {
+                    amount = item.quantity*item.price;
+                }
+                let tax = (amount) * (this.gstTax > 0 ? this.gstTax : 0);
+                tax = (tax > 0 ? tax / 100 : 0);
+                return tax;
+            });
+            deductedTax = subtotal.reduce((partialSum, a) => partialSum + a, 0);
+
             let tax = (t.subtotal - t.discount) * (this.gstTax > 0 ? this.gstTax : 0);
             tax = (tax > 0 ? tax / 100 : 0);
-            return tax;
+            return (tax-deductedTax < 0) ? 0 : tax-deductedTax;
         },
         getImagePath(image) {
             if(image)
@@ -1904,10 +1939,27 @@ checkoutPage = new Vue({
             return false;
         },
         calculateTax(t) {
-            
+            let deductedTax = this.cart.map((item) => {
+                if((item.vat*1) > 0) return 0;
+                
+                let amount = 0;
+                if(item.offer && item.offer)
+                {
+                    amount = this.offerPrice(item).price;
+                }
+                else
+                {
+                    amount = item.quantity*item.price;
+                }
+                let tax = (amount) * (this.gstTax > 0 ? this.gstTax : 0);
+                tax = (tax > 0 ? tax / 100 : 0);
+                return tax;
+            });
+            deductedTax = subtotal.reduce((partialSum, a) => partialSum + a, 0);
+
             let tax = (t.subtotal - t.discount) * (this.gstTax > 0 ? this.gstTax : 0);
             tax = (tax > 0 ? tax / 100 : 0);
-            return tax;
+            return (tax-deductedTax < 0) ? 0 : tax-deductedTax;
         },
         getImagePath(image) {
             if(image)
