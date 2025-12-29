@@ -103,6 +103,7 @@
 									@endphp
 									<div class="form-group">
 										<label class="form-control-label" for="input-first-name">Featured</label>
+										<input type="hidden" name="featured_products" value="" />
 										<select name="featured_products[]" class="form-control" multiple>
 											<option value=""></option>
 											<?php foreach($products as $p): ?>
@@ -118,8 +119,8 @@
 									@endphp
 									<div class="form-group">
 										<label class="form-control-label" for="input-first-name">Popular</label>
+										<input type="hidden" name="trending_products" value="" />
 										<select name="trending_products[]" class="form-control" multiple>
-											<option value=""></option>
 											<?php foreach($products as $p): ?>
 											<option data-subtext="{{ $p->parent_id ? 'Uniform' : '' }}" value="{{ $p->id }}" {{ in_array($p->id, $selected) ? 'selected' : ''}}>{{ $p->title }}</option>
 											<?php endforeach; ?>
@@ -133,6 +134,7 @@
 									@endphp
 									<div class="form-group">
 										<label class="form-control-label" for="input-first-name">Newly Added</label>
+										<input type="hidden" name="new_arrivals" value="" />
 										<select name="new_arrivals[]" class="form-control" multiple>
 											<option value=""></option>
 											<?php foreach($products as $p): ?>
