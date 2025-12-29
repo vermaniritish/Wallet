@@ -186,6 +186,7 @@ let order = new Vue({
                 for (let sizeId of this.defaultSizes) {
                     let size = this.sizes.find(size => size.id === sizeId);
                     if (size) {
+                        console.log(size);
                         let existingSize = selectedSizes.find(selected => selected.id === size.id);
                         if (!existingSize) {
                             selectedSizes.push({
