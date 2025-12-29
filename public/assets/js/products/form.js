@@ -189,7 +189,15 @@ let order = new Vue({
                         
                         let existingSize = selectedSizes.find(selected => selected.id === size.id);
                         if (!existingSize) {
-                            console.log(size);
+                            console.log({
+                                id: size.id,
+                                size_title: size.size_title,
+                                from_cm: size.from_cm,
+                                to_cm: size.to_cm,
+                                price: this.price > 0 ? this.price : 0,
+                                sale_price: this.maxPrice > 0 ? this.maxPrice : ``,
+                                status: !this.id ? true : (size.status !== "" && size.status !== null ? size.status : true),
+                            });
                             selectedSizes.push({
                                 id: size.id,
                                 size_title: size.size_title,
