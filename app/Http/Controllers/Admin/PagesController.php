@@ -311,6 +311,7 @@ class PagesController extends AppController
 		if($request->isMethod('post'))
 		{
 			$data = $request->toArray();
+			pr($data); die;
 			foreach($data as $k => $v)
 			{
 				HomePage::put($k, is_array($v) ? json_encode($v) : $v);
