@@ -406,9 +406,15 @@ else if($('#product-cat-page').length)
             selectColor(id, title) {
                 this.color = id;
                 this.colorTitle = title;
-                let c = $('.slick-slide[data-item="'+id+'"]').index();
-                $('.product-image-slider').slick('slickGoTo', c);
-                $('.slider-nav-thumbnails').slick('slickGoTo', c);
+                this.$nextTick(() => {
+					const thumb = document.querySelector(
+						'.slider-thumb[data-item="' + id + '"] img'
+					);
+
+					if (thumb) {
+						thumb.click(); // ✅ ALWAYS correct image
+					}
+				});
             },
             renderSizes() {
                 if(this.color) {
