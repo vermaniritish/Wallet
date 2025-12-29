@@ -99,9 +99,15 @@ if($('#product-page').length)
             selectColor(id, title) {
                 this.color = id;
                 this.colorTitle = title;
-                let c = $('.slider-thumb[data-item="'+id+'"]').index();
-                $('.product-image-slider').slick('slickGoTo', c);
-                $('.slider-nav-thumbnails').slick('slickGoTo', c); // Goes to 3rd slide
+                this.$nextTick(() => {
+					const thumb = document.querySelector(
+						'.slider-thumb[data-item="' + id + '"] img'
+					);
+
+					if (thumb) {
+						thumb.click();
+					}
+				});
             },
             renderSizes() {
                 if(this.color) {
