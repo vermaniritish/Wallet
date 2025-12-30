@@ -139,7 +139,7 @@
 											data-type="image"
 											data-multiple="false"
 											data-path="sliders"
-											:data-resize-large="type == 'main' ? '1500*842' : (type == 'right_top' ? '306*306' : '306*306')"
+											:data-resize-large="type == 'main' ? '1500*842' : (type == 'right_top' ? '600*600' : '600*600')"
 										>
 											<div class="upload-section">
 												<div class="button-ref mb-3">
@@ -148,8 +148,8 @@
 										                <span class="btn-inner--text">Upload Image</span>
 									              	</button>
 													<p v-if="type == 'main'"><small>Recomeded Size: 1500px * 842px</small></p>
-													<p v-else-if="type == 'right_top'"><small>Recomeded Size: 306px * 306px</small></p>
-													<p v-else="type == 'right_bottom'"><small>Recomeded Size: 306px * 306px</small></p>
+													<p v-else-if="type == 'right_top'"><small>Recomeded Size: 600px * 600px</small></p>
+													<p v-else="type == 'right_bottom'"><small>Recomeded Size: 600px * 600px</small></p>
 									            </div>
 									            <!-- PROGRESS BAR -->
 												<div class="progress d-none">
