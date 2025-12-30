@@ -44,8 +44,8 @@
             </div>
             <div class="col-lg-3 d-md-none d-lg-block">
                 @if($rightTopSlide)
-                <div class="banner-img banner-1 wow fadeIn  animated home-3">
-                    <img class="border-radius-10" src="{{ url($rightTopSlide->image) }}" alt="">
+                <div class="banner-img banner-1 wow fadeIn  animated home-3 w-100">
+                    <img class="border-radius-10 w-100" src="{{ url($rightTopSlide->image) }}" alt="">
                     <div class="banner-text">
                         <span>{{$rightTopSlide->label}}</span>
                         <h4><?php echo nl2br($rightTopSlide->heading) ?></h4>
@@ -54,8 +54,8 @@
                 </div>
                 @endif
                 @if($rightBottomSlide)
-                <div class="banner-img banner-2 wow fadeIn  animated mb-0">
-                    <img class="border-radius-10" src="{{ url($rightBottomSlide->image) }}" alt="">
+                <div class="banner-img banner-2 wow fadeIn  animated mb-0 w-100">
+                    <img class="border-radius-10 w-100" src="{{ url($rightBottomSlide->image) }}" alt="">
                     <div class="banner-text">
                         <span>{{$rightBottomSlide->label}}</span>
                         <h4><?php echo nl2br($rightBottomSlide->heading) ?></h4>
