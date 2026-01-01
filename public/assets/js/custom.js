@@ -1235,8 +1235,8 @@ async function getSizeColorByProduct()
     response = await response.json();
     if(response && response.status)
     {
-        $('#sizes-select').html(response.colors);
-        $('#colors-select').html(response.sizes);
+        $('#sizes-select').html(response.sizes);
+        $('#colors-select').html(response.colors);
         $('#sizes-select, #colors-select').selectpicker('refresh')
     }
     else
@@ -1244,8 +1244,12 @@ async function getSizeColorByProduct()
         $('#sizes-select, #colors-select').empty().selectpicker('refresh')
     }
 }
-$('body').on('change', '#product-select', async function() {
-    await getSizeColorByProduct();
-});
 
-getSizeColorByProduct();
+if($('#product-select').length)
+{
+    $('body').on('change', '#product-select', async function() {
+        await getSizeColorByProduct();
+    });
+
+    getSizeColorByProduct();
+}
