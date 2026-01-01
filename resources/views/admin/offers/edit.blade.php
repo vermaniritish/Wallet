@@ -71,8 +71,7 @@
 								</div>
 								<div class="form-group col-md-4">
 									<label class="form-control-label" for="input-first-name">Sizes</label>
-									<?php pr($page->sizes); die; ?>
-									<select class="form-control" name="sizes[]" multiple data-val="{{old('sizes', $page->sizes)}}">
+									<select class="form-control" name="sizes[]" multiple data-val="{{old('sizes', $page->sizes ? implode(',',$page->sizes) : '')}}">
 									</select>
 									@error('sizes')
 										<small class="text-danger">{{ $message }}</small>
@@ -80,7 +79,7 @@
 								</div>
 								<div class="form-group col-md-4">
 									<label class="form-control-label" for="input-first-name">Colors</label>
-									<select class="form-control" name="colors[]" multiple data-val="{{old('colors', $page->colors)}}">
+									<select class="form-control" name="colors[]" multiple data-val="{{old('colors', $page->colors ? implode(',',$page->colors) : '')}}">
 									</select>
 									@error('colors')
 										<small class="text-danger">{{ $message }}</small>
