@@ -39,6 +39,7 @@ const oneTimeProductObject = function(cart) {
         {
             for(let l of c.logo)
             {
+                console.log(l);
                 if(l.postion && l.category && (c.quantity*1 > 0) && l.image && l.image.trim() && imageCost == null) {
                     imageCost = oneTimeLogoCost;
                 }
@@ -195,16 +196,6 @@ if($('#product-page').length)
                     complete: function() {
                     }
                 });
-            },
-            isOffer()
-            {
-                for(let c of this.cart) {
-                    let of = window.offerPrice(c);
-                    console.log(of);
-                    if(of.haveOffer)
-                        return of;
-                }
-                return null;
             },
             async addToCart(buyNow) 
             {
@@ -512,16 +503,6 @@ else if($('#product-cat-page').length)
                     complete: function() {
                     }
                 });
-            },
-            isOffer()
-            {
-                for(let c of this.cart) {
-                    let of = window.offerPrice(c);
-                    console.log(of);
-                    if(of.haveOffer)
-                        return of;
-                }
-                return null;
             },
             async addToCart(buyNow) 
             {

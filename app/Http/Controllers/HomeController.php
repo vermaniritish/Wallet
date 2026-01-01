@@ -106,21 +106,37 @@ class HomeController extends BaseController
 				abort('404');
 			}
             $product->sizes = ProductSizeRelation::select([
-				'product_sizes.*', 
-				'sizes.vat', 
-				'products.title as title', 
-				'products.slug',
-				DB::raw('(CASE WHEN products.image is NOT NULL THEN products.image ELSE parent_product.image END) as image'),
-				'products.sku_number', 'colours.title as color'
-			])
-			->leftJoin('sizes', 'sizes.id', '=', 'product_sizes.size_id')
-            ->leftJoin('products', 'products.id', '=', 'product_sizes.product_id')
-			->leftJoin('products as parent_product', 'parent_product.id', '=', 'products.parent_id')
-			->leftJoin('schools', 'schools.id', '=', 'products.school_id')
-            ->leftJoin('colours', 'colours.id', '=', 'product_sizes.color_id')
-            ->where('product_id', $product->id)
-			->orderBy('sizes.sort_order', 'asc')
-			->get();
+					'product_sizes.*',
+					'sizes.vat',
+					'products.title as title',
+					'products.slug',
+					DB::raw('(CASE 
+						WHEN products.image IS NOT NULL 
+						THEN products.image 
+						ELSE parent_product.image 
+					END) as image'),
+					'products.sku_number',
+					'colours.title as color',
+					'offers.id as offer_id',
+				])
+				->leftJoin('sizes', 'sizes.id', '=', 'product_sizes.size_id')
+				->leftJoin('products', 'products.id', '=', 'product_sizes.product_id')
+				->leftJoin('products as parent_product', 'parent_product.id', '=', 'products.parent_id')
+				->leftJoin('schools', 'schools.id', '=', 'products.school_id')
+				->leftJoin('colours', 'colours.id', '=', 'product_sizes.color_id')
+
+				/* 🔥 OFFERS JOIN */
+				->leftJoin('offers', function ($join) {
+					$join->on('offers.product_id', '=', 'products.id')
+						->where('offers.status', 1)
+						->whereRaw('FIND_IN_SET(product_sizes.size_title, offers.sizes)')
+						->whereRaw('FIND_IN_SET(product_sizes.color_id, offers.colors)');
+				})
+
+				->where('product_sizes.product_id', $product->id)
+				->orderBy('sizes.sort_order', 'asc')
+				->get();
+			pr($product->sizes); die;
             $similarProducts = Products::select(
 				[
 					'products.id',
