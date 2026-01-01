@@ -10,7 +10,7 @@ use App\Models\Admin\Ratings;
 use App\Models\Admin\Sliders;
 use App\Models\Admin\ProductSubCategories;
 use App\Models\Admin\Users;
-use App\Models\Admin\Offer;
+use App\Models\Admin\Offers;
 use App\Models\Admin\Brands;
 use App\Models\Admin\ContactUs;
 use App\Models\Admin\Newsletter;
@@ -137,7 +137,7 @@ class HomeController extends BaseController
 				->values()
 				->toArray();
 			
-			$offer = Offer::where('product_id', $product->id)
+			$offer = Offers::where('product_id', $product->id)
 				->where('status', 1)
 				->where(function ($q) use ($sizeTitles) {
 					foreach ($sizeTitles as $size) {
