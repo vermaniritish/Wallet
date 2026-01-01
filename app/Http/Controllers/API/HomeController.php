@@ -37,6 +37,7 @@ use App\Models\Admin\Orders;
 use App\Models\Admin\Users;
 use App\Models\Admin\ProductSizeRelation;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 
 class HomeController extends AppController
 {
