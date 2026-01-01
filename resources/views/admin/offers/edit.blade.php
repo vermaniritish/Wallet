@@ -71,6 +71,7 @@
 								</div>
 								<div class="form-group col-md-4">
 									<label class="form-control-label" for="input-first-name">Sizes</label>
+									<?php pr($page->sizes); die; ?>
 									<select class="form-control" name="sizes[]" multiple data-val="{{old('sizes', $page->sizes)}}">
 									</select>
 									@error('sizes')
