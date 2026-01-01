@@ -10,6 +10,9 @@
 		<a href="{{ route('admin.products.view', ['id' => $row->product_id]) }}">
 			{{ $row->product_id }}
 		</a>
+		@if($row->is_offer)
+		<p class="small"><span class="text-muted">Offer Applied:</span>{{$row->offer_description}}</p>
+		@endif
 	</td>
 	<td>
 		<?php echo $row->product_title ?>

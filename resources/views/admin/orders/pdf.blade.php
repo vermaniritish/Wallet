@@ -131,7 +131,9 @@ $currency = Settings::get('currency_symbol');
                                 {{$row->product->school->name ?? ''}},
                                 {{$row->product_title}},
                                 {{$row->sku_number}}
-
+                                @if($row->is_offer)
+                                <p class="small"><span class="text-muted">Offer Applied:</span>{{$row->offer_description}}</p>
+                                @endif
                                 @if($row->logo_data)
                                     @foreach($row->logo_data as $logoD)
                                         <table style="border:1px solid #c7a162;width: 100%; line-height: inherit; text-align: left;font-size:12px;">
