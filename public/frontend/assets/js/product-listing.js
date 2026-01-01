@@ -513,6 +513,16 @@ else if($('#product-cat-page').length)
                     }
                 });
             },
+            isOffer()
+            {
+                for(let c of this.cart) {
+                    let of = window.offerPrice(c);
+                    console.log(of);
+                    if(of.haveOffer)
+                        return of;
+                }
+                return null;
+            },
             async addToCart(buyNow) 
             {
                 if(this.nonExchangeable && !this.accept) {
