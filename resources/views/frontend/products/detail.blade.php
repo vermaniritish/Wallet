@@ -99,7 +99,7 @@ $nonExchange = $product->non_exchange || $product->sizes->filter(function ($size
                                             
                                             <span class="font-small ml-5 text-muted"> SKU:<span class="in-stock text-success ml-5">{{$product->sku_number}}</span></span>
                                         </div>
-                                        <div class="pro-details-brand" v-if="isOffer()"><img src="{{ url('/frontend/assets/imgs/offer2.png') }}" style="height:50px;" alt="Offer"><br/><span>Offer:<span class="in-stock text-danger ml-5"> Offer Description</span><span</div></div>
+                                        <!-- <div class="pro-details-brand" v-if="isOffer()"><img src="{{ url('/frontend/assets/imgs/offer2.png') }}" style="height:50px;" alt="Offer"><br/><span>Offer:<span class="in-stock text-danger ml-5"> Offer Description</span><span</div></div> -->
                                     </div>
                                     @if($product->printed_logo || $product->embroidered_logo)
                                         <p>
