@@ -200,6 +200,7 @@ if($('#product-page').length)
             {
                 for(let c of this.cart) {
                     let of = window.offerPrice(c);
+                    console.log(of);
                     if(of.haveOffer)
                         return of;
                 }
