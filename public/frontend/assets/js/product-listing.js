@@ -936,7 +936,6 @@ var minicart = new Vue({
                 },
                 minLength: 2,
                 select: function (event, ui) {
-                    alert(ui.item.slug);
                     window.location.href = '/' + ui.item.slug;
                 }
             }).data("ui-autocomplete")._renderItem = function (ul, item) {
