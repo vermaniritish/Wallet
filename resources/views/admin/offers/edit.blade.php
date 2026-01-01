@@ -72,9 +72,6 @@
 								<div class="form-group col-md-4">
 									<label class="form-control-label" for="input-first-name">Sizes</label>
 									<select class="form-control" name="sizes[]" multiple data-val="{{old('sizes', $page->sizes)}}">
-										<?php foreach($sizes as $p): ?>
-											<option {{ old('sizes', $page->sizes) && in_array($p->size_title, old('sizes', $page->sizes)) ? ' selected ' : '' }}>{{ $p->size_title }}</option>
-										<?php endforeach; ?>
 									</select>
 									@error('sizes')
 										<small class="text-danger">{{ $message }}</small>
@@ -83,9 +80,6 @@
 								<div class="form-group col-md-4">
 									<label class="form-control-label" for="input-first-name">Colors</label>
 									<select class="form-control" name="colors[]" multiple data-val="{{old('colors', $page->colors)}}">
-										<?php foreach($colors as $p): ?>
-											<option value="{{ $p->id }}" {{ old('colors', $page->colors) && in_array($p->id, old('colors', $page->colors)) ? ' selected ' : '' }}>{{ $p->title }} - {{ $p->color_code }}</option>
-										<?php endforeach; ?>
 									</select>
 									@error('colors')
 										<small class="text-danger">{{ $message }}</small>
