@@ -7,7 +7,7 @@ window.offerPrice = function(item) {
             {
                 if((offer.offer_total_price*1) > 0 && item.quantity == offer.quantity)
                 {
-                    return {price: offer.offer_total_price*1, freeLogo: 0, haveOffer: true };
+                    return {price: offer.offer_total_price*1, freeLogo: 0, haveOffer: true, description: offer.description };
                 }
             }
             
@@ -15,7 +15,7 @@ window.offerPrice = function(item) {
             {
                 if(item.quantity == offer.quantity)
                 {
-                    return {price: item.quantity*item.price, freeLogo: (offer.free_logo*1), haveOffer: false };
+                    return {price: item.quantity*item.price, freeLogo: (offer.free_logo*1), haveOffer: false, description: offer.description  };
                 }
             }
         }
@@ -39,7 +39,6 @@ const oneTimeProductObject = function(cart) {
         {
             for(let l of c.logo)
             {
-                console.log(l);
                 if(l.postion && l.category && (c.quantity*1 > 0) && l.image && l.image.trim() && imageCost == null) {
                     imageCost = oneTimeLogoCost;
                 }
@@ -196,6 +195,15 @@ if($('#product-page').length)
                     complete: function() {
                     }
                 });
+            },
+            isOffer()
+            {
+                for(let c of this.cart) {
+                    let of = window.offerPrice(c);
+                    if(of.haveOffer)
+                        return of;
+                }
+                return null;
             },
             async addToCart(buyNow) 
             {

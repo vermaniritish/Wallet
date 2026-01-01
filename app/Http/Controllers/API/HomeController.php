@@ -397,7 +397,7 @@ class HomeController extends AppController
 			$colorImages = Products::select(['color_images'])->where('id', $c['product_id'])->limit(1)->pluck('color_images')->first();
 			$colorImages = $colorImages ? $colorImages : null;
 			
-			$offer = Offers::select(['type', 'quantity', 'offer_total_price', 'free_logo'])
+			$offer = Offers::select(['type', 'description', 'quantity', 'offer_total_price', 'free_logo'])
 				->where('product_id', $c['product_id'])
 				->whereRaw('FIND_IN_SET(?, colors)', [$c['color_id']])
 				->whereRaw('FIND_IN_SET(?, sizes)', [$c['size_title']])
