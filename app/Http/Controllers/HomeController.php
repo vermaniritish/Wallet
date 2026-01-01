@@ -10,6 +10,7 @@ use App\Models\Admin\Ratings;
 use App\Models\Admin\Sliders;
 use App\Models\Admin\ProductSubCategories;
 use App\Models\Admin\Users;
+use App\Models\Admin\Offer;
 use App\Models\Admin\Brands;
 use App\Models\Admin\ContactUs;
 use App\Models\Admin\Newsletter;
