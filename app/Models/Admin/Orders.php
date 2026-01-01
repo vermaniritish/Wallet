@@ -74,8 +74,7 @@ class Orders extends AppModel
     */
     public function products()
     {
-        return $this->belongsToMany(Products::class, 'order_products', 'order_id', 'product_id')
-            ->withPivot('product_title', 'sku_number', 'quantity','amount','product_description');
+        return $this->belongsToMany(Products::class, 'order_products', 'order_id', 'product_id');
     }
 
     /**
@@ -388,14 +387,7 @@ class Orders extends AppModel
                             'last_name'
                         ]);
                 },
-                'products' => function($query) {
-                    $query->select([
-                            'products.id',
-                            'title',
-                            'amount',
-                            'quantity',
-                        ]);
-                },
+                'products',
             ])
             ->first();
 
