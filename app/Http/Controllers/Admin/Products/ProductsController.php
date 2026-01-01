@@ -31,9 +31,9 @@ use Illuminate\Support\Str;
 use App\Libraries\FileSystem;
 use App\Http\Controllers\Admin\AppController;
 use App\Models\Admin\BrandProducts;
+use App\Models\Admin\ProductSizeRelation;
 use App\Models\Admin\Brands;
 use App\Models\Admin\Colours;
-use App\Models\Admin\ProductSizeRelation;
 use App\Models\Admin\ProductSubCategories;
 use App\Models\Admin\ProductSubCategoryRelation;
 use App\Models\Admin\Sizes;
@@ -716,7 +716,7 @@ class ProductsController extends AppController
 
 	function sizesColors(Request $request, $id)
 	{
-		$sizes = ProductSizes::select([
+		$sizes = ProductSizeRelation::select([
 			'size_title',
 			'color_id',
 			'colors.title as color'
