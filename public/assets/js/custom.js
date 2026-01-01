@@ -1228,6 +1228,7 @@ function downloadLabel(id, sm)
 }
 
 $('body').on('change', '#product-select', async function() {
+    let id = $(this).val();
     let response = await fetch(admin_url + `/products/${id}/sizes-colors`);
     response = await response.json();
     if(response && response.status)
