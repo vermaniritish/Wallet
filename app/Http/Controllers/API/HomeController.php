@@ -289,7 +289,8 @@ class HomeController extends AppController
 						$image = isset($c['image']) && $c['image'] ? json_decode($c['image'], true) : null;
 						$image = $image && is_array($image) ? $image[0] : $image;
 						$logo = isset($c['customization']) && $c['customization'] ? $c['customization'] : (isset($c['logo']) ? $c['logo'] : []);
-						$finalProPrice = $this->offerPrice($c)['price'];
+						$offer = $this->offerPrice($c);
+						$finalProPrice = $offer['price'];
 						$proTax = isset($c['vat']) && $c['vat'] ? 0 : ($finalProPrice * $taxPerc)/100;
 						$deductedTax += $proTax;
 						$products[] = [
@@ -307,7 +308,9 @@ class HomeController extends AppController
 							'non_exchange' => isset($c['non_exchange']) && $c['non_exchange'] ? 1 : 0,
 							'image' => $image,
 							'tax' => $proTax,
-							'final_price' => $finalProPrice
+							'final_price' => $finalProPrice,
+							'is_offer' => $offer['haveOffer'] ? 1 : 0,
+							'offer_description' => $offer['description'] ? $offer['description'] : null
 						];
 						
 						
@@ -427,7 +430,7 @@ class HomeController extends AppController
 				{
 					if(($offer['offer_total_price']*1) > 0 && $item['quantity'] == $offer['quantity'])
 					{
-						return ['price' => $offer['offer_total_price']*1, 'freeLogo' => 0, 'haveOffer' => true ];
+						return ['price' => $offer['offer_total_price']*1, 'freeLogo' => 0, 'haveOffer' => true, 'description' => $offer['description'] ];
 					}
 				}
 				
@@ -435,13 +438,13 @@ class HomeController extends AppController
 				{
 					if($item['quantity'] == $offer['quantity'])
 					{
-						return ['price' => $item['quantity']*$item['price'], 'freeLogo' => ($offer['free_logo']*1), 'haveOffer' => false ];
+						return ['price' => $item['quantity']*$item['price'], 'freeLogo' => ($offer['free_logo']*1), 'haveOffer' => false, 'description' => $offer['description'] ];
 					}
 				}
 			}
 		}
 		
-		return ['price' => $item['quantity']*$item['price'], 'freeLogo'=> 0, 'haveOffer'=> false ];
+		return ['price' => $item['quantity']*$item['price'], 'freeLogo'=> 0, 'haveOffer'=> false, 'description' => null ];
 	}
 
 	protected function calculateLogoCost($cart)
