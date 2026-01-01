@@ -1,4 +1,4 @@
-<?php foreach($listing->items() as $k => $row): pr($row->toArray()); die; ?>
+<?php foreach($listing->items() as $k => $row): ?>
 <tr class="table-borderless">
 	<td>
 		<div class="custom-control custom-checkbox">
