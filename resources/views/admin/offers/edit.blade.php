@@ -59,7 +59,7 @@
 							<div class="row my-2">
 								<div class="form-group col-md-4">
 									<label class="form-control-label" for="input-first-name">Product</label>
-									<select class="form-control" name="product_id">
+									<select id="product-select" class="form-control" name="product_id">
 										<option value=""></option>
 										<?php foreach($products as $p): ?>
 											<option value="{{ $p->id }}" <?php echo (old('product_id', $page->product_id) == $p->id ? ' selected ' : '') ?>>{{ $p->title }} - {{ $p->sku_number }}</option>
@@ -71,7 +71,7 @@
 								</div>
 								<div class="form-group col-md-4">
 									<label class="form-control-label" for="input-first-name">Sizes</label>
-									<select class="form-control" name="sizes[]" multiple data-val="{{old('sizes', $page->sizes ? implode(',',$page->sizes) : '')}}">
+									<select id="sizes-select" class="form-control" name="sizes[]" multiple data-val="{{old('sizes', $page->sizes ? implode(',',$page->sizes) : '')}}">
 									</select>
 									@error('sizes')
 										<small class="text-danger">{{ $message }}</small>
@@ -79,7 +79,7 @@
 								</div>
 								<div class="form-group col-md-4">
 									<label class="form-control-label" for="input-first-name">Colors</label>
-									<select class="form-control" name="colors[]" multiple data-val="{{old('colors', $page->colors ? implode(',',$page->colors) : '')}}">
+									<select id="colors-select" class="form-control" name="colors[]" multiple data-val="{{old('colors', $page->colors ? implode(',',$page->colors) : '')}}">
 									</select>
 									@error('colors')
 										<small class="text-danger">{{ $message }}</small>
