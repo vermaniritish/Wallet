@@ -35,6 +35,9 @@ Route::post('/products/bulkActions/{action}', '\App\Http\Controllers\Admin\Produ
 Route::get('/products/{id}/delete', '\App\Http\Controllers\Admin\Products\ProductsController@delete')
     ->name('admin.products.delete');
 
+Route::get('/products/{id}/sizes-colors', '\App\Http\Controllers\Admin\Products\ProductsController@sizesColors')
+    ->name('admin.products.sizesColors');
+
 Route::get('/products/getSize/{gender}', [ProductsController::class, 'getSize'])->name('admin.products.getSize');
 Route::get('/products/getSubCategory/{category}', [ProductsController::class, 'getSubCategory'])->name('admin.products.getSubCategory');
 

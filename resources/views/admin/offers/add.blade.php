@@ -58,7 +58,7 @@
 							<div class="row my-2">
 								<div class="form-group col-md-4">
 									<label class="form-control-label" for="input-first-name">Product</label>
-									<select class="form-control" name="product_id">
+									<select id="product-select" class="form-control" name="product_id">
 										<option value=""></option>
 										<?php foreach($products as $p): ?>
 											<option value="{{ $p->id }}" <?php echo (old('product_id') == $p->id ? ' selected ' : '') ?>>{{ $p->title }} - {{ $p->sku_number }}</option>
@@ -70,10 +70,8 @@
 								</div>
 								<div class="form-group col-md-4">
 									<label class="form-control-label" for="input-first-name">Sizes</label>
-									<select class="form-control" name="sizes[]" multiple>
-										<?php foreach($sizes as $p): ?>
-											<option {{ old('sizes') && in_array($p->size_title, old('sizes')) ? ' selected ' : '' }}>{{ $p->size_title }}</option>
-										<?php endforeach; ?>
+									<select id="sizes-select" class="form-control" name="sizes[]" multiple>
+										
 									</select>
 									@error('sizes')
 										<small class="text-danger">{{ $message }}</small>
@@ -81,10 +79,8 @@
 								</div>
 								<div class="form-group col-md-4">
 									<label class="form-control-label" for="input-first-name">Colors</label>
-									<select class="form-control" name="colors[]" multiple>
-										<?php foreach($colors as $p): ?>
-											<option value="{{ $p->id }}" {{ old('colors') && in_array($p->id, old('colors')) ? ' selected ' : '' }}>{{ $p->title }} - {{ $p->color_code }}</option>
-										<?php endforeach; ?>
+									<select id="colors-select" class="form-control" name="colors[]" multiple>
+										
 									</select>
 									@error('colors')
 										<small class="text-danger">{{ $message }}</small>

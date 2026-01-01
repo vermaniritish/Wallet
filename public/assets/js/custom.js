@@ -1226,3 +1226,18 @@ function downloadLabel(id, sm)
 {
     window.open(shop_url + `/dpd-label?sn=${sm}&id=${id}`);
 }
+
+$('body').on('change', 'product-select', async function() {
+    let response = await fetch(admin_url + `/products/${id}/sizes-colors`);
+    response = await response.json();
+    if(response && response.status)
+    {
+        $('#sizes-select').html(response.colors);
+        $('#colors-select').html(response.sizes);
+        $('#sizes-select, #colors-select').selectpicker('refresh')
+    }
+    else
+    {
+        $('#sizes-select, #colors-select').empty().selectpicker('refresh')
+    }
+});

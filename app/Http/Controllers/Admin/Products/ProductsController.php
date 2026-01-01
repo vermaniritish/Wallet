@@ -713,4 +713,45 @@ class ProductsController extends AppController
 			], 400);
 		}
 	}
+
+	function sizesColors(Request $request, $id)
+	{
+		$sizes = ProductSizes::select([
+			'size_title',
+			'color_id',
+			'colors.title as color'
+		])
+		->leftJoin('colors', 'colors.id', '=', 'product_sizes.color_id')
+		->where('product_sizes.product_id', $id)
+		->get();
+
+		$sizeArray = $sizes->pluck('size_title')->unique()->values()->toArray();
+		$colorArray = $sizes
+			->unique('color_id')
+			->map(function ($item) {
+				return [
+					'id' => $item->color_id,
+					'title' => $item->color,
+				];
+			})
+			->values()
+			->toArray();
+
+		$colorHtml = $sizeHtml = "<option value=''></option>";
+		foreach($sizeArray as $option)
+		{
+			$sizeHtml .= "<option>{$option}</option>";
+		}
+
+		foreach($colorArray as $option)
+		{
+			$colorHtml .= "<option value=\"{$option['id']}\">{$option['title']}</option>";
+		}
+		
+		return Response()->json([
+			'status' => true,
+			'colors' => $colorHtml,
+			'sizes' => $sizeHtml,
+		]);
+	}
 }
