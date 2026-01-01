@@ -137,7 +137,7 @@ class HomeController extends BaseController
 				->values()
 				->toArray();
 			
-			$offer = Offers::where('product_id', $product->id)
+			$offer = Offers::select(['id', 'description', 'title'])->where('product_id', $product->id)
 				->where('status', 1)
 				->where(function ($q) use ($sizeTitles) {
 					foreach ($sizeTitles as $size) {
@@ -151,9 +151,6 @@ class HomeController extends BaseController
 				})
 				->limit(1)
 				->first();
-
-			pr($offer); die;
-
             $similarProducts = Products::select(
 				[
 					'products.id',
@@ -192,6 +189,7 @@ class HomeController extends BaseController
                 'product' => $product,
 				'isUniformPage' => $product->school_id,
                 'similarProducts' => $similarProducts,
+				'offer' => $offer,
                 'logoOptions' => [
                     'category' => $logooption,
                     'positions' => json_decode(Settings::get('logo_positions')),
