@@ -51,7 +51,7 @@ class HomeController extends AppController
 		if($request->get('topSerach') && $request->get('search'))
 		{
 			$schools = Schools::select(['id', 'schooltype', 'name', 'logo'])
-				->whereRaw('REPLACE(name," ", "") LIKE ?', ["%".str_replace(" ", "",$request->get('search'))."&"])
+				->whereRaw('REPLACE(name," ", "") LIKE ?', ["%".str_replace(" ", "",$request->get('search'))."%"])
 				->where('status', 1)
 				->where('website_visible', 1)
 				->limit(20)
