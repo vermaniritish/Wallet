@@ -42,6 +42,13 @@
 								    <small class="text-danger">{{ $message }}</small>
 								@enderror
 							</div>
+							<div class="form-group">
+								<label class="form-control-label" for="input-first-name">Description</label>
+								<input type="text" class="form-control" name="description" required placeholder="Description" value="{{ old('description', $page->description) }}">
+								@error('description')
+								    <small class="text-danger">{{ $message }}</small>
+								@enderror
+							</div>
 							<div class="row my-2">
 								<div class="col-md-12">
 									<label class="form-control-label" for="input-first-name">Offer Type</label>
