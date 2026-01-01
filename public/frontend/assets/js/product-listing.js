@@ -923,7 +923,7 @@ var minicart = new Vue({
                                             price: null,
                                             sku: null,
                                             image: item.logo || '/frontend/assets/imgs/shop/product-2-2.jpg',
-                                            slug: `/school/`+item.slug+`/uniforms`
+                                            slug: `school/`+item.slug+`/uniforms`
                                         };
                                     })
                                 }
