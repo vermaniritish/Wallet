@@ -719,9 +719,9 @@ class ProductsController extends AppController
 		$sizes = ProductSizeRelation::select([
 			'size_title',
 			'color_id',
-			'colors.title as color'
+			'colours.title as color'
 		])
-		->leftJoin('colors', 'colors.id', '=', 'product_sizes.color_id')
+		->leftJoin('colours', 'colours.id', '=', 'product_sizes.color_id')
 		->where('product_sizes.product_id', $id)
 		->get();
 
