@@ -46,7 +46,7 @@
                         <span class="old-price" v-if="offerPrice(c).price < (c.quantity * c.price)">£@{{(c.quantity * c.price).toFixed(2)}}</span>
                         <span v-else>£@{{(c.quantity * c.price).toFixed(2)}}</span>
                         <span class="discount-price" v-if="offerPrice(c).price < (c.quantity * c.price)">£@{{(offerPrice(c).price).toFixed(2)}}</span>
-                        <p v-if="offerPrice(c).description">${{offerPrice(c).description}}</p>
+                        <p v-if="offerPrice(c).description">@{{offerPrice(c).description}}</p>
                     </td>
                 </tr>
                 <tr>
