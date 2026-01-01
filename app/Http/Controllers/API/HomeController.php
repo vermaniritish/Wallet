@@ -54,12 +54,13 @@ class HomeController extends AppController
 				->whereRaw('REPLACE(name," ", "") LIKE ?', [str_replace(" ", "",$request->get('search'))])
 				->where('status', 1)
 				->where('website_visible', 1)
-				->limit(20)
-				->get()
-				->map(function ($s) {
-					$s->slug = Str::slug($s->name . ' ' . $s->id);
-					return $s;
-				});
+				->limit(20);
+			pr($schools->toSql()); die;
+				// ->get()
+				// ->map(function ($s) {
+				// 	$s->slug = Str::slug($s->name . ' ' . $s->id);
+				// 	return $s;
+				// });
 		}
 
 		$where = ['products.status' => 1];
