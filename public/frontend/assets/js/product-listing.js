@@ -890,21 +890,44 @@ var minicart = new Vue({
                         type: 'GET',
                         dataType: 'json',
                         data: {
-                            search: request.term
+                            search: request.term,
+                            topSerach: '1'
                         },
                         success: function (data) {
-                            if (data.status && data.products) {
-                                response($.map(data.products, function (item) {
-                                    return {
-                                        label: item.title,
-                                        value: item.title,
-                                        id: item.id,
-                                        price: item.price,
-                                        sku: item.sku_number,
-                                        image: item.image?.[0]?.small || '/frontend/assets/imgs/shop/product-2-2.jpg',
-                                        slug: item.slug
-                                    };
-                                }));
+                            if (data.status) {
+                                let products = [];
+                                let schools = []
+                                if(data.products)
+                                {
+                                    products = $.map(data.products, function (item) {
+                                        return {
+                                            label: item.title,
+                                            value: item.title,
+                                            desc: null,
+                                            id: item.id,
+                                            price: item.price,
+                                            sku: item.sku_number,
+                                            image: item.image?.[0]?.small || '/frontend/assets/imgs/shop/product-2-2.jpg',
+                                            slug: item.slug
+                                        };
+                                    })
+                                }
+                                if(data.schools)
+                                {
+                                    schools = $.map(data.schools, function (item) {
+                                        return {
+                                            label: item.name,
+                                            value: item.name,
+                                            desc: item.schooltype,
+                                            id: item.id,
+                                            price: null,
+                                            sku: null,
+                                            image: item.logo || '/frontend/assets/imgs/shop/product-2-2.jpg',
+                                            slug: `/school/`+item.slug+`/uniforms`
+                                        };
+                                    })
+                                }
+                                response([...schools, ...products]);
                             } else {
                                 response([]);
                             }
@@ -922,8 +945,9 @@ var minicart = new Vue({
                             <img src="${item.image}" alt="${item.label}">
                             <div>
                                 <div class="autocomplete-product-title">${item.label}</div>
-                                <div class="autocomplete-product-price">₹${item.price}</div>
-                                <div class="autocomplete-product-sku">SKU: ${item.sku}</div>
+                                ${item.desc ? `<div class="autocomplete-product-sku">${item.desc}</div>` : ``}
+                                ${item.price ? `<div class="autocomplete-product-price">₹${item.price}</div>` :``}
+                                ${item.sku ? `<div class="autocomplete-product-sku">SKU: ${item.sku}</div>` : ``}
                             </div>
                         </div>
                     `)

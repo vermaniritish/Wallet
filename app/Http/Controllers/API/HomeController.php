@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use App\Models\Admin\Settings;
 use App\Models\Admin\Coupons;
+use App\Models\Admin\Schools;
 use App\Libraries\General;
 use App\Libraries\PositionStack;
 use App\Models\API\SearchSugessions;
@@ -46,6 +47,21 @@ class HomeController extends AppController
 
 	function productsListing(Request $request)
 	{
+		$schools = [];
+		if($request->get('topSerach') && $request->get('search'))
+		{
+			$schools = Schools::select(['id', 'schooltype', 'name', 'logo'])
+				->whereRaw('REPLACE(name," ", "") LIKE ?', [str_replace(" ", "",$request->get('search'))])
+				->where('status', 1)
+				->where('website_visible', 1)
+				->limit(20)
+				->get()
+				->map(function ($s) {
+					$s->slug = Str::slug($s->name . ' ' . $s->id);
+					return $s;
+				});
+		}
+
 		$where = ['products.status' => 1];
 		if($request->get('school_id'))
 			$where['products.school_id'] = $request->get('school_id');
@@ -61,6 +77,7 @@ class HomeController extends AppController
 		return Response()->json([
 			'status' => true,
 			'products' => $items,
+			'schools' => $schools,
 			'page' => $products->currentPage(),
 			'counter' => $products->perPage(),
 			'count' => $products->total(),
