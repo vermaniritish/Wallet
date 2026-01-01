@@ -231,7 +231,6 @@ class OffersController extends AppController
 	    	if($request->isMethod('post'))
 	    	{
 	    		$data = $request->toArray();
-				pr($data); die;
 	    		$validator = Validator::make(
 		            $request->toArray(),
 		            [
