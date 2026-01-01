@@ -16,6 +16,7 @@ $currency = Settings::get('currency_symbol');
     .total-row { background: #f7eddd; font-weight: 700; border-top: 1px solid #c7a162; }
     .right { text-align: right; }
     .center { text-align: center; }
+    .small{font-size: 11px}
 </style>
 
 <div class="invoice-container">
@@ -132,7 +133,7 @@ $currency = Settings::get('currency_symbol');
                                 {{$row->product_title}},
                                 {{$row->sku_number}}
                                 @if($row->is_offer)
-                                <p class="small"><span class="text-muted">Offer Applied:</span>{{$row->offer_description}}</p>
+                                <p class="small"><span class="text-muted small">Offer:</span>{{$row->offer_description}}</p>
                                 @endif
                                 @if($row->logo_data)
                                     @foreach($row->logo_data as $logoD)
