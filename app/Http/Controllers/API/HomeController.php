@@ -290,7 +290,7 @@ class HomeController extends AppController
 						$image = $image && is_array($image) ? $image[0] : $image;
 						$logo = isset($c['customization']) && $c['customization'] ? $c['customization'] : (isset($c['logo']) ? $c['logo'] : []);
 						$finalProPrice = $this->offerPrice($c)['price'];
-						$proTax = isset($c['vat']) && $c['vat'] ? ($finalProPrice * $taxPerc)/100 : 0;
+						$proTax = isset($c['vat']) && $c['vat'] ? 0 : ($finalProPrice * $taxPerc)/100;
 						$deductedTax += $proTax;
 						$products[] = [
 							'order_id' => $order->id,
