@@ -70,7 +70,7 @@
 								</div>
 								<div class="form-group col-md-4">
 									<label class="form-control-label" for="input-first-name">Sizes</label>
-									<select id="sizes-select" class="form-control" name="sizes[]" multiple>
+									<select id="sizes-select" class="form-control" name="sizes[]" multiple data-val="{{old('sizes')}}">
 										
 									</select>
 									@error('sizes')
@@ -79,7 +79,7 @@
 								</div>
 								<div class="form-group col-md-4">
 									<label class="form-control-label" for="input-first-name">Colors</label>
-									<select id="colors-select" class="form-control" name="colors[]" multiple>
+									<select id="colors-select" class="form-control" name="colors[]" multiple data-val="{{old('colors')}}">
 										
 									</select>
 									@error('colors')

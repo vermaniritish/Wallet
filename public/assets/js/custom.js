@@ -1227,9 +1227,11 @@ function downloadLabel(id, sm)
     window.open(shop_url + `/dpd-label?sn=${sm}&id=${id}`);
 }
 
-$('body').on('change', '#product-select', async function() {
-    let id = $(this).val();
-    let response = await fetch(admin_url + `/products/${id}/sizes-colors`);
+
+async function getSizeColorByProduct() 
+{
+    let id = $('#product-select').val();
+    let response = await fetch(admin_url + `/products/${id}/sizes-colors?size=`+$('#sizes-select').attr('data-val')+"&color_id="+$('#colors-select').attr('data-val'));
     response = await response.json();
     if(response && response.status)
     {
@@ -1241,4 +1243,9 @@ $('body').on('change', '#product-select', async function() {
     {
         $('#sizes-select, #colors-select').empty().selectpicker('refresh')
     }
+}
+$('body').on('change', '#product-select', async function() {
+    await getSizeColorByProduct();
 });
+
+getSizeColorByProduct();

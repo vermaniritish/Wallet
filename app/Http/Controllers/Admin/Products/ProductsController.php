@@ -738,14 +738,19 @@ class ProductsController extends AppController
 			->toArray();
 
 		$colorHtml = $sizeHtml = "<option value=''></option>";
+
+		$selected = $request->get('size');
+		$selected = $selected ? explode(",", $selected) : [];
 		foreach($sizeArray as $option)
 		{
-			$sizeHtml .= "<option>{$option}</option>";
+			$sizeHtml .= "<option ".(in_array($option,$selected) ? 'selected="selected"' : '').">{$option}</option>";
 		}
 
+		$selected = $request->get('color_id');
+		$selected = $selected ? explode(",", $selected) : [];
 		foreach($colorArray as $option)
 		{
-			$colorHtml .= "<option value=\"{$option['id']}\">{$option['title']}</option>";
+			$colorHtml .= "<option ".(in_array($option['id'],$selected) ? 'selected="selected"' : '')." value=\"{$option['id']}\">{$option['title']}</option>";
 		}
 		
 		return Response()->json([
