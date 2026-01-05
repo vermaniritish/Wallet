@@ -180,7 +180,7 @@ class Products extends AdminProducts
             $genders = explode(',', $request->get('gender'));
             $listing->where(function($query) use($genders)  {
                 foreach($genders as $g) {
-                    $query->orWhere('gender', 'LIKE', $g);
+                    $query->orWhere('products.gender', 'LIKE', $g);
                 }
                 return $query; 
             });
