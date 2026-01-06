@@ -3,7 +3,7 @@ use App\Models\Admin\Sliders;
 use App\Models\API\Products;
 $rightTopSlide = Sliders::where('status',1)->orderByRaw('RAND()')->where('type', 'right_top')->limit(1)->first();
 $rightBottomSlide = Sliders::where('status',1)->orderByRaw('RAND()')->where('type', 'right_bottom')->limit(1)->first();	
-$newProducts = Products::getListing($request, [
+$newProducts = Products::getListing(request(), [
     'products.status' => 1,
     'products.website_visible' => 1,
     '(products.id IN ('.implode(',', $cids).'))'
