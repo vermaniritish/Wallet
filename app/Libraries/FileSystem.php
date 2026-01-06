@@ -77,25 +77,28 @@ class FileSystem
 	public static function resizeImage($file, $name, $size)
 	{
 		$path = FileSystem::getOnlyPath($file);
-		$path = $path . '/' . $name;
-		$size = explode('*', $size);
-		
-		// ResizeImage::make(public_path($file))
-		// 	->fit($size[0], $size[1], function ($constraint) {
-		// 	    $constraint->upsize();
-		// 	})
-		// 	->save(public_path($path));
 
-		$width = $size[0];
+		// force webp extension
+		$name = pathinfo($name, PATHINFO_FILENAME) . '.webp';
+		$path = $path . '/' . $name;
+
+		$size = explode('*', $size);
+		$width  = $size[0];
 		$height = $size[1];
+
 		$img = ResizeImage::make(public_path($file));
 		$img->orientate();
-		$img->height() > $img->width() ? $width=null : $height=null;
+
+		// Auto resize based on orientation
+		$img->height() > $img->width() ? $width = null : $height = null;
+
 		$img->resize($width, $height, function ($constraint) {
-		    $constraint->aspectRatio();
+			$constraint->aspectRatio();
+			$constraint->upsize();
 		})
+		->encode('webp', 90) // 85 = quality (0–100)
 		->save(public_path($path));
-		
+
 		return file_exists(public_path($path)) ? $path : null;
 	}
 
