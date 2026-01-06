@@ -266,7 +266,7 @@ $currency = Settings::get('currency_symbol');
 									<td><?php echo $page->parcels ? $page->parcels : '-' ?></td>
 								</tr>
 								<tr>
-									<th>Tracnking Number</th>
+									<th>Tracking Number</th>
 									<td><?php echo $page->shipment_tracking ? ($page->shipment_tracking) : '-' ?></td>
 								</tr>
 								@if($page->shipping_gateway == 'DPD' && $page->shipment_tracking)
