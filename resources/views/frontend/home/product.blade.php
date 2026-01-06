@@ -3,16 +3,21 @@
         <div class="product-img-action-wrap">
             <div class="product-img product-img-zoom">
                 <a href="{{ url('/'.$product->slug) }}">
-                    @foreach($product->image as $k => $image)
-                        @if($k < 1)
-                        <img class="default-img" src="{{ $image && $image['small'] ? url($image['small']) : url('/frontend/assets/imgs/shop/product-3-1.jpg') }}" alt="product-img">
-                        @endif
-                    @endforeach
-                    @foreach($product->image as $k => $image)
-                        @if($k == 1)
-                        <img class="hover-img" src="{{ $image && $image['small'] ? url($image['small']) : url('/frontend/assets/imgs/shop/product-3-1.jpg') }}" alt="product-img">
-                        @endif
-                    @endforeach
+                    @if($product->image)
+                        @foreach($product->image as $k => $image)
+                            @if($k < 1)
+                            <img class="default-img" src="{{ $image && $image['small'] ? url($image['small']) : url('/frontend/assets/imgs/shop/product-3-1.jpg') }}" alt="product-img">
+                            @endif
+                        @endforeach
+                        @foreach($product->image as $k => $image)
+                            @if($k == 1)
+                            <img class="hover-img" src="{{ $image && $image['small'] ? url($image['small']) : url('/frontend/assets/imgs/shop/product-3-1.jpg') }}" alt="product-img">
+                            @endif
+                        @endforeach
+                    
+                    @else
+                        <img class="default-img" src="{{ url('/frontend/assets/imgs/shop/product-3-1.jpg') }}" alt="product-img">
+                    @endif
                 </a>
             </div>
             @if($product['sale_price'] && $product['sale_price'] > 0)
