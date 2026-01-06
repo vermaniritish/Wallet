@@ -1,6 +1,9 @@
 <?php
 use App\Models\Admin\Sliders;
+use App\Models\Admin\HomePage;
 use App\Models\API\Products;
+$cids = HomePage::get('new_arrivals');
+$cids = $cids ? json_decode($cids) : [-1];
 $rightTopSlide = Sliders::where('status',1)->orderByRaw('RAND()')->where('type', 'right_top')->limit(1)->first();
 $rightBottomSlide = Sliders::where('status',1)->orderByRaw('RAND()')->where('type', 'right_bottom')->limit(1)->first();	
 $newProducts = Products::getListing(request(), [
@@ -71,7 +74,7 @@ $newProducts = Products::getListing(request(), [
     </div>
     
     <!-- Product sidebar Widget -->
-    @if($newProducts)
+    @if($newProducts->count() > 0)
     <div class="sidebar-widget product-sidebar  mb-30 p-30 bg-grey border-radius-10">
         <div class="widget-header position-relative mb-20 pb-10">
             <h5 class="widget-title mb-10">New products</h5>
