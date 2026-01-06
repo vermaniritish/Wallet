@@ -66,15 +66,17 @@ class ActionsController extends AppController
 	    			{
 	    				$originalName = FileSystem::getFileNameFromPath($file);
 
-	    				if(isset($data['resize_large']) && $data['resize_large'])
-	    				{
-	    					FileSystem::resizeImage($file, $originalName, $data['resize_large']);
-	    				}
-	    				
-	    				if(isset($data['resize_small']) && $data['resize_small'])
+						if(isset($data['resize_small']) && $data['resize_small'])
 	    				{
 	    					FileSystem::resizeImage($file, 'S-' . $originalName, $data['resize_small']);
 	    				}
+						
+	    				if(isset($data['resize_large']) && $data['resize_large'])
+	    				{
+	    					$file = FileSystem::resizeImage($file, $originalName, $data['resize_large']);
+	    				}
+	    				
+	    				
 					}
 		    	}
 		    	else
