@@ -53,9 +53,10 @@ $newProducts = Products::getListing(request(), [
             <div class="content pt-10">
                 <h5><a href="{{ url('/'.$product->slug) }}">{{$product['title']}}</a></h5>
                 <p class="price mb-0 mt-5">{{_currency($product['price'])}}</p>
-                <div class="product-rate">
+                <p class="small">SKU: {{$product['sku_number']}}</p>
+                <!-- <div class="product-rate">
                     <div class="product-rating" style="width:90%"></div>
-                </div>
+                </div> -->
             </div>
         </div>
         @endforeach
