@@ -38,16 +38,21 @@ $newProducts = Products::getListing(request(), [
         <div class="single-post clearfix">
             <div class="image">
                 <a href="{{ url('/'.$product->slug) }}">
-                    @foreach($product->image as $k => $image)
-                        @if($k < 1)
-                        <img src="{{ $image && $image['small'] ? url($image['small']) : url('/frontend/assets/imgs/shop/product-3-1.jpg') }}" alt="product-img">
-                        @endif
-                    @endforeach
-                    @foreach($product->image as $k => $image)
-                        @if($k == 1)
-                        <img src="{{ $image && $image['small'] ? url($image['small']) : url('/frontend/assets/imgs/shop/product-3-1.jpg') }}" alt="product-img">
-                        @endif
-                    @endforeach
+                    @if($product->image)
+                        @foreach($product->image as $k => $image)
+                            @if($k < 1)
+                            <img src="{{ $image && $image['small'] ? url($image['small']) : url('/frontend/assets/imgs/shop/product-3-1.jpg') }}" alt="product-img">
+                            @endif
+                        @endforeach
+                        @foreach($product->image as $k => $image)
+                            @if($k == 1)
+                            <img src="{{ $image && $image['small'] ? url($image['small']) : url('/frontend/assets/imgs/shop/product-3-1.jpg') }}" alt="product-img">
+                            @endif
+                        @endforeach
+                    
+                    @else
+                        <img src="{{ url('/frontend/assets/imgs/shop/product-3-1.jpg') }}" alt="product-img">
+                    @endif
                 </a>
             </div>
             <div class="content pt-10">
