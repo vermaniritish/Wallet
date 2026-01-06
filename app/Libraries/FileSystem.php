@@ -96,7 +96,7 @@ class FileSystem
 			$constraint->aspectRatio();
 			$constraint->upsize();
 		})
-		->encode('webp', 90) // 85 = quality (0–100)
+		->encode('webp', 85) // 85 = quality (0–100)
 		->save(public_path($path));
 
 		return file_exists(public_path($path)) ? $path : null;
