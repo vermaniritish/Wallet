@@ -10188,6 +10188,7 @@ color: #FFF;
 .overlay.show {
   visibility: visible;
   opacity: 1;
+  z-index: 9999;
 }
 
 .popup {
