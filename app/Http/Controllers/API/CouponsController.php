@@ -19,6 +19,7 @@ class CouponsController extends BaseController
         $coupon = Coupons::where('coupon_code', $request->get('code'))
             ->where('status', 1)
             ->whereColumn('used', '<', 'max_use')
+            ->whereDate('end_date', '>=', today())
             ->first();
         if ($coupon) 
         {
