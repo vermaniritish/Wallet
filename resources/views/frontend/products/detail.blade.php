@@ -116,10 +116,8 @@ $nonExchange = $product->non_exchange || $product->sizes->filter(function ($size
                                         </p>
                                     @endif
                                     <div class="clearfix product-price-cover">
-                                        <div class="product-price primary-color float-left">
-                                            <ins>
-                                                <span class="text-brand">{{_currency($product->price) }}</span>
-                                            </ins>
+                                        <div class="product-price primary-color float-left pt-2">
+                                            <span class="text-brand h3">{{_currency($product->price) }}</span>
                                             @if($product->max_price > 0)
                                             <ins><span class="old-price font-md ml-15">{{_currency($product->max_price) }}</span></ins>
                                             <span class="save-price  font-md color3 ml-15">{{round(($product->max_price/$product->price) * 100)}}% Off</span>
