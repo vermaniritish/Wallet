@@ -124,7 +124,8 @@ class Products extends AdminProducts
             'products.gender',
             'product_categories.title as category',
             'schools.name as school',
-            DB::raw('(Select sale_price from product_sizes where product_sizes.status = 1 and product_sizes.product_id = products.id order by sale_price desc limit 1) as sale_price')
+            DB::raw('(Select sale_price from product_sizes where product_sizes.status = 1 and product_sizes.product_id = products.id order by sale_price desc limit 1) as sale_price'),
+            DB::raw('(Select offers.id from offers where offers.product_id = products.id and products.status = 1 LIMIT 1) as offer')
         ];
 
 
@@ -442,6 +443,7 @@ class Products extends AdminProducts
             DB::raw('(CASE WHEN products.sale_price is null or products.sale_price = 0 THEN products.price ELSE products.sale_price END) as price_order'),
             DB::raw('(SELECT AVG(TIMESTAMPDIFF(MINUTE, created, read_at)) as response_seconds from messages where to_id = products.user_id and read_at is not null) as respond'),
             DB::raw('(Select sale_price from product_sizes where product_sizes.product_id = products.id order by sale_price desc limit 1) as sale_price'),
+            DB::raw('(Select offers.id from offers where offers.product_id = products.id and products.status = 1 LIMIT 1) as offer'),
             'products.modified',
         ];
 

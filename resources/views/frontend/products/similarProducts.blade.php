@@ -20,6 +20,11 @@
                                 @else
                                 <img class="default-img" src="{{ url('/frontend/assets/imgs/shop/product-2-1.jpg') }}" alt="">
                                 @endif
+                                @if($p->offer)
+                                <div class="offer-icon">
+                                    <img src="{{url('/frontend/assets/imgs/offer2.png')}}" alt="Offer">
+                                </div>
+                                @endif
                             </a>
                         </div>
                     </div>

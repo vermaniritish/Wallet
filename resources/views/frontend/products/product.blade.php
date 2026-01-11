@@ -5,6 +5,9 @@
                 <a :href="'/'+product.slug">
                     <img v-for="(image, k) in product.image" v-if="k < 1" class="default-img" :src="image && image.small ? image.small : (site_url + '/frontend/assets/imgs/shop/product-3-1.jpg')" alt="product-img">
                     <img v-for="(image, k) in product.image" v-if="k == 1" class="hover-img" :src="image && image.small ? image.small : (site_url + '/frontend/assets/imgs/shop/product-3-1.jpg')" alt="product-img">
+                    <div class="offer-icon" v-if="product.offer">
+                        <img src="{{url('/frontend/assets/imgs/offer2.png')}}" alt="Offer">
+                    </div>
                 </a>
             </div>
             

@@ -18,6 +18,11 @@
                     @else
                         <img class="default-img" src="{{ url('/frontend/assets/imgs/shop/product-3-1.jpg') }}" alt="product-img">
                     @endif
+                    @if($product->offer)
+                    <div class="offer-icon">
+                        <img src="{{url('/frontend/assets/imgs/offer2.png')}}" alt="Offer">
+                    </div>
+                    @endif
                 </a>
             </div>
             @if($product['sale_price'] && $product['sale_price'] > 0)
