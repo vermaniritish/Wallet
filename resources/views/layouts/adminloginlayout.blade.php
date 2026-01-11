@@ -5,6 +5,7 @@ $logo = Settings::get('logo');
 $companyName = Settings::get('company_name');
 $recaptchaEnabled = Settings::get('admin_recaptcha');
 $recaptchaSiteKey = Settings::get('recaptcha_key');
+$version = 3.2;
 ?>
 <!DOCTYPE html>
 <html>
@@ -24,7 +25,7 @@ $recaptchaSiteKey = Settings::get('recaptcha_key');
 	<link rel="stylesheet" href="<?php echo url('assets/vendor/nucleo/css/nucleo.css') ?>" type="text/css">
 	<link rel="stylesheet" href="<?php echo url('assets/vendor/@fortawesome/fontawesome-free/css/all.min.css') ?>" type="text/css">
 	<!-- Argon CSS -->
-	<link rel="stylesheet" href="<?php echo url('assets/css/argon.css?v=1.2.0') ?>" type="text/css">
+	<link rel="stylesheet" href="<?php echo url('assets/css/argon.css?v='.$version) ?>" type="text/css">
 </head>
 
 <body class="bg-default">
