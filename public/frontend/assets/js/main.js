@@ -583,7 +583,7 @@
 
     /*Category Sub Menu Toggle*/
     $('body').on('click', '.mobile-menu .menu-item-has-children .menu-expand, .mobile-menu .menu-item-has-children > a', function() {
-        $(this).parent().find('.dropdown').toogleSlide();
+        $(this).parent().find('.dropdown').slideToggle();
     });
 
     // $offCanvasNav.on('click', 'li a, li .menu-expand', function(e) {
