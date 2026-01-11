@@ -33,6 +33,13 @@
 						<i class="fas fa-eye text-yellow"></i>
 						<span class="status">View</span>
 					</a>
+					<?php if(Permissions::hasPermission('coupons', 'update')): ?>
+						<div class="dropdown-divider"></div>
+						<a class="dropdown-item" href="<?php echo route('admin.coupons.edit', ['id' => $row->id]) ?>">
+							<i class="fas fa-pencil-alt text-info"></i>
+							<span class="status">Edit</span>
+						</a>
+					<?php endif; ?>
 					<?php if(Permissions::hasPermission('coupons', 'delete')): ?>
 						<div class="dropdown-divider"></div>
 						<a 
