@@ -38,7 +38,7 @@
 								<div class="col-md-6">
 									<div class="form-group">
 										<label class="form-control-label" for="input-first-name">Title</label>
-										<input type="text" class="form-control" name="title" required placeholder="Title" value="{{ old('title') }}">
+										<input type="text" class="form-control" name="title" required placeholder="Title" value="{{ old('title', $page->title) }}">
 										@error('title')
 											<small class="text-danger">{{ $message }}</small>
 										@enderror
@@ -49,7 +49,7 @@
 									<select class="form-control" name="school_id" required>
 										<option value=""></option>
 										@foreach($schools as $s)
-										<option value="{{ $s->id }}">{{ $s->name }}</option>
+										<option {{$page->school_id == $s->id ? 'selected' : ''}} value="{{ $s->id }}">{{ $s->name }}</option>
 										@endforeach
 									</select>
 									
@@ -59,7 +59,7 @@
 								<div class="col-md-6">
 									<div class="form-group">
 										<label class="form-control-label" for="input-first-name">Max Use</label>
-										<input type="number" class="form-control" name="max_use" required placeholder="Coupon Maximum Use" value="{{ old('max_use') }}">
+										<input type="number" class="form-control" name="max_use" required placeholder="Coupon Maximum Use" value="{{ old('max_use', $page->max_use) }}">
 										@error('max_use')
 											<small class="text-danger">{{ $message }}</small>
 										@enderror
@@ -75,7 +75,7 @@
 											required 
 											placeholder="Coupon End Date"
 											min="{{ date('Y-m-d') }}"
-											value="{{ old('end_date') }}"
+											value="{{ old('end_date', $page->end_date) }}"
 										>
 										@error('end_date')
 											<small class="text-danger">{{ $message }}</small>
@@ -87,7 +87,7 @@
 								<div class="col-md-6">
 									<div class="form-group">
 										<label class="form-control-label" for="input-first-name">Amount</label>
-										<input type="number" class="form-control" name="amount" required placeholder="Amount" value="{{ old('amount') }}">
+										<input type="number" class="form-control" name="amount" required placeholder="Amount" value="{{ old('amount', $page->amount) }}">
 										@error('amount')
 											<small class="text-danger">{{ $message }}</small>
 										@enderror
@@ -100,7 +100,7 @@
 											<label class="custom-toggle">
 												<input type="hidden" name="is_percentage" value="0">
 												<input type="checkbox" name="is_percentage" value="1"
-													<?php echo old('is_percentage') != '0' ? 'checked' : ''; ?>>
+													<?php echo old('is_percentage', $page->is_percentage) != '0' ? 'checked' : ''; ?>>
 												<span class="custom-toggle-slider rounded-circle" data-label-off="No"
 													data-label-on="Yes"></span>
 											</label>
@@ -111,7 +111,7 @@
 								<div class="col-md-3">
 									<div class="form-group">
 										<label class="form-control-label" for="input-first-name">Min Amount to apply</label>
-										<input type="number" class="form-control" name="min_amount" required placeholder="Min Amount" value="{{ old('min_amount') }}">
+										<input type="number" class="form-control" name="min_amount" required placeholder="Min Amount" value="{{ old('min_amount', $page->min_amount) }}">
 										@error('min_amount')
 											<small class="text-danger">{{ $message }}</small>
 										@enderror
@@ -122,7 +122,7 @@
 								<div class="col-lg-12">
 									<div class="form-group">
 										<label class="form-control-label">Description</label>
-										<textarea rows="2" class="form-control" placeholder="Description" required name="description">{{ old('description') }}</textarea>
+										<textarea rows="2" class="form-control" placeholder="Description" required name="description">{{ old('description', $page->description) }}</textarea>
 										@error('description')
 										    <small class="text-danger">{{ $message }}</small>
 										@enderror
