@@ -259,15 +259,13 @@ $cats = ProductCategories::select(['id', 'slug', 'title'])->where('status', 1)->
                         <ul class="mobile-menu">
                             @foreach ($headerMenu as $k => $menuItem)
                                 <li class="{{ (is_array($menuItem->megaMenu) && count($menuItem->megaMenu) > 0 ? 'menu-item-has-children' : '') }}">
+                                    <?php /*
                                     @if (is_array($menuItem->megaMenu) && count($menuItem->megaMenu) > 0)
                                     <span class="menu-expand"></span>
                                     @endif
+                                    */  ?>
 
-                                    <a href="{{ (is_array($menuItem->megaMenu) && count($menuItem->megaMenu) > 0 ? '#' : $menuItem->value) }}">{{ $menuItem->key }}
-                                        @if (is_array($menuItem->megaMenu) && count($menuItem->megaMenu) > 0)
-                                            <i class="fi-rs-angle-down"></i>
-                                        @endif
-                                    </a>
+                                    <a href="{{ (is_array($menuItem->megaMenu) && count($menuItem->megaMenu) > 0 ? '#' : $menuItem->value) }}">{{ $menuItem->key }}</a>
                                     @if (is_array($menuItem->megaMenu) && count($menuItem->megaMenu) > 0)
                                         <ul class="dropdown">
                                             @foreach ($menuItem->megaMenu as $s)
