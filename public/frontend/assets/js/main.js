@@ -578,8 +578,6 @@
     /*Add Toggle Button With Off Canvas Sub Menu*/
     $offCanvasNavSubMenu.parent().prepend('<span class="menu-expand"><i class="fi-rs-angle-small-down"></i></span>');
 
-    /*Close Off Canvas Sub Menu*/
-    $offCanvasNavSubMenu.slideUp();
 
     /*Category Sub Menu Toggle*/
     $('body').on('click', '.mobile-menu .menu-item-has-children .menu-expand, .mobile-menu .menu-item-has-children > a', function() {
