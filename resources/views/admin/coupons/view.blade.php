@@ -16,13 +16,13 @@
 									<i class="fas fa-ellipsis-v"></i>
 								</a>
 								<div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-									<?php /*if(Permissions::hasPermission('coupons', 'update')): ?>
+									<?php if(Permissions::hasPermission('coupons', 'update')): ?>
 										<a class="dropdown-item" href="<?php echo route('admin.coupons.edit', ['id' => $page->id]) ?>">
 											<i class="fas fa-pencil-alt text-info"></i>
 											<span class="status">Edit</span>
 										</a>
 										<div class="dropdown-divider"></div>
-									<?php endif;*/ ?>
+									<?php endif; ?>
 									<?php if(Permissions::hasPermission('coupons', 'delete')): ?>
 										<a 
 											class="dropdown-item _delete" 
