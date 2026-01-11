@@ -24,6 +24,7 @@ $nonExchange = $product->non_exchange || $product->sizes->filter(function ($size
             </div>
         </div>
     </div>
+    @include('frontend.products.personlizedModal', ['product' => $product])
     <section class="mt-50 mb-50">
         <div class="container">
             <div class="row">
@@ -262,7 +263,7 @@ $nonExchange = $product->non_exchange || $product->sizes->filter(function ($size
                 </div>
             </div>
         </div>
-        @include('frontend.products.personlizedModal', ['product' => $product])
+        
     </section>
 </div>
 @endsection
