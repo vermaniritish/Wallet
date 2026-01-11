@@ -396,7 +396,8 @@ class CouponsController extends AppController
 			]);
 
 			
-			$footerHtml = '
+			$footerHtml = ''; 
+			/*'
 			<table width="750" border="0" cellspacing="0" cellpadding="0">
 				<tr>
 					<td style="padding:20px 30px;font-family: Arial, Helvetica, sans-serif;font-size: 13px;color: #666666;">
@@ -411,7 +412,7 @@ class CouponsController extends AppController
 					</td>
 				</tr>
 			</table>';
-
+			*/
 			$mpdf->SetHTMLFooter($footerHtml);
 
 			$mpdf->showImageErrors = true;
