@@ -19,7 +19,7 @@
             <a href="{{ url('/edit-account') }}" class="nav-link {{ ($screen == 'account' ? 'active' : '') }}" id="account-detail-tab"><i class="fi-rs-user mr-10"></i> Account details</a>
         </li>
         <li class="nav-item">
-            <a href="{{ route('logout') }}" class="nav-link" href="#"><i class="fi-rs-sign-out mr-10"></i> Logout</a>
+            <a href="javascript:;" onclick="logout()" class="nav-link" href="#"><i class="fi-rs-sign-out mr-10"></i> Logout</a>
         </li>
     </ul>
 </div>
