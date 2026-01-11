@@ -824,5 +824,5 @@ function logout()
     localStorage.removeItem('cart');
     localStorage.removeItem('offer');
     localStorage.removeItem('coupon');
-    window.location.href = site_url + '/logout';
+    window.location.href = site_url + '/auth/logout';
 }
