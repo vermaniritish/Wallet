@@ -135,46 +135,49 @@ $currency = Settings::get('currency_symbol');
                                 @if($row->is_offer)
                                 <p class="small"><span class="text-muted small">Offer:</span>{{$row->offer_description}}</p>
                                 @endif
+                                <?php $havelogo = false; ?>
                                 @if($row->logo_data)
                                     @foreach($row->logo_data as $logoD)
                                         <table style="border:1px solid #c7a162;width: 100%; line-height: inherit; text-align: left;font-size:12px;">
                                             @if(isset($logoD['title']) && $logoD['title'])
-                                            <tr style="background: #f7eddd; border-bottom: 1px solid #ddd; font-weight: bold;">
-                                                <td style="width:35%;padding: 5px; vertical-align: top; font-weight: bold;">
-                                                {{$logoD['title']}}: {{$logoD['initial']}}
-                                                </td>
-                                            </tr>
-                                            @else
-                                            <tr class="table-borderless">
-                                                <td>
-                                                    <div class="row">
-                                                        @if(isset($logoD['already_uploaded']) && $logoD['already_uploaded'])
-                                                        <div class="col-sm-2">
-                                                            <p class="text-danger">Pinder has already my logo.</p>
-                                                        </div>
-                                                        @else			
-                                                        <div class="col-sm-2">
-                                                            <div class="" style="border: 1px solid #ddd;">
-                                                                <?php if(trim($logoD['image'])):?>
-                                                                <img src="{{ $logoD['image'] }}" style="width: 40px;height:40px;">
-                                                                <?php endif; ?>
+                                                <?php $havelogo = true; ?>
+                                                <tr style="background: #f7eddd; border-bottom: 1px solid #ddd; font-weight: bold;">
+                                                    <td style="width:35%;padding: 5px; vertical-align: top; font-weight: bold;">
+                                                    {{$logoD['title']}}: {{$logoD['initial']}}
+                                                    </td>
+                                                </tr>
+                                            @elseif($logoD['text'] || $logoD['image'])
+                                                <?php $havelogo = true; ?>
+                                                <tr class="table-borderless">
+                                                    <td>
+                                                        <div class="row">
+                                                            @if(isset($logoD['already_uploaded']) && $logoD['already_uploaded'])
+                                                            <div class="col-sm-2">
+                                                                <p class="text-danger">Pinder has already my logo.</p>
+                                                            </div>
+                                                            @else			
+                                                            <div class="col-sm-2">
+                                                                <div class="" style="border: 1px solid #ddd;">
+                                                                    <?php if(trim($logoD['image'])):?>
+                                                                    <img src="{{ $logoD['image'] }}" style="width: 40px;height:40px;">
+                                                                    <?php endif; ?>
+                                                                </div>
+                                                            </div>
+                                                            @endif
+                                                            <div class="col-sm-5">
+                                                                @if($logoD['text'])
+                                                                <span class="text-muted">Text:</span> <?php echo $logoD['text'] ?><br />
+                                                                @endif
+                                                                <span class="text-muted">Category:</span> <?php echo $logoD['category'] ?><br />
+                                                                <span class="text-muted">Position:</span> <?php echo $logoD['postion'] ?><br />
+                                                            </div>
+                                                            <div class="col-sm-4">
+                                                                <span class="text-muted">Size:</span> <?php echo $row->size_title ?><br />
+                                                                <span class="text-muted">Color:</span> <?php echo $row->color ?><br />
                                                             </div>
                                                         </div>
-                                                        @endif
-                                                        <div class="col-sm-5">
-                                                            @if($logoD['text'])
-                                                            <span class="text-muted">Text:</span> <?php echo $logoD['text'] ?><br />
-                                                            @endif
-                                                            <span class="text-muted">Category:</span> <?php echo $logoD['category'] ?><br />
-                                                            <span class="text-muted">Position:</span> <?php echo $logoD['postion'] ?><br />
-                                                        </div>
-                                                        <div class="col-sm-4">
-                                                            <span class="text-muted">Size:</span> <?php echo $row->size_title ?><br />
-                                                            <span class="text-muted">Color:</span> <?php echo $row->color ?><br />
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                            </tr>
+                                                    </td>
+                                                </tr>
                                             @endif
                                         </table>
                                     @endforeach
@@ -194,7 +197,7 @@ $currency = Settings::get('currency_symbol');
                 <td>{{$row->size_title}}</td>
                 <td class="right">
                     {{$row->quantity}}
-                    @if($row->logo_data)
+                    @if($row->logo_data && $havelogo)
                     @foreach($row->logo_data as $logoD)
                     <table style="border:1px solid #c7a162;width: 100%; line-height: inherit; text-align: left;font-size:12px;">
                         <tr style="background: #f7eddd; border-bottom: 1px solid #ddd; font-weight: bold;">
@@ -208,8 +211,7 @@ $currency = Settings::get('currency_symbol');
 
                 </td>
                 <td class="right">{{$currency . $row->amount}}
-
-                    @if($row->logo_data)
+                    @if($row->logo_data && $havelogo)
                     @foreach($row->logo_data as $logoD)
                     <table style="border:1px solid #c7a162;width: 100%; line-height: inherit; text-align: left;font-size:12px;">
                         <tr style="background: #f7eddd; border-bottom: 1px solid #ddd; font-weight: bold;">
@@ -223,7 +225,7 @@ $currency = Settings::get('currency_symbol');
                 </td>
                 <td class="right">
                     {{$currency . ($row->amount * $row->quantity)}}
-                    @if($row->logo_data)
+                    @if($row->logo_data && $havelogo)
                     @foreach($row->logo_data as $logoD)
                     <table style="border:1px solid #c7a162;width: 100%; line-height: inherit; text-align: left;font-size:12px;">
                         <tr style="background: #f7eddd; border-bottom: 1px solid #ddd; font-weight: bold;">
