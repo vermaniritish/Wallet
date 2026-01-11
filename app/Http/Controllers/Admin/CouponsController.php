@@ -248,7 +248,6 @@ class CouponsController extends AppController
 
     function edit(Request $request, $id)
     {
-		abort(404);
     	if(!Permissions::hasPermission('coupons', 'update'))
     	{
     		$request->session()->flash('error', 'Permission denied.');
@@ -260,46 +259,44 @@ class CouponsController extends AppController
     	if($page)
     	{
 			if($request->isMethod('post'))
-	    	{
-	    		$data = $request->toArray();
-	    		$validator = Validator::make(
-		            $request->toArray(),
-		            [
+			{
+				$data = $request->toArray();
+				unset($data['_token']);
+				$validator = Validator::make(
+					$request->toArray(),
+					[
 						'title' => ['required'],
-						'coupon_code' => ['required', Rule::unique('coupons','coupon_code')->ignore($id)->whereNull('deleted_at')],
 						'max_use' => ['required', 'integer'],
-						'end_date' => ['required', 'after_or_equal:today'],
+						'end_date' => 'required|date|after_or_equal:today',
 						'description' => 'nullable',
 						'is_percentage' => ['required','boolean'],
-						'amount' => ['required']
-		            ]
-		        );
-
-		        if(!$validator->fails())
-		        {
+						'min_amount' => ['required', 'numeric'],
+						'amount' => ['required', 'numeric', 'gte:min_amount'],
+					]
+				);
+				if(!$validator->fails())
+				{
 					$formattedDateTime = date('Y-m-d H:i:s', strtotime($request->get('end_date')));
 					$data['end_date'] = $formattedDateTime;
-		        	unset($data['_token']);
-		        	if(Coupons::modify($id, $data))
-		        	{
-		        		$request->session()->flash('success', 'Coupon updated successfully.');
-		        		return redirect()->route('admin.coupons');
-		        	}
-		        	else
-		        	{
-		        		$request->session()->flash('error', 'Coupon could not be save. Please try again.');
-			    		return redirect()->back()->withErrors($validator)->withInput();
-		        	}
-			    }
-			    else
-			    {
-			    	$request->session()->flash('error', 'Please provide valid inputs.');
-			    	return redirect()->back()->withErrors($validator)->withInput();
-			    }
+					$data['modified'] = date('Y-m-d H:i:s');
+					Coupons::where('uuid', $page->uuid)->update($data);
+
+					$request->session()->flash('success', $inserted . ' coupons created.');
+					return redirect()->route('admin.coupons');
+				}
+				else
+				{
+					$request->session()->flash('error', 'Please provide valid inputs.');
+					return redirect()->back()->withErrors($validator)->withInput();
+				}
 			}
 
 			return view("admin/coupons/edit", [
-    			'page' => $page
+    			'page' => $page,
+				'schools' => Schools::where(function($query) use ($page) {
+					$query-> where('status', 0)
+						->orWhere("id", $page->school_id);
+				})->orderBy('name', 'asc')->get()
     		]);
 		}
 		else
