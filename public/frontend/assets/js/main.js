@@ -583,7 +583,6 @@
 
     /*Category Sub Menu Toggle*/
     $('body').on('click', '.mobile-menu .menu-item-has-children .menu-expand, .mobile-menu .menu-item-has-children > a', function() {
-        console.log('yesssss');
         $(this).parent().find('.dropdown').toogleSlide();
     });
 
