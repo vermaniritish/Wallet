@@ -281,7 +281,7 @@ class CouponsController extends AppController
 					$data['modified'] = date('Y-m-d H:i:s');
 					Coupons::where('uuid', $page->uuid)->update($data);
 
-					$request->session()->flash('success', $inserted . ' coupons created.');
+					$request->session()->flash('success',  'Coupon updated.');
 					return redirect()->route('admin.coupons');
 				}
 				else
