@@ -1,4 +1,4 @@
-<div class="col-lg-3 col-md-3 col-12 col-sm-6" v-if="listing && listing.length > 0" v-for="product in listing">
+<div class="col-lg-3 col-md-3 col-6 col-sm-6" v-if="listing && listing.length > 0" v-for="product in listing">
     <div class="product-cart-wrap mb-30">
         <div class="product-img-action-wrap">
             <div class="product-img product-img-zoom">
