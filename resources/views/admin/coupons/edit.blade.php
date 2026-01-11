@@ -29,7 +29,7 @@
 					</div>
 				</div>
 				<div class="card-body">
-					<form method="post" action="<?php echo route('admin.coupons.add') ?>" class="form-validation">
+					<form method="post" action="<?php echo route('admin.coupons.edit', ['id' => $page->id]) ?>" class="form-validation">
 						<!--!! CSRF FIELD !!-->
 						{{ @csrf_field() }}
 						<h6 class="heading-small text-muted mb-4">Coupon information</h6>
