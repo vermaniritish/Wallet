@@ -267,7 +267,7 @@ $cats = ProductCategories::select(['id', 'slug', 'title'])->where('status', 1)->
 
                                     <a href="{{ (is_array($menuItem->megaMenu) && count($menuItem->megaMenu) > 0 ? '#' : $menuItem->value) }}">{{ $menuItem->key }}</a>
                                     @if (is_array($menuItem->megaMenu) && count($menuItem->megaMenu) > 0)
-                                        <ul class="dropdown">
+                                        <ul class="dropdown" style="display:none;">
                                             @foreach ($menuItem->megaMenu as $s)
                                                 <li><a href="{{ $s->link }}">{{$s->title}}</a></li>
                                             @endforeach
