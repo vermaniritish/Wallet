@@ -582,6 +582,7 @@
     $offCanvasNavSubMenu.slideUp();
 
     /*Category Sub Menu Toggle*/
+    alert($offCanvasNav.find('.menu-item-has-children .menu-expand, .menu-item-has-children > a').length);
     $offCanvasNav.find('.menu-item-has-children .menu-expand, .menu-item-has-children > a').on('click', function() {
         console.log('yesssss');
         $(this).parent().find('.dropdown').toogleSlide();
