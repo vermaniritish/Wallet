@@ -322,7 +322,6 @@ class UniformsController extends AppController
 					foreach($schools as $s)
 					{
 						$data['school_id'] = $s;
-						pr($data);die;
 						$product = Products::create($data);
 						if(!empty($colors))
 						{
