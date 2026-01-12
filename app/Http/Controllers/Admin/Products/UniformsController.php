@@ -298,6 +298,7 @@ class UniformsController extends AppController
 
 				if($unifromId)
 				{
+					pr($data); die;
 					$product = Products::modify($unifromId, $data);
 					if(!empty($colors))
 					{
