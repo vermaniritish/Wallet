@@ -149,6 +149,12 @@ let order = new Vue({
                 this.website_visible = data.website_visible;
                 this.shop_visible = data.shop_visible;
                 this.size_guide_video = data.size_guide_video;
+                if(!pageId && data.size_file)
+                {
+                    let fname = data.size_file.split("/");
+                    $('textarea[name="size_file"]').val(data.size_file);
+                    $('textarea[name="size_file"]').parent().find('.show-section').html('<div class="single-file"><a href="'+site_url + data.size_file +'" target="_blank"><i class="fas fa-file"></i>'+fname[fname.length-1]+'</a></div>');
+                }
                 // if (this.description !== null) {
                 //     put_editor_html('product-editor', this.description.trim());
                 // }
