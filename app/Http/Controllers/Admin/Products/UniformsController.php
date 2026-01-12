@@ -262,30 +262,31 @@ class UniformsController extends AppController
 
 				$data['is_uniform'] = 1;
 				/** ONLY IN CASE OF MULTIPLE IMAGE USE THIS **/
-				if(isset($data['image']) && $data['image'])
+				if($unifromId)
 				{
-					if($unifromId)
+					if(isset($data['image']) && $data['image'])
 					{
-						$lastImages = Products::select(['image'])->where('id', $unifromId)->limit(1)->pluck('image')->first();
-						$lastImages = $lastImages ? json_decode($lastImages, true) : [];
 						
-						$data['image'] = json_decode($data['image'], true);
-						$data['image'] = array_merge($lastImages, $data['image']);
-						$data['image'] = json_encode($data['image']);
+							$lastImages = Products::select(['image'])->where('id', $unifromId)->limit(1)->pluck('image')->first();
+							$lastImages = $lastImages ? json_decode($lastImages, true) : [];
+							
+							$data['image'] = json_decode($data['image'], true);
+							$data['image'] = array_merge($lastImages, $data['image']);
+							$data['image'] = json_encode($data['image']);
 					}
-				}
-				else
-				{
-					unset($data['image']);
-				}
+					else
+					{
+						unset($data['image']);
+					}
 
-				if(isset($data['size_file']) && $data['size_file'])
-				{
-					$data['size_file'] = $data['size_file'];
-				}
-				else
-				{
-					unset($data['size_file']);
+					if(isset($data['size_file']) && $data['size_file'])
+					{
+						$data['size_file'] = $data['size_file'];
+					}
+					else
+					{
+						unset($data['size_file']);
+					}
 				}
 				/** ONLY IN CASE OF MULTIPLE IMAGE USE THIS **/
 				unset($data['schools']);
