@@ -827,7 +827,7 @@ const initImageUploader = function(that, callback) {
                                 if(fileType == 'image')
                                     showSection.html('<div class="single-image"><a href="javascript:;" class="fileRemover single-cross image" data-path="'+response.path+'"><i class="fas fa-times"></i></a><img src="'+response.url+'"></div>');
                                 else
-                                    showSection.html('<div class="single-file"><a href="'+site_url + response.path +'" target="_blank"><i class="fas fa-file"></i>'+response.name+'</a><a href="javascript:; file" class="fileRemover single-cross file" data-path="'+response.path+'"><i class="fas fa-times-circle"></i></a></div>');
+                                    showSection.html('<div class="single-file"><a href="'+site_url + response.path +'" target="_blank"><i class="fas fa-file"></i>'+response.name+'</a><a href="javascript:;" class="fileRemover single-cross file" data-path="'+response.path+'"><i class="fas fa-times-circle"></i></a></div>');
                                 uploadSection.addClass('d-none');
                                 fixedEditSection.addClass('d-none');
                             }
@@ -836,7 +836,7 @@ const initImageUploader = function(that, callback) {
                                 if(fileType == 'image')
                                     showSection.prepend('<div class="single-image"><a href="javascript:;" class="fileRemover single-cross image" data-path="'+response.path+'"><i class="fas fa-times"></i></a><img src="'+response.url+'"></div>');
                                 else
-                                    showSection.prepend('<div class="single-file"><a href="'+site_url + response.path +'" target="_blank"><i class="fas fa-file"></i>'+response.name+'</a><a href="javascript:; file" class="fileRemover single-cross file" data-path="'+response.path+'"><i class="fas fa-times-circle"></i></a></div>');
+                                    showSection.prepend('<div class="single-file"><a href="'+site_url + response.path +'" target="_blank"><i class="fas fa-file"></i>'+response.name+'</a><a href="javascript:;" class="fileRemover single-cross file" data-path="'+response.path+'"><i class="fas fa-times-circle"></i></a></div>');
                             }
                             showSection.removeClass('d-none');
                         }
