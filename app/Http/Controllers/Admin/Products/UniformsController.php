@@ -271,13 +271,14 @@ class UniformsController extends AppController
 						
 						$data['image'] = json_decode($data['image'], true);
 						$data['image'] = array_merge($lastImages, $data['image']);
+						$data['image'] = json_encode($data['image']);
 					}
-					$data['image'] = json_encode($data['image']);
 				}
 				else
 				{
 					unset($data['image']);
 				}
+
 				if(isset($data['size_file']) && $data['size_file'])
 				{
 					$data['size_file'] = $data['size_file'];
@@ -320,6 +321,7 @@ class UniformsController extends AppController
 					foreach($schools as $s)
 					{
 						$data['school_id'] = $s;
+						pr($data);die;
 						$product = Products::create($data);
 						if(!empty($colors))
 						{
