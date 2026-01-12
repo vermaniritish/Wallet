@@ -901,6 +901,7 @@ $('body').on('click', '.upload-image-section .fileRemover', function() {
         {
             $(this).parents('.upload-image-section').find('textarea').val('');
             $(this).parents('.single-image').remove();
+            $(this).parents('.single-file').remove();
         }
     }
 });
