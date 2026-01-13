@@ -59,7 +59,7 @@ pr($cats->toArray()); die;
                             <form onsubmit="return false;">
                                 <select class="select-active" v-model="search">
                                     <option value="">All Categories</option>
-                                    if($cats->count() > 0)
+                                    @if($cats->count() > 0)
                                         @foreach($cats as $c)
                                         <option value="{{ $c->id }}">{{ $c->title }}</option>
                                         @endforeach
