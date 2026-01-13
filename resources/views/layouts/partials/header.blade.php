@@ -8,7 +8,7 @@ foreach ($headerMenu as $k => $v) {
     $headerMenu[$k]->megaMenu = $headerMenu[$k]->megaMenu ? json_decode($headerMenu[$k]->megaMenu) : [];
 }
 $cats = ProductCategories::select(['id', 'slug', 'title'])->where('status', 1)->whereNull('parent_id')->orderBy('title', 'asc')->limit(100)->get();
-
+pr($cats->toArray()); die;
 ?>
 <header class="header-area header-style-3 header-height-2 d-none" id="header">
         <div class="header-top header-top-ptb-1 d-none d-lg-block">
@@ -59,9 +59,11 @@ $cats = ProductCategories::select(['id', 'slug', 'title'])->where('status', 1)->
                             <form onsubmit="return false;">
                                 <select class="select-active" v-model="search">
                                     <option value="">All Categories</option>
-                                    @foreach($cats as $c)
-                                    <option value="{{ $c->id }}">{{ $c->title }}</option>
-                                    @endforeach
+                                    if($cats->count() > 0)
+                                        @foreach($cats as $c)
+                                        <option value="{{ $c->id }}">{{ $c->title }}</option>
+                                        @endforeach
+                                    @endif
                                 </select>
                                 <input type="text" placeholder="Search for items..." id="search-global">
                             </form>
