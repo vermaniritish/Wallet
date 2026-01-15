@@ -96,7 +96,7 @@
 							<div
 							:style="{
 								fontFamily: lVal.font || 'Roboto',
-								color: lVal.color1 || '#000'
+								color: lVal.color || '#000'
 							}"
 							>
 								@{{ lVal.text1 }}
@@ -105,7 +105,7 @@
 							<div
 							:style="{
 								fontFamily: lVal.font || 'Roboto',
-								color: lVal.color2 || '#000'
+								color: lVal.color || '#000'
 							}"
 							>
 								@{{ lVal.text2 }}
