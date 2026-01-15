@@ -213,6 +213,16 @@ $currency = Settings::get('currency_symbol');
 									<th>Costs To Add Logo</th>
 									<td><?php echo $currency.$page->logo_cost ?></td>
 								</tr>
+								@if($page->logo_discount_applied > 0)
+								<tr>
+									<th>Logo Discount ({{$page->logo_discount_applied}} logo(s)):</th>
+									<td class="text-danger"> - <?php echo $currency.$page->logo_discount ?></td>
+								</tr>
+								@endif
+								<tr>
+									<th>One Time Setup Fees</th>
+									<td><?php echo $currency.$page->one_time_cost ?></td>
+								</tr>
 								<tr class="bg-lighter">
 									<th>Subtotal</th>
 									<td><?php echo $currency.$page->subtotal+$page->logo_cost ?></td>
