@@ -24,7 +24,7 @@ window.offerPrice = function(item) {
     return {price: item.quantity*item.price, freeLogo: 0, haveOffer: false };
 }
 const oneTimeProductCost = function(cart) {
-    return 0;
+    // return 0;
     let obj = oneTimeProductObject(cart);
     let imageCost = obj.image;
     let txtCost = obj.text;
