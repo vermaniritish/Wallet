@@ -110,7 +110,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="section">
+					<div class="section mb-0">
 					<label class="title">4. Additional Notes (Optional)</label>
 					<div class="inline-box">
 						<div class="box-title">📝 Notes for Designer / Printer</div>
@@ -119,7 +119,7 @@
 						</div>
 					</div>
 				</div>
-				<small><span class="formhead">Price:</span> &pound; @{{lVal.price && (lVal.price*1) > 0 ? lVal.price : '0.00' }}</small>
+				<h4><span class="formhead">Price: &pound; @{{lVal.price && (lVal.price*1) > 0 ? lVal.price : '0.00' }}</span></h4>
 			</template>
 		</div>
 		<button v-on:click="addToCart()" class="submit-btn">Submit Customisation</button>
