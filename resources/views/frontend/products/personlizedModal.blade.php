@@ -117,7 +117,7 @@
 					<label class="title">4. Additional Notes (Optional)</label>
 					<div class="inline-box">
 						<div class="box-title">📝 Notes for Designer / Printer</div>
-							<textarea v-model="notes" id="notes" maxlength="500" rows="5" placeholder="Please let us know if you have any special requirements and instructions. (Max 500 characters)"></textarea>
+							<textarea v-model="lVal.notes" id="notes" maxlength="500" rows="5" placeholder="Please let us know if you have any special requirements and instructions. (Max 500 characters)"></textarea>
 							<div class="char-count" id="notesCount">@{{lVal.notes.length}} / 500</div>
 						</div>
 					</div>
