@@ -57,7 +57,37 @@
 												<h4>OR</h4>
 											</div>
 											<div class="col-lg-6" v-if="!lVal.already_uploaded"><br/>
-												<span class="formhead">Write your Logo Text</span>&nbsp;&nbsp;<input style="display:inline-block;width: 95%;" type="text" id="logotext" name="logotext" v-model="lVal.text">
+												<div class="inline-box">
+													<div class="box-title">✍️ Write Your Text</div>
+
+													<input type="text" class="text-line" maxlength="10" placeholder="Line 1 (max 10)">
+													<input type="text" class="text-line" maxlength="10" placeholder="Line 2 (max 10)">
+													<input type="text" class="text-line" maxlength="10" placeholder="Line 3 (max 10)">
+
+													<label>Font</label>
+													<select id="fontSelect">
+													<option value="Poppins">Poppins</option>
+													<option value="Montserrat">Montserrat</option>
+													<option value="Roboto">Roboto</option>
+													<option value="Playfair Display">Playfair</option>
+													<option value="Oswald">Oswald</option>
+													<option value="Raleway">Raleway</option>
+													<option value="Lobster">Lobster</option>
+													<option value="Pacifico">Pacifico</option>
+													</select>
+
+													<label>Color</label>
+													<select id="colorSelect">
+													<option value="#000000">Black</option>
+													<option value="#ffffff">White</option>
+													<option value="#e63946">Red</option>
+													<option value="#1d3557">Navy</option>
+													<option value="#2a9d8f">Teal</option>
+													<option value="#f4a261">Orange</option>
+													<option value="#6c63ff">Purple</option>
+													<option value="#088178">Green</option>
+													</select>
+												</div>
 											</div>
 											<div class="col-lg-12"><br/>
 												<span class="formhead">Price:</span> &pound; @{{lVal.price && (lVal.price*1) > 0 ? lVal.price : '0.00' }}

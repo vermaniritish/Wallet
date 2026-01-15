@@ -33,16 +33,93 @@
 						<!-- Upload Box -->
 						<div class="inline-box">
 							<button class="btn btn-sm btn-primary" v-on:click="handleFileUpload(i, lKey)"><i v-if="uploading !== null && uploading == i" class="fa fa-spin fa-spinner"></i> <i v-else class="fa fa-upload"></i> Upload Logo</button>
-							<p class="file-note">Image should not exceed 2MB</p>
 							<div class="logo-image" style="max-width:150px; max-height:150px; object-fit: content;" v-if="lVal && lVal.image"><img :src="lVal.image" style="max-width: 100%;max-height:100%;" /></div>
+							<p class="file-note">PNG / JPG • Max 2MB • Transparent preferred</p>
+							<p class="file-note">Don't worry how it looks, we will make it look great and send a proof before we add to your products!</p>
+							<p style="text-align:center;font-weight:600;">alternatively...</p>
+							<label>
+								<input type="radio" name="logo_option" value="later">
+								Don't have your logo to hand? Don't worry — we will contact you after you place your order.
+							</label>
+							<label>
+								<input type="radio" name="logo_option" value="existing">
+								You already have my logo, it's just not in my account (no setup fee will be charged).
+							</label>
 						</div>
 
 						<!-- Text Box -->
 						<div class="inline-box">
 							<input type="text" id="customText" maxlength="20" placeholder="Write your text (max 20 chars)" v-model="lVal.text">
-							<div class="char-limit" id="charCount">@{{ lVal.text.length }} / 20</div>
+							<div class="inline-box">
+								<div class="box-title">✍️ Write Your Text</div>
+								<input type="text" class="text-line" maxlength="10" placeholder="Line 1 (max 10)" v-model="lVal.text">
+								<input type="text" class="text-line" maxlength="10" placeholder="Line 2 (max 10)" v-model="lVal.text1">
+								<input type="text" class="text-line" maxlength="10" placeholder="Line 3 (max 10)" v-model="lVal.text2">
+								<label>Font</label>
+								<select id="fontSelect" v-model="lVal.font">
+									<option value="Roboto">Roboto</option>
+									<option value="Poppins">Poppins</option>
+									<option value="Montserrat">Montserrat</option>
+									<option value="Playfair Display">Playfair</option>
+									<option value="Oswald">Oswald</option>
+									<option value="Raleway">Raleway</option>
+									<option value="Lobster">Lobster</option>
+									<option value="Pacifico">Pacifico</option>
+								</select>
+
+								<label>Color</label>
+								<select id="colorSelect" v-model="lVal.color">
+									<option value="#000000">Black</option>
+									<option value="#ffffff">White</option>
+									<option value="#e63946">Red</option>
+									<option value="#1d3557">Navy</option>
+									<option value="#2a9d8f">Teal</option>
+									<option value="#f4a261">Orange</option>
+									<option value="#6c63ff">Purple</option>
+									<option value="#088178">Green</option>
+								</select>
+							</div>
 						</div>
 
+					</div>
+					<div class="section">
+						<label class="title">Live Preview</label>
+						<div id="textPreview">
+							<div
+								:style="{
+									fontFamily: lVal.font || 'Roboto',
+									color: lVal.color || '#000'
+								}"
+								>
+								@{{ lVal.text }}
+							</div>
+
+							<div
+							:style="{
+								fontFamily: lVal.font || 'Roboto',
+								color: lVal.color1 || '#000'
+							}"
+							>
+								@{{ lVal.text1 }}
+							</div>
+
+							<div
+							:style="{
+								fontFamily: lVal.font || 'Roboto',
+								color: lVal.color2 || '#000'
+							}"
+							>
+								@{{ lVal.text2 }}
+							</div>
+						</div>
+					</div>
+					<div class="section">
+					<label class="title">4. Additional Notes (Optional)</label>
+					<div class="inline-box">
+						<div class="box-title">📝 Notes for Designer / Printer</div>
+							<textarea v-model="notes" id="notes" maxlength="500" rows="5" placeholder="Please let us know if you have any special requirements and instructions. (Max 500 characters)"></textarea>
+							<div class="char-count" id="notesCount">@{{lVal.notes.length}} / 500</div>
+						</div>
 					</div>
 				</div>
 				<small><span class="formhead">Price:</span> &pound; @{{lVal.price && (lVal.price*1) > 0 ? lVal.price : '0.00' }}</small>

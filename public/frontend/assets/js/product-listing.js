@@ -381,8 +381,13 @@ else if($('#product-cat-page').length)
                 category: null,
                 postion: null,
                 text: ``,
+                text1: ``,
+                text2: ``,
                 image: null,
-                already_uploaded: false
+                font: `Roboto`,
+                color: `#000000`,
+                already_uploaded: false,
+                notes: ``
             }],
             logoOptions: {
                 category: [],

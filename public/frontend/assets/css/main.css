@@ -10327,132 +10327,136 @@ color: #FFF;
         }
 
         /* ----- Image Radio Button Cards ----- */
-        .image-options {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-        }
+        
 
-        .image-option {
-            width: 90px;
-            text-align: center;
-            cursor: pointer;
-        }
+/* IMAGE OPTIONS */
+.image-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
 
-        .image-option input {
-            display: none;
-        }
+.image-option {
+    width: 90px;
+    cursor: pointer;
+}
 
-        .image-option img {
-            width: 100%;
-            border: 2px solid transparent;
-            border-radius: 12px;
-            transition: 0.25s;
-        }
+.image-option input {
+    display: none;
+}
 
-        .image-option input:checked + img {
-            border-color: #088178;
-            box-shadow: 0 0 10px rgba(108, 99, 255, 0.4);
-        }
+.image-option img {
+    width: 100%;
+    border-radius: 12px;
+    border: 2px solid transparent;
+    transition: 0.25s;
+}
 
-        /* ----- Print / Embroider radio ----- */
-        .radio-group {
-            display: flex;
-            gap: 30px;
-        }
+.image-option input:checked + img {
+    border-color: #088178;
+    box-shadow: 0 0 10px rgba(8,129,120,0.5);
+}
 
-        .radio-group label {
-            cursor: pointer;
-            font-size: 15px;
-            display: flex;
-            align-items: center;
-        }
+/* RADIO GROUP */
+.radio-group {
+    display: flex;
+    gap: 30px;
+}
 
-        .radio-group input {
-            margin-right: 8px;
-        }
-
-        /* ----- Upload + Text Row (Equal Height + Decorative Borders) ----- */
+/* INLINE ROW */
 .inline-row {
     display: flex;
     gap: 25px;
     align-items: stretch;
 }
 
+/* BEAUTIFIED BOX */
 .inline-box {
     flex: 1;
-    background: #ffffff;
-    border-radius: 14px;
-    padding: 18px;
-
-    /* Decorative border */
-    border: 1px solid rgba(108, 99, 255, 0.25);
+    background: #fff;
+    padding: 22px;
+    border-radius: 18px;
     position: relative;
     overflow: hidden;
-
-    /* Soft shadow */
-    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-
-    /* Smooth transitions */
+    border: 1px solid rgba(108,99,255,0.25);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.06);
     transition: 0.3s ease;
 }
 
-/* Corner accents */
 .inline-box::before {
     content: "";
     position: absolute;
-    width: 70px;
-    height: 70px;
-    top: -35px;
-    left: -35px;
+    width: 80px;
+    height: 80px;
+    top: -40px;
+    left: -40px;
+    background: rgba(108,99,255,0.15);
     border-radius: 50%;
-    background: rgba(108, 99, 255, 0.15);
 }
 
 .inline-box::after {
     content: "";
     position: absolute;
-    width: 80px;
-    height: 80px;
-    bottom: -40px;
-    right: -40px;
+    width: 90px;
+    height: 90px;
+    bottom: -45px;
+    right: -45px;
+    background: rgba(255,71,87,0.12);
     border-radius: 50%;
-    background: rgba(255, 71, 87, 0.12);
 }
 
-/* Hover glow effect */
 .inline-box:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 30px rgba(108,99,255,0.25);
     border-color: #088178;
-    box-shadow: 0 6px 15px rgba(108, 99, 255, 0.25);
-    transform: translateY(-3px);
 }
 
-.inline-box input[type="file"],
-.inline-box input[type="text"] {
-    padding: 12px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    background: #fff;
+.box-title {
+    font-weight: 600;
+    margin-bottom: 15px;
     font-size: 15px;
 }
 
-.inline-box input[type="file"]:focus,
-.inline-box input[type="text"]:focus {
-    border-color: #088178;
+/* INPUTS */
+.inline-box input,
+.inline-box select,
+.inline-box textarea {
+    width: 97%;
+    padding: 12px;
+    margin-bottom: 12px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+    resize: none;
+}
+
+.inline-box input:focus,
+.inline-box select:focus,
+.inline-box textarea:focus {
     outline: none;
+    border-color: #088178;
 }
 
-.file-note {
+.file-note,
+.char-count {
     font-size: 13px;
     color: #777;
-    margin-top: 8px;
-}
-
-.char-limit {
-    font-size: 13px;
-    color: #777;
-    margin-top: 6px;
     text-align: right;
+}
+
+/* PREVIEW */
+#textPreview {
+    background: #f9f9f9;
+    border: 2px dashed #ccc;
+    border-radius: 14px;
+    padding: 22px;
+    text-align: center;
+}
+
+#textPreview div {
+    font-size: 22px;
+    line-height: 1.4;
+    min-height: 28px;
 }
 
 /* Submit Button */
