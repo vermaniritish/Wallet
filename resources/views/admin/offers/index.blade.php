@@ -161,22 +161,21 @@ $freeLogo = $freeLogo ? json_decode($freeLogo, true) : null;
 					</div>
 					<!-- Card footer -->
 				</div>
-				
-                <div class="card listing-block">
+			</div>
+			
+			<div class="col-md-5">
+				<div class="card">
 					<!--!! FLAST MESSAGES !!-->
 					@include('admin.partials.flash_messages')
 					<!-- Card header -->
 					<div class="card-header border-0">
-						{{-- <div class="heading">
-							<h3 class="mb-0 w-full">Manage one time setup cost</h3>
-						</div> --}}
                         <h3 class="mb-0 w-full">Manage One Time Setup Cost</h3>
 					</div>
                     <div class="card-body">
                         <form action="{{ route('admin.settings.one-time-setup-cost') }}" method="post">
                         {{ @csrf_field() }}
                         <div class="row">
-                            <div class="col-lg-12 delivery-fields">
+                            <div class="col-lg-12">
                                 <div class="form-group">
                                     <label class="form-control-label" for="input-first-name">Logo Image Setup Cost</label>
                                     <input type="number" step=".01" class="form-control" name="one_time_setup_cost" required placeholder="15" value="{{ old('one_time_setup_cost', Settings::get('one_time_setup_cost')) }}">
@@ -196,9 +195,7 @@ $freeLogo = $freeLogo ? json_decode($freeLogo, true) : null;
                         </form>
                     </div>
 				</div>
-			</div>
-			<?php /*
-			<div class="col-md-5">
+				<?php /*
 				<div class="row">
 					<div class="col-md-12">
 						<div class="card">
@@ -293,8 +290,8 @@ $freeLogo = $freeLogo ? json_decode($freeLogo, true) : null;
 						</div>
 					</div>
 				</div>
+				*/ ?>
 			</div>
-			*/ ?>
 		</div>
 	</div>
 @endsection
