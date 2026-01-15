@@ -340,6 +340,7 @@ class HomeController extends AppController
 						$order->logo_discount_applied = $logoDetailing['appliedDiscount'];
 						$order->one_time_cost = $oneTimeCost;
 						$order->tax_percentage = Settings::get('gst');
+						// $subtotal += $logoDetailing['cost']-$logoDetailing['logoDiscount'];
 						$subtotal += $logoDetailing['cost'];
 						$subtotal += $oneTimeCost;
 						if(isset($data['coupon']) && $data['coupon'] && $data['coupon']['is_percentage'] > 0 && $data['coupon']['amount'] > 0) {
