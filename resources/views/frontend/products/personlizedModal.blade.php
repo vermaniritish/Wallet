@@ -32,8 +32,10 @@
 
 						<!-- Upload Box -->
 						<div class="inline-box">
-							<button class="btn btn-sm btn-primary" v-on:click="handleFileUpload(i, lKey)"><i v-if="uploading !== null && uploading == i" class="fa fa-spin fa-spinner"></i> <i v-else class="fa fa-upload"></i> Upload Logo</button>
-							<div class="logo-image" style="max-width:150px; max-height:150px; object-fit: content;" v-if="lVal && lVal.image"><img :src="lVal.image" style="max-width: 100%;max-height:100%;" /></div>
+							<div class="d-flex flex-row justify-content-between">
+								<button class="btn btn-sm btn-primary" v-on:click="handleFileUpload(i, lKey)"><i v-if="uploading !== null && uploading == i" class="fa fa-spin fa-spinner"></i> <i v-else class="fa fa-upload"></i> Upload Logo</button>
+								<div class="logo-image" style="max-width:150px; max-height:150px; object-fit: content;" v-if="lVal && lVal.image"><img :src="lVal.image" style="max-width: 100%;max-height:100%;" /></div>
+							</div>
 							<p class="file-note">PNG / JPG • Max 2MB • Transparent preferred</p>
 							<p class="file-note">Don't worry how it looks, we will make it look great and send a proof before we add to your products!</p>
 							<p style="text-align:center;font-weight:600;">alternatively...</p>
