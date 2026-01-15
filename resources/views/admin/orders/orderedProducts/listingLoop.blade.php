@@ -64,7 +64,7 @@ $logos = $row->logo_data ? (substr($row->logo_data, 0, 1) == '{' ? json_decode('
 			</div>
 			@if($logo->notes)
 			<div class="col-sm-12">
-				<p><strong> Note: </strong> <br />{{ $logo->notes }}</p>
+				<p class="small"><strong> Note: </strong> <br />{{ $logo->notes }}</p>
 			</div>
 			@endif
 		</div>
