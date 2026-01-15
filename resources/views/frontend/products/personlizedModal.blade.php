@@ -49,36 +49,33 @@
 
 						<!-- Text Box -->
 						<div class="inline-box">
-							<input type="text" id="customText" maxlength="20" placeholder="Write your text (max 20 chars)" v-model="lVal.text">
-							<div class="inline-box">
-								<div class="box-title">✍️ Write Your Text</div>
-								<input type="text" class="text-line" maxlength="10" placeholder="Line 1 (max 10)" v-model="lVal.text">
-								<input type="text" class="text-line" maxlength="10" placeholder="Line 2 (max 10)" v-model="lVal.text1">
-								<input type="text" class="text-line" maxlength="10" placeholder="Line 3 (max 10)" v-model="lVal.text2">
-								<label>Font</label>
-								<select id="fontSelect" v-model="lVal.font">
-									<option value="Roboto">Roboto</option>
-									<option value="Poppins">Poppins</option>
-									<option value="Montserrat">Montserrat</option>
-									<option value="Playfair Display">Playfair</option>
-									<option value="Oswald">Oswald</option>
-									<option value="Raleway">Raleway</option>
-									<option value="Lobster">Lobster</option>
-									<option value="Pacifico">Pacifico</option>
-								</select>
+							<div class="box-title">✍️ Write Your Text</div>
+							<input type="text" class="text-line" maxlength="10" placeholder="Line 1 (max 10)" v-model="lVal.text">
+							<input type="text" class="text-line" maxlength="10" placeholder="Line 2 (max 10)" v-model="lVal.text1">
+							<input type="text" class="text-line" maxlength="10" placeholder="Line 3 (max 10)" v-model="lVal.text2">
+							<label>Font</label>
+							<select id="fontSelect" v-model="lVal.font">
+								<option value="Roboto">Roboto</option>
+								<option value="Poppins">Poppins</option>
+								<option value="Montserrat">Montserrat</option>
+								<option value="Playfair Display">Playfair</option>
+								<option value="Oswald">Oswald</option>
+								<option value="Raleway">Raleway</option>
+								<option value="Lobster">Lobster</option>
+								<option value="Pacifico">Pacifico</option>
+							</select>
 
-								<label>Color</label>
-								<select id="colorSelect" v-model="lVal.color">
-									<option value="#000000">Black</option>
-									<option value="#ffffff">White</option>
-									<option value="#e63946">Red</option>
-									<option value="#1d3557">Navy</option>
-									<option value="#2a9d8f">Teal</option>
-									<option value="#f4a261">Orange</option>
-									<option value="#6c63ff">Purple</option>
-									<option value="#088178">Green</option>
-								</select>
-							</div>
+							<label>Color</label>
+							<select id="colorSelect" v-model="lVal.color">
+								<option value="#000000">Black</option>
+								<option value="#ffffff">White</option>
+								<option value="#e63946">Red</option>
+								<option value="#1d3557">Navy</option>
+								<option value="#2a9d8f">Teal</option>
+								<option value="#f4a261">Orange</option>
+								<option value="#6c63ff">Purple</option>
+								<option value="#088178">Green</option>
+							</select>
 						</div>
 
 					</div>
