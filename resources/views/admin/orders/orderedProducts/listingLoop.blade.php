@@ -50,13 +50,23 @@ $logos = $row->logo_data ? (substr($row->logo_data, 0, 1) == '{' ? json_decode('
 			@endif
 			<div class="col-sm-5">
 				<span class="text-muted">Text:</span> <?php echo $logo->text ?><br />
-				<span class="text-muted">Category:</span> <?php echo $logo->category ?><br />
-				<span class="text-muted">Position:</span> <?php echo $logo->postion ?><br />
+				<span class="text-muted">Text:</span> <?php echo $logo->text2 ?><br />
+				<span class="text-muted">Text3:</span> <?php echo $logo->text2 ?><br />
+				<span class="text-muted">Font:</span> <?php echo $logo->font ?><br />
+				<span class="text-muted">Color:</span> <span style="color: <?php echo $logo->color ?>"><?php echo $logo->color ?></span><br />
+				
 			</div>
 			<div class="col-sm-4">
+				<span class="text-muted">Category:</span> <?php echo $logo->category ?><br />
+				<span class="text-muted">Position:</span> <?php echo $logo->postion ?><br />
 				<span class="text-muted">Size:</span> <?php echo $row->size_title ?><br />
 				<span class="text-muted">Color:</span> <?php echo $row->color ?><br />
 			</div>
+			@if($logo->notes)
+			<div class="col-sm-12">
+				<p><strong> Note: </strong> <br />{{ $logo->notes }}</p>
+			</div>
+			@endif
 		</div>
 	</td>
 </tr>
