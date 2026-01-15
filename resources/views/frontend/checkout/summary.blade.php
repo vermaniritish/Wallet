@@ -62,7 +62,9 @@
                     <td><b style="color:#ee2761">- £@{{formatMoney(calculate().logo_discount)}}</b></td>
                 </tr>
                 <tr v-if="calculate().oneTimeCost > 0">
-                    <td colspan="2">One Time Setup Fees <div v-html="renderOneTimeFeeHtml()"></div></td>
+                    <td colspan="2">One Time Setup Fees 
+                        <!-- <div v-html="renderOneTimeFeeHtml()"></div> -->
+                    </td>
                     <td>£@{{formatMoney(calculate().oneTimeCost)}}</td>
                 </tr>
                 <tr class="">

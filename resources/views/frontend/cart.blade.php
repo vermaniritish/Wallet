@@ -138,6 +138,12 @@
                                             <td class="cart_total_amount"><span class="font-lg fw-900 text-brand">- £@{{formatMoney(calculate().logo_discount)}}</span></td>
                                         </tr>
                                         <tr>
+                                            <td class="cart_total_label">Setup Fee
+                                                <!-- <div v-html="renderOneTimeFeeHtml()"></div> -->
+                                            </td>
+                                            <td class="cart_total_amount"><span class="font-lg fw-900 text-brand">£@{{formatMoney(calculate().oneTimeCost)}}</span></td>
+                                        </tr>
+                                        <tr>
                                             <td class="cart_total_label">Subtotal</td>
                                             <td class="cart_total_amount"><span class="font-lg fw-900 text-brand">£@{{formatMoney(calculate().subtotal)}}</span></td>
                                         </tr>
