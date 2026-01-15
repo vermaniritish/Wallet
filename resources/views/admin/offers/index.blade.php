@@ -26,7 +26,7 @@ $freeLogo = $freeLogo ? json_decode($freeLogo, true) : null;
 	<!-- Page content -->
 	<div class="container-fluid mt--6">
 		<div class="row">
-			<div class="col-md-12">
+			<div class="col-md-8">
 				<div class="card listing-block">
 					<!--!! FLAST MESSAGES !!-->
 					@include('admin.partials.flash_messages')
@@ -163,7 +163,7 @@ $freeLogo = $freeLogo ? json_decode($freeLogo, true) : null;
 				</div>
 			</div>
 			
-			<div class="col-md-5">
+			<div class="col-md-4">
 				<div class="card">
 					<!--!! FLAST MESSAGES !!-->
 					@include('admin.partials.flash_messages')
