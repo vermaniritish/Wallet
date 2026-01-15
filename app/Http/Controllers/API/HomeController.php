@@ -323,7 +323,7 @@ class HomeController extends AppController
 						
 						$logoDetailing = $this->calculateLogoCost($data['cart']);
 						// $oneTimeCost = $logoDetailing['haveLogo'] ? Settings::get('one_time_setup_cost') : 0;
-						$oneTimeCost = 0;
+						$oneTimeCost = Settings::get('one_time_setup_cost');
 						
 						/* Delivery Case */
 						// ----------------- Important
