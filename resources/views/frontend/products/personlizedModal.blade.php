@@ -40,11 +40,11 @@
 							<p class="file-note">Don't worry how it looks, we will make it look great and send a proof before we add to your products!</p>
 							<p style="text-align:center;font-weight:600;">alternatively...</p>
 							<label>
-								<input type="radio" name="logo_option" value="later">
+								<input type="radio" name="already_uploaded" value="0" checked @change="lVal.already_uploaded = false">
 								Don't have your logo to hand? Don't worry — we will contact you after you place your order.
 							</label>
 							<label>
-								<input type="radio" name="logo_option" value="existing">
+								<input type="radio" name="already_uploaded" value="1" @change="lVal.already_uploaded = true">
 								You already have my logo, it's just not in my account (no setup fee will be charged).
 							</label>
 						</div>

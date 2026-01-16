@@ -1031,9 +1031,10 @@ var minicart = new Vue({
                     if(typeof s[i].logo[k].price !== 'undefined')
                     {
                         let exist = this.logoPricesDynamix.filter((item) => {
-                            return item.option == (s[i].logo[k].category).toLowerCase().replace(/\s+/g , '-')
-                            && item.position == (s[i].logo[k].postion).toLowerCase().replace(/\s+/g , '-')
-                            && (s[i].quantity*1) >= (item.from_quantity*1) && (s[i].quantity*1) <= (item.to_quantity*1)
+
+                            return s[i].logo[k].category && s[i].logo[k].category != "None" && s[i].logo[k].postion ? (item.option == (s[i].logo[k].category).toLowerCase().replace(/\s+/g , '-')
+                                && item.position == (s[i].logo[k].postion).toLowerCase().replace(/\s+/g , '-')
+                                && (s[i].quantity*1) >= (item.from_quantity*1) && (s[i].quantity*1) <= (item.to_quantity*1)) : false;
                         });
                         console.log(exist);
                         if(exist && exist.length > 0 && exist[0].price)
@@ -1341,9 +1342,9 @@ var minicart = new Vue({
                     if(typeof s[i].logo[k].price !== 'undefined')
                     {
                         let exist = this.logoPricesDynamix.filter((item) => {
-                            return item.option == (s[i].logo[k].category).toLowerCase().replace(/\s+/g , '-')
-                            && item.position == (s[i].logo[k].postion).toLowerCase().replace(/\s+/g , '-')
-                            && (s[i].quantity*1) >= (item.from_quantity*1) && (s[i].quantity*1) <= (item.to_quantity*1)
+                            return s[i].logo[k].category && s[i].logo[k].category != "None" && s[i].logo[k].postion ? (item.option == (s[i].logo[k].category).toLowerCase().replace(/\s+/g , '-')
+                                && item.position == (s[i].logo[k].postion).toLowerCase().replace(/\s+/g , '-')
+                                && (s[i].quantity*1) >= (item.from_quantity*1) && (s[i].quantity*1) <= (item.to_quantity*1)) : false;
                         });
                         if(exist && exist.length > 0 && exist[0].price)
                         {
@@ -1797,9 +1798,9 @@ checkoutPage = new Vue({
                     if(typeof s[i].logo[k].price !== 'undefined')
                     {
                         let exist = this.logoPricesDynamix.filter((item) => {
-                            return item.option == (s[i].logo[k].category).toLowerCase().replace(/\s+/g , '-')
-                            && item.position == (s[i].logo[k].postion).toLowerCase().replace(/\s+/g , '-')
-                            && (s[i].quantity*1) >= (item.from_quantity*1) && (s[i].quantity*1) <= (item.to_quantity*1)
+                            return s[i].logo[k].category && s[i].logo[k].category != "None" && s[i].logo[k].postion ? (item.option == (s[i].logo[k].category).toLowerCase().replace(/\s+/g , '-')
+                                && item.position == (s[i].logo[k].postion).toLowerCase().replace(/\s+/g , '-')
+                                && (s[i].quantity*1) >= (item.from_quantity*1) && (s[i].quantity*1) <= (item.to_quantity*1)) : false;
                         });
                         if(exist && exist.length > 0 && exist[0].price)
                         {
