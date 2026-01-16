@@ -127,7 +127,8 @@
                     <div class="voucher-title">Gift Voucher</div>
 
                     <div v-if="form.amount && form.amount != 'custom'" class="amount" id="previewAmount">@{{ form.amount ? `£` + form.amount : '£---'  }}</div>
-                    <div v-if="form.customAmount" class="amount" id="previewAmount">@{{ form.customAmount ? `£` + form.customAmount : '£---'  }}</div>
+                    <div v-else-if="form.customAmount" class="amount" id="previewAmount">@{{ form.customAmount ? `£` + form.customAmount : '£---'  }}</div>
+                    <div v-else class="amount" id="previewAmount">@{{ '£---' }}</div>
 
                     <div class="code-box">
                         CODE: <span>GV-XXXX-YYYY</span>

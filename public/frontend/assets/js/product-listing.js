@@ -2223,7 +2223,7 @@ if($("#gift-voucher").length > 0)
                 name: "",
                 email: "",
                 mobile: "",
-                amount: "100",
+                amount: "",
                 delivery_mode: "Email",
                 receiver_name: "",
                 receiver_email: "",
