@@ -50,6 +50,7 @@
                                 <option value="custom">Custom</option>
                             </select>
                             <input
+                                v-if="form.amount == 'custom'"
                                 type="number"
                                 min="1"
                                 step="1.00"
