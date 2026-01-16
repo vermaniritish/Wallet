@@ -54,6 +54,7 @@
                                 min="1"
                                 step="1.00"
                                 v-model="form.customAmount"
+                                placeholder="$"
                                 inputmode="decimal"
                                 onkeydown="return !['e','E','+','-'].includes(event.key)"
                             />
@@ -124,7 +125,8 @@
                     
                     <div class="voucher-title">Gift Voucher</div>
 
-                    <div class="amount" id="previewAmount">@{{ form.amount ? `£` + form.amount : '£---'  }}</div>
+                    <div v-if="form.amount && form.amount != 'custom" class="amount" id="previewAmount">@{{ form.amount ? `£` + form.amount : '£---'  }}</div>
+                    <div v-if="form.customAmount" class="amount" id="previewAmount">@{{ form.customAmount ? `£` + form.customAmount : '£---'  }}</div>
 
                     <div class="code-box">
                         CODE: <span>GV-XXXX-YYYY</span>
