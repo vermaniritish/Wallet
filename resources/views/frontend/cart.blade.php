@@ -18,7 +18,7 @@
                         <thead>
                             <tr class="main-heading">
                                 <th scope="col">Image</th>
-                                <th scope="col">Name</th>
+                                <th scope="col" width="30%">Name</th>
                                 <th scope="col">Price</th>
                                 <th scope="col">Quantity</th>
                                 <th scope="col">Subtotal</th>
