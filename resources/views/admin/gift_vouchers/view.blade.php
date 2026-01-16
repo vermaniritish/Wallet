@@ -41,7 +41,7 @@
 									<th>User</th>
 									<td>
 										@if($page->user_id)
-										<a href="{{ route('admin.users.view', ['id' => $page->user_id]) }}"><span class="text-muted">User: </span><?php echo $page->user->first_name . " " . $page->user->last_name ?></a>
+										<a href="{{ route('admin.users.view', ['id' => $page->user_id]) }}"><?php echo $page->user->first_name . " " . $page->user->last_name ?></a>
 										@endif
 									</td>
 								</tr>
