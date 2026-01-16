@@ -2228,9 +2228,11 @@ if($("#gift-voucher").length > 0)
                 receiver_name: "",
                 receiver_email: "",
                 receiver_mobile: "",
-                message: ""
+                message: "",
+                customAmount: ``,
             },
             paid: false,
+            
             errors: {},
             loading: false
         },
@@ -2247,6 +2249,8 @@ if($("#gift-voucher").length > 0)
                 else if (!/^[0-9]{10}$/.test(this.form.mobile)) this.errors.mobile = "Enter valid 10 digit mobile";
 
                 if (!this.form.amount) this.errors.amount = "Select voucher amount";
+
+                if (this.form.amount == 'custom' && (!this.form.customAmount || this.form.customAmount < 1)) this.errors.amount = "Select voucher amount";
 
                 if (!this.form.receiver_name) this.errors.receiver_name = "Receiver name is required";
 

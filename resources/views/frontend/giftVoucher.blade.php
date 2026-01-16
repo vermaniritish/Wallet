@@ -40,14 +40,24 @@
 
                     <div class="mb-3">
                         <label class="form-label">Select Voucher Amount<span class="alert">*</span></label>
-                        <select class="form-select" v-model="form.amount">
-                            <option disabled value="">Select Amount</option>
-                            <option value="10">£10</option>
-                            <option value="20">£20</option>
-                            <option value="30">£30</option>
-                            <option value="50">£50</option>
-                            <option value="100">£100</option>
-                        </select>
+                        <div class="d-flex align-items-center">
+                            <select class="form-select" v-model="form.amount">
+                                <option disabled value="">Select Amount</option>
+                                <option value="10">£10</option>
+                                <option value="20">£20</option>
+                                <option value="30">£30</option>
+                                <option value="50">£50</option>
+                                <option value="custom">Custom</option>
+                            </select>
+                            <input
+                                type="number"
+                                min="1"
+                                step="1.00"
+                                v-model="form.customAmount"
+                                inputmode="decimal"
+                                onkeydown="return !['e','E','+','-'].includes(event.key)"
+                            />
+                        </div>
                         <small v-if="errors.amount" class="text-danger">@{{ errors.amount }}</small>
                     </div>
 
