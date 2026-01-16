@@ -198,7 +198,7 @@
 								<?php if(!empty($listing->items())): ?>
 									@include('admin.orders.listingLoop')
 								<?php else: ?>
-									<td align="left" colspan="7">
+									<td align="left" colspan="10">
 		                            	No records found!
 		                            </td>
 								<?php endif; ?>
