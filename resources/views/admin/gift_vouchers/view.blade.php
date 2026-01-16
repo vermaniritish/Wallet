@@ -38,6 +38,14 @@
 									<td><span class="badge badge-primary"><?php echo $page->code ?></span></td>
 								</tr>
 								<tr>
+									<th>User</th>
+									<td>
+										@if($page->user_id)
+										<a href="{{ route('admin.users.view', ['id' => $page->user_id]) }}"><span class="text-muted">User: </span><?php echo $page->user->first_name . " " . $page->user->last_name ?></a>
+										@endif
+									</td>
+								</tr>
+								<tr>
 									<th>Sender </th>
 									<td>
 										<b><?php echo $page->sender_name ?></b><br />

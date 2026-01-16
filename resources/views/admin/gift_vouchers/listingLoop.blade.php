@@ -19,8 +19,11 @@
 	<td>
 		<b><?php echo $row->sender_name ?></b><br />
 		<?php echo $row->sender_email ?><br />
-		<?php echo $row->sender_mobile ?><br />
+		<?php echo $row->sender_mobile ?>
+		@if($row->user_id)
+		<br />
 		<a href="{{ route('admin.users.view', ['id' => $row->user_id]) }}"><span class="text-muted">User: </span><?php echo $row->owner_first_name . " " . $row->owner_last_name ?></a>
+		@endif
 	</td>
 	<td>
 		<b><?php echo $row->receiver_name ?></b><br />
