@@ -182,8 +182,7 @@ $freeLogo = $freeLogo ? json_decode($freeLogo, true) : null;
                                 </div>
 								<div class="form-group d-none">
                                     <label class="form-control-label" for="input-first-name">Text Setup Cost</label>
-									<input type="hidden" name="one_time_setup_cost_text" value="0" />
-                                    <!-- <input type="number" step=".01" class="form-control" name="one_time_setup_cost_text" required placeholder="15" value="{{ old('one_time_setup_cost_text', Settings::get('one_time_setup_cost_text')) }}"> -->
+									<input type="number" step=".01" class="form-control" name="one_time_setup_cost_text" required placeholder="15" value="{{ old('one_time_setup_cost_text', Settings::get('one_time_setup_cost_text')) }}">
                                 </div>
                             </div>
                             <div class="col-lg-12 text-right">
