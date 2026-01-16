@@ -19,7 +19,7 @@
 				<div class="section">
 					<label class="title">2. Choose Application Method</label>
 					<div class="radio-group">
-						<label><input type="radio" :name="`logooption`+i+lKey" type="radio" v-on:input="onChange(i, s, 'None', lKey)" :checked="!lVal.category || lVal.category == 'None'"> None</label>
+						<label><input type="radio" :name="`logooption`+i+lKey" type="radio" v-on:input="onChange(i, s, 'None', lKey)" :checked="lVal.category == 'None'"> None</label>
 						<label v-if="logoOptions && logo" v-for="(c, k) in logoOptions.category"><input type="radio" :name="`logooption`+i+lKey" type="radio" v-on:input="onChange(i, s, c, lKey)" :checked="lVal.category == c">@{{c}}</label>
 					</div>
 				</div>

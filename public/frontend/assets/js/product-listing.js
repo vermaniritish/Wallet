@@ -610,11 +610,9 @@ else if($('#product-cat-page').length)
                     category = category ? category : size.logo[logoKey].category;
                     const pos = size.logo[logoKey].postion;
                     logo.category = category;
-                    console.log(pos, this.logoPrices);
-                    if(category != 'None')
+                    if(category && category != 'None')
                     {
                         let logoPriceApply = this.logoPrices.filter((val) => {
-                            console.log(val.position, this.convertToSlug(pos), val.option, this.convertToSlug(category));
                             return val.position == this.convertToSlug(pos) && val.option == this.convertToSlug(category) && size.quantity >= val.from_quantity && size.quantity <= val.to_quantity;
                         });
                         logo.price = logoPriceApply && logoPriceApply.length > 0 ? (logoPriceApply[0].price*1) : 0;
@@ -1347,7 +1345,6 @@ var minicart = new Vue({
                             && item.position == (s[i].logo[k].postion).toLowerCase().replace(/\s+/g , '-')
                             && (s[i].quantity*1) >= (item.from_quantity*1) && (s[i].quantity*1) <= (item.to_quantity*1)
                         });
-                        console.log(exist);
                         if(exist && exist.length > 0 && exist[0].price)
                         {
                             s[i].logo[k].price = exist[0].price;

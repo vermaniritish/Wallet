@@ -1806,6 +1806,30 @@ label {
   animation-name: fadeInUp;
 }
 
+.offer-icon {
+    position: absolute;
+    top: 10px;      /* move vertically */
+    right: 10px;    /* move horizontally */
+    width: 50px;    /* icon size */
+    height: 50px;
+    z-index: 2;
+}
+
+.offer-icon img {
+    width: 100%;
+    height: auto;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+.offer-icon {
+    animation: pulse 1.5s infinite;
+}
+
 .hero-slider-1 {
   height: 500px;
 }
