@@ -127,7 +127,7 @@ class PagesController extends BaseController
             'shops.name as shop_name',
             DB::raw('GROUP_CONCAT(order_products.shipment_tracking) as shipment')
         ])
-        ->join('shops', 'shops.id', '=', 'orders.shop_id')
+        ->leftJoin('shops', 'shops.id', '=', 'orders.shop_id')
         ->join('order_products', 'order_products.order_id', '=', 'orders.id')
         ->orderBy('id', 'desc')->groupBy('orders.id')->limit(3000)->get();
         return view('frontend.account.index', [
