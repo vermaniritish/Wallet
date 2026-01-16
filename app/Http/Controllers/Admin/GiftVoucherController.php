@@ -55,8 +55,10 @@ class GiftVoucherController extends AppController
                 sender_mobile LIKE ? or
                 receiver_name LIKE ? or
                 receiver_email LIKE ? or
-                receiver_mobile LIKE ?
-            )'] = [$search, $search, $search, $search, $search, $search, $search];
+                receiver_mobile LIKE ? or
+				users.first_name LIKE ? or
+				users.last_name LIKE ?
+            )'] = [$search, $search, $search, $search, $search, $search, $search, $search, $search];
     	}
 
     	if($request->get('created_on'))
@@ -76,7 +78,7 @@ class GiftVoucherController extends AppController
     	{
     		$admins = $request->get('admins');
     		$admins = $admins ? implode(',', $admins) : 0;
-    		$where[] = 'gift_voucher.created_by IN ('.$admins.')';
+    		$where[] = 'gift_voucher.user_id IN ('.$admins.')';
     	}
 
     	if($request->get('status') !== "" && $request->get('status') !== null)
