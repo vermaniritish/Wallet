@@ -1367,6 +1367,7 @@ var minicart = new Vue({
             localStorage.setItem('cart', JSON.stringify(this.cart))
         },
         offerPrice(item) {
+            console.log(window.offerPrice(item));
             return window.offerPrice(item);
         },
         calculate: function(){
