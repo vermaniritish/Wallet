@@ -123,8 +123,11 @@ class PagesController extends BaseController
                     ->orWhere('customer_email', 'LIKE', $user->email);
         })->select([
             'orders.id', 'orders.prefix_id', 'orders.created', 'orders.status', 'orders.total_amount', 'orders.paid',
+            'orders.shop_id',
+            'shops.name as shop_name',
             DB::raw('GROUP_CONCAT(order_products.shipment_tracking) as shipment')
         ])
+        ->join('shops', 'shops.id', '=', 'orders.shop_id')
         ->join('order_products', 'order_products.order_id', '=', 'orders.id')
         ->orderBy('id', 'desc')->groupBy('orders.id')->limit(3000)->get();
         return view('frontend.account.index', [

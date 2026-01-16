@@ -254,10 +254,12 @@ class Orders extends AppModel
         
         $listing = Orders::select([
                 'orders.*',
+                'shops.name as shop_name',
                 'owner.first_name as owner_first_name',
                 'owner.last_name as owner_last_name',
             ])
             ->leftJoin('admins as owner', 'owner.id', '=', 'orders.created_by')
+            ->leftJoin('shops', 'shops.id', '=', 'orders.shop_id')
             ->orderBy($orderBy, $direction);
 
         if(!empty($where))

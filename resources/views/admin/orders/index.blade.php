@@ -118,7 +118,7 @@
 											<label class="custom-control-label" for="mark_all"></label>
 										</div>
 									</th>
-									<th class="sort" width="5%">
+									<th class="sort" width="2%">
 										<!--- MAKE SURE TO USE PROPOER FIELD IN data-field AND PROPOER DIRECTION IN data-sort -->
 										Id
 										<?php if(isset($_GET['sort']) && $_GET['sort'] == 'orders.id' && isset($_GET['direction']) && $_GET['direction'] == 'asc'): ?>
@@ -129,7 +129,7 @@
 										<i class="fas fa-sort" data-field="orders.id" data-sort="asc"></i>
 										<?php endif; ?>
 									</th>
-									<th class="sort" width="20%">
+									<th class="sort" width="18%">
 										Customer Name
 										<?php if(isset($_GET['sort']) && $_GET['sort'] == 'orders.customer_name' && isset($_GET['direction']) && $_GET['direction'] == 'asc'): ?>
 										<i class="fas fa-sort-down active" data-field="orders.customer_name" data-sort="asc"></i>
@@ -139,7 +139,17 @@
 										<i class="fas fa-sort" data-field="orders.customer_name"></i>
 										<?php endif; ?>
 									</th>
-									<th class="sort" width="15%">
+									<th class="sort" width="10%">
+										Source
+										<?php if(isset($_GET['sort']) && $_GET['sort'] == 'orders.source' && isset($_GET['direction']) && $_GET['direction'] == 'asc'): ?>
+										<i class="fas fa-sort-down active" data-field="orders.source" data-sort="asc"></i>
+										<?php elseif(isset($_GET['sort']) && $_GET['sort'] == 'orders.source' && isset($_GET['direction']) && $_GET['direction'] == 'desc'): ?>
+										<i class="fas fa-sort-up active" data-field="orders.source" data-sort="desc"></i>
+										<?php else: ?>
+										<i class="fas fa-sort" data-field="orders.source"></i>
+										<?php endif; ?>
+									</th>
+									<th class="sort" width="10%">
 										City
 										<?php if(isset($_GET['sort']) && $_GET['sort'] == 'orders.city' && isset($_GET['direction']) && $_GET['direction'] == 'asc'): ?>
 										<i class="fas fa-sort-down active" data-field="orders.city" data-sort="asc"></i>

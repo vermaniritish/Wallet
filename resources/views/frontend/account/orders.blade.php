@@ -10,6 +10,7 @@
                     <thead>
                         <tr>
                             <th>Order</th>
+                            <th>Source</th>
                             <th>Date</th>
                             <th>Payment Status</th>
                             <th>Fulfillment Status</th>
@@ -22,6 +23,7 @@
                             <?php foreach($orders as $o): ?>
                             <tr>
                                 <td>#{{$o->prefix_id}}</td>
+                                <td>{{$o->shop_id ? $o->shop_name : 'Online'}}</td>
                                 <td>{{_dt($o->created)}}</td>
                                 <td><span class="{{ $o->paid ? 'text-success' : 'text-danger'}}">{{ $o->paid ? 'Paid' : 'Unpaid'}}</span></td>
                                 <td><span class="badge" style="{{ Orders::getStatuses($o->status)['styles'] }}" >{{ Orders::getStatuses($o->status)['label'] }}</td>

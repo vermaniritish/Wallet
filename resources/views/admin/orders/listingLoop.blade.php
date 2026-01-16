@@ -23,6 +23,9 @@
 		<?php echo 'Phone: ' . $row->customer_phone; ?>
 	</td>
 	<td>
+		<?php echo $row->shop_id ? $row->shop_name : "Online" ?>
+	</td>
+	<td>
 		<?php echo $row->city ?>
 	</td>
 	<td>
