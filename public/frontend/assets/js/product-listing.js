@@ -2232,7 +2232,7 @@ if($("#gift-voucher").length > 0)
                 customAmount: ``,
             },
             paid: false,
-            
+            walletAmount: 0,
             errors: {},
             loading: false
         },
@@ -2293,6 +2293,7 @@ if($("#gift-voucher").length > 0)
         },
         mounted: async function() {
             await sleep(1000);
+            this.walletAmount = walletAmount * 1;
             initPaypal();
         }
     });

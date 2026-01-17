@@ -67,10 +67,12 @@
 								</tr>
 								<tr>
 									<th>Balance</th>
-									<td><b><?php echo _currency($page->amount - $page->applied_amount) ?></b></td>
-									@if($page->applied > 1)
-									<span class="text-primary">Applied twice, remaining balance cannot be used by customer.</span>
-									@endif
+									<td>
+										<b><?php echo _currency($page->amount - $page->applied_amount) ?></b>
+										@if($page->applied > 1)
+										<span class="text-primary">Applied twice, remaining balance cannot be used by customer.</span>
+										@endif
+									</td>
 								</tr>
 								<tr>
 									<th>Amount</th>

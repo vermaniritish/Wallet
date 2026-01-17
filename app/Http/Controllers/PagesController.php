@@ -423,7 +423,7 @@ class PagesController extends BaseController
                 {
                     return response()->json([
                         'status' => true,
-                        'message' => 'Voucher saved as pending, proceed to payment',
+                        'message' => 'Voucher saved as pending, proceed to payment.',
                         'voucher_id' => General::encrypt($voucher->id),
                         'amount' => $voucher->amount,
                     ]);
