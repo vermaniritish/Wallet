@@ -168,6 +168,7 @@ class PayPalController extends Controller
             {
                 $appliedWallet = $order->pay_details ? json_decode($order->pay_details, true) : null;
                 if($appliedWallet && $appliedWallet['applied'] > 0) {
+                    $user = Users::find($order->user_id);
                     $user->wallet = $user->wallet - $appliedWallet['applied'];
                     $user->save();
                 }
