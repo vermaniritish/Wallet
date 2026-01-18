@@ -264,6 +264,18 @@ class PayPalController extends Controller
                 $order->paid = 1;
                 $order->save();
 
+                if($order && $order->wallet_applied > 0) {
+                    $user = Users::find($order->customer_id);
+                    $user->wallet = $user->wallet - $order->wallet_applied;
+                    $user->save();
+                    Wallet::create([
+                        'user_id' => $user->id,
+                        'amount' => $order->wallet_applied,
+                        'mode' => 'deduct',
+                        'payment_status' => 'paid'
+                    ]);
+                }
+
                 // $pros = [];
                 $listing = OrderProductRelation::getListing($request, ['order_products.order_id' => $order->id]);
                 if($listing->count() > 0)
