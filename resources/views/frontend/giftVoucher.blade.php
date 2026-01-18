@@ -146,7 +146,10 @@
                     <div class="code-box">
                         CODE: <span>GV-XXXX-YYYY</span>
                     </div>
-                    <p><span id="previewName">This voucher entitles the bearer to make purchases worth <strong>@{{ form.amount ? `£` + form.amount : '£---'  }}</strong> on our <strong><a href="https://www.pindersschoolwear.com/" target="_blank">website</a></strong> or stores.</span><br><br></p>
+                    <p><span id="previewName">This voucher entitles the bearer to make purchases worth 
+                        <strong v-if="form.amount && form.amount != 'custom'" class="amount" id="previewAmount">@{{ form.amount ? `£` + form.amount : '£---'  }}</strong>
+                        <strong v-else-if="form.customAmount" class="amount" id="previewAmount">@{{ form.customAmount ? `£` + form.customAmount : '£---'  }}</strong>
+                    on our <strong><a href="https://www.pindersschoolwear.com/" target="_blank">website</a></strong> or stores.</span><br><br></p>
                     <p><strong>Issued To:</strong> <span id="previewName">@{{ form.receiver_name ? form.receiver_name : 'Receiver Name'  }}</span></p>
                     <p><strong>Message:</strong> <span id="previewMsg">@{{ form.message ? form.message : `Your special gift message will appear here.`}}</span></p>
                     <strong>Issued By:</strong> <span id="previewMsg">@{{ form.name ?  form.name : 'Your Name'  }}</span><br>
