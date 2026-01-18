@@ -2153,7 +2153,8 @@ checkoutPage = new Vue({
             if(!haveErrors)
             {
                 this.errors = {};
-                let data = {...checkout, ...{coupon: this.appliedCoupon, shipping_gateway: ( this.shippingOptions && this.shippingOptions.value ? this.shippingOptions.value : null ), shipping: ( this.shippingOptions && this.shippingOptions.price ? this.shippingOptions.price : 0 ), cart: this.cart, token: $('#checkout-page').attr('data-token')} };
+                let walletApplied = this.calculate().wallet_applied;
+                let data = {...checkout, ...{coupon: this.appliedCoupon, shipping_gateway: ( this.shippingOptions && this.shippingOptions.value ? this.shippingOptions.value : null ), shipping: ( this.shippingOptions && this.shippingOptions.price ? this.shippingOptions.price : 0 ), cart: this.cart, token: $('#checkout-page').attr('data-token')}, walletApplied: walletApplied };
                 this.saving = true;
                 data.lastId = localStorage.getItem('orderId') ? localStorage.getItem('orderId') : null;
                 let response = await fetch(site_url + '/api/orders/booking', {

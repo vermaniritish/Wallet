@@ -384,6 +384,7 @@ class HomeController extends BaseController
 			$order->postcode = $data['postalcode'];
 			$order->coupon = isset($data['coupon']) && $data['coupon'] ? json_encode($data['coupon']) : null;
 			$order->status = 'pending';
+			$order->wallet_applied = isset($data['walletApplied']) && $data['walletApplied'] ? $data['walletApplied'] : 0;
 			$order->created = date('Y-m-d H:i:s');
 			if($request->get('lastId'))
 			{
@@ -436,8 +437,8 @@ class HomeController extends BaseController
 					$order->tax_percentage = Settings::get('gst');
 					$order->tax = (($subtotal - $discount) * $order->tax_percentage) / 100;
 					$order->total_amount = ($subtotal - $discount) + $order->tax;
+					$order->wallet_applied = $request->get('walletApplied');
 					$order->save();
-					
 				}
 
 				return Response()->json([
