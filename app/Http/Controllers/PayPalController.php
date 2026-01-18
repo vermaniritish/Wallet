@@ -237,9 +237,9 @@ class PayPalController extends Controller
         if($manual)
         {
             $order = Orders::find($orderId);
-            $capture = [
+            $capture = (object) [
                 'status' => true,
-                'result' => (object) [
+                'result' =>  [
                     'status' => 'COMPLETED'
                 ]
             ];
