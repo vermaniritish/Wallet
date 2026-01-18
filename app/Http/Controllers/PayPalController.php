@@ -174,7 +174,7 @@ class PayPalController extends Controller
                     $user->save();
                     Wallet::create([
                         'user_id' => $user->id,
-                        'amount' => $appliedWallet['applied'],
+                        'amount' => -$appliedWallet['applied'],
                         'mode' => 'deduct',
                         'payment_status' => 'paid'
                     ]);
@@ -270,7 +270,7 @@ class PayPalController extends Controller
                     $user->save();
                     Wallet::create([
                         'user_id' => $user->id,
-                        'amount' => $order->wallet_applied,
+                        'amount' => -$order->wallet_applied,
                         'mode' => 'deduct',
                         'payment_status' => 'paid'
                     ]);
