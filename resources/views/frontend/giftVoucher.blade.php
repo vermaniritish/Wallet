@@ -105,7 +105,7 @@
                         </div>
                         <div class="d-flex flex-row justify-content-between">
                             <p>Wallet (Balance: <span class="text-brand">£@{{walletAmount}}</span>)</p>
-                            <p class="strong">£@{{ appliedAmount() }}</p>
+                            <p class="strong">£@{{ appliedAmount().toFixed() }}</p>
                         </div>
                     </div>
                     @endif

@@ -2289,6 +2289,9 @@ if($("#gift-voucher").length > 0)
                 }
 
                 this.loading = false;
+            },
+            appledAmount() {
+                return 1;
             }
         },
         mounted: async function() {
