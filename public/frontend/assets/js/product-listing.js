@@ -2284,7 +2284,13 @@ if($("#gift-voucher").length > 0)
                 const data = await response.json();
 
                 if (data.status) {
-                    return data;
+                    if(data.paid == 'paid') {
+                        voucherApp.paid = true;
+                        window.scrollTo(0,0);
+                    }
+                    else {
+                        return data;
+                    }
                 }
                 else {
                     set_notification('error', data.message);

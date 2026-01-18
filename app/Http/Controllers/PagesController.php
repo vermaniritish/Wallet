@@ -426,10 +426,8 @@ class PagesController extends BaseController
 
                     if($voucher)
                     {
-                        
-
                         $order = GiftVoucher::find($voucher->id);
-                        if($order)
+                        if($order && $order->status == 'paid')
                         {
                             if($request->applied['applied'] > 0 && $request->applied['amount'] == $request->applied['applied'] && $request->applied['pay'] < 1) {
                                 $user->wallet =$user->wallet - $request->applied['applied'];
@@ -477,6 +475,14 @@ class PagesController extends BaseController
                                     ]
                                 );
                             }
+
+                            return response()->json([
+                                'status' => true,
+                                'message' => 'Voucher sent.',
+                                'paid' => $order->status,
+                                'voucher_id' => General::encrypt($voucher->id),
+                                'amount' => $voucher->amount,
+                            ]);
                         }
 
                         return response()->json([
@@ -484,6 +490,7 @@ class PagesController extends BaseController
                             'message' => 'Voucher saved as pending, proceed to payment.',
                             'voucher_id' => General::encrypt($voucher->id),
                             'amount' => $voucher->amount,
+                            'paid' => $order->status,
                         ]);
                     }
                     else
