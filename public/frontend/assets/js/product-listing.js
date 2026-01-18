@@ -1281,7 +1281,7 @@ var minicart = new Vue({
                     totalLogos += (c.quantity*1)
                 }
 
-                html += (a.price*1) > 0 ? `
+                html += (logo.price*1) > 0 ? `
                     <tr class="table-borderless">
                         <td></td>
                         <td colspan="4">
