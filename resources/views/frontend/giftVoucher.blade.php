@@ -101,20 +101,22 @@
                     <div class="mb-3">
                         <div class="d-flex flex-row justify-content-between">
                             <p>Total</p>
-                            <p class="strong">£@{{ (form.amount && form.amount != 'custom' ? form.amount : (form.amount == 'custom' ? form.customAmount : '0.00')) }}</p>
+                            <p class="strong">£@{{ decimal(form.amount && form.amount != 'custom' ? form.amount : (form.amount == 'custom' ? form.customAmount : '0.00')) }}</p>
                         </div>
                         <div class="d-flex flex-row justify-content-between">
-                            <p>Wallet (Balance: <span class="text-brand">£@{{ decimal(walletAmount)}}</span>)</p>
-                            <p class="strong">£@{{ decimal(appliedAmount()) }}</p>
+                            <p>Wallet (Balance: <span class="text-brand">£@{{ (walletAmount)}}</span>)</p>
+                            <p class="strong">- £@{{ decimal(appliedAmount().applied) }}</p>
                         </div>
                     </div>
                     @endif
-                    <!-- <button class="btn btn-primary w-100 btn-lg mt-3"
+                    <button class="btn btn-primary w-100 btn-lg mt-3"
                             @click="submitForm"
-                            :disabled="loading">
+                            :disabled="loading"
+                            v-if="appliedAmount().pay < 1"
+                    >
                         @{{ loading ? 'Processing...' : 'Pay Now' }}
-                    </button> -->
-                    <div class="mb-3">
+                    </button>
+                    <div :class="`mb-3 `+(appliedAmount().pay > 0 ? `d-none` : ``)">
                         <div id="paypal-button-container"></div>
                     </div>
                 </div>
