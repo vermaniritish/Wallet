@@ -1234,6 +1234,78 @@ var minicart = new Vue({
     
 });
 
+function renderLogoInfo(c) {
+    let html = '';
+    let amount = 0;
+    let totalLogos = 0;
+    c.logo.forEach(logo => {
+        if((logo.price*1) > 0)
+        {
+            amount += (logo.price*1) * c.quantity;
+            totalLogos += (c.quantity*1)
+        }
+
+        html += (logo.price*1) > 0 ? `
+            <tr class="table-borderless">
+                <td></td>
+                <td colspan="4">
+                    <div class="d-flex flex-row gap-1">
+                        ${
+                            logo.already_uploaded
+                            ? `
+                            <div class="col-sm-3">
+                                <p class="text-danger">Pinder has already my logo.</p>
+                            </div>
+                            `
+                            : `
+                            <div class="col-sm-3">
+                                <div style="width:80px;height:80px;border:1px solid #ddd;">
+                                    ${
+                                        logo.image && logo.image.trim()
+                                        ? `<img src="${logo.image}" style="max-width:100%;max-height:100%;">`
+                                        : ''
+                                    }
+                                </div>
+                            </div>
+                            `
+                        }
+
+                        <div class="col-sm-5">
+                            <span class="text-muted">Text:</span> ${logo.text || ''}<br />
+                            <span class="text-muted">Text2:</span> ${logo.text2 || ''}<br />
+                            <span class="text-muted">Text3:</span> ${logo.text3 || ''}<br />
+                            <span class="text-muted">Font:</span> ${logo.font || ''}<br />
+                            <span class="text-muted">Color:</span>
+                            <span style="color:${logo.color}">
+                                ${logo.color || ''}
+                            </span><br />
+                        </div>
+
+                        <div class="col-sm-4">
+                            <span class="text-muted">Category:</span> ${logo.category || ''}<br />
+                            <span class="text-muted">Position:</span> ${logo.postion || ''}<br />
+                            <span class="text-muted">Size:</span> ${c.size_title || ''}<br />
+                            <span class="text-muted">Color:</span> ${c.color || ''}<br />
+                        </div>
+                    </div>
+                    ${
+                        logo.notes
+                        ? `
+                        <div class="d-flex">
+                            <p class="small">
+                                <strong>Note:</strong><br />
+                                ${logo.notes}
+                            </p>
+                        </div>
+                        `
+                        : ''
+                    }
+                </td>
+            </tr>` : ``;
+    });
+
+    return amount > 0 ? `<span class="text-danger font-xs" style="color:#ee2761">${(amount > 0) ? (`Price for ` + `${(totalLogos + (totalLogos > 1 ? ` logos are ` : ` logo is `))} <strong>£${amount.toFixed(2)}</strong>`) : ''}</span><br />`  + html : '';
+}
 if($('#cart-page').length)
 var minicart = new Vue({
     el: '#cart-page',
@@ -1271,78 +1343,7 @@ var minicart = new Vue({
             }
         },
         renderLogoInfo(c) {
-            let html = '';
-            let amount = 0;
-            let totalLogos = 0;
-            c.logo.forEach(logo => {
-                if((logo.price*1) > 0)
-                {
-                    amount += (logo.price*1) * c.quantity;
-                    totalLogos += (c.quantity*1)
-                }
-
-                html += (logo.price*1) > 0 ? `
-                    <tr class="table-borderless">
-                        <td></td>
-                        <td colspan="4">
-                            <div class="d-flex flex-row gap-1">
-                                ${
-                                    logo.already_uploaded
-                                    ? `
-                                    <div class="col-sm-3">
-                                        <p class="text-danger">Pinder has already my logo.</p>
-                                    </div>
-                                    `
-                                    : `
-                                    <div class="col-sm-3">
-                                        <div style="width:80px;height:80px;border:1px solid #ddd;">
-                                            ${
-                                                logo.image && logo.image.trim()
-                                                ? `<img src="${logo.image}" style="max-width:100%;max-height:100%;">`
-                                                : ''
-                                            }
-                                        </div>
-                                    </div>
-                                    `
-                                }
-
-                                <div class="col-sm-5">
-                                    <span class="text-muted">Text:</span> ${logo.text || ''}<br />
-                                    <span class="text-muted">Text2:</span> ${logo.text2 || ''}<br />
-                                    <span class="text-muted">Text3:</span> ${logo.text3 || ''}<br />
-                                    <span class="text-muted">Font:</span> ${logo.font || ''}<br />
-                                    <span class="text-muted">Color:</span>
-                                    <span style="color:${logo.color}">
-                                        ${logo.color || ''}
-                                    </span><br />
-                                </div>
-
-                                <div class="col-sm-4">
-                                    <span class="text-muted">Category:</span> ${logo.category || ''}<br />
-                                    <span class="text-muted">Position:</span> ${logo.postion || ''}<br />
-                                    <span class="text-muted">Size:</span> ${c.size_title || ''}<br />
-                                    <span class="text-muted">Color:</span> ${c.color || ''}<br />
-                                </div>
-                            </div>
-                            ${
-                                logo.notes
-                                ? `
-                                <div class="d-flex">
-                                    <p class="small">
-                                        <strong>Note:</strong><br />
-                                        ${logo.notes}
-                                    </p>
-                                </div>
-                                `
-                                : ''
-                            }
-                        </td>
-                    </tr>` : ``;
-            });
-
-            return amount > 0 ? `<span class="text-danger font-xs" style="color:#ee2761">${(amount > 0) ? (`Price for ` + `${(totalLogos + (totalLogos > 1 ? ` logos are ` : ` logo is `))} <strong>£${amount.toFixed(2)}</strong>`) : ''}</span><br />`  + html : '';
-        },
-        renderLogoInfo1(c) {
+            return renderLogoInfo(c);
             let amount = 0;
             let totalLogos = 0;
             for(let a of c.logo)
@@ -1801,7 +1802,7 @@ checkoutPage = new Vue({
             }
         },
         renderLogoInfo(c) {
-            return minicart.renderLogoInfo(c);
+            return renderLogoInfo(c);
             let amount = 0;
             let totalLogos = 0;
             for(let a of c.logo)
