@@ -2278,7 +2278,7 @@ if($("#gift-voucher").length > 0)
                     headers: { "Content-Type": "application/json",
                         "X-CSRF-TOKEN": csrf_token()
                     },
-                    body: JSON.stringify(this.form)
+                    body: JSON.stringify({...this.form, ...{applied: appliedAmount()}})
                 });
 
                 const data = await response.json();
