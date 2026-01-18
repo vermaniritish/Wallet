@@ -301,6 +301,7 @@ class Orders extends AppModel
             if($products || $schools)
             {
                 $ps = array_merge($products, $schools);
+                pr($ps); die;
                 $listing->whereIn('products.id', $ps);
             }
         }
