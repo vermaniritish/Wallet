@@ -381,6 +381,7 @@ class PagesController extends BaseController
     function giftVoucher(Request $request)
     {
         $user = $request->session()->get('user');
+        pr($user); die;
         if($request->isMethod('post'))
     	{
             $data = $request->toArray();
