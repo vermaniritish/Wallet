@@ -116,7 +116,7 @@
                     >
                         @{{ loading ? 'Processing...' : 'Pay Now' }}
                     </button>
-                    <div :class="`mb-3 `+(appliedAmount().pay > 0 ? `d-none` : ``)">
+                    <div :class="`mb-3 `+(appliedAmount().pay > 0 ? `` : `d-none`)">
                         <div id="paypal-button-container"></div>
                     </div>
                 </div>
