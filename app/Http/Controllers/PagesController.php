@@ -22,6 +22,8 @@ use App\Models\Admin\Schools;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use App\Libraries\SMSGateway;
+
 class PagesController extends BaseController
 {
     public function aboutUs(Request $request)
