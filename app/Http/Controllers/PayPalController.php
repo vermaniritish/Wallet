@@ -53,7 +53,7 @@ class PayPalController extends Controller
         }
         elseif($request->get('voucher_id'))
         {
-            $booking = GiftVoucher::select(['id', 'paypal_payment_data'])->where('id', General::decrypt($request->get('voucher_id')) )->limit(1)->first();
+            $booking = GiftVoucher::select(['id', 'paypal_payment_data', 'pay_details'])->where('id', General::decrypt($request->get('voucher_id')) )->limit(1)->first();
             $payable = json_decode($booking->pay_details, true);
             $amount = $payable['pay'] >= 1 ? $payable['pay'] : 1;
             $amount = round($amount, 2);
