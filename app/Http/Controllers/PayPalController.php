@@ -232,7 +232,7 @@ class PayPalController extends Controller
     }
 
     public function processCapturedOrder(Request $request){
-        $manual = $request->get('manual');
+        $manual = $request->get('wallet');
         $orderId = $request->input('orderId');
         if($manual)
         {
