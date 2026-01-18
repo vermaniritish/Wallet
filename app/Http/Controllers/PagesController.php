@@ -402,7 +402,7 @@ class PagesController extends BaseController
                         'email'             => 'required|email',
                         'mobile'            => 'required|digits:10',
                         'amount'        => 'required',
-                        'customAmount'  => 'required_if:amount,custom|numeric|min:1',
+                        'customAmount'  => 'required_if:amount,custom|numeric',
                         'delivery_mode'     => 'required|string',
                         'receiver_name'     => 'required|string|max:100',
                         'receiver_email'    => 'required|email',
@@ -450,7 +450,7 @@ class PagesController extends BaseController
                             } while ($exists); // repeat until UNIQUE
                             $order->code =  $couponCode;
                             $order->save();
-                            
+
                             if($request->applied['applied'] > 0 && $request->applied['amount'] == $request->applied['applied'] && $request->applied['pay'] < 1) {
                                 $user->wallet =$user->wallet - $request->applied['applied'];
                                 $user->save();
