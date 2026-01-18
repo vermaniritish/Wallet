@@ -40,7 +40,11 @@ class PagesController extends BaseController
     
     public function cart(Request $request) 
     {
-        return view('frontend.cart', ['page' => null]);
+        $user = $request->session()->get('user');
+        return view('frontend.cart', [
+            'page' => null, 
+            'user' => $user ? Users::find($user->id) : null
+        ]);
     }
 
     public function checkout(Request $request) 
@@ -49,7 +53,7 @@ class PagesController extends BaseController
         $shops = Shops::select(['name'])->where('allow_pickup', 1)->where('status', 1)->get();
         return view('frontend.checkout.index', [
             'page' => null,
-            'user' => $user,
+            'user' => $user ? Users::find($user->id) : null,
             'address' => $user && $user->id ? Addresses::where('user_id', $user->id)->limit(1)->first() : null,
             'shops' => $shops,
             'settings' => [

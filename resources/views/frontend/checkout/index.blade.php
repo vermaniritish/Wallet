@@ -174,6 +174,7 @@ var dpdCost = {{($settings['shipping_cost_dpd'] ? $settings['shipping_cost_dpd']
 var loginuseremail = '{{ $user && $user->email ? $user->email : '' }}';
 var loginuserphone = '{{ $user && $user->phonenumber ? $user->phonenumber : '' }}';
 var shops = '{{ $shops }}';
+let walletAmount = '{{ $user && $user->wallet ? $user->wallet : 0 }}';
 const initPaypal = function()
 {
     if (typeof paypal !== 'undefined' && paypal.Buttons) {

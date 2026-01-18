@@ -160,6 +160,14 @@
                                             <td class="cart_total_label">GRAND TOTAL</td>
                                             <td class="cart_total_amount"><span class="font-lg fw-900 text-brand">£@{{formatMoney(calculate().total)}}</span></td>
                                         </tr>
+                                        <tr v-if="walletAmount > 0">
+                                            <td class="cart_total_label">Wallet (Balance: <span class="text-brand">£@{{ (walletAmount)}}</span>)</td>
+                                            <td class="cart_total_amount"><span class="font-lg fw-900 text-brand">£@{{formatMoney(calculate().wallet_applied)}}</span></td>
+                                        </tr>
+                                        <tr v-if="walletAmount > 0">
+                                            <td class="cart_total_label">Pay Total</td>
+                                            <td class="cart_total_amount"><span class="font-lg fw-900 text-brand">£@{{formatMoney(calculate().total - calculate().wallet_applied)}}</span></td>
+                                        </tr>
                                     </tbody>
                                 </table>
                             </div>
@@ -175,3 +183,6 @@
     </div>
 </section>
 @endsection
+@push('afterscripts')
+<script>let walletAmount = '{{ $user && $user->wallet ? $user->wallet : 0 }}';</script>
+@endpush

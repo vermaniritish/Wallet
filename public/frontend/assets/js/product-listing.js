@@ -1318,7 +1318,8 @@ var minicart = new Vue({
         couponError: ``,
         gstTax: ``,
         oneTimeCost: 0,
-        logoPricesDynamix: []
+        logoPricesDynamix: [],
+        walletAmount: null
     },
     methods: {
         formatMoney(m) {
@@ -1482,6 +1483,7 @@ var minicart = new Vue({
             t.discount = this.detectDiscount(t.subtotal);
             t.tax = this.calculateTax(t);
             t.total = t.subtotal - t.discount + t.tax;
+            t.wallet_applied = t.total > this.walletAmount ? this.walletAmount : t.total;
             return t;
         },
         getCustomizationCost(custom)
@@ -1670,6 +1672,7 @@ var minicart = new Vue({
     mounted: async function() {
         this.gstTax = gstTax();
         this.logoPricesDynamix = await minicart.fetchLogoPrices();
+        this.walletAmount = walletAmount * 1;
         this.initcart();
         
     }
@@ -2187,6 +2190,7 @@ checkoutPage = new Vue({
         }
     },
     mounted: async function() {
+        this.walletAmount = walletAmount * 1;
         if(billingAddress) {
             let item = billingAddress;
             let name = item.title.split(" ");
