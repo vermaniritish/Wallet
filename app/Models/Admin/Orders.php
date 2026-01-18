@@ -278,16 +278,25 @@ class Orders extends AppModel
         if($request->has('schools') || $request->has('uniforms') || $request->has('products'))
         {
             $schools = $request->get('schools');
-            $schools = $schools ? array_filter($schools) : [];
-            $schools = $schools ? $schools : [0];
+            if($schools)
+            {
+                $schools = $schools ? array_filter($schools) : [];
+                $schools = $schools ? $schools : [0];
+            }
 
             $products = $request->get('products');
-            $products = $products ? array_filter($products) : [];
-            $products = $products ? $products : [0];
+            if($products)
+            {
+                $products = $products ? array_filter($products) : [];
+                $products = $products ? $products : [0];
+            }
 
             $uniforms = $request->get('uniforms');
-            $uniforms = $uniforms ? array_filter($uniforms) : [];
-            $uniforms = $uniforms ? $uniforms : [0];
+            if($uniforms)
+            {
+                $uniforms = $uniforms ? array_filter($uniforms) : [];
+                $uniforms = $uniforms ? $uniforms : [0];
+            }
 
             if($schools || $uniforms || $products)
             $listing->join('order_products', 'order_products.order_id', '=', 'orders.id')
