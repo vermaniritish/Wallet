@@ -456,6 +456,12 @@ class PagesController extends BaseController
                             if($request->applied['applied'] > 0 && $request->applied['amount'] == $request->applied['applied'] && $request->applied['pay'] < 1) {
                                 $user->wallet =$user->wallet - $request->applied['applied'];
                                 $user->save();
+                                Wallet::create([
+                                    'user_id' => $user->id,
+                                    'amount' => $appliedWallet['applied'],
+                                    'mode' => 'deduct',
+                                    'payment_status' => 'paid'
+                                ]);
                             }
 
                             General::sendTemplateEmail( 

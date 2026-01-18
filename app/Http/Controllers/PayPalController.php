@@ -54,7 +54,8 @@ class PayPalController extends Controller
         elseif($request->get('voucher_id'))
         {
             $booking = GiftVoucher::select(['id', 'paypal_payment_data'])->where('id', General::decrypt($request->get('voucher_id')) )->limit(1)->first();
-            $amount = $request->input('amount');
+            $payable = json_decode($booking->pay_details, true);
+            $amount = $payable['pay'] >= 1 ? $payable['pay'] : 1;
             $amount = round($amount, 2);
             $order = $this->payPalService->createOrder($request->get('voucher_id'), $amount);
             if($order && is_array($order) && isset($order['status']) && !$order['status'])
@@ -171,6 +172,12 @@ class PayPalController extends Controller
                     $user = Users::find($order->user_id);
                     $user->wallet = $user->wallet - $appliedWallet['applied'];
                     $user->save();
+                    Wallet::create([
+                        'user_id' => $user->id,
+                        'amount' => $appliedWallet['applied'],
+                        'mode' => 'deduct',
+                        'payment_status' => 'paid'
+                    ]);
                 }
 
                 General::sendTemplateEmail( 
