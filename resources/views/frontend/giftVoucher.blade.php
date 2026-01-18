@@ -98,7 +98,7 @@
                         <small v-if="errors.message" class="text-danger">@{{ errors.message }}</small>
                     </div>
                     @if($user && $user->wallet > 0)
-                    <div class="mb-3" v-if="appliedAmount() > 0">
+                    <div class="mb-3">
                         <div class="d-flex flex-row justify-content-between">
                             <p>Total</p>
                             <p class="strong">£@{{ form.amount && form.amount != 'custom' ? form.amount : (form.amount == 'custom' ? form.customAmount : '0.00') }}</p>
