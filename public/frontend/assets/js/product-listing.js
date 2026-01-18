@@ -1801,6 +1801,7 @@ checkoutPage = new Vue({
             }
         },
         renderLogoInfo(c) {
+            return minicart.renderLogoInfo(c);
             let amount = 0;
             let totalLogos = 0;
             for(let a of c.logo)
