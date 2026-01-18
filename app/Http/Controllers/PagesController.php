@@ -383,77 +383,62 @@ class PagesController extends BaseController
         $user = $request->session()->get('user');
         if($request->isMethod('post'))
     	{
-            $data = $request->toArray();
-    		unset($data['_token']);
-    		$validator = Validator::make(
-	            $request->toArray(),
-	            [
-                    'name'              => 'required|string|max:100',
-                    'email'             => 'required|email',
-                    'mobile'            => 'required|digits:10',
-                    'amount'        => 'required',
-                    'customAmount'  => 'required_if:amount,custom|numeric|min:1',
-                    'delivery_mode'     => 'required|string',
-                    'receiver_name'     => 'required|string|max:100',
-                    'receiver_email'    => 'required|email',
-                    'receiver_mobile'   => 'required|digits:10',
-                    'message'           => 'required|max:200',
-                    'applied'           => 'required|array'
-                ]
-	        );
-	        if(!$validator->fails())
-	        {
-                pr($data); die;
-                // Create pending voucher
-                $voucher = GiftVoucher::create([
-                    'user_id' => $user ? $user->id : null,
-                    'sender_name'       => $request->name,
-                    'sender_email'      => $request->email,
-                    'sender_mobile'     => $request->mobile,
-                    'amount'            => $request->amount == 'custom' ? $request->customAmount : $request->amount,
-                    'delivery_mode'     => $request->delivery_mode,
-                    'receiver_name'     => $request->receiver_name,
-                    'receiver_email'    => $request->receiver_email,
-                    'receiver_mobile'   => $request->receiver_mobile,
-                    'message'           => $request->message,
-                    'pay_details' => json_encode($request->applied),
-                    'status'            => $request->applied['amount'] == $request->applied['applied'] && $request->applied['pay'] < 1 ? 'paid' : 'pending',
-                    'applied' => 0,
-                    'expiry_date' => date('Y-m-d', strtotime('+1 year'))
-                ]);
-
-                if($voucher)
+            $user = Users::find($user->id);
+            if($user)
+            {
+                $data = $request->toArray();
+                unset($data['_token']);
+                $validator = Validator::make(
+                    $request->toArray(),
+                    [
+                        'name'              => 'required|string|max:100',
+                        'email'             => 'required|email',
+                        'mobile'            => 'required|digits:10',
+                        'amount'        => 'required',
+                        'customAmount'  => 'required_if:amount,custom|numeric|min:1',
+                        'delivery_mode'     => 'required|string',
+                        'receiver_name'     => 'required|string|max:100',
+                        'receiver_email'    => 'required|email',
+                        'receiver_mobile'   => 'required|digits:10',
+                        'message'           => 'required|max:200',
+                        'applied'           => 'required|array'
+                    ]
+                );
+                if(!$validator->fails())
                 {
-                    $order = GiftVoucher::find($voucher->id);
-                    if($order)
+                    // Create pending voucher
+                    $voucher = GiftVoucher::create([
+                        'user_id' => $user ? $user->id : null,
+                        'sender_name'       => $request->name,
+                        'sender_email'      => $request->email,
+                        'sender_mobile'     => $request->mobile,
+                        'amount'            => $request->amount == 'custom' ? $request->customAmount : $request->amount,
+                        'delivery_mode'     => $request->delivery_mode,
+                        'receiver_name'     => $request->receiver_name,
+                        'receiver_email'    => $request->receiver_email,
+                        'receiver_mobile'   => $request->receiver_mobile,
+                        'message'           => $request->message,
+                        'pay_details' => json_encode($request->applied),
+                        'status'            => $request->applied['amount'] == $request->applied['applied'] && $request->applied['pay'] < 1 ? 'paid' : 'pending',
+                        'applied' => 0,
+                        'expiry_date' => date('Y-m-d', strtotime('+1 year'))
+                    ]);
+
+                    if($voucher)
                     {
-                        General::sendTemplateEmail( 
-                            $order->user && $order->user->email ? $order->user->email : $order->sender_email, 
-                            'gift-card-order-placed',
-                            [
-                                "{order_id}" => $order->order_id,
-                                "{code}" => $order->code,
-                                "{sender_name}" => $order->sender_name,
-                                "{sender_email}" => $order->sender_email,
-                                "{sender_mobile}" => $order->sender_mobile,
-                                "{amount}" => $order->amount,
-                                "{receiver_name}" => $order->receiver_name,
-                                "{receiver_email}" => $order->receiver_email,
-                                "{receiver_mobile}" => $order->receiver_mobile,
-                                "{message}" =>  $order->message
-                            ]
-                        );
+                        
 
-                        if($order->delivery_mode == 'SMS' || $order->delivery_mode == 'BOTH')
+                        $order = GiftVoucher::find($voucher->id);
+                        if($order)
                         {
-                            SMSGateway::send($order->receiver_mobile, "Congratulations! A Pinder Gift Card sent by {$order->sender_name}. Code is {$order->code}");
-                        }
+                            if($request->applied['applied'] > 0 && $request->applied['amount'] == $request->applied['applied'] && $request->applied['pay'] < 1) {
+                                $user->wallet =$user->wallet - $request->applied['applied'];
+                                $user->save();
+                            }
 
-                        if($order->delivery_mode == 'Email' || $order->delivery_mode == 'BOTH')
-                        {
                             General::sendTemplateEmail( 
                                 $order->user && $order->user->email ? $order->user->email : $order->sender_email, 
-                                'gift-card',
+                                'gift-card-order-placed',
                                 [
                                     "{order_id}" => $order->order_id,
                                     "{code}" => $order->code,
@@ -467,30 +452,62 @@ class PagesController extends BaseController
                                     "{message}" =>  $order->message
                                 ]
                             );
+
+                            if($order->delivery_mode == 'SMS' || $order->delivery_mode == 'BOTH')
+                            {
+                                SMSGateway::send($order->receiver_mobile, "Congratulations! A Pinder Gift Card sent by {$order->sender_name}. Code is {$order->code}");
+                            }
+
+                            if($order->delivery_mode == 'Email' || $order->delivery_mode == 'BOTH')
+                            {
+                                General::sendTemplateEmail( 
+                                    $order->user && $order->user->email ? $order->user->email : $order->sender_email, 
+                                    'gift-card',
+                                    [
+                                        "{order_id}" => $order->order_id,
+                                        "{code}" => $order->code,
+                                        "{sender_name}" => $order->sender_name,
+                                        "{sender_email}" => $order->sender_email,
+                                        "{sender_mobile}" => $order->sender_mobile,
+                                        "{amount}" => $order->amount,
+                                        "{receiver_name}" => $order->receiver_name,
+                                        "{receiver_email}" => $order->receiver_email,
+                                        "{receiver_mobile}" => $order->receiver_mobile,
+                                        "{message}" =>  $order->message
+                                    ]
+                                );
+                            }
                         }
+
+                        return response()->json([
+                            'status' => true,
+                            'message' => 'Voucher saved as pending, proceed to payment.',
+                            'voucher_id' => General::encrypt($voucher->id),
+                            'amount' => $voucher->amount,
+                        ]);
                     }
-                    
-                    return response()->json([
-                        'status' => true,
-                        'message' => 'Voucher saved as pending, proceed to payment.',
-                        'voucher_id' => General::encrypt($voucher->id),
-                        'amount' => $voucher->amount,
-                    ]);
+                    else
+                    {
+                        return response()->json([
+                            'status' => true,
+                            'message' => 'Voucher could not be processed. Please try again.',
+                        ]);
+                    }
                 }
                 else
                 {
                     return response()->json([
-                        'status' => true,
-                        'message' => 'Voucher could not be processed. Please try again.',
+                        'status' => false,
+                        'message' => current(current($validator->errors())),
                     ]);
                 }
             }
             else
             {
                 return response()->json([
-                    'status' => false,
-                    'message' => current(current($validator->errors())),
-                ]);
+                        'status' => false,
+                        'message' => "Voucher could not be sent.",
+                    ]);
             }
         }
         return view('frontend.giftVoucher', [
