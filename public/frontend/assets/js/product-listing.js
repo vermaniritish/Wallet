@@ -2182,10 +2182,10 @@ checkoutPage = new Vue({
                         }).then(res => res.json())
                         .then(details => {
                             if(details?.status && details?.id) {
-                                alert('yes');
-                                // localStorage.removeItem('cart');
-                                // localStorage.removeItem('coupon');
-                                // window.location.href = site_url + "/paypal/success?id=" + details.id;
+                                // alert('yes');
+                                localStorage.removeItem('cart');
+                                localStorage.removeItem('coupon');
+                                window.location.href = site_url + "/paypal/success?id=" + details.id;
                             } else {
                                 if(details && !details.status && details.message) {
                                     set_notification('error', details.message);
