@@ -2167,6 +2167,35 @@ checkoutPage = new Vue({
 				response = await response.json();
                 if(response && response.status)
                 {
+                    if(response.amount *1 < 1 && response.walletApplied && response.id)
+                    {
+                        return fetch(site_url+'/paypal/capture-order', {
+                            method: 'post',
+                            headers: {
+                                'content-type': 'application/json',
+                                'X-CSRF-TOKEN': csrf_token()
+                            },
+                            body: JSON.stringify({
+                                orderId: response.id,
+                                wallet: 1
+                            })
+                        }).then(res => res.json())
+                        .then(details => {
+                            if(details?.status && details?.id) {
+                                alert('yes');
+                                // localStorage.removeItem('cart');
+                                // localStorage.removeItem('coupon');
+                                // window.location.href = site_url + "/paypal/success?id=" + details.id;
+                            } else {
+                                if(details && !details.status && details.message) {
+                                    set_notification('error', details.message);
+                                }
+                                setTimout(function() {
+                                    window.location.href = site_url + "/paypal/error";
+                                }, 1000);
+                            }
+                        });
+                    }
                     // localStorage.setItem('orderId', response.orderId);
                     // this.orderPlaced = response.orderId;
                     // await sleep(400);

@@ -232,9 +232,25 @@ class PayPalController extends Controller
     }
 
     public function processCapturedOrder(Request $request){
+        $manual = $request->get('manual');
         $orderId = $request->input('orderId');
-        $capture = $this->payPalService->captureOrder($orderId);
-        $order = Orders::where('paypal_payment_data', $orderId)->limit(1)->first();
+        if($manual)
+        {
+            $order = Orders::find($orderId);
+            $capture = [
+                'status' => true,
+                'result' => (object) [
+                    'status' => 'COMPLETED'
+                ]
+            ];
+        }
+        else
+        {
+            $order = Orders::where('paypal_payment_data', $orderId)->limit(1)->first();
+            $capture = $this->payPalService->captureOrder($orderId);
+        }
+
+        
         
         if($capture  && is_array($capture) && isset($capture['status']) && !$capture['status'])
         {

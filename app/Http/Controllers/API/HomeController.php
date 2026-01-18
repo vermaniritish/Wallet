@@ -362,8 +362,10 @@ class HomeController extends AppController
 
 					return Response()->json([
 						'status' => true,
+						'id' => $order->id,
 						'orderId' => $order->prefix_id,
-						'amount' => $order->total_amount - $order->wallet_applied
+						'amount' => $order->total_amount - $order->wallet_applied,
+						'walletApplied' => $order->wallet_applied > 0
 					]);
 				}
 				else
