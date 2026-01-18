@@ -2300,11 +2300,11 @@ if($("#gift-voucher").length > 0)
             },
             appliedAmount() {
                 let amount = (this.form.amount && this.form.amount != 'custom' ? this.form.amount : (this.form.customAmount ? this.form.customAmount : 0) * 1)
-                let deducted = this.walletAmount > amount ? amount : (amount - this.walletAmount);
+                let payable = this.walletAmount >= amount ? 0 : (amount - this.walletAmount);
                 return {
                     amount: amount,
-                    applied: deducted,
-                    pay: (amount - deducted) > 0 ? amount - deducted : 0
+                    applied: amount-payable,
+                    pay: payable
                 }
             },
         },
