@@ -322,8 +322,8 @@ class HomeController extends AppController
 						OrderProductRelation::insert($products);
 						
 						$logoDetailing = $this->calculateLogoCost($data['cart']);
-						// $oneTimeCost = $logoDetailing['haveLogo'] ? Settings::get('one_time_setup_cost') : 0;
-						$oneTimeCost = Settings::get('one_time_setup_cost');
+						$oneTimeCost = $logoDetailing['haveLogo'] ? Settings::get('one_time_setup_cost') + Settings::get('one_time_setup_cost_text') : 0;
+						// $oneTimeCost = Settings::get('one_time_setup_cost');
 						
 						/* Delivery Case */
 						// ----------------- Important
@@ -356,13 +356,14 @@ class HomeController extends AppController
 						$order->tax = ((($subtotal - $discount) * $order->tax_percentage) / 100) - $deductedTax;
 						$order->tax = $order->tax > 0 ? $order->tax : 0;
 						$order->total_amount = ($subtotal - $discount) + $order->tax + $order->delivery_cost;
+						$order->wallet_applied = $request->get('walletApplied') ? $request->get('walletApplied') : 0;
 						$order->save();
 					}
 
 					return Response()->json([
 						'status' => true,
 						'orderId' => $order->prefix_id,
-						'amount' => $order->total_amount
+						'amount' => $order->total_amount - $order->wallet_applied
 					]);
 				}
 				else

@@ -28,7 +28,7 @@ const oneTimeProductCost = function(cart) {
     let obj = oneTimeProductObject(cart);
     let imageCost = obj.image;
     let txtCost = obj.text;
-    return (imageCost !== null ? imageCost*1 : 0)+(txtCost !== null ? txtCost*1 : 0);
+    return (imageCost !== null ? imageCost*1 : 0) +(txtCost !== null ? txtCost*1 : 0);
 }
 const oneTimeProductObject = function(cart) {
     let imageCost = null;
