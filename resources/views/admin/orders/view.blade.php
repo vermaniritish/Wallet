@@ -300,6 +300,7 @@ $currency = Settings::get('currency_symbol');
 					<div class="card-body p-0 m-0">
 						<table class="table align-items-center table-flush">
 							<tbody>
+								@if($page->paypal_payment_data)
 								<?php $payDetails = json_decode($page->paypal_payment_data); ?>
 								<tr>
 									<th>Status</th>
@@ -334,6 +335,12 @@ $currency = Settings::get('currency_symbol');
 										height: 200px;
 									">{{ $page->paypal_payment_data }}</code></td>
 								</tr>
+								@elseif($page->paid)
+								<tr>
+									<th>Status</th>
+									<td><span class="badge badge-success">Paid</span></td>
+								</tr>
+								@endif
 							</tbody>
 						</table>
 					</div>

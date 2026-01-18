@@ -260,7 +260,7 @@ class PayPalController extends Controller
         {
             if($order)
             {
-                $order->paypal_payment_data = json_encode($capture->result);
+                $order->paypal_payment_data = !$manual ? json_encode($capture->result) : null;
                 $order->paid = 1;
                 $order->save();
 
