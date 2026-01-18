@@ -36,10 +36,7 @@
                                 </div>
                             </span>
                         </div>
-                        <span 
-                                                v-else-if="c.logo" 
-                                                class="text-danger font-xs" style="color:#ee2761" 
-                                                v-html="renderLogoInfo(c)"></span>
+                        <div v-else-if="c.logo" v-html="renderLogoInfo(c)"></div>
                         <div v-if="offerPrice(c).description" class="pro-details-brand"><span><b>Offer Applied:</b><span class="in-stock text-danger ml-5"> @{{offerPrice(c).description}}</span><span></div>
                         <p v-if="c.non_exchange == 1 || c.non_exchange == '1'" class="font-xs" style="color: rgb(209, 0, 31);"> Made to order only. This is a Non-Exchangeable &amp; Non-Refundable product.</p>
                     </td>
