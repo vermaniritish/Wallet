@@ -39,6 +39,34 @@
 			<div class="dropdown-item">
 				<div class="row">
 					<div class="col-md-12">
+						<label class="form-control-label">Products</label>
+						<select class="form-control" name="products[]" multiple>
+							<option value="">All</option>
+							@foreach($products as $k => $s)
+							<option value="{{$s->id}}" {{ (isset($_GET['products']) && in_array($s->id, $_GET['products']) ? 'selected' : '') }} data-subtext="{{ ($s->sku_number) }}">{{$s->title}}</option>
+							@endforeach							
+					    </select>
+					</div>
+				</div>
+			</div>
+			<div class="dropdown-divider"></div>
+			<div class="dropdown-item">
+				<div class="row">
+					<div class="col-md-12">
+						<label class="form-control-label">Uniforms</label>
+						<select class="form-control" name="uniforms[]" multiple>
+							<option value="">All</option>
+							@foreach($uniforms as $k => $s)
+							<option value="{{$s->id}}" {{ (isset($_GET['uniforms']) && in_array($s->id, $_GET['uniforms']) ? 'selected' : '') }} data-subtext="{{ ($s->sku_number) }}">{{$s->title}}</option>
+							@endforeach							
+					    </select>
+					</div>
+				</div>
+			</div>
+			<div class="dropdown-divider"></div>
+			<div class="dropdown-item">
+				<div class="row">
+					<div class="col-md-12">
 						<label class="form-control-label">Coupon Code</label>
 						<input type="text" class="form-control" name="coupon" placeholder="Enter Code" value="{{ (isset($_GET['coupon']) && $_GET['coupon'] ? $_GET['coupon'] : '') }}" />
 					</div>

@@ -162,7 +162,9 @@ class OrdersController extends AppController
 	    			'listing' => $listing,
 	    			'admins' => $filters['admins'],
 					'shops' => Shops::select(['id', 'name', 'status'])->orderBy('name', 'asc')->get(),
-					'schools' => Schools::select(['id', 'schooltype', 'name', 'status'])->orderBy('name', 'asc')->get()
+					'schools' => Schools::select(['id', 'schooltype', 'name', 'status'])->orderBy('name', 'asc')->get(),
+					'products' => Products::select(['id', 'title', 'sku_number'])->whereNull('school_id')->orderBy('title', 'asc')->get(),
+					'uniforms' => Products::select(['id', 'title', 'sku_number'])->whereNotNull('school_id')->orderBy('title', 'asc')->get(),
 	    		]
 	    	);
 	    }
