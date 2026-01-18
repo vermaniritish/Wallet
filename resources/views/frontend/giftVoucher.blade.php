@@ -97,18 +97,18 @@
                         <textarea class="form-control" maxlength="200" rows="3" v-model="form.message"></textarea>
                         <small v-if="errors.message" class="text-danger">@{{ errors.message }}</small>
                     </div>
-                    <div class="mb-3">
+                    @if($user && $user->wallet > 0)
+                    <div class="mb-3" v-if="appliedAmount() > 0">
                         <div class="d-flex flex-row justify-content-between">
                             <p>Total</p>
                             <p class="strong">£@{{ form.amount && form.amount != 'custom' ? form.amount : (form.amount == 'custom' ? form.customAmount : '0.00') }}</p>
                         </div>
-                        @if($user && $user->wallet > 0)
                         <div class="d-flex flex-row justify-content-between">
-                            <p>Wallet</p>
-                            <p class="strong">£@{{ walletAmount }}</p>
+                            <p>Wallet (Balance: <span class="text-brand">£@{{walletAmount}}</span>)</p>
+                            <p class="strong">£@{{ appliedAmount() }}</p>
                         </div>
-                        @endif
                     </div>
+                    @endif
                     <!-- <button class="btn btn-primary w-100 btn-lg mt-3"
                             @click="submitForm"
                             :disabled="loading">
@@ -116,8 +116,7 @@
                     </button> -->
                     <div class="mb-3">
                         <div id="paypal-button-container"></div>
-                    <div>
-
+                    </div>
                 </div>
                 <div class="card p-4 shadow" v-else>
                     <p class="text-success text-center" style="font-size: 100px;"><i class="far fa-check-circle"></i></p>
