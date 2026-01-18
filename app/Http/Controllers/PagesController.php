@@ -416,13 +416,60 @@ class PagesController extends BaseController
                     'receiver_email'    => $request->receiver_email,
                     'receiver_mobile'   => $request->receiver_mobile,
                     'message'           => $request->message,
-                    'status'            => 'pending',
+                    'pay_details' => json_encode($request->applied),
+                    'status'            => $request->applied['amount'] == $request->applied['applied'] && $request->applied['pay'] < 1 ? 'paid' : 'pending',
                     'applied' => 0,
                     'expiry_date' => date('Y-m-d', strtotime('+1 year'))
                 ]);
 
                 if($voucher)
                 {
+                    $order = GiftVoucher::find($voucher->id);
+                    if($order)
+                    {
+                        General::sendTemplateEmail( 
+                            $order->user && $order->user->email ? $order->user->email : $order->sender_email, 
+                            'gift-card-order-placed',
+                            [
+                                "{order_id}" => $order->order_id,
+                                "{code}" => $order->code,
+                                "{sender_name}" => $order->sender_name,
+                                "{sender_email}" => $order->sender_email,
+                                "{sender_mobile}" => $order->sender_mobile,
+                                "{amount}" => $order->amount,
+                                "{receiver_name}" => $order->receiver_name,
+                                "{receiver_email}" => $order->receiver_email,
+                                "{receiver_mobile}" => $order->receiver_mobile,
+                                "{message}" =>  $order->message
+                            ]
+                        );
+
+                        if($order->delivery_mode == 'SMS' || $order->delivery_mode == 'BOTH')
+                        {
+                            SMSGateway::send($order->receiver_mobile, "Congratulations! A Pinder Gift Card sent by {$order->sender_name}. Code is {$order->code}");
+                        }
+
+                        if($order->delivery_mode == 'Email' || $order->delivery_mode == 'BOTH')
+                        {
+                            General::sendTemplateEmail( 
+                                $order->user && $order->user->email ? $order->user->email : $order->sender_email, 
+                                'gift-card',
+                                [
+                                    "{order_id}" => $order->order_id,
+                                    "{code}" => $order->code,
+                                    "{sender_name}" => $order->sender_name,
+                                    "{sender_email}" => $order->sender_email,
+                                    "{sender_mobile}" => $order->sender_mobile,
+                                    "{amount}" => $order->amount,
+                                    "{receiver_name}" => $order->receiver_name,
+                                    "{receiver_email}" => $order->receiver_email,
+                                    "{receiver_mobile}" => $order->receiver_mobile,
+                                    "{message}" =>  $order->message
+                                ]
+                            );
+                        }
+                    }
+                    
                     return response()->json([
                         'status' => true,
                         'message' => 'Voucher saved as pending, proceed to payment.',
