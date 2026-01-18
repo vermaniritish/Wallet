@@ -40,7 +40,7 @@
 
                     <div class="mb-3">
                         <label class="form-label">Select Voucher Amount<span class="alert">*</span></label>
-                        <div class="d-flex align-items-center">
+                        <div class="d-flex align-items-center gap-2">
                             <select class="form-select" v-model="form.amount">
                                 <option disabled value="">Select Amount</option>
                                 <option value="10">£10</option>
