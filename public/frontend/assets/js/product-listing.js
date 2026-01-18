@@ -1285,17 +1285,16 @@ var minicart = new Vue({
                     <tr class="table-borderless">
                         <td></td>
                         <td colspan="4">
-                            <div class="row">
-
+                            <div class="d-flex flex-row gap-1">
                                 ${
                                     logo.already_uploaded
                                     ? `
-                                    <div class="col-sm-2">
+                                    <div class="col-sm-3">
                                         <p class="text-danger">Pinder has already my logo.</p>
                                     </div>
                                     `
                                     : `
-                                    <div class="col-sm-2">
+                                    <div class="col-sm-3">
                                         <div style="width:80px;height:80px;border:1px solid #ddd;">
                                             ${
                                                 logo.image && logo.image.trim()
@@ -1324,26 +1323,24 @@ var minicart = new Vue({
                                     <span class="text-muted">Size:</span> ${c.size_title || ''}<br />
                                     <span class="text-muted">Color:</span> ${c.color || ''}<br />
                                 </div>
-
-                                ${
-                                    logo.notes
-                                    ? `
-                                    <div class="col-sm-12">
-                                        <p class="small">
-                                            <strong>Note:</strong><br />
-                                            ${logo.notes}
-                                        </p>
-                                    </div>
-                                    `
-                                    : ''
-                                }
-
                             </div>
+                            ${
+                                logo.notes
+                                ? `
+                                <div class="d-flex">
+                                    <p class="small">
+                                        <strong>Note:</strong><br />
+                                        ${logo.notes}
+                                    </p>
+                                </div>
+                                `
+                                : ''
+                            }
                         </td>
                     </tr>` : ``;
             });
 
-            return html;
+            return amount > 0 ? `<span class="text-danger font-xs" style="color:#ee2761">${(amount > 0) ? (`Price for ` + `${(totalLogos + (totalLogos > 1 ? ` logos are ` : ` logo is `))} <strong>£${amount.toFixed(2)}</strong>`) : ''}</span><br />`  + html : '';
         },
         renderLogoInfo1(c) {
             let amount = 0;
