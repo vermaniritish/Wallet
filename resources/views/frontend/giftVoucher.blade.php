@@ -102,10 +102,12 @@
                             <p>Total</p>
                             <p class="strong">£@{{ form.amount && form.amount != 'custom' ? form.amount : (form.amount == 'custom' ? form.customAmount : '0.00') }}</p>
                         </div>
+                        @if($user && $user->wallet > 0)
                         <div class="d-flex flex-row justify-content-between">
                             <p>Wallet</p>
                             <p class="strong">£@{{ walletAmount }}</p>
                         </div>
+                        @endif
                     </div>
                     <!-- <button class="btn btn-primary w-100 btn-lg mt-3"
                             @click="submitForm"
@@ -167,7 +169,7 @@
 <script>
 var loginuseremail = '{{ $user && $user->email ? $user->email : '' }}';
 var loginuserphone = '{{ $user && $user->phonenumber ? $user->phonenumber : '' }}';
-let walletAmount = '{{ $user->wallet ? $user->wallet : 0 }}';
+let walletAmount = '{{ $user && $user->wallet ? $user->wallet : 0 }}';
 var initPaypal = function()
 {
     if (typeof paypal !== 'undefined' && paypal.Buttons) {
