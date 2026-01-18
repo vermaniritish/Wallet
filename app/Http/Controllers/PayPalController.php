@@ -166,7 +166,7 @@ class PayPalController extends Controller
             $order->status = 'paid';
             if($order->save())
             {
-                $appliedWallet = $order->pay_details ? json_decode($order->pay_details) : null;
+                $appliedWallet = $order->pay_details ? json_decode($order->pay_details, true) : null;
                 if($appliedWallet && $appliedWallet['applied'] > 0) {
                     $user->wallet = $user->wallet - $appliedWallet['applied'];
                     $user->save();
