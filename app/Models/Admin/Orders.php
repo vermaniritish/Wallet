@@ -321,8 +321,6 @@ class Orders extends AppModel
             $listing->limit($limit);
         }
 
-        echo $listing->toSql();die;
-
         $listing = $listing->paginate($limit);
 
         return $listing;
