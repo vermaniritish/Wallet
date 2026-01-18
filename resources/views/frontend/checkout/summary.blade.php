@@ -128,6 +128,14 @@
                     <th>Total</th>
                     <td colspan="2" class="product-subtotal"><span class="font-xl text-brand fw-900">£@{{formatMoney(calculate().total)}}</span></td>
                 </tr>
+                <tr v-if="walletAmount > 0">
+                    <td>Wallet (Balance: <span class="text-brand">-£@{{ (walletAmount)}}</span>)</td>
+                    <td>-£@{{formatMoney(calculate().wallet_applied)}}</td>
+                </tr>
+                <tr v-if="walletAmount > 0">
+                    <td>Pay Total</td>
+                    <td colspan="2" class="product-subtotal"><span class="font-xl text-brand fw-900">£@{{formatMoney(calculate().total - calculate().wallet_applied)}}</span></td>
+                </tr>
             </tbody>
         </table>
     </div>

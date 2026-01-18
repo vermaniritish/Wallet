@@ -1472,7 +1472,6 @@ var minicart = new Vue({
             
             t.tax = 0;
             let logoCost = this.calcaualteLogoCost();
-            console.log(logoCost);
             t.logo_cost = logoCost.cost;
             t.logo_discount = (logoCost.logoDiscount*1) > 0 ? (logoCost.logoDiscount*1) : 0;
             t.applied_logo_discount = (logoCost.appliedDiscount*1) > 0 ? (logoCost.appliedDiscount*1) : 0;
@@ -1723,7 +1722,8 @@ checkoutPage = new Vue({
         parcelforceCost: 0,
         dpdCost: 0,
         parcelforceEnable: "",
-        dpdEnable: ""
+        dpdEnable: "",
+        walletAmount: ``
     },
     methods: {
         initAddressSearch(sel)  {
@@ -1953,6 +1953,7 @@ checkoutPage = new Vue({
             console.log(this.shippingOptions);
             t.shipping_cost = ( this.shippingOptions && this.shippingOptions.price * 1 > 0 ? this.shippingOptions.price * 1 : 0 );
             t.total = t.subtotal - t.discount + t.tax + t.shipping_cost;
+            t.wallet_applied = t.total > this.walletAmount ? this.walletAmount : t.total;
             return t;
         },
         getCustomizationCost(custom)
