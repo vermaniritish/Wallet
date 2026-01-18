@@ -386,6 +386,13 @@ class PagesController extends BaseController
             $user = Users::find($user->id);
             if($user)
             {
+                if($request->applied['applied'] > 0 && $user->wallet < $request->applied['applied']) {
+                    return response()->json([
+                        'status' => false,
+                        'message' => "Insufficent balance in your wallet.",
+                    ]);
+                }
+
                 $data = $request->toArray();
                 unset($data['_token']);
                 $validator = Validator::make(
@@ -429,6 +436,21 @@ class PagesController extends BaseController
                         $order = GiftVoucher::find($voucher->id);
                         if($order && $order->status == 'paid')
                         {
+                            $randomLength = 10;           // random number size: 8 digits
+                            $prefix = Settings::get('gift_card_prefix');
+                            do {
+                                $randomNumber = mt_rand(
+                                    pow(10, $randomLength - 1),
+                                    pow(10, $randomLength) - 1
+                                );
+
+                                $couponCode = $prefix . $randomNumber;
+                                $exists = GiftVoucher::where('code', $couponCode)->where('status', 'paid')->exists();
+
+                            } while ($exists); // repeat until UNIQUE
+                            $order->code =  $couponCode;
+                            $order->save();
+                            
                             if($request->applied['applied'] > 0 && $request->applied['amount'] == $request->applied['applied'] && $request->applied['pay'] < 1) {
                                 $user->wallet =$user->wallet - $request->applied['applied'];
                                 $user->save();

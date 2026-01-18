@@ -164,34 +164,17 @@ class PayPalController extends Controller
             $order->code =  $couponCode;
             $order->paypal_payment_data = json_encode($capture->result);
             $order->status = 'paid';
-            $order->save();
-            General::sendTemplateEmail( 
-                $order->user && $order->user->email ? $order->user->email : $order->sender_email, 
-                'gift-card-order-placed',
-                [
-                    "{order_id}" => $order->order_id,
-                    "{code}" => $order->code,
-                    "{sender_name}" => $order->sender_name,
-                    "{sender_email}" => $order->sender_email,
-                    "{sender_mobile}" => $order->sender_mobile,
-                    "{amount}" => $order->amount,
-                    "{receiver_name}" => $order->receiver_name,
-                    "{receiver_email}" => $order->receiver_email,
-                    "{receiver_mobile}" => $order->receiver_mobile,
-                    "{message}" =>  $order->message
-                ]
-            );
-
-            if($order->delivery_mode == 'SMS' || $order->delivery_mode == 'BOTH')
+            if($order->save())
             {
-                SMSGateway::send($order->receiver_mobile, "Congratulations! A Pinder Gift Card sent by {$order->sender_name}. Code is {$order->code}");
-            }
+                $appliedWallet = $order->pay_details ? json_decode($order->pay_details) : null;
+                if($appliedWallet && $appliedWallet['applied'] > 0) {
+                    $user->wallet = $user->wallet - $appliedWallet['applied'];
+                    $user->save();
+                }
 
-            if($order->delivery_mode == 'Email' || $order->delivery_mode == 'BOTH')
-            {
                 General::sendTemplateEmail( 
                     $order->user && $order->user->email ? $order->user->email : $order->sender_email, 
-                    'gift-card',
+                    'gift-card-order-placed',
                     [
                         "{order_id}" => $order->order_id,
                         "{code}" => $order->code,
@@ -205,9 +188,32 @@ class PayPalController extends Controller
                         "{message}" =>  $order->message
                     ]
                 );
-            }
 
-            
+                if($order->delivery_mode == 'SMS' || $order->delivery_mode == 'BOTH')
+                {
+                    SMSGateway::send($order->receiver_mobile, "Congratulations! A Pinder Gift Card sent by {$order->sender_name}. Code is {$order->code}");
+                }
+
+                if($order->delivery_mode == 'Email' || $order->delivery_mode == 'BOTH')
+                {
+                    General::sendTemplateEmail( 
+                        $order->user && $order->user->email ? $order->user->email : $order->sender_email, 
+                        'gift-card',
+                        [
+                            "{order_id}" => $order->order_id,
+                            "{code}" => $order->code,
+                            "{sender_name}" => $order->sender_name,
+                            "{sender_email}" => $order->sender_email,
+                            "{sender_mobile}" => $order->sender_mobile,
+                            "{amount}" => $order->amount,
+                            "{receiver_name}" => $order->receiver_name,
+                            "{receiver_email}" => $order->receiver_email,
+                            "{receiver_mobile}" => $order->receiver_mobile,
+                            "{message}" =>  $order->message
+                        ]
+                    );
+                }
+            }
 
             return response()->json(['status' => true, 'id' => $order->id]);
         }
