@@ -284,14 +284,14 @@ class Orders extends AppModel
                 $schools = $schools ? $schools : [0];
             }
 
-            $products = $request->get('products');
+            $products = $request->get('products') ? $request->get('products') : [];
             if($products)
             {
                 $products = $products ? array_filter($products) : [];
                 $products = $products ? $products : [0];
             }
 
-            $uniforms = $request->get('uniforms');
+            $uniforms = $request->get('uniforms') ? $request->get('uniforms') : [];
             if($uniforms)
             {
                 $uniforms = $uniforms ? array_filter($uniforms) : [];
@@ -307,9 +307,9 @@ class Orders extends AppModel
                 $listing->whereIn('products.school_id', $schools);
             }
 
-            if($products || $schools)
+            if($products || $uniforms)
             {
-                $ps = array_merge($products, $schools);
+                $ps = array_merge($products, $uniforms);
                 $listing->whereIn('products.id', $ps);
             }
         }
