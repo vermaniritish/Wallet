@@ -2290,7 +2290,7 @@ if($("#gift-voucher").length > 0)
 
                 this.loading = false;
             },
-            appledAmount() {
+            appliedAmount() {
                 return 1;
             }
         },
