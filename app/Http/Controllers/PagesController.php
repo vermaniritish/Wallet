@@ -397,11 +397,13 @@ class PagesController extends BaseController
                     'receiver_name'     => 'required|string|max:100',
                     'receiver_email'    => 'required|email',
                     'receiver_mobile'   => 'required|digits:10',
-                    'message'           => 'required|max:200'
+                    'message'           => 'required|max:200',
+                    'applied'           => 'required|array'
                 ]
 	        );
 	        if(!$validator->fails())
 	        {
+                pr($data); die;
                 // Create pending voucher
                 $voucher = GiftVoucher::create([
                     'user_id' => $user ? $user->id : null,
