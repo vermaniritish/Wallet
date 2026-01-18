@@ -1270,7 +1270,82 @@ var minicart = new Vue({
                 this.appliedCoupon = coupon;
             }
         },
-        renderLogoInfo(c) {
+        renderLogos(c) {
+            let html = '';
+            let amount = 0;
+            let totalLogos = 0;
+            c.logo.forEach(logo => {
+                if((logo.price*1) > 0)
+                {
+                    amount += (logo.price*1) * c.quantity;
+                    totalLogos += (c.quantity*1)
+                }
+
+                html += (a.price*1) > 0 ? `
+                    <tr class="table-borderless">
+                        <td></td>
+                        <td colspan="4">
+                            <div class="row">
+
+                                ${
+                                    logo.already_uploaded
+                                    ? `
+                                    <div class="col-sm-2">
+                                        <p class="text-danger">Pinder has already my logo.</p>
+                                    </div>
+                                    `
+                                    : `
+                                    <div class="col-sm-2">
+                                        <div style="width:80px;height:80px;border:1px solid #ddd;">
+                                            ${
+                                                logo.image && logo.image.trim()
+                                                ? `<img src="${logo.image}" style="max-width:100%;max-height:100%;">`
+                                                : ''
+                                            }
+                                        </div>
+                                    </div>
+                                    `
+                                }
+
+                                <div class="col-sm-5">
+                                    <span class="text-muted">Text:</span> ${logo.text || ''}<br />
+                                    <span class="text-muted">Text2:</span> ${logo.text2 || ''}<br />
+                                    <span class="text-muted">Text3:</span> ${logo.text3 || ''}<br />
+                                    <span class="text-muted">Font:</span> ${logo.font || ''}<br />
+                                    <span class="text-muted">Color:</span>
+                                    <span style="color:${logo.color}">
+                                        ${logo.color || ''}
+                                    </span><br />
+                                </div>
+
+                                <div class="col-sm-4">
+                                    <span class="text-muted">Category:</span> ${logo.category || ''}<br />
+                                    <span class="text-muted">Position:</span> ${logo.postion || ''}<br />
+                                    <span class="text-muted">Size:</span> ${c.size_title || ''}<br />
+                                    <span class="text-muted">Color:</span> ${c.color || ''}<br />
+                                </div>
+
+                                ${
+                                    logo.notes
+                                    ? `
+                                    <div class="col-sm-12">
+                                        <p class="small">
+                                            <strong>Note:</strong><br />
+                                            ${logo.notes}
+                                        </p>
+                                    </div>
+                                    `
+                                    : ''
+                                }
+
+                            </div>
+                        </td>
+                    </tr>` : ``;
+            });
+
+            return html;
+        },
+        renderLogoInfo1(c) {
             let amount = 0;
             let totalLogos = 0;
             for(let a of c.logo)
