@@ -2237,7 +2237,9 @@ if($("#gift-voucher").length > 0)
             loading: false
         },
         methods: {
-
+            decimal(v) {
+                return (v*1).toFixed(2);
+            },
             validateForm() {
                 this.errors = {};
 
@@ -2294,7 +2296,7 @@ if($("#gift-voucher").length > 0)
                 let amount = (this.form.amount && this.form.amount != 'custom' ? this.form.amount : (this.form.customAmount ? this.form.customAmount : 0) * 1)
                 let deducted = this.walletAmount > amount ? amount : (amount - this.walletAmount);
                 return deducted*1;
-            }
+            },
         },
         mounted: async function() {
             await sleep(1000);

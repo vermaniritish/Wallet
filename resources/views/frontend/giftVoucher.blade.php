@@ -104,8 +104,8 @@
                             <p class="strong">£@{{ (form.amount && form.amount != 'custom' ? form.amount : (form.amount == 'custom' ? form.customAmount : '0.00')) }}</p>
                         </div>
                         <div class="d-flex flex-row justify-content-between">
-                            <p>Wallet (Balance: <span class="text-brand">£@{{walletAmount}}</span>)</p>
-                            <p class="strong">£@{{ appliedAmount()}}</p>
+                            <p>Wallet (Balance: <span class="text-brand">£@{{ decimal(walletAmount)}}</span>)</p>
+                            <p class="strong">£@{{ decimal(appliedAmount()) }}</p>
                         </div>
                     </div>
                     @endif
