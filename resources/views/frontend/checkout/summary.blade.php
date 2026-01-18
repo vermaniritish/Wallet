@@ -145,6 +145,8 @@
             <h5>Payment</h5>
         </div>
     </div>
-    <div id="paypal-button-container"></div>
-    <!-- <a href="javascript:;" v-on:click="submit" class="btn btn-fill-out btn-block mt-30"><i class="fa fa-spin fa-spinner" v-if="saving"></i> Place Order</a> -->
+    <a v-if="calculate().total - calculate().wallet_applied <= 0" href="javascript:;" v-on:click="submit" class="btn btn-fill-out btn-block mt-30"><i class="fa fa-spin fa-spinner" v-if="saving"></i> Place Order</a>
+    <div :class="calculate().total - calculate().wallet_applied > 0 ? `` : `d-none`">
+        <div id="paypal-button-container"></div>
+    </div>
 </div>
