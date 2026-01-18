@@ -445,7 +445,7 @@ class PagesController extends BaseController
             }
         }
         return view('frontend.giftVoucher', [
-            'user' => $user
+            'user' => Users::find($user->id)
         ]);
     }
 
