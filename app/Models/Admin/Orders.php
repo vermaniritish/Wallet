@@ -301,7 +301,6 @@ class Orders extends AppModel
             if($products || $schools)
             {
                 $ps = array_merge($products, $schools);
-                pr($ps); die;
                 $listing->whereIn('products.id', $ps);
             }
         }
@@ -312,6 +311,8 @@ class Orders extends AppModel
             $listing->offset($offset);
             $listing->limit($limit);
         }
+
+        echo $listing->toSql();die;
 
         $listing = $listing->paginate($limit);
 
