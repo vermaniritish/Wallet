@@ -2292,7 +2292,9 @@ if($("#gift-voucher").length > 0)
             },
             appliedAmount() {
                 let amount = (this.form.amount && this.form.amount != 'custom' ? this.form.amount : (this.form.customAmount ? this.form.customAmount : 0) * 1)
-                return this.walletAmount > amount ? amount : (amount - this.walletAmount);
+                let deducted = this.walletAmount > amount ? amount : (amount - this.walletAmount);
+                console.log(deducted)
+                return 1;
             }
         },
         mounted: async function() {
