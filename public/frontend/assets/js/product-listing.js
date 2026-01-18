@@ -1270,7 +1270,7 @@ var minicart = new Vue({
                 this.appliedCoupon = coupon;
             }
         },
-        renderLogos(c) {
+        renderLogoInfo(c) {
             let html = '';
             let amount = 0;
             let totalLogos = 0;
