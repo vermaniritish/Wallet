@@ -101,11 +101,11 @@
                     <div class="mb-3">
                         <div class="d-flex flex-row justify-content-between">
                             <p>Total</p>
-                            <p class="strong">£@{{ form.amount && form.amount != 'custom' ? form.amount : (form.amount == 'custom' ? form.customAmount : '0.00') }}</p>
+                            <p class="strong">£@{{ (form.amount && form.amount != 'custom' ? form.amount : (form.amount == 'custom' ? form.customAmount : '0.00')).toFixed(2) }}</p>
                         </div>
                         <div class="d-flex flex-row justify-content-between">
                             <p>Wallet (Balance: <span class="text-brand">£@{{walletAmount}}</span>)</p>
-                            <p class="strong">£@{{ appliedAmount().toFixed() }}</p>
+                            <p class="strong">£@{{ appliedAmount().toFixed(2) }}</p>
                         </div>
                     </div>
                     @endif
