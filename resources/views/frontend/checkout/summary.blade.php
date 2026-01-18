@@ -140,12 +140,12 @@
         </table>
     </div>
     <div class="bt-1 border-color-1 mt-30 mb-30"></div>
-    <div class="payment_method">
+    <!-- <div class="payment_method">
         <div class="mb-25">
             <h5>Payment</h5>
         </div>
-    </div>
-    <a v-if="calculate().total - calculate().wallet_applied <= 0" href="javascript:;" v-on:click="submit" class="btn btn-fill-out btn-block mt-30"><i class="fa fa-spin fa-spinner" v-if="saving"></i> Place Order</a>
+    </div> -->
+    <a v-if="calculate().total - calculate().wallet_applied <= 0" href="javascript:;" v-on:click="submit" class="btn btn-fill-out btn-block w-100"><i class="fa fa-spin fa-spinner" v-if="saving"></i> Place Order</a>
     <div :class="calculate().total - calculate().wallet_applied > 0 ? `` : `d-none`">
         <div id="paypal-button-container"></div>
     </div>
