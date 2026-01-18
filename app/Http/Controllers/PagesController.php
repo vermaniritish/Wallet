@@ -458,7 +458,7 @@ class PagesController extends BaseController
                                 $user->save();
                                 Wallet::create([
                                     'user_id' => $user->id,
-                                    'amount' => $appliedWallet['applied'],
+                                    'amount' => $request->applied['applied'],
                                     'mode' => 'deduct',
                                     'payment_status' => 'paid'
                                 ]);
