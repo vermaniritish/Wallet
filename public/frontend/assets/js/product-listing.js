@@ -2127,6 +2127,14 @@ checkoutPage = new Vue({
             this.coupon = null;
             localStorage.removeItem('coupon');
         },
+        applyPayMethod(method) {
+            if(method == 'wallet') {
+                this.walletAmount = walletAmount * 1;
+            }
+            else {
+                this.walletAmount = 0;
+            }
+        },
         async submit() {
             if(this.checkout.saveInfo) {
                 localStorage.setItem('addressInfo', JSON.stringify(this.checkout));
@@ -2225,7 +2233,7 @@ checkoutPage = new Vue({
         }
     },
     mounted: async function() {
-        this.walletAmount = walletAmount * 1;
+        this.walletAmount = 0;
         if(billingAddress) {
             let item = billingAddress;
             let name = item.title.split(" ");

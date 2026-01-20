@@ -86,7 +86,7 @@
                     <td>£@{{formatMoney(calculate().tax)}}</td>
                 </tr>
                 <tr>
-                    <th>Shipping & Handling Charges</th>
+                    <th width="33%">Shipping & Handling Charges</th>
                     <td colspan="2">
                         <div class="shipping_option">
                             <div class="custome-radio" v-if="parcelforceEnable">
@@ -122,6 +122,21 @@
                         </div>
                             
                     
+                    </td>
+                </tr>
+                <tr>
+                    <th>Payment Method</th>
+                    <td colspan="2">
+                        <div class="shipping_option">
+                            <div class="custome-radio">
+                                <input class="form-check-input" required="" type="radio" name="payment_method" value="wallet" id="wallet-radio" @change="applyPayMethod('wallet')">
+                                <label class="form-check-label" for="wallet-radio">Paypal</label>
+                            </div>
+                            <div class="custome-radio">
+                                <input class="form-check-input" required="" type="radio" name="payment_method" value="paypal" id="paypal-radio" @change="applyPayMethod('paypal')">
+                                <label class="form-check-label" for="paypal-radio">Paypal</label>
+                            </div>
+                        </div>
                     </td>
                 </tr>
                 <tr>
