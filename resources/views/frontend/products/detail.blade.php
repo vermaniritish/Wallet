@@ -166,7 +166,7 @@ $nonExchange = $product->non_exchange || $product->sizes->filter(function ($size
                                             <?php $codes = explode(',',$c->color_code); ?>
                                             
                                             <li :class="renderActiveColor('{{$c->id}}')">
-                                                <a v-on:click="selectColor('{{$c->id}}', '{{$c->title}}')" href="javascript:;" data-color="{{ $c->title }}" data-code="{{$c->color_code}}"><span style="background-repeat: no-repeat;{{ (count($codes) > 1 ? 'background:linear-gradient('.$c->color_code.')' : 'background-color:' .$c->color_code) }}" class="product-color-white"></span></a>
+                                                <a v-on:click="selectColor('{{$c->id}}', '{{$c->title}}', '{{$c->color_code}}')" href="javascript:;" data-color="{{ $c->title }}" data-code="{{$c->color_code}}"><span style="background-repeat: no-repeat;{{ (count($codes) > 1 ? 'background:linear-gradient('.$c->color_code.')' : 'background-color:' .$c->color_code) }}" class="product-color-white"></span></a>
                                             </li>
                                             <?php endforeach; ?>
                                         </ul>
@@ -174,7 +174,7 @@ $nonExchange = $product->non_exchange || $product->sizes->filter(function ($size
                                     
                                     <div class="product__variant--list quantity d-flex align-items-center mb-10">
                                         <div class="productsizesbox">
-                                            <p class="w-100" v-if="renderSizes().length > 0 && colorTitle">Sizes for color @{{ colorTitle }} are as follows.</p>
+                                            <p class="w-100" v-if="renderSizes().length > 0 && colorTitle">Sizes for color <span :style="`color: ${colorCode}`">@{{ colorTitle }}</span> are as follows.</p>
                                             <div class="productsizesboxContainer">
                                                 <ul class="productsizesboxUL" data-loading="false" data-test-id="SizeList" v-if="renderSizes().length > 0">
                                                     <li data-active="false" class="ProductSizes-newProductSizesItem-xII" data-test-id="ProductSize" v-for="s in renderSizes()">

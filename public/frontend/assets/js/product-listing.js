@@ -374,6 +374,7 @@ else if($('#product-cat-page').length)
             sizes: [],
             color: null,
             colorTitle: null,
+            colorCode: null,
             selectedSizes: {},
             uploading: null,
             buyNow: false,
@@ -408,9 +409,11 @@ else if($('#product-cat-page').length)
             renderActiveColor(id) {
                 return this.color == id ? `active` : ``;
             },
-            selectColor(id, title) {
+            selectColor(id, title, colorCode) {
                 this.color = id;
                 this.colorTitle = title;
+                this.colorCode = colorCode;
+                
                 this.$nextTick(() => {
 					const thumb = document.querySelector(
 						'.slider-thumb[data-item="' + id + '"] img'
