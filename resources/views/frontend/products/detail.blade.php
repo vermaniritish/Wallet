@@ -174,7 +174,7 @@ $nonExchange = $product->non_exchange || $product->sizes->filter(function ($size
                                     
                                     <div class="product__variant--list quantity d-flex align-items-center mb-10">
                                         <div class="productsizesbox">
-                                            <p class="w-100" v-if="renderSizes().length > 0 && colorTitle">Sizes for color <span :style="`color: ${colorCode}`">@{{ colorTitle }}</span> are as follows.</p>
+                                            <p class="w-100" v-if="renderSizes().length > 0 && colorTitle">Sizes for color <span :style="`color: ${colorCode}`;text-shadow: rgba(0, 0, 0, 0.31) 1px 1px 1px;">@{{ colorTitle }}</span> are as follows.</p>
                                             <div class="productsizesboxContainer">
                                                 <ul class="productsizesboxUL" data-loading="false" data-test-id="SizeList" v-if="renderSizes().length > 0">
                                                     <li data-active="false" class="ProductSizes-newProductSizesItem-xII" data-test-id="ProductSize" v-for="s in renderSizes()">
