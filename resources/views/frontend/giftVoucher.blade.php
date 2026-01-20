@@ -100,10 +100,23 @@
                     @if($user && $user->wallet > 0)
                     <div class="mb-3">
                         <div class="d-flex flex-row justify-content-between">
+                            <p>Payment Menthod</p>
+                            <div class="d-flex flex-row justify-content-between">
+                                <div class="custome-radio">
+                                    <input class="form-check-input" required="" type="radio" name="payment_method" value="wallet" id="wallet-radio" @change="applyPayMethod('wallet')">
+                                    <label class="form-check-label" for="wallet-radio">Wallet</label>
+                                </div>
+                                <div class="custome-radio">
+                                    <input class="form-check-input" required="" type="radio" name="payment_method" value="paypal" id="paypal-radio" @change="applyPayMethod('paypal')">
+                                    <label class="form-check-label" for="paypal-radio">Paypal</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="d-flex flex-row justify-content-between">
                             <p>Total</p>
                             <p class="strong">£@{{ decimal(form.amount && form.amount != 'custom' ? form.amount : (form.amount == 'custom' ? form.customAmount : '0.00')) }}</p>
                         </div>
-                        <div class="d-flex flex-row justify-content-between">
+                        <div class="d-flex flex-row justify-content-between" v-if="walletAmount > 0">
                             <p>Wallet (Balance: <span class="text-brand">£@{{ (walletAmount)}}</span>)</p>
                             <p class="strong">- £@{{ decimal(appliedAmount().applied) }}</p>
                         </div>

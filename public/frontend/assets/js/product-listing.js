@@ -2428,10 +2428,18 @@ if($("#gift-voucher").length > 0)
                     pay: payable
                 }
             },
+            applyPayMethod(method) {
+                if(method == 'wallet') {
+                    this.walletAmount = walletAmount * 1;
+                }
+                else {
+                    this.walletAmount = 0;
+                }
+            },
         },
         mounted: async function() {
             await sleep(1000);
-            this.walletAmount = walletAmount * 1;
+            this.walletAmount = 0;
             initPaypal();
         }
     });
