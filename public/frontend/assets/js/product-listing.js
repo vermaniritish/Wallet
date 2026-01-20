@@ -339,14 +339,14 @@ if($('#product-page').length)
             });
             let sizes = $('#product-sizes').text().trim();
             sizes = sizes ? JSON.parse(sizes) : [];
-            if(sizes.length > 0){
-                let sColor = JSON.parse($('#default-color').text().trim());
-                if(sColor)
-                {
-                    this.color = sColor.id;
-                    this.colorTitle = sColor.title;
-                }
-            }
+            // if(sizes.length > 0){
+            //     let sColor = JSON.parse($('#default-color').text().trim());
+            //     if(sColor)
+            //     {
+            //         this.color = sColor.id;
+            //         this.colorTitle = sColor.title;
+            //     }
+            // }
             // for(let i in sizes)
             // {
             //     let exist = this.cart.filter((item) => {
@@ -649,14 +649,14 @@ else if($('#product-cat-page').length)
             });
             let sizes = $('#product-sizes').text().trim();
             sizes = sizes ? JSON.parse(sizes) : [];
-            if(sizes.length > 0){
-                let sColor = JSON.parse($('#default-color').text().trim());
-                if(sColor)
-                {
-                    this.color = sColor.id;
-                    this.colorTitle = sColor.title;
-                }
-            }
+            // if(sizes.length > 0){
+            //     let sColor = JSON.parse($('#default-color').text().trim());
+            //     if(sColor)
+            //     {
+            //         this.color = sColor.id;
+            //         this.colorTitle = sColor.title;
+            //     }
+            // }
 
             for(let i in sizes)
             {
@@ -1671,7 +1671,8 @@ var minicart = new Vue({
     mounted: async function() {
         this.gstTax = gstTax();
         this.logoPricesDynamix = await minicart.fetchLogoPrices();
-        this.walletAmount = walletAmount * 1;
+        // this.walletAmount = walletAmount * 1;
+        this.walletAmount = 0;
         this.initcart();
         
     }
