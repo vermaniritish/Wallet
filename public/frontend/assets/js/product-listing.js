@@ -426,7 +426,7 @@ else if($('#product-cat-page').length)
                     return this.sizes.filter((i) => i.color_id == this.color );
                 }
                 else {
-                    return this.sizes;
+                    return [];
                 }
             },
             renderAllAddedSizes() {
