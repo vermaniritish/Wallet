@@ -130,7 +130,7 @@
                         <div class="shipping_option">
                             <div class="custome-radio">
                                 <input class="form-check-input" required="" type="radio" name="payment_method" value="wallet" id="wallet-radio" @change="applyPayMethod('wallet')">
-                                <label class="form-check-label" for="wallet-radio">Paypal</label>
+                                <label class="form-check-label" for="wallet-radio">Wallet</label>
                             </div>
                             <div class="custome-radio">
                                 <input class="form-check-input" required="" type="radio" name="payment_method" value="paypal" id="paypal-radio" @change="applyPayMethod('paypal')">
