@@ -1954,7 +1954,6 @@ checkoutPage = new Vue({
             t.subtotal = t.product_cost + (t.logo_cost - t.logo_discount) + (t.product_cost > 0 ? t.oneTimeCost : 0 );
             t.discount = this.detectDiscount(t.subtotal);
             t.tax = this.calculateTax(t);
-            console.log(this.shippingOptions);
             t.shipping_cost = ( this.shippingOptions && this.shippingOptions.price * 1 > 0 ? this.shippingOptions.price * 1 : 0 );
             t.total = t.subtotal - t.discount + t.tax + t.shipping_cost;
             t.wallet_applied = t.total > this.walletAmount ? this.walletAmount : t.total;
@@ -2151,6 +2150,7 @@ checkoutPage = new Vue({
 
             let errs = {};
             let checkout = JSON.parse(JSON.stringify(this.checkout));
+            console.log(`checkout`, checkout);
             for(let e in checkout) {
                 let skips = ['company', 'ship_company', 'notes'];
                 if(skips.includes(e)) continue;
@@ -2162,7 +2162,7 @@ checkoutPage = new Vue({
                     haveErrors = true;
                 }
             }
-
+            console.log(`eoors`, haveErrors, errs);
             if(!haveErrors)
             {
                 this.errors = {};
