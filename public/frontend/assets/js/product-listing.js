@@ -2136,6 +2136,7 @@ checkoutPage = new Vue({
             }
         },
         async submit() {
+            alert('asdasd');
             if(this.checkout.saveInfo) {
                 localStorage.setItem('addressInfo', JSON.stringify(this.checkout));
             }
