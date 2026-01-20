@@ -2150,9 +2150,8 @@ checkoutPage = new Vue({
 
             let errs = {};
             let checkout = JSON.parse(JSON.stringify(this.checkout));
-            console.log(`checkout`, checkout);
             for(let e in checkout) {
-                let skips = ['company', 'ship_company', 'notes'];
+                let skips = ['company', 'ship_company', 'note'];
                 if(skips.includes(e)) continue;
                 if(!checkout['ship_different_address'] && (['ship_fname', 'ship_lname', 'ship_company', 'ship_address1', 'ship_address2', 'ship_city', 'ship_state', 'ship_zip']).includes(e)) continue;
                 if(!checkout['saveInfo'] && (['password']).includes(e)) continue;
@@ -2162,7 +2161,6 @@ checkoutPage = new Vue({
                     haveErrors = true;
                 }
             }
-            console.log(`eoors`, haveErrors, errs);
             if(!haveErrors)
             {
                 this.errors = {};
