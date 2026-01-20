@@ -357,9 +357,9 @@ if($('#product-page').length)
             // }
             this.sizes = sizes;
             this.logoOptions = $('#logo-options').text().trim() ? JSON.parse($('#logo-options').text().trim()) : [];
-            if(!this.color && this.sizes.length > 0) {
-                this.color = this.sizes[0].color_id;
-            }
+            // if(!this.color && this.sizes.length > 0) {
+            //     this.color = this.sizes[0].color_id;
+            // }
         }
     });
 }
@@ -668,9 +668,9 @@ else if($('#product-cat-page').length)
             }
             this.sizes = sizes;
             this.logoOptions = $('#logo-options').text().trim() ? JSON.parse($('#logo-options').text().trim()) : [];
-            if(!this.color && this.sizes.length > 0) {
-                this.color = this.sizes[0].color_id;
-            }
+            // if(!this.color && this.sizes.length > 0) {
+            //     this.color = this.sizes[0].color_id;
+            // }
         }
     });
 }
