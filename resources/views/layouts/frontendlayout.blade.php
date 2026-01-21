@@ -27,7 +27,7 @@ $version = '2.7.2';
     <link rel="stylesheet" href="{{ url('frontend/assets/css/main.css?v=' . $version) }}">
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
     
-    <script src="https://www.paypal.com/sdk/js?client-id=AYXlDi-lHWz99toobrKV0fzLCeQanEV5z4UnJB1fsSZN6r-xzqEacYY4KnESQuEyVgu-ARJ47y_YEkKb&currency=GBP"></script>
+    <script src="https://www.paypal.com/sdk/js?client-id=AcHH3SOCSzLpPXioPVl5m15be29_PrHru6j0v6aVpcQdx9padzQ3EXfXVPkBStFVx-7FZZ4ZJzDNKxKh&currency=GBP"></script>
 </head>
 
 <body>
