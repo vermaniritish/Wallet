@@ -594,7 +594,7 @@ else if($('#product-cat-page').length)
                 }
 
                 setTimeout(function() {
-                    $('.image-option:first-child .logo-types, .radio-group:first-child .logo-cats').trigger('click');
+                    $('.image-options:first-child .logo-cats, .logo-types:first-child input').trigger('click');
                 }, 1000);
             },
             closeModal() {
