@@ -55,7 +55,7 @@
                                 min="1"
                                 step="1.00"
                                 v-model="form.customAmount"
-                                placeholder="$"
+                                placeholder="£"
                                 inputmode="decimal"
                                 onkeydown="return !['e','E','+','-'].includes(event.key)"
                             />
