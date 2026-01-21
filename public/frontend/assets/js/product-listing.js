@@ -1275,11 +1275,13 @@ function renderLogoInfo(c) {
     let html = '';
     let amount = 0;
     let totalLogos = 0;
+    let totalTxts = 0;
     c.logo.forEach(logo => {
         if((logo.price*1) > 0)
         {
             amount += (logo.price*1) * c.quantity;
-            totalLogos += (c.quantity*1)
+            totalLogos += logo.image && logo.image.trim ? (c.quantity*1) : 0;
+            totalTxts += !logo.image && (logo.text || logo.text2 || logo.text3) (c.quantity*1);
         }
 
         html += (logo.price*1) > 0 ? `
@@ -1341,7 +1343,7 @@ function renderLogoInfo(c) {
             </tr>` : ``;
     });
 
-    return amount > 0 ? `<span class="text-danger font-xs" style="color:#ee2761">${(amount > 0) ? (`Price for ` + `${(totalLogos + (totalLogos > 1 ? ` logos are ` : ` logo is `))} <strong>£${amount.toFixed(2)}</strong>`) : ''}</span><br />`  + html : '';
+    return amount > 0 ? `<span class="text-danger font-xs" style="color:#ee2761">${(amount > 0) ? (`Price for ` + `${(totalLogos + (totalTxts > 0 ? ` ${totalTxts > 1 ? ` texts are ` : ` text is `} ` : (totalLogos > 1 ? ` logos are ` : ` logo is `)))} <strong>£${amount.toFixed(2)}</strong>`) : ''}</span><br />`  + html : '';
 }
 if($('#cart-page').length)
 var minicart = new Vue({
