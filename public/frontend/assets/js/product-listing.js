@@ -37,16 +37,19 @@ const oneTimeProductObject = function(cart) {
     {
         for(let c of cart)
         {
-            for(let l of c.logo)
+            if(c.logo)
             {
-                console.log(l);
-                if(l.postion && l.category && (c.quantity*1 > 0) && l.image && l.image.trim() && imageCost == null) {
-                    imageCost = oneTimeLogoCost;
+                for(let l of c.logo)
+                {
+                    console.log(l);
+                    if(l.postion && l.category && (c.quantity*1 > 0) && l.image && l.image.trim() && imageCost == null) {
+                        imageCost = oneTimeLogoCost;
+                    }
+                    if(l.postion && l.category && (c.quantity*1 > 0) && l.text && l.text.trim() && txtCost == null) {
+                        txtCost = oneTimeLogoTxtCost;
+                    }
+                        
                 }
-                if(l.postion && l.category && (c.quantity*1 > 0) && l.text && l.text.trim() && txtCost == null) {
-                    txtCost = oneTimeLogoTxtCost;
-                }
-                    
             }
         }
     }
