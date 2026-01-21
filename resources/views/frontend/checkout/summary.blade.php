@@ -124,7 +124,7 @@
                     
                     </td>
                 </tr>
-                <tr>
+                <tr v-if="walletAmount > 0">
                     <th>Payment Method</th>
                     <td colspan="2">
                         <div class="shipping_option">
