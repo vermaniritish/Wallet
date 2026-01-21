@@ -1296,17 +1296,13 @@ function renderLogoInfo(c) {
                                 <p class="text-danger">Pinder has already my logo.</p>
                             </div>
                             `
-                            : `
+                            : (logo.image && logo.image.trim() ? `
                             <div class="col-sm-3">
                                 <div style="width:80px;height:80px;border:1px solid #ddd;">
-                                    ${
-                                        logo.image && logo.image.trim()
-                                        ? `<img src="${logo.image}" style="max-width:100%;max-height:100%;">`
-                                        : ''
-                                    }
+                                    ${`<img src="${logo.image}" style="max-width:100%;max-height:100%;">`}
                                 </div>
                             </div>
-                            `
+                            ` : ``)
                         }
 
                         <div class="col-sm-5">
