@@ -592,6 +592,10 @@ else if($('#product-cat-page').length)
                 {
                     this.logoPrices = response.prices;
                 }
+
+                setTimeout(function() {
+                    $('.image-option:first-child .logo-types, .radio-group:first-child .logo-cats').trigger('click');
+                }, 1000);
             },
             closeModal() {
                 this.editLogo = false;
