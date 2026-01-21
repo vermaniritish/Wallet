@@ -593,9 +593,33 @@ else if($('#product-cat-page').length)
                     this.logoPrices = response.prices;
                 }
 
-                setTimeout(function() {
-                    $('.image-options:first-child .logo-cats, .logo-types:first-child input').trigger('click');
-                }, 1000);
+                this.sizes.forEach((s, sizeIndex) => {
+                    if (!s.logo) return;
+
+                    Object.keys(s.logo).forEach((lKey) => {
+                        let lVal = s.logo[lKey];
+
+                        let didChange = false;
+
+                        /* 1️⃣ Default position */
+                        if (!lVal.postion && this.logoOptions.positions.length) {
+                            lVal.postion = this.logoOptions.positions[0];
+                            didChange = true;
+                        }
+
+                        /* 2️⃣ Default category */
+                        if (!lVal.category && this.logoOptions.category.length) {
+                            lVal.category = this.logoOptions.category[0];
+                            didChange = true;
+                        }
+
+                        /* 🔥 Trigger logic manually */
+                        if (didChange) {
+                            this.onChange(sizeIndex, s, lVal.category ?? null, lKey);
+                        }
+                    });
+                });
+
             },
             closeModal() {
                 this.editLogo = false;
