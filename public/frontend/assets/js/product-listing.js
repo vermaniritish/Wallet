@@ -70,6 +70,8 @@ if($('#product-page').length)
             sizes: [],
             color: null,
             colorTitle: null,
+			colorCode: '',
+			selectedColorId: null,
             selectedSizes: {},
             uploading: null,
             buyNow: false,
@@ -99,9 +101,10 @@ if($('#product-page').length)
             renderActiveColor(id) {
                 return this.color == id ? `active` : ``;
             },
-            selectColor(id, title) {
+            selectColor(id, title, code ) {
                 this.color = id;
                 this.colorTitle = title;
+				this.colorCode = code;
                 this.$nextTick(() => {
 					const thumb = document.querySelector(
 						'.slider-thumb[data-item="' + id + '"] img'
