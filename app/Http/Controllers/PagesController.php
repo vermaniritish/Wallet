@@ -389,10 +389,10 @@ class PagesController extends BaseController
         $user = $request->session()->get('user');
         if($request->isMethod('post'))
     	{
-            $user = Users::find($user->id);
-            if($user)
+            if($user && $user->id)
             {
-                if($request->applied['applied'] > 0 && $user->wallet < $request->applied['applied']) {
+                $user = Users::find($user->id);
+                if(!$user || ($request->applied['applied'] > 0 && $user->wallet < $request->applied['applied'])) {
                     return response()->json([
                         'status' => false,
                         'message' => "Insufficent balance in your wallet.",
