@@ -1281,7 +1281,7 @@ function renderLogoInfo(c) {
         {
             amount += (logo.price*1) * c.quantity;
             totalLogos += logo.image && logo.image.trim ? (c.quantity*1) : 0;
-            totalTxts += !logo.image && (logo.text || logo.text2 || logo.text3) (c.quantity*1);
+            totalTxts += !logo.image && (logo.text || logo.text2 || logo.text3) ? (c.quantity*1) : 0;
         }
 
         html += (logo.price*1) > 0 ? `
