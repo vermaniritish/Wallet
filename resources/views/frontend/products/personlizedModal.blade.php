@@ -3,13 +3,13 @@
 		<a class="close float-end" style="font-size:24px" href="#" v-on:click="closeModal">&times;</a>
 		<div class="" v-for="(s, i) in sizes" v-if="s && s.logo && (s.quantity*1) > 0">
 			<h1>Customise Your Apparel</h1>
-			<p>@{{s.title}} | @{{s.size_title}} | @{{s.color}}</p>
+			<h3>@{{s.title}} | @{{s.size_title}} | @{{s.color}}</h3>
 			<template v-for="(lVal, lKey) in s.logo">
 				<div class="section">
 					<label class="title">1. Select Logo / Text Position</label>
 					<div class="image-options">
 						<label class="image-option" v-for="(p, pi) in logoOptions.positions">
-							<input type="radio" :name="`logop`+i+lKey+pi" :id="`logop`+i+lKey+pi" :value="p" v-model="lVal.postion" v-on:change="onChange(i, s, null, lKey)">
+							<input class="logo-cats" type="radio" :name="`logop`+i+lKey+pi" :id="`logop`+i+lKey+pi" :value="p" v-model="lVal.postion" v-on:change="onChange(i, s, null, lKey)">
 							<img :src="`{{url('/frontend/assets/size-guides')}}/`+p.trim().toLowerCase().replace(/ /g, '-').replace(/[^a-zA-Z0-9]/g, '-')+`.jpg`">
 						</label>
 					</div>
@@ -19,8 +19,8 @@
 				<div class="section">
 					<label class="title">2. Choose Application Method</label>
 					<div class="radio-group">
-						<label><input type="radio" :name="`logooption`+i+lKey" type="radio" v-on:input="onChange(i, s, 'None', lKey)" :checked="lVal.category == 'None'"> None</label>
-						<label v-if="logoOptions && logo" v-for="(c, k) in logoOptions.category"><input type="radio" :name="`logooption`+i+lKey" type="radio" v-on:input="onChange(i, s, c, lKey)" :checked="lVal.category == c">@{{c}}</label>
+						<!-- <label><input type="radio" :name="`logooption`+i+lKey" type="radio" v-on:input="onChange(i, s, 'None', lKey)" :checked="lVal.category == 'None'"> None</label> -->
+						<label  class="logo-types" v-if="logoOptions && logo" v-for="(c, k) in logoOptions.category"><input type="radio" :name="`logooption`+i+lKey" type="radio" v-on:input="onChange(i, s, c, lKey)" :checked="lVal.category == c">@{{c}}</label>
 					</div>
 				</div>
 
