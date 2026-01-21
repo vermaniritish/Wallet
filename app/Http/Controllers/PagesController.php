@@ -398,79 +398,104 @@ class PagesController extends BaseController
                         'message' => "Insufficent balance in your wallet.",
                     ]);
                 }
+            }
 
-                $data = $request->toArray();
-                unset($data['_token']);
-                $validator = Validator::make(
-                    $request->toArray(),
-                    [
-                        'name'              => 'required|string|max:100',
-                        'email'             => 'required|email',
-                        'mobile'            => 'required|digits:10',
-                        'amount'        => 'required',
-                        'customAmount'  => 'nullable|required_if:amount,custom|numeric|min:1',
-                        'delivery_mode'     => 'required|string',
-                        'receiver_name'     => 'required|string|max:100',
-                        'receiver_email'    => 'required|email',
-                        'receiver_mobile'   => 'required|digits:10',
-                        'message'           => 'required|max:200',
-                        'applied'           => 'required|array'
-                    ]
-                );
-                if(!$validator->fails())
+            $data = $request->toArray();
+            unset($data['_token']);
+            $validator = Validator::make(
+                $request->toArray(),
+                [
+                    'name'              => 'required|string|max:100',
+                    'email'             => 'required|email',
+                    'mobile'            => 'required|digits:10',
+                    'amount'        => 'required',
+                    'customAmount'  => 'nullable|required_if:amount,custom|numeric|min:1',
+                    'delivery_mode'     => 'required|string',
+                    'receiver_name'     => 'required|string|max:100',
+                    'receiver_email'    => 'required|email',
+                    'receiver_mobile'   => 'required|digits:10',
+                    'message'           => 'required|max:200',
+                    'applied'           => 'required|array'
+                ]
+            );
+            if(!$validator->fails())
+            {
+                // Create pending voucher
+                $voucher = GiftVoucher::create([
+                    'user_id' => $user ? $user->id : null,
+                    'sender_name'       => $request->name,
+                    'sender_email'      => $request->email,
+                    'sender_mobile'     => $request->mobile,
+                    'amount'            => $request->amount == 'custom' ? $request->customAmount : $request->amount,
+                    'delivery_mode'     => $request->delivery_mode,
+                    'receiver_name'     => $request->receiver_name,
+                    'receiver_email'    => $request->receiver_email,
+                    'receiver_mobile'   => $request->receiver_mobile,
+                    'message'           => $request->message,
+                    'pay_details' => json_encode($request->applied),
+                    'status'            => $request->applied['amount'] == $request->applied['applied'] && $request->applied['pay'] < 1 ? 'paid' : 'pending',
+                    'applied' => 0,
+                    'expiry_date' => date('Y-m-d', strtotime('+1 year'))
+                ]);
+
+                if($voucher)
                 {
-                    // Create pending voucher
-                    $voucher = GiftVoucher::create([
-                        'user_id' => $user ? $user->id : null,
-                        'sender_name'       => $request->name,
-                        'sender_email'      => $request->email,
-                        'sender_mobile'     => $request->mobile,
-                        'amount'            => $request->amount == 'custom' ? $request->customAmount : $request->amount,
-                        'delivery_mode'     => $request->delivery_mode,
-                        'receiver_name'     => $request->receiver_name,
-                        'receiver_email'    => $request->receiver_email,
-                        'receiver_mobile'   => $request->receiver_mobile,
-                        'message'           => $request->message,
-                        'pay_details' => json_encode($request->applied),
-                        'status'            => $request->applied['amount'] == $request->applied['applied'] && $request->applied['pay'] < 1 ? 'paid' : 'pending',
-                        'applied' => 0,
-                        'expiry_date' => date('Y-m-d', strtotime('+1 year'))
-                    ]);
-
-                    if($voucher)
+                    $order = GiftVoucher::find($voucher->id);
+                    if($order && $order->status == 'paid')
                     {
-                        $order = GiftVoucher::find($voucher->id);
-                        if($order && $order->status == 'paid')
+                        $randomLength = 10;           // random number size: 8 digits
+                        $prefix = Settings::get('gift_card_prefix');
+                        do {
+                            $randomNumber = mt_rand(
+                                pow(10, $randomLength - 1),
+                                pow(10, $randomLength) - 1
+                            );
+
+                            $couponCode = $prefix . $randomNumber;
+                            $exists = GiftVoucher::where('code', $couponCode)->where('status', 'paid')->exists();
+
+                        } while ($exists); // repeat until UNIQUE
+                        $order->code =  $couponCode;
+                        $order->save();
+                        
+                        if($request->applied['applied'] > 0 && $request->applied['amount'] == $request->applied['applied'] && $request->applied['pay'] < 1) {
+                            $user->wallet =$user->wallet - $request->applied['applied'];
+                            $user->save();
+                            Wallet::create([
+                                'user_id' => $user->id,
+                                'amount' => -$request->applied['applied'],
+                                'mode' => 'deduct',
+                                'payment_status' => 'paid'
+                            ]);
+                        }
+
+                        General::sendTemplateEmail( 
+                            $order->user && $order->user->email ? $order->user->email : $order->sender_email, 
+                            'gift-card-order-placed',
+                            [
+                                "{order_id}" => $order->order_id,
+                                "{code}" => $order->code,
+                                "{sender_name}" => $order->sender_name,
+                                "{sender_email}" => $order->sender_email,
+                                "{sender_mobile}" => $order->sender_mobile,
+                                "{amount}" => $order->amount,
+                                "{receiver_name}" => $order->receiver_name,
+                                "{receiver_email}" => $order->receiver_email,
+                                "{receiver_mobile}" => $order->receiver_mobile,
+                                "{message}" =>  $order->message
+                            ]
+                        );
+
+                        if($order->delivery_mode == 'SMS' || $order->delivery_mode == 'BOTH')
                         {
-                            $randomLength = 10;           // random number size: 8 digits
-                            $prefix = Settings::get('gift_card_prefix');
-                            do {
-                                $randomNumber = mt_rand(
-                                    pow(10, $randomLength - 1),
-                                    pow(10, $randomLength) - 1
-                                );
+                            SMSGateway::send($order->receiver_mobile, "Congratulations! A Pinder Gift Card sent by {$order->sender_name}. Code is {$order->code}");
+                        }
 
-                                $couponCode = $prefix . $randomNumber;
-                                $exists = GiftVoucher::where('code', $couponCode)->where('status', 'paid')->exists();
-
-                            } while ($exists); // repeat until UNIQUE
-                            $order->code =  $couponCode;
-                            $order->save();
-                            
-                            if($request->applied['applied'] > 0 && $request->applied['amount'] == $request->applied['applied'] && $request->applied['pay'] < 1) {
-                                $user->wallet =$user->wallet - $request->applied['applied'];
-                                $user->save();
-                                Wallet::create([
-                                    'user_id' => $user->id,
-                                    'amount' => -$request->applied['applied'],
-                                    'mode' => 'deduct',
-                                    'payment_status' => 'paid'
-                                ]);
-                            }
-
+                        if($order->delivery_mode == 'Email' || $order->delivery_mode == 'BOTH')
+                        {
                             General::sendTemplateEmail( 
                                 $order->user && $order->user->email ? $order->user->email : $order->sender_email, 
-                                'gift-card-order-placed',
+                                'gift-card',
                                 [
                                     "{order_id}" => $order->order_id,
                                     "{code}" => $order->code,
@@ -484,71 +509,39 @@ class PagesController extends BaseController
                                     "{message}" =>  $order->message
                                 ]
                             );
-
-                            if($order->delivery_mode == 'SMS' || $order->delivery_mode == 'BOTH')
-                            {
-                                SMSGateway::send($order->receiver_mobile, "Congratulations! A Pinder Gift Card sent by {$order->sender_name}. Code is {$order->code}");
-                            }
-
-                            if($order->delivery_mode == 'Email' || $order->delivery_mode == 'BOTH')
-                            {
-                                General::sendTemplateEmail( 
-                                    $order->user && $order->user->email ? $order->user->email : $order->sender_email, 
-                                    'gift-card',
-                                    [
-                                        "{order_id}" => $order->order_id,
-                                        "{code}" => $order->code,
-                                        "{sender_name}" => $order->sender_name,
-                                        "{sender_email}" => $order->sender_email,
-                                        "{sender_mobile}" => $order->sender_mobile,
-                                        "{amount}" => $order->amount,
-                                        "{receiver_name}" => $order->receiver_name,
-                                        "{receiver_email}" => $order->receiver_email,
-                                        "{receiver_mobile}" => $order->receiver_mobile,
-                                        "{message}" =>  $order->message
-                                    ]
-                                );
-                            }
-
-                            return response()->json([
-                                'status' => true,
-                                'message' => 'Voucher sent.',
-                                'paid' => $order->status,
-                                'voucher_id' => General::encrypt($voucher->id),
-                                'amount' => $voucher->amount,
-                            ]);
                         }
 
                         return response()->json([
                             'status' => true,
-                            'message' => 'Voucher saved as pending, proceed to payment.',
+                            'message' => 'Voucher sent.',
+                            'paid' => $order->status,
                             'voucher_id' => General::encrypt($voucher->id),
                             'amount' => $voucher->amount,
-                            'paid' => $order->status,
                         ]);
                     }
-                    else
-                    {
-                        return response()->json([
-                            'status' => true,
-                            'message' => 'Voucher could not be processed. Please try again.',
-                        ]);
-                    }
+
+                    return response()->json([
+                        'status' => true,
+                        'message' => 'Voucher saved as pending, proceed to payment.',
+                        'voucher_id' => General::encrypt($voucher->id),
+                        'amount' => $voucher->amount,
+                        'paid' => $order->status,
+                    ]);
                 }
                 else
                 {
                     return response()->json([
-                        'status' => false,
-                        'message' => current(current($validator->errors())),
+                        'status' => true,
+                        'message' => 'Voucher could not be processed. Please try again.',
                     ]);
                 }
             }
             else
             {
                 return response()->json([
-                        'status' => false,
-                        'message' => "Voucher could not be sent.",
-                    ]);
+                    'status' => false,
+                    'message' => current(current($validator->errors())),
+                ]);
             }
         }
         return view('frontend.giftVoucher', [
