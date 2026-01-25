@@ -56,7 +56,7 @@
 								type="radio"
 								:name="`already_uploaded_${i}_${lKey}`"
 								value="1"
-								@change="lVal.already_uploaded = true"
+								@change="lVal.already_uploaded = true;lVal.text=``;lVal.text1=``;lVal.text2=``"
 								/>
 								You already have my logo, it's just not in my account (no setup fee will be charged).
 							</label>
@@ -65,9 +65,15 @@
 						<!-- Text Box -->
 						<div class="inline-box">
 							<div class="box-title">✍️ Write Your Text</div>
-							<input type="text" class="text-line" maxlength="10" placeholder="Line 1 (max 10)" v-model="lVal.text">
-							<input type="text" class="text-line" maxlength="10" placeholder="Line 2 (max 10)" v-model="lVal.text1">
-							<input type="text" class="text-line" maxlength="10" placeholder="Line 3 (max 10)" v-model="lVal.text2">
+							<input type="text" class="text-line" maxlength="10" placeholder="Line 1 (max 10)" v-model="lVal.text"
+								disabled={lVal.already_uploaded || !lVal.image}
+							>
+							<input type="text" class="text-line" maxlength="10" placeholder="Line 2 (max 10)" v-model="lVal.text1"
+								disabled={lVal.already_uploaded || !lVal.image}
+							>
+							<input type="text" class="text-line" maxlength="10" placeholder="Line 3 (max 10)" v-model="lVal.text2"
+								disabled={lVal.already_uploaded || !lVal.image}
+							>
 							<label>Font</label>
 							<select id="fontSelect" v-model="lVal.font">
 								<option value="Roboto">Roboto</option>
