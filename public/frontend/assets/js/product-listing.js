@@ -636,6 +636,9 @@ else if($('#product-cat-page').length)
                 sizes.logo = logo;
                 console.log(sizes);
                 this.$set(this.sizes, k, sizes);
+                this.$nextTick(() => {
+
+                });
             },
             onChange(index, size, category, logoKey)
             {
