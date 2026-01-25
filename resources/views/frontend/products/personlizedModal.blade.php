@@ -34,7 +34,10 @@
 						<div class="inline-box">
 							<div class="d-flex flex-row justify-content-between align-items-start mb-2">
 								<button class="btn btn-sm btn-primary" v-on:click="handleFileUpload(i, lKey)"><i v-if="uploading !== null && uploading.sizeIndex && uploading.sizeIndex == i" class="fa fa-spin fa-spinner"></i> <i v-else class="fa fa-upload"></i> Upload Logo</button>
-								<div class="logo-image" style="max-width:150px; max-height:150px; object-fit: content;" v-if="lVal && lVal.image"><img :src="lVal.image" style="max-width: 100%;max-height:100%;" /></div>
+								<div class="logo-image" style="max-width:150px; max-height:150px; object-fit: content;" v-if="lVal && lVal.image">
+									<img :src="lVal.image" style="max-width: 100%;max-height:100%;" />
+									<p><a class="text-danger py-1" href="javascript:;" @click="removeFile(i, lKey)"><i class="far fa-times"></i> Remove</a></p>
+								</div>
 							</div>
 							<p class="file-note">PNG / JPG • Max 2MB • Transparent preferred</p>
 							<p class="file-note">Don't worry how it looks, we will make it look great and send a proof before we add to your products!</p>
