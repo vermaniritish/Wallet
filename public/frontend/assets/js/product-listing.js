@@ -1339,7 +1339,7 @@ function renderLogoInfo(c) {
             </tr>` : ``;
     });
 
-    return amount > 0 ? `<span class="text-danger font-xs" style="color:#ee2761">${(amount > 0) ? (`Price for ` + `${((totalLogos*1 + totalTxts*1) + (totalTxts > 0 ? ` ${totalTxts > 1 ? ` texts are ` : ` text is `} ` : (totalLogos > 1 ? ` logos are ` : ` logo is `)))} <strong>£${amount.toFixed(2)}</strong>`) : ''}</span><br />`  + html : '';
+    return amount > 0 ? `<span class="text-danger font-xs" style="color:#ee2761">${(amount > 0) ? (`Price for ` + `${((totalLogos*1 + totalTxts*1) + (totalTxts > 0 ? ` ${totalTxts > 1 ? ` customizations are ` : ` customization is `} ` : (totalLogos > 1 ? ` customizations are ` : ` customization is `)))} <strong>£${amount.toFixed(2)}</strong>`) : ''}</span><br />`  + html : '';
 }
 if($('#cart-page').length)
 var minicart = new Vue({
