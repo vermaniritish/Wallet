@@ -628,17 +628,16 @@ else if($('#product-cat-page').length)
             },
             addMoreLogo(k) 
             {
+                let allsizes = this.sizes;
                 let sizes = {...this.sizes[k]};
                 let logo = JSON.parse(JSON.stringify(sizes.logo));
                 logo = Object.values(logo);
                 logo.push({...this.logo[0]});
                 console.log(logo);
                 sizes.logo = logo;
-                console.log(sizes);
-                this.$set(this.sizes, k, sizes);
-                this.$nextTick(() => {
-
-                });
+                allsizes[k] = sizes;
+                this.sizes = [];
+                this.sizes = allsizes;
             },
             onChange(index, size, category, logoKey)
             {
