@@ -523,6 +523,9 @@ else if($('#product-cat-page').length)
             },
             removeFile(sizeIndex, logoKey) {
                 this.sizes[sizeIndex].logo[logoKey].image = null;
+                this.sizes[sizeIndex].logo[logoKey].text = ``;
+                this.sizes[sizeIndex].logo[logoKey].text1 = ``;
+                this.sizes[sizeIndex].logo[logoKey].text2 = ``;
             },
             async addToCart(buyNow) 
             {
