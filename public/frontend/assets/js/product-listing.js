@@ -633,9 +633,10 @@ else if($('#product-cat-page').length)
                 let logo = JSON.parse(JSON.stringify(sizes.logo));
                 logo = Object.values(logo);
                 logo.push({...this.logo[0]});
-                console.log(logo);
+                
                 sizes.logo = logo;
                 allsizes[k] = sizes;
+                console.log(allsizes);
                 this.sizes = [];
                 this.sizes = allsizes;
             },
