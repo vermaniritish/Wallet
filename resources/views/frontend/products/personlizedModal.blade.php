@@ -131,7 +131,7 @@
 						</div>
 					</div>
 					<div>
-						<button type="button" @click="addMoreLogo(lKey)">Add More</button>
+						<button type="button" @click="addMoreLogo(i)">Add More</button>
 					</div>
 				</div>
 				<h4><span class="formhead">Price: &pound; @{{lVal.price && (lVal.price*1) > 0 ? lVal.price : '0.00' }}</span></h4>
