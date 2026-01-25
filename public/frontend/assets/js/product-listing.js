@@ -1302,9 +1302,7 @@ function renderLogoInfo(c) {
                             logo.already_uploaded
                             ? `
                             <div class="col-sm-3">
-                                <div style="width:80px;height:80px;border:1px solid #ddd;">
-                                    <p class="text-danger">Pinder has already my logo.</p>
-                                </div>
+                                <p class="text-danger small">Pinder has already my logo.</p>
                             </div>
                             `
                             : (logo.image && logo.image.trim() ? `
