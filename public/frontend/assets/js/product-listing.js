@@ -521,6 +521,9 @@ else if($('#product-cat-page').length)
                     }
                 });
             },
+            removeFile(sizeIndex, logoKey) {
+                this.sizes[sizeIndex].logo[logoKey].image = null;
+            },
             async addToCart(buyNow) 
             {
                 if(this.nonExchangeable && !this.accept) {
