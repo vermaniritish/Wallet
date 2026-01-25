@@ -66,13 +66,13 @@
 						<div class="inline-box">
 							<div class="box-title">✍️ Write Your Text</div>
 							<input type="text" class="text-line" maxlength="10" placeholder="Line 1 (max 10)" v-model="lVal.text"
-								disabled={lVal.already_uploaded || !lVal.image}
+								:disabled="lVal.already_uploaded || !lVal.image"
 							>
 							<input type="text" class="text-line" maxlength="10" placeholder="Line 2 (max 10)" v-model="lVal.text1"
-								disabled={lVal.already_uploaded || !lVal.image}
+								:disabled="lVal.already_uploaded || !lVal.image"
 							>
 							<input type="text" class="text-line" maxlength="10" placeholder="Line 3 (max 10)" v-model="lVal.text2"
-								disabled={lVal.already_uploaded || !lVal.image}
+								:disabled="lVal.already_uploaded || !lVal.image"
 							>
 							<label>Font</label>
 							<select id="fontSelect" v-model="lVal.font">
