@@ -4,7 +4,7 @@
 		<div class="" v-for="(s, i) in sizes" v-if="s && s.logo && (s.quantity*1) > 0">
 			<h1>Customise Your Apparel</h1>
 			<h3>@{{s.title}} | @{{s.size_title}} | @{{s.color}}</h3>
-			<template v-for="(lVal, lKey) in s.logo">
+			<template v-for="(lVal, lKey) in s.logo" :key="`logo-${lKey}`">
 				<div class="section">
 					<label class="title">1. Select Logo / Text Position</label>
 					<div class="image-options">
@@ -25,7 +25,7 @@
 				</div>
 
 				<!-- 3. Upload OR Write Text -->
-				<div class="section" v-if="lVal.category != 'None'">
+				<div class="section">
 					<label class="title">3. Upload Your Logo OR Write Your Text</label>
 
 					<div class="inline-row">
@@ -40,11 +40,21 @@
 							<p class="file-note">Don't worry how it looks, we will make it look great and send a proof before we add to your products!</p>
 							<p style="text-align:center;font-weight:600;">alternatively...</p>
 							<label>
-								<input type="radio" name="already_uploaded" value="0" checked @change="lVal.already_uploaded = false">
+								<input
+									type="radio"
+									:name="`already_uploaded_${i}_${lKey}`"
+									value="0"
+									@change="lVal.already_uploaded = false"
+									/>
 								Don't have your logo to hand? Don't worry — we will contact you after you place your order.
 							</label>
 							<label>
-								<input type="radio" name="already_uploaded" value="1" @change="lVal.already_uploaded = true">
+								<input
+								type="radio"
+								:name="`already_uploaded_${i}_${lKey}`"
+								value="1"
+								@change="lVal.already_uploaded = true"
+								/>
 								You already have my logo, it's just not in my account (no setup fee will be charged).
 							</label>
 						</div>
