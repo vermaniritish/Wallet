@@ -626,14 +626,16 @@ else if($('#product-cat-page').length)
                 $('body').removeClass('overflow-hidden');
                 initSlickZoom();
             },
-            addMoreLogo(k) 
-            {
-                let sizes = {...this.sizes[k]};
-                let logo = JSON.parse(JSON.stringify(sizes.logo));
-                logo = Object.values(logo);
-                logo.push({...this.logo[0]});
-                console.log(logo);
-                sizes.logo = logo;
+            addMoreLogo(k) {
+                const sizes = { ...this.sizes[k] };
+
+
+                sizes.logo = [
+                ...sizes.logo,
+                { ...this.logo[0] }
+                ];
+
+
                 this.$set(this.sizes, k, sizes);
             },
             onChange(index, size, category, logoKey)
