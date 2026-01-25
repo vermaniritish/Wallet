@@ -64,7 +64,7 @@
 
 						<!-- Text Box -->
 						<div class="inline-box">
-							<div class="box-title">✍️ Write Your Text</div>
+							<div class="box-title">✍️ Write Your Text @{{lVal.already_uploaded}} @{{lVal.image}} @{{lVal.already_uploaded || !lVal.image}}</div>
 							<input type="text" class="text-line" maxlength="10" placeholder="Line 1 (max 10)" v-model="lVal.text"
 								:disabled="lVal.already_uploaded || !lVal.image"
 							>
@@ -75,7 +75,7 @@
 								:disabled="lVal.already_uploaded || !lVal.image"
 							>
 							<label>Font</label>
-							<select id="fontSelect" v-model="lVal.font">
+							<select id="fontSelect" v-model="lVal.font" :disabled="lVal.already_uploaded || !lVal.image">
 								<option value="Roboto">Roboto</option>
 								<option value="Poppins">Poppins</option>
 								<option value="Montserrat">Montserrat</option>
@@ -87,7 +87,7 @@
 							</select>
 
 							<label>Color</label>
-							<select id="colorSelect" v-model="lVal.color">
+							<select id="colorSelect" v-model="lVal.color" :disabled="lVal.already_uploaded || !lVal.image">
 								<option value="#000000">Black</option>
 								<option value="#ffffff">White</option>
 								<option value="#e63946">Red</option>
