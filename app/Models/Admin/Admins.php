@@ -25,7 +25,6 @@ class Admins extends AppModel
     */
     public function getResizeImagesAttribute()
     {
-        pr($this->image); die;
         return $this->image ? FileSystem::getAllSizeImages($this->image) : null;
     }
     
