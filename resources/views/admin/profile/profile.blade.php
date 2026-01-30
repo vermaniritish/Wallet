@@ -4,9 +4,7 @@
 		<div class="col-12 text-center">
 		<!-- <div class="col-lg-3 order-lg-2"> -->
 			<div class="card-profile-image">
-				<?php 
-				pr($admin->toArray()); die;
-				$image = $admin->getResizeImagesAttribute(); ?>
+				<?php $image = $admin->getResizeImagesAttribute(); ?>
 				<a class="prof_image_sidebar">
 					<img src="<?php echo isset($image['medium']) ? url($image['medium']) : url('assets/img/noprofile.jpg') ?>" class="rounded-circle">
 					<span><i id="loading-image" class="fa fa-spin fa-spinne"></i></span>
