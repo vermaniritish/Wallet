@@ -225,8 +225,8 @@ class FileSystem
 				$allFiles[$k] = [
 					'original' => $a,
 					'large' => $a,
-					'medium' => file_exists(public_path($path . '/M-' . $name)) ? $path . '/M-' . $name : "",
-					'small' => file_exists(public_path($path . '/S-' . $name)) ? $path . '/S-' . $name : "",
+					'medium' => file_exists(public_path($path . '/M-' . $name)) ? $path . '/M-' . $name : $a,
+					'small' => file_exists(public_path($path . '/S-' . $name)) ? $path . '/S-' . $name : $a,
 				];
 			}
 			return $multiple && is_array($multiple) ? $allFiles : current($allFiles);
