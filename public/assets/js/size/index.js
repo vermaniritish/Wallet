@@ -59,7 +59,7 @@ if($('#men').length)
                 let data = [...this.mens];
                 const duplicates = data.filter((item, index, self) =>
                     index !== self.findIndex((t) => (
-                        t.size_title === item.size_title
+                        t.size_title === item.size_title && t['length'] === item['length']
                     ))
                 );            
                 if(duplicates && duplicates.length > 0)  {
@@ -136,7 +136,7 @@ if($('#women').length)
                 const duplicates = data.filter((item, index, self) =>
                     index !== self.findIndex((t) => {
                         console.log(t.title, item.title);
-                        return t.size_title === item.size_title;
+                        t.size_title === item.size_title && t['length'] === item['length']
                     })
                 );
 
@@ -212,7 +212,7 @@ if($('#uni').length)
                 let data = [...this.mens];
                 const duplicates = data.filter((item, index, self) =>
                     index !== self.findIndex((t) => (
-                        t.size_title === item.size_title
+                        t.size_title === item.size_title && t['length'] === item['length']
                     ))
                 );            
                 if(duplicates && duplicates.length > 0)  {
@@ -287,7 +287,7 @@ if($('#kidkid').length)
                 let data = [...this.mens];
                 const duplicates = data.filter((item, index, self) =>
                     index !== self.findIndex((t) => (
-                        t.size_title === item.size_title
+                        t.size_title === item.size_title && t['length'] === item['length']
                     ))
                 );            
                 if(duplicates && duplicates.length > 0)  {
