@@ -23,9 +23,10 @@ class Admins extends AppModel
     *
     * @return array
     */
-    public function getResizeImagesAttribute($value)
+    public function getResizeImagesAttribute()
     {
-        return $value ? FileSystem::getAllSizeImages($value) : null;
+        pr($this->image); die;
+        return $this->image ? FileSystem::getAllSizeImages($this->image) : null;
     }
     
     /**
