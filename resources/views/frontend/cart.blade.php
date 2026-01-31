@@ -33,7 +33,7 @@
                                 <td class="product-des product-name">
                                     <h5 class="product-name"><a :href="'/' + c.slug">@{{ c.title }}</a></h5>
                                     <p v-if="c.non_exchange == 1 || c.non_exchange == '1'" class="font-xs" style="color: rgb(209, 0, 31);"> Made to order only. This is a Non-Exchangeable &amp; Non-Refundable product.</p>
-                                    <p class="font-xs">SKU: @{{c.sku_number}}<br> Size:  @{{c.size_title}}<br/> Color: @{{c.color}} </p>
+                                    <p class="font-xs">SKU: @{{c.sku_number}} | Size:  @{{c.size_title}} | Length:  @{{c.length ? c.length : '-'}} | Color: @{{c.color}} </p>
                                     
                                     <div class="font-xs">
                                         <span class="position-relative popover-block">
