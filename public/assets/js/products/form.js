@@ -161,6 +161,7 @@ let order = new Vue({
                             size_title: size.size_title,
                             from_cm: size.from_cm,
                             to_cm: size.to_cm,
+                            length: size.length,
                             price: parseFloat(size.price),
                             sale_price: size.sale_price && (size.sale_price*1) > 0 ? parseFloat(size.sale_price) : ``,
                             status: size.status
@@ -192,6 +193,7 @@ let order = new Vue({
                                 size_title: size.size_title,
                                 from_cm: size.from_cm,
                                 to_cm: size.to_cm,
+                                length: size.length,
                                 price: this.price > 0 ? this.price : 0,
                                 sale_price: this.maxPrice > 0 ? this.maxPrice : ``,
                                 status: !this.id ? true : (typeof size.status !== 'undefined' && size.status !== "" && size.status !== null ? size.status : true),
@@ -200,6 +202,7 @@ let order = new Vue({
                                 id: size.id,
                                 size_title: size.size_title,
                                 from_cm: size.from_cm,
+                                length: size.length,
                                 to_cm: size.to_cm,
                                 price: this.price > 0 ? this.price : 0,
                                 sale_price: this.maxPrice > 0 ? this.maxPrice : ``,
