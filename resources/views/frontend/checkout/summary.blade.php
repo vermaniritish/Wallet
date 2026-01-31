@@ -15,7 +15,7 @@
                     <td class="image product-thumbnail" width="25%"><img :src="getImagePath(c.image)" alt="#"></td>
                     <td  width="60%">
                         <h5><a :href="'/' + c.slug">@{{c.title}}</a></h5> <span class="product-qty">x @{{c.quantity && c.quantity > 0 ? c.quantity : ``}}</span>
-                        <p class="font-xs">SKU: @{{c.sku_number}}, Size: @{{c.size_title}}, Leength: @{{c.length}}, Color: @{{c.color}}</p>
+                        <p class="font-xs">SKU: @{{c.sku_number}}, Size: @{{c.size_title}}, Length: @{{c.length}}, Color: @{{c.color}}</p>
                         <div class="font-xs" v-if="c.customization && c.customization.length > 0">
                             <span class="position-relative popover-block">
                                 <span 
