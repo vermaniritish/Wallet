@@ -102,7 +102,7 @@ class ProductsController extends AppController
     	}
 
 		$where['products.is_uniform'] = 0;
-		pr($where); die;
+		
     	$listing = Products::getListing($request, $where);
 
     	if($request->ajax())
