@@ -178,7 +178,7 @@ $nonExchange = $product->non_exchange || $product->sizes->filter(function ($size
                                             <div class="productsizesboxContainer">
                                                 <ul class="productsizesboxUL" data-loading="false" data-test-id="SizeList" v-if="renderSizes().length > 0">
                                                     <li data-active="false" class="ProductSizes-newProductSizesItem-xII" data-test-id="ProductSize" v-for="s in renderSizes()">
-                                                        <div class="productsizes" data-stock-status="InStock"><small>@{{ s.size_title }} </small></div>
+                                                        <div class="productsizes" data-stock-status="InStock"><small>@{{ s.size_title }} | @{{ s.length }} </small></div>
                                                         <div class="productsizes-stockinfo1">
                                                             <small class="productsizes-stockinfo2" style="color:#088178">£@{{s.price}}</small>
                                                         </div>
