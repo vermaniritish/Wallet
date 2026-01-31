@@ -48,7 +48,7 @@ class UniformsController extends AppController
     	{
     		$search = $request->get('search');
     		$search = '%' . $search . '%';
-    		$where['(products.title LIKE ?)'] = [$search];
+    		$where['(products.title LIKE ? or products.sku_number LIKE ? or schools.name LIKE ? or parent.title LIKE ? or parent.sku_number LIKE ?)'] = [$search, $search, $search, $search, $search];
     	}
 
     	if($request->get('created_on'))
