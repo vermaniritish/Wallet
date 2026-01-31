@@ -58,7 +58,7 @@ class ProductsController extends AppController
     	{
     		$search = $request->get('search');
     		$search = '%' . $search . '%';
-    		$where['(products.title LIKE ? or shop_owner.first_name LIKE ? or shop_owner.last_name LIKE ? or products.address LIKE ? or products.postcode LIKE ?)'] = [$search, $search, $search, $search, $search];
+    		$where['(products.title LIKE ? or shop_owner.first_name LIKE ? or shop_owner.last_name LIKE ?)'] = [$search, $search, $search];
     	}
 
     	if($request->get('created_on'))

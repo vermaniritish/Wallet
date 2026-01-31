@@ -33,7 +33,7 @@
 						<!-- Upload Box -->
 						<div class="inline-box">
 							<div class="d-flex flex-row justify-content-between align-items-start mb-2">
-								<button class="btn btn-sm btn-primary" v-on:click="handleFileUpload(i, lKey)"><i v-if="uploading !== null && uploading.sizeIndex && uploading.sizeIndex == i" class="fa fa-spin fa-spinner"></i> <i v-else class="fa fa-upload"></i> Upload Logo</button>
+								<button class="btn btn-sm btn-primary" :disabled=":disabled=`lVal.text.trim() || lVal.text1.trim() || lVal.text2.trim()`" v-on:click="handleFileUpload(i, lKey)"><i v-if="uploading !== null && uploading.sizeIndex && uploading.sizeIndex == i" class="fa fa-spin fa-spinner"></i> <i v-else class="fa fa-upload"></i> Upload Logo</button>
 								<div class="logo-image" style="width: 150px; height: 150px;display: flex;flex-direction: column;" v-if="lVal && lVal.image">
 									<img :src="lVal.image" style="max-width: 90%; max-height: 90%;display: block;" />
 									<p class="text-center"><a class="text-danger pt-1 small" href="javascript:;" @click="removeFile(i, lKey)"><i class="far fa-times"></i> Remove</a></p>
@@ -56,6 +56,7 @@
 								type="radio"
 								:name="`already_uploaded_${i}_${lKey}`"
 								value="1"
+								:disabled=`lVal.text.trim() || lVal.text1.trim() || lVal.text2.trim()`
 								@change="lVal.already_uploaded = true;lVal.text=``;lVal.text1=``;lVal.text2=``"
 								/>
 								You already have my logo, it's just not in my account (no setup fee will be charged).
