@@ -29,7 +29,7 @@
 					<label class="title">3. Upload Your Logo OR Write Your Text</label>
 
 					<div class="inline-row">
-						@{{lVal.text.trim() || lVal.text1.trim() || lVal.text2.trim()}}
+						@{{(lVal.text.trim() || lVal.text1.trim() || lVal.text2.trim()) ? true : false}}
 						<!-- Upload Box -->
 						<div class="inline-box">
 							<div class="d-flex flex-row justify-content-between align-items-start mb-2">
