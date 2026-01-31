@@ -15,7 +15,7 @@
 	<td>
 		<?php echo $row->product_title ?>
 		<p>
-			<span class="small text-muted">Size:</span> <?php echo $row->size_title ?> | <span class="small text-muted">Color:</span> <?php echo $row->color ?>
+			<span class="small text-muted">Size:</span> <span class="small"><?php echo $row->size_title ?></span> | <span class="small text-muted">Color:</span> <span class="small"><?php echo $row->color ?></span>
 		</p>
 		@if($row->is_offer)
 		<p class="small"><span class="text-muted">Offer Applied:</span>{{$row->offer_description}}</p>
