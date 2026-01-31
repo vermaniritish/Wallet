@@ -37,6 +37,7 @@ use App\Models\Admin\Colours;
 use App\Models\Admin\ProductSubCategories;
 use App\Models\Admin\ProductSubCategoryRelation;
 use App\Models\Admin\Sizes;
+use Illuminate\Support\Facades\DB;
 
 class ProductsController extends AppController
 {
