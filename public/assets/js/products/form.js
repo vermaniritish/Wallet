@@ -152,8 +152,6 @@ let order = new Vue({
                 }
                 if (data && data.sizes && data.sizes.length > 0) 
                 {
-                    console.log(data.sizes);
-
                     data.sizes.forEach(size => {
                         if (!this.selectedSize[size.color_id]) {
                             this.selectedSize[size.color_id] = [];
@@ -298,8 +296,6 @@ let order = new Vue({
         },
     },
 });
-
-
 
 let customization = new Vue({
     el: '#customization',
