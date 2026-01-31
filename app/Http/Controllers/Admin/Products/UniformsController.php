@@ -403,6 +403,7 @@ class UniformsController extends AppController
 	    			'sizes.size_title',
 	    			'sizes.from_cm',
 	    			'sizes.to_cm',
+	    			'sizes.length',
 	    		],
 	    	    [
 				],
@@ -484,7 +485,7 @@ class UniformsController extends AppController
 
 	public function getSize($gender)
 	{
-		$sizes = Sizes::select(['id','size_title','from_cm','to_cm'])->whereType($gender)->get();
+		$sizes = Sizes::select(['id','size_title','from_cm','to_cm', 'length'])->whereType($gender)->get();
 		return response()->json([
 			'status' => true,
 			'sizes' => $sizes,

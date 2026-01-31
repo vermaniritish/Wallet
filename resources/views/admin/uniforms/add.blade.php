@@ -216,7 +216,7 @@
 											<label class="form-control-label">Sizes</label>
 											<select class="form-control size-select no-selectpicker" v-on:change="markActiveColor(activeColor)" v-model="defaultSizes" multiple>
 												<option v-for="size in sizes" :value="size.id">
-													@{{ size.size_title }} (@{{ size.from_cm }} - @{{ size.to_cm }} cm)
+													@{{ size.size_title }} (@{{ size.from_cm }} - @{{ size.to_cm }} cm) | Length: @{{ size['length'] }}
 												</option>
 											</select>
 										</div>
@@ -280,7 +280,7 @@
 														@{{ sizeIndex + 1 }}
 														</td>
 														<td>@{{ size.size_title }}</td>
-														<td>@{{ size.from_cm }} - @{{ size.to_cm }} cm</td>
+														<td>@{{ size.from_cm }} - @{{ size.to_cm }} cm<br />Length: @{{ size.length }}</td>
 														<td><input required type="number" v-model="size.price" min="0"></td>
 														<td><input type="number" v-model="size.sale_price" min="0"></td>
 														<td>

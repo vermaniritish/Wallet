@@ -374,6 +374,7 @@ class ProductsController extends AppController
 	    			'sizes.size_title',
 	    			'sizes.from_cm',
 	    			'sizes.to_cm',
+	    			'sizes.length',
 	    		],
 	    	    [
 				],
@@ -563,6 +564,7 @@ class ProductsController extends AppController
 	    			'sizes.size_title',
 	    			'sizes.from_cm',
 	    			'sizes.to_cm',
+	    			'sizes.length',
 	    		],
 	    	    [
 				],
