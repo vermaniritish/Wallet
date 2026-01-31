@@ -268,7 +268,10 @@
 														@{{ sizeIndex + 1 }}
 														</td>
 														<td>@{{ size.size_title }}</td>
-														<td>@{{ size.from_cm }} - @{{ size.to_cm }} cm</td>
+														<td> 
+															@{{ size.from_cm }} - @{{ size.to_cm }} cm
+															<br />Length: @{{ size.length }}
+														</td>
 														<td><input required type="number" v-model="size.price" min="0"></td>
 														<td><input type="number" v-model="size.sale_price" min="0"></td>
 														<td>

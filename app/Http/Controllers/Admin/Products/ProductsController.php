@@ -647,8 +647,8 @@ class ProductsController extends AppController
 	public function getSize($gender)
 	{
 		$sizes = Sizes::select(['id',
-			DB::raw('CONCAT_WS(" | ", size_title, length) as size_title'),
-			'from_cm','to_cm'])->whereType($gender)->orderBy('sort_order', 'asc')->get();
+			'size_title',
+			'from_cm','to_cm', 'length'])->whereType($gender)->orderBy('sort_order', 'asc')->get();
 		return response()->json([
 			'status' => true,
 			'sizes' => $sizes,
