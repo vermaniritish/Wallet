@@ -224,6 +224,10 @@ if($('#product-page').length)
                 {
                     scart = [...scart, ...this.cart];
                     let custmomization = this.customization ? this.customization.filter((v) => v.initial && v.initial.trim()).map((v) => ({cost:v.cost, title: v.title, initial: v.initial})) : null;
+                    if (this.customization && this.customization.some(v => !v.initial || !v.initial.trim())) {
+                        set_notification('error', 'Please fill all mandate initials before proceeding.');
+                        return;
+                    }
                     let response = await fetch(site_url + '/api/orders/add-to-cart', {
                         method: 'POST',
                         headers: {
