@@ -212,6 +212,11 @@ if($('#product-page').length)
                     set_notification('error', 'Please acknowledge to proceed.');
                     return false;
                 }
+                let custmomization = this.customization ? this.customization.filter((v) => v.initial && v.initial.trim()).map((v) => ({cost:v.cost, title: v.title, initial: v.initial})) : null;
+                if (this.customization && this.customization.some(v => !v.initial || !v.initial.trim())) {
+                    set_notification('error', 'Please fill all mandate initials before proceeding.');
+                    return;
+                }
                 if(this.adding) return false;
                 this.buyNow = buyNow ? true : false;
                 this.editLogo = false;
@@ -223,11 +228,6 @@ if($('#product-page').length)
                 if(scart.length > 0) 
                 {
                     scart = [...scart, ...this.cart];
-                    let custmomization = this.customization ? this.customization.filter((v) => v.initial && v.initial.trim()).map((v) => ({cost:v.cost, title: v.title, initial: v.initial})) : null;
-                    if (this.customization && this.customization.some(v => !v.initial || !v.initial.trim())) {
-                        set_notification('error', 'Please fill all mandate initials before proceeding.');
-                        return;
-                    }
                     let response = await fetch(site_url + '/api/orders/add-to-cart', {
                         method: 'POST',
                         headers: {
