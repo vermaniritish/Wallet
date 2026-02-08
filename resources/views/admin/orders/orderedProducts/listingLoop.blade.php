@@ -33,7 +33,7 @@ $logos = $row->logo_data ? (substr($row->logo_data, 0, 1) == '{' ? json_decode('
 ?>
 @foreach($logos as $logo)
 <?php if((isset($logo->title) && $logo->title)) continue; ?>
-<?php if(!( (isset($logo->text) && $logo->text) || (isset($logo->image) && $logo->image) || $logo->category || $logo->postion)) continue; ?>
+<?php if(!( (isset($logo->text) && $logo->text) || (isset($logo->image) && $logo->image) || $logo->category || (isset($logo->postion) && $logo->postion) || (isset($logo->position) && $logo->position))) continue; ?>
 <tr class="table-borderless">
 	<td></td>
 	<td colspan="4">
@@ -61,7 +61,7 @@ $logos = $row->logo_data ? (substr($row->logo_data, 0, 1) == '{' ? json_decode('
 			</div>
 			<div class="col-sm-4">
 				<span class="text-muted">Category:</span> <?php echo $logo->category ?><br />
-				<span class="text-muted">Position:</span> <?php echo $logo->postion ?><br />
+				<span class="text-muted">Position:</span> <?php echo (isset($logo->postion) && $logo->postion) ? $logo->postion : (isset($logo->position) && $logo->position ? $logo->position : '') ?><br />
 				<span class="text-muted">Size:</span> <?php echo $row->size_title ?><br />
 				<span class="text-muted">Color:</span> <?php echo $row->color ?><br />
 			</div>
