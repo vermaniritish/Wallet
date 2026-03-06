@@ -264,6 +264,9 @@ $nonExchange = $product->non_exchange || $product->sizes->filter(function ($size
         </div>
         
     </section>
+    @if($isUniformPage)
+    @include('frontend.school.schoolSection')
+    @endif
 </div>
 @endsection
 @push("scripts")

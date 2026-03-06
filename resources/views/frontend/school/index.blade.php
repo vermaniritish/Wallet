@@ -46,4 +46,5 @@
         </div>
     </div>
 </section>
+@include('frontend.school.schoolSection')
 @endsection
