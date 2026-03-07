@@ -265,7 +265,7 @@ $currency = Settings::get('currency_symbol');
         @if($page->coupon)
         <?php $coupon = json_decode($page->coupon, true); ?>
         <tr class="total-row">
-            <td class="right">Discount ({{$coupon['coupon_code']}}):</td>
+            <td class="right">Discount {{isset($coupon['coupon_code']) && $coupon['coupon_code'] ? "({$coupon['coupon_code']})" : ''}}:</td>
             <td class="right">{{$currency.$page->discount}}</td>
         </tr>
         @endif
