@@ -120,26 +120,30 @@ class Orders extends AppModel
             'pending' => ['label' => 'Pending', 'styles' => 'background-color: #ffa07a; color: #cc0000;', 'message' => 'Your order is pending to accept.', 
             'sms_message' => ''
         ],
-            'accepted' => ['label' => 'Accepted', 'styles' => 'background-color: #ccffcc; color: #006600;', 'message' => 'Your order is accepted.', 
-            'sms_message' => 'Your order {order_id} is accepted.'
+            'received' => ['label' => 'Received', 'styles' => 'background-color: #ccffcc; color: #006600;', 'message' => 'Your order is received.', 
+            'sms_message' => 'Your order {order_id} is received.'
         ],
             'in_progress' => ['label' => 'In Progress', 'styles' => 'background-color: #ffffcc; color: #996600;', 'message' => 'Your order is in progress.', 
             'sms_message' => 'Your order {order_id} is in progress.'
         ],
-            'partial_shipped' => ['label' => 'Partial Shipped', 'styles' => 'background-color: #ccffcc; color: #006600;', 'message' => 'Your order is shipped partially.', 
-            'sms_message' => ''
-        ],
-            'shipped' => ['label' => 'Shipped', 'styles' => 'background-color: #ccffcc; color: #006600;', 'message' => 'Your order is shipped.', 
-            'sms_message' => ''
-        ],
-            'on_the_way' => ['label' => 'Dispached', 'styles' => 'background-color: #cce5ff; color: #004080;', 'message' => 'Your order is dispached.', 
-            'sms_message' => 'Your order {order_id} is dispached.'
-        ],
-            'reached_at_location' => ['label' => 'Reached at Location', 'styles' => 'background-color: #cce5ff; color: #004080;', 'message' => 'Professionls is reached at location.', 
-            'sms_message' => ''
+           
+            'partial_complete' => ['label' => 'Partial Complete', 'styles' => 'background-color: #cce5ff; color: #004080;', 'message' => 'Order is partially completed.', 
+            'sms_message' => 'Your order {order_id} is partially completed.'
         ],
             'completed' => ['label' => 'Completed', 'styles' => 'background-color: #d9ead3; color: #006600;', 'message' => 'Your order is in completed.', 
             'sms_message' => 'Your order {order_id} is completed.'
+        ],
+            'partial_shipped' => ['label' => 'Partial Dispatched', 'styles' => 'background-color: #ccffcc; color: #006600;', 'message' => 'Your order is dispached partially.', 
+            'sms_message' => ''
+        ],
+            'shipped' => ['label' => 'Dispached', 'styles' => 'background-color: #cce5ff; color: #004080;', 'message' => 'Your order is dispached.', 
+            'sms_message' => 'Your order {order_id} is dispached.'
+        ],
+            'being_refund' => ['label' => 'Being Refund', 'styles' => 'background-color: #dc3545; color: #FFF;', 'message' => 'This order is being refund.', 
+            'sms_message' => ''
+        ],
+            'being_held' => ['label' => 'Being held', 'styles' => 'background-color: #dc3545; color: #FFF;', 'message' => 'This order is being held.', 
+            'sms_message' => ''
         ],
             'cancel' => ['label' => 'Cancel', 'styles' => 'background-color: #dc3545; color: #FFF;', 'message' => 'This order is cancelled.', 
             'sms_message' => 'This order {order_id} is cancelled.'

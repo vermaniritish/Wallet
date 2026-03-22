@@ -756,17 +756,21 @@ class OrdersController extends AppController
 			{
 				$phone = preg_replace('/\D/', '', $order->customer->phonenumber);
 			}
-			if($phone){
-				$sent = \App\Libraries\SMSGateway::send($phone, str_replace('{order_id}', $order->prefix_id , Orders::getStatuses($order->status)['sms_message']));
-			}
+			
+			if(Orders::getStatuses($order->status)['sms_message'])
+			{
+				if($phone){
+					$sent = \App\Libraries\SMSGateway::send($phone, str_replace('{order_id}', $order->prefix_id , Orders::getStatuses($order->status)['sms_message']));
+				}
 
-			$codes = [
-				'{order_id}' => $order->prefix_id,
-				'{subject}' => Orders::getStatuses($order->status)['message'] . ' - ' . $order->prefix_id, 
-				'{status_message}' => str_replace('{order_id}', $order->prefix_id , Orders::getStatuses($order->status)['sms_message']), 
-			];
-			$email = $order->email ? $order->email : ($order->customer ? $order->customer->phonenumber : null);
-			General::sendTemplateEmail($email, 'order-status-change', $codes);
+				$codes = [
+					'{order_id}' => $order->prefix_id,
+					'{subject}' => Orders::getStatuses($order->status)['message'] . ' - ' . $order->prefix_id, 
+					'{status_message}' => str_replace('{order_id}', $order->prefix_id , Orders::getStatuses($order->status)['sms_message']), 
+				];
+				$email = $order->email ? $order->email : ($order->customer ? $order->customer->phonenumber : null);
+				General::sendTemplateEmail($email, 'order-status-change', $codes);
+			}
 		}
 		if ($updated) {
 			return Response()->json([
