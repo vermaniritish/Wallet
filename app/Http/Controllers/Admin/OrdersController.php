@@ -444,6 +444,70 @@ class OrdersController extends AppController
 		}
     }
 
+	function downloadChecklist(Request $request, $id)
+    {
+		$id = Orders::select(['id'])->where(function($q) use ($id) {
+			return $q->where('id', $id)->orWhere('prefix_id', $id);
+		})->limit(1)->pluck('id')->first();
+    	if($id)
+		{
+			$page = Orders::get($id);
+			$where = ['order_products.order_id' => $id];
+			$listing = OrderProductRelation::getListing($request, $where);
+			$html = view(
+				"admin/orders/checklist-pdf", 
+				[
+					'page' => $page,
+					'listing' => $listing,
+					'logo' => Settings::get('logo')
+				]
+			)->render();
+			$mpdf = new \Mpdf\Mpdf([
+				'tempDir' => public_path('/uploads'),
+				'mode' => 'utf-8',
+				'format' => 'A4',
+				'orientation' => 'P',
+				'margin_left' => 10,
+				'margin_right' => 10,
+				'margin_top' => 10,
+				'margin_bottom' => 10,
+			]);
+			$mpdf->showImageErrors = true;
+			$mpdf->WriteHTML($html);
+            $mpdf->Output('Order-'.$page->prefix_id.'.pdf','I');
+		}
+		else
+		{
+			abort(404);
+		}
+    }
+
+	function downloadReturnpolicy(Request $request, $id)
+    {
+		$page = Orders::get($id);
+		$html = view(
+			"admin/orders/returnpolicy-pdf", 
+			[
+				'page' => $page,
+				'logo' => Settings::get('logo')
+			]
+		)->render();
+		$mpdf = new \Mpdf\Mpdf([
+			'tempDir' => public_path('/uploads'),
+			'mode' => 'utf-8',
+			'format' => 'A4',
+			'orientation' => 'P',
+			'margin_left' => 10,
+			'margin_right' => 10,
+			'margin_top' => 10,
+			'margin_bottom' => 10,
+		]);
+		$mpdf->showImageErrors = true;
+		$mpdf->WriteHTML($html);
+		$mpdf->Output('Order-'.$page->prefix_id.'.pdf','I');
+		
+    }
+
 	function bulkExport(Request $request)
     {
 		if($request->get('d'))
