@@ -50,8 +50,9 @@ Route::prefix('admin')->middleware(['adminAuth'])->group(function () {
 });
 
 Route::middleware(['guest'])->group(function () {
-	Route::get('/e-invoice/{id}', [OrdersController::class, 'download'])
-    ->name('admin.orders.download');
+	Route::get('/e-invoice/{id}', [OrdersController::class, 'download'])->name('admin.orders.download');
+	Route::get('/e-invoice/checklist/{id}', [OrdersController::class, 'downloadChecklist'])->name('admin.orders.download-checklist');
+	Route::get('/e-invoice/return/policy/{id}', [OrdersController::class, 'downloadReturnpolicy'])->name('admin.orders.download-return-policy');
 	Route::post('/paypal/create-order', [PayPalController::class, 'createOrder']);
 	Route::post('/paypal/capture-order', [PayPalController::class, 'captureOrder']);
 	Route::get('/paypal/success', [PayPalController::class, 'successMsg']);
