@@ -69,8 +69,8 @@
                                 </td>
                                 <td class="price" data-title="Price">
                                     <span v-if="(c.vat*1 > 0) && offerPrice(c).price < (c.quantity * c.price)">£@{{( ( (offerPrice(c).price)*gstVal()/100 ).toFixed(2) )}}</span>
-                                    <span v-else-if="(c.vat*1 > 0)">£@{{( ( (c.price*c.quantity)*gstVal()/100 ) )}}</span>
-                                    <span v-else>--</span>
+                                    <span v-else-if="(c.vat*1 > 0)">£@{{( ( (c.price*c.quantity)*gstVal()/100 ).toFixed(2) )}}</span>
+                                    <span v-else>£0.00</span>
                                 </td>
                                 <td class="text-right" data-title="Cart">
                                     <span class="old-price" v-if="offerPrice(c).price < (c.quantity * c.price)">£@{{(c.quantity * c.price).toFixed(2)}}</span>
