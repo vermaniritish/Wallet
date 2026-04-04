@@ -71,7 +71,7 @@
                     <td>£@{{formatMoney(calculate().oneTimeCost)}}</td>
                 </tr>
                 <tr class="">
-                    <td colspan="3"><hr /></td>
+                    <td colspan="4"><hr /></td>
                 </tr>
                 <tr>
                     <td colspan="3">Subtotal:</td>
