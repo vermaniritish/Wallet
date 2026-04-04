@@ -128,7 +128,7 @@
                             <div class="table-responsive">
                                 <table class="table">
                                     <tbody>
-                                        <tr v-if="calculate().logo_cost > 0">
+                                        <tr>
                                             <td class="cart_total_label">Product Costs</td>
                                             <td class="cart_total_amount"><span class="font-lg fw-900 text-brand">£@{{formatMoney(calculate().product_cost)}}</span></td>
                                         </tr>
