@@ -53,19 +53,19 @@
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="2">Product Costs</td>
+                    <td colspan="3">Product Costs</td>
                     <td>£@{{formatMoney(calculate().product_cost)}}</td>
                 </tr>
                 <tr v-if="calculate().logo_cost > 0">
-                    <td colspan="2">Customization Cost</td>
+                    <td colspan="3">Customization Cost</td>
                     <td>£@{{formatMoney(calculate().logo_cost)}}</td>
                 </tr>
                 <tr v-if="calculate().logo_discount > 0">
-                    <td colspan="2">Logo Discount <small v-if="calculate().applied_logo_discount > 0" style="color:#ee2761">@{{ `(${calculate().applied_logo_discount} logo(s))`}}</small>:</td>
+                    <td colspan="3">Logo Discount <small v-if="calculate().applied_logo_discount > 0" style="color:#ee2761">@{{ `(${calculate().applied_logo_discount} logo(s))`}}</small>:</td>
                     <td><b style="color:#ee2761">- £@{{formatMoney(calculate().logo_discount)}}</b></td>
                 </tr>
                 <tr v-if="calculate().oneTimeCost > 0">
-                    <td colspan="2">One Time Setup Fees 
+                    <td colspan="3">One Time Setup Fees 
                         <!-- <div v-html="renderOneTimeFeeHtml()"></div> -->
                     </td>
                     <td>£@{{formatMoney(calculate().oneTimeCost)}}</td>
@@ -74,26 +74,26 @@
                     <td colspan="3"><hr /></td>
                 </tr>
                 <tr>
-                    <td colspan="2">Subtotal:</td>
+                    <td colspan="3">Subtotal:</td>
                     <td>£@{{formatMoney(calculate().subtotal)}}</td>
                 </tr>
                 <tr  v-if="calculate().discount > 0">
-                    <td colspan="2">
+                    <td colspan="3">
                         Discount <small v-if="appliedCoupon">(@{{ appliedCoupon.title }} | @{{ appliedCoupon.coupon_code }})</small>
                     </td>
                     <td><b style="color:#ee2761">- £@{{formatMoney(calculate().discount)}}</b></td>
                 </tr>
                 <tr  v-if="freeDelivery()">
-                    <td colspan="2">Delivery</td>
+                    <td colspan="3">Delivery</td>
                     <td><b style="color:#ee2761">Free</b></td>
                 </tr>
                 <tr>
-                    <td colspan="2">VAT (@{{gstTax}}%):</td>
+                    <td colspan="3">VAT (@{{gstTax}}%):</td>
                     <td>£@{{formatMoney(calculate().tax)}}</td>
                 </tr>
                 <tr>
                     <th width="33%">Shipping & Handling Charges</th>
-                    <td colspan="2">
+                    <td colspan="3">
                         <div class="shipping_option">
                             <div class="custome-radio" v-if="parcelforceEnable">
                                 <input class="form-check-input" required="" type="radio" name="shipping_option" value="parcelforce" id="exampleRadios1a" @change="handleShipping">
