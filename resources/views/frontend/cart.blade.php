@@ -67,7 +67,10 @@
                                         <a href="javascript:;" v-on:click="increment(c.id)" class="qty-up"><i class="fi-rs-angle-small-up"></i></a>
                                     </div>
                                 </td>
-                                <td class="price" data-title="Price"><span>£@{{( (c.price*c.quantity) + ( (c.price*c.quantity)*gstVal()/100 ) )}}</span></td>
+                                <td class="price" data-title="Price">
+                                    <span v-if="offerPrice(c).price < (c.quantity * c.price)">£@{{( ( (offerPrice(c).price)*gstVal()/100 ) )}}</span>
+                                    <span v-else>£@{{( ( (c.price*c.quantity)*gstVal()/100 ) )}}</span>
+                                </td>
                                 <td class="text-right" data-title="Cart">
                                     <span class="old-price" v-if="offerPrice(c).price < (c.quantity * c.price)">£@{{(c.quantity * c.price).toFixed(2)}}</span>
                                     <span v-else>£@{{(c.quantity * c.price).toFixed(2)}}</span>
