@@ -1778,6 +1778,9 @@ checkoutPage = new Vue({
         walletAmount: ``
     },
     methods: {
+        gstVal() {
+            return gstTax();
+        },
         initAddressSearch(sel)  {
             $(sel).autocomplete({
                 source: function (request, response) {
