@@ -128,7 +128,7 @@
                             <div class="table-responsive">
                                 <table class="table">
                                     <tbody>
-                                        <tr>
+                                        <tr v-if="calculate().logo_cost > 0">
                                             <td class="cart_total_label">Product Costs</td>
                                             <td class="cart_total_amount"><span class="font-lg fw-900 text-brand">£@{{formatMoney(calculate().product_cost)}}</span></td>
                                         </tr>
@@ -140,7 +140,7 @@
                                             <td class="cart_total_label">Customization Discount <br /><small v-if="calculate().applied_logo_discount > 0" style="color:#ee2761">@{{ `(${calculate().applied_logo_discount} logo(s))`}}</small></td>
                                             <td class="cart_total_amount"><span class="font-lg fw-900 text-brand">- £@{{formatMoney(calculate().logo_discount)}}</span></td>
                                         </tr>
-                                        <tr>
+                                        <tr  v-if="calculate().oneTimeCost > 0">
                                             <td class="cart_total_label">Setup Fee
                                                 <!-- <div v-html="renderOneTimeFeeHtml()"></div> -->
                                             </td>
