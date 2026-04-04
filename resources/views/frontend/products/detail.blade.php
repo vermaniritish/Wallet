@@ -183,7 +183,7 @@ $nonExchange = $product->non_exchange || $product->sizes->filter(function ($size
                                                     <li data-active="false" class="ProductSizes-newProductSizesItem-xII" data-test-id="ProductSize" v-for="s in renderSizes()">
                                                         <div class="productsizes" data-stock-status="InStock"><small>@{{ s.size_title }} @{{ s.length ? ` | `+s.length : `` }} </small></div>
                                                         <div class="productsizes-stockinfo1">
-                                                            <small class="productsizes-stockinfo2" style="color:#088178">@{{(s.price+`*`+gstTax())}} £@{{s.vat && s.vat*1 > 0 ? ( s.price*1 + ((s.price*gstTax()))/100 ).toFixed(2) : s.price}}</small>
+                                                            <small class="productsizes-stockinfo2" style="color:#088178">@{{(s.vat + ` ` + s.price+`*`+gstTax())}} £@{{s.vat && s.vat*1 > 0 ? ( s.price*1 + ((s.price*gstTax()))/100 ).toFixed(2) : s.price}}</small>
                                                         </div>
                                                         <div class="quantity__box" v-if="s.status">
                                                             <button type="button" class="quantity__value" aria-label="quantity value" value="Decrease Value" v-on:click="decrement(s)">-</button>
