@@ -73,8 +73,8 @@
                                     <span v-else>£0.00</span>
                                 </td>
                                 <td class="text-right" data-title="Cart">
-                                    <span class="old-price" v-if="offerPrice(c).price < (c.quantity * c.price)">£@{{(c.quantity * c.price).toFixed(2)}}</span>
-                                    <span v-else>£@{{(c.quantity * c.price).toFixed(2)}}</span>
+                                    <span class="old-price" v-if="offerPrice(c).price < (c.quantity * c.price)">£@{{( (c.quantity * offerPrice(c).price) + ( (offerPrice(c).price)*gstVal()/100 ) ).toFixed(2)}}</span>
+                                    <span v-else>£@{{((c.quantity * c.price) + ( (c.price*c.quantity)*gstVal()/100 )).toFixed(2)}}</span>
                                     <span class="discount-price" v-if="offerPrice(c).price < (c.quantity * c.price)">£@{{(offerPrice(c).price).toFixed(2)}}</span>
                                     <div v-if="offerPrice(c).description" class="pro-details-brand"><span><b>Offer Applied:</b><span class="in-stock text-danger ml-5"> @{{offerPrice(c).description}}</span><span></div>
                                 </td>
