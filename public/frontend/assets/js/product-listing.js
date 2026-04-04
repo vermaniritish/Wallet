@@ -1370,6 +1370,9 @@ var minicart = new Vue({
         walletAmount: null
     },
     methods: {
+        gstVal() {
+            return gstTax();
+        },
         formatMoney(m) {
             return (m*1).toFixed(2);
         },
