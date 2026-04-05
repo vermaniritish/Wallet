@@ -132,10 +132,9 @@ if($('#women').length)
             },
             validate() {
                 let data = [...this.mens];
-                console.log(data);
                 const duplicates = data.filter((item, index, self) =>
                     index !== self.findIndex((t) => {
-                        console.log(t.title, item.title);
+                        console.log(t.size_title, item.size_title);
                         t.size_title === item.size_title && t['length'] === item['length']
                     })
                 );

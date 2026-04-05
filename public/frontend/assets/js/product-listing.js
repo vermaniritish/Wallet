@@ -117,7 +117,6 @@ if($('#product-page').length)
             },
             renderSizes() {
                 if(this.color) {
-                    console.log(`sizes1`, this.sizes.filter((i) => i.color_id == this.color ));
                     return this.sizes.filter((i) => i.color_id == this.color );
                 }
                 else {
