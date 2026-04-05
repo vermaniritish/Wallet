@@ -250,9 +250,10 @@ a:hover {
   display: flex;
   justify-content: center;
   overflow: hidden;
-  max-height: 425px;
 }
 .productsizesboxUL {
+  display: flex;
+  flex-wrap: wrap;
   margin: 0;
   padding: 0;
   list-style: none;
