@@ -56,13 +56,21 @@ if($('#men').length)
                 this.mens.splice(i, 1);
             },
             validate() {
-                let data = [...this.mens];
-                const duplicates = data.filter((item, index, self) =>
-                    index !== self.findIndex((t) => (
-                        t.size_title === item.size_title && t['length'] === item['length']
-                    ))
-                );            
-                if(duplicates && duplicates.length > 0)  {
+                const seen = new Set();
+                let hasDuplicate = false;
+
+                for (const item of data) {
+                    const key = `${item.size_title}-${item.length}`;
+
+                    if (seen.has(key)) {
+                        hasDuplicate = true;
+                        break; // stop immediately when duplicate found
+                    }
+
+                    seen.add(key);
+                }
+
+                if(hasDuplicate)  {
                     set_notification('error', 'Duplicate entries are not allowed');
                     return false;
                 }
@@ -132,14 +140,21 @@ if($('#women').length)
             },
             validate() {
                 let data = [...this.mens];
-                const duplicates = data.filter((item, index, self) =>
-                    index !== self.findIndex((t) => {
-                        console.log(t.size_title, item.size_title);
-                        t.size_title === item.size_title && t['length'] === item['length']
-                    })
-                );
+                const seen = new Set();
+                let hasDuplicate = false;
 
-                if(duplicates && duplicates.length > 0)  {
+                for (const item of data) {
+                    const key = `${item.size_title}-${item.length}`;
+
+                    if (seen.has(key)) {
+                        hasDuplicate = true;
+                        break; // stop immediately when duplicate found
+                    }
+
+                    seen.add(key);
+                }
+
+                if(hasDuplicate)  {
                     set_notification('error', 'Duplicate entries are not allowed');
                     return false;
                 }
@@ -209,12 +224,21 @@ if($('#uni').length)
             },
             validate() {
                 let data = [...this.mens];
-                const duplicates = data.filter((item, index, self) =>
-                    index !== self.findIndex((t) => (
-                        t.size_title === item.size_title && t['length'] === item['length']
-                    ))
-                );            
-                if(duplicates && duplicates.length > 0)  {
+                const seen = new Set();
+                let hasDuplicate = false;
+
+                for (const item of data) {
+                    const key = `${item.size_title}-${item.length}`;
+
+                    if (seen.has(key)) {
+                        hasDuplicate = true;
+                        break; // stop immediately when duplicate found
+                    }
+
+                    seen.add(key);
+                }
+
+                if(hasDuplicate)  {
                     set_notification('error', 'Duplicate entries are not allowed');
                     return false;
                 }
@@ -284,12 +308,21 @@ if($('#kidkid').length)
             },
             validate() {
                 let data = [...this.mens];
-                const duplicates = data.filter((item, index, self) =>
-                    index !== self.findIndex((t) => (
-                        t.size_title === item.size_title && t['length'] === item['length']
-                    ))
-                );            
-                if(duplicates && duplicates.length > 0)  {
+                const seen = new Set();
+                let hasDuplicate = false;
+
+                for (const item of data) {
+                    const key = `${item.size_title}-${item.length}`;
+
+                    if (seen.has(key)) {
+                        hasDuplicate = true;
+                        break; // stop immediately when duplicate found
+                    }
+
+                    seen.add(key);
+                }
+
+                if(hasDuplicate)  {
                     set_notification('error', 'Duplicate entries are not allowed');
                     return false;
                 }
