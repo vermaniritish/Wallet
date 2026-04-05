@@ -107,7 +107,7 @@ $gstTax = Settings::get('gst'); ?>
                             </div>
                             <div class="custome-radio"  v-if="dpdEnable">
                                 <input class="form-check-input" required="" type="radio" name="shipping_option" id="dpd" value="dpd" @change="handleShipping">
-                                <label class="form-check-label" for="dpd" data-bs-toggle="collapse" data-target="#dpdlabel"  aria-controls="dpdlabel">{{_currency($settings['shipping_cost_dpd'])}} - Ship to Address by DPD <br /> including VAT {{_currency(($settings['shipping_cost_dpd']*$gstTax)/100)}}</label>
+                                <label class="form-check-label" for="dpd" data-bs-toggle="collapse" data-target="#dpdlabel"  aria-controls="dpdlabel">{{_currency($settings['shipping_cost_dpd'])}} - Ship to Address by DPD including VAT {{_currency(($settings['shipping_cost_dpd']*$gstTax)/100)}}</label>
                                 <div class="form-group collapse in" id="dpdlabel">
                                     <p class="text-muted mt-5"></p>
                                 </div>
