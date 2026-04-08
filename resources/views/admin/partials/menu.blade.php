@@ -107,7 +107,7 @@
                 </a>
             </li>
         <?php endif;?>
-        <?php if(Permissions::hasPermission('products', 'listing') || Permissions::hasPermission('product_categories', 'listing')): ?>
+        <?php if(Permissions::hasPermission('products', 'listing') || Permissions::hasPermission('product_categories', 'listing') || Permissions::hasPermission('uniforms', 'listing')): ?>
         <?php $active = strpos(request()->route()->getAction()['as'], 'admin.products') > -1; ?>
         <li class="nav-item">
             <a class="nav-link<?php echo ($active ? ' active' : '') ?>" href="#submenu_products" data-toggle="collapse">
