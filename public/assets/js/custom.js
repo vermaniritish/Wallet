@@ -1124,7 +1124,7 @@ $('#ship-products').on('click', async function() {
         let response = null;
         if(shipOption == 'DPD')
         {
-            let response = await fetch(shop_url + `/orders/dpd-shipment/${id}`, {
+            let response = await fetch(admin_url + `/orders/dpd-shipment/${id}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
