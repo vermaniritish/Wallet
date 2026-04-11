@@ -55,7 +55,6 @@ class DPDService
         }
 
         $payload = $this->buildPayload($order, $data);
-        pr($payload); die;
         try {
             $response = Http::withHeaders([
                 'GeoClient'  => $this->geoClient,
@@ -94,6 +93,8 @@ class DPDService
      */
     private function buildPayload($order, $data)
     {
+        $postInfo = OrderStatusHistory::find($data['logs']);
+        $postInfo = $postInfo->shipping_info ? json_decode($postInfo->shipping_info, true) : null;
         $products = OrderProducts::where('order_id', $order->id)->whereIn('id', explode(",",$data['ids']))->get();
 
         $parcelDescription = $products->map(function ($item) {
@@ -129,20 +130,20 @@ class DPDService
 
                 "deliveryDetails" => [
                     "contactDetails" => [
-                        "contactName" => trim($order->first_name . ' ' . $order->last_name),
-                        "telephone" => $order->customer_phone
+                        "contactName" => $postInfo ? $postInfo['firstName'] : null,
+                        "telephone" => $postInfo ? $postInfo['phone'] : null
                     ],
                     "address" => [
                         "countryCode" => "GB",
-                        "postcode" => $order->ship_zip ?? $order->postcode,
-                        "street" => $order->ship_address1 ?? $order->address,
-                        "locality" => $order->ship_address2 ?? '',
-                        "town" => $order->ship_city ?? $order->city,
-                        "county" => $order->ship_state ?? $order->state,
+                        "postcode" => $postInfo ? $postInfo['postCode'] : '',
+                        "street" => $postInfo ? $postInfo['addressLine1'] : '',
+                        "locality" => '',
+                        "town" => $postInfo ? $postInfo['city'] : null,
+                        "county" => $postInfo ? $postInfo['city'] : null,
                     ],
                     "notificationDetails" => [
-                        "email" => $order->customer_email,
-                        "mobile" => $order->customer_phone
+                        "email" => $postInfo ? $postInfo['email'] : $order->customer_email,
+                        "mobile" => $postInfo ? $postInfo['phone'] : $order->customer_phone
                     ]
                 ],
 
