@@ -97,6 +97,7 @@ class DPDService
     {
         $postInfo = OrderStatusHistory::find($data['logs']);
         $postInfo = $postInfo->shipping_info ? json_decode($postInfo->shipping_info, true) : null;
+        pr($postInfo); die;
         $products = OrderProducts::where('order_id', $order->id)->whereIn('id', explode(",",$data['ids']))->get();
 
         $parcelDescription = $products->map(function ($item) {
