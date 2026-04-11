@@ -1,0 +1,93 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Order;
+use App\Libraries\DPDService;
+use Illuminate\Http\Request;
+
+class OrderShipmentController extends Controller
+{
+    protected $dpd;
+
+    public function __construct(DPDService $dpd)
+    {
+        $this->dpd = $dpd;
+    }
+
+    /**
+     * SINGLE ORDER
+     */
+    public function shipOrder($id)
+    {
+        $order = Order::with('products')->findOrFail($id);
+
+        $response = $this->dpd->createShipment($order);
+
+        if ($response['success']) {
+
+            $order->update([
+                'shipping_gateway' => 'DPD',
+                'shipment_tracking' => $response['tracking_number'],
+                'status' => 'shipped'
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'order_id' => $order->id,
+                'tracking' => $response['tracking_number']
+            ]);
+        }
+
+        return response()->json([
+            'success' => false,
+            'order_id' => $order->id,
+            'message' => $response['message']
+        ], 500);
+    }
+
+    /**
+     * BULK ORDERS 🔥
+     */
+    public function shipBulk(Request $request)
+    {
+        $orderIds = $request->order_ids;
+
+        $orders = Order::with('products')
+            ->whereIn('id', $orderIds)
+            ->get();
+
+        $results = [
+            'success' => [],
+            'failed' => []
+        ];
+
+        foreach ($orders as $order) {
+
+            $response = $this->dpd->createShipment($order);
+
+            if ($response['success']) {
+
+                $order->update([
+                    'shipping_gateway' => 'DPD',
+                    'shipment_tracking' => $response['tracking_number'],
+                    'status' => 'shipped'
+                ]);
+
+                $results['success'][] = [
+                    'order_id' => $order->id,
+                    'tracking' => $response['tracking_number']
+                ];
+
+            } else {
+
+                $results['failed'][] = [
+                    'order_id' => $order->id,
+                    'message' => $response['message']
+                ];
+            }
+        }
+
+        return response()->json($results);
+    }
+}
