@@ -95,7 +95,7 @@ class DPDService
      */
     private function buildPayload($order, $data)
     {
-        $products = OrderProducts::where('order_id', $order->id)->whereIn('id', explode(",",$data['shipped']))->get();
+        $products = OrderProducts::where('order_id', $order->id)->whereIn('id', explode(",",$data['ids']))->get();
 
         $parcelDescription = $products->map(function ($item) {
             $qty = $item->quantity ?? 1;
