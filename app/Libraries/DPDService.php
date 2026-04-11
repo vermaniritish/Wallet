@@ -55,6 +55,7 @@ class DPDService
         }
 
         $payload = $this->buildPayload($order, $data);
+        pr($payload); die;
         try {
             $response = Http::withHeaders([
                 'GeoClient'  => $this->geoClient,
