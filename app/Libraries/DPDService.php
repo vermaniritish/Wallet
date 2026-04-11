@@ -4,7 +4,7 @@ namespace App\Libraries;
 
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
-use App\Models\Admin\OrderProducts;
+use App\Models\Admin\OrderProductRelation as OrderProducts;
 
 class DPDService
 {
