@@ -34,7 +34,6 @@ class DPDService
                 Log::error('DPD Login Failed', $response->json());
                 return null;
             }
-            pr($response->body()); die;
             return $response->json('data.geoSession');
 
         } catch (\Throwable $e) {
@@ -55,7 +54,7 @@ class DPDService
         }
 
         $payload = $this->buildPayload($order);
-
+        pr($payload); die;
         try {
             $response = Http::withHeaders([
                 'GeoClient'  => $this->geoClient,
