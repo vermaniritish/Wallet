@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\Admin\OrderCommentsController;
 use App\Http\Controllers\Admin\OrdersController;
-use App\Http\Controllers\OrderShipmentController;
 
 Route::get('/order', [OrdersController::class, 'index'])
     ->name('admin.orders');
@@ -59,5 +58,3 @@ Route::post('/orders/export-logos', [OrdersController::class, 'exportLogoReport'
 
 Route::get('/orders/bulk-export', [OrdersController::class, 'bulkExport'])
     ->name('admin.ordes.bulkExport');
-
-Route::post('/orders/dpd-shipment/{id}', [OrderShipmentController::class, 'shipOrder']);

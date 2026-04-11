@@ -25,13 +25,7 @@ class OrderShipmentController extends Controller
         $response = $this->dpd->createShipment($order, $request->toArray());
         
         if ($response['success']) {
-
-            // $order->update([
-            //     'shipping_gateway' => 'DPD',
-            //     'shipment_tracking' => $response['tracking_number'],
-            //     'status' => 'shipped'
-            // ]);
-
+            
             return response()->json([
                 'success' => true,
                 'order_id' => $order->id,
