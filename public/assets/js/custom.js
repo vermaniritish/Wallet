@@ -1131,7 +1131,7 @@ $('#ship-products').on('click', async function() {
                     'Accept': 'application/json'
                 },
                 body: JSON.stringify({
-                    ids: id,
+                    ids: shipped,
                     _token: csrf_token(),
                     parcels: noOfParcels
                 })

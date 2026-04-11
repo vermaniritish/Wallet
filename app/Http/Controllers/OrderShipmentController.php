@@ -18,19 +18,19 @@ class OrderShipmentController extends Controller
     /**
      * SINGLE ORDER
      */
-    public function shipOrder($id)
+    public function shipOrder(Request $request, $id)
     {
         $order = Orders::with('products')->findOrFail($id);
 
-        $response = $this->dpd->createShipment($order);
+        $response = $this->dpd->createShipment($order, $request->toArray());
 
         if ($response['success']) {
 
-            $order->update([
-                'shipping_gateway' => 'DPD',
-                'shipment_tracking' => $response['tracking_number'],
-                'status' => 'shipped'
-            ]);
+            // $order->update([
+            //     'shipping_gateway' => 'DPD',
+            //     'shipment_tracking' => $response['tracking_number'],
+            //     'status' => 'shipped'
+            // ]);
 
             return response()->json([
                 'success' => true,

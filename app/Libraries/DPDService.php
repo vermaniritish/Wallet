@@ -45,7 +45,7 @@ class DPDService
     /**
      * CREATE SHIPMENT
      */
-    public function createShipment($order): array
+    public function createShipment($order, $data)
     {
         $geoSession = $this->login();
 
@@ -53,7 +53,7 @@ class DPDService
             return $this->error('DPD login failed');
         }
 
-        $payload = $this->buildPayload($order);
+        $payload = $this->buildPayload($order, $data);
         pr($payload); die;
         try {
             $response = Http::withHeaders([
@@ -92,9 +92,9 @@ class DPDService
     /**
      * PAYLOAD BUILDER (uses your schema)
      */
-    private function buildPayload($order): array
+    private function buildPayload($order, $data)
     {
-        $products = $order->products;
+        $products = OrderProducts::where('order_id', $order->id)->whereIn('id', $data['shipped'])->get();
 
         $parcelDescription = $products->map(function ($item) {
             $qty = $item->quantity ?? 1;
