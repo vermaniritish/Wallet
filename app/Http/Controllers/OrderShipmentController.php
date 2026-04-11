@@ -23,7 +23,7 @@ class OrderShipmentController extends Controller
         $order = Orders::with('products')->findOrFail($id);
 
         $response = $this->dpd->createShipment($order, $request->toArray());
-
+        
         if ($response['success']) {
 
             // $order->update([

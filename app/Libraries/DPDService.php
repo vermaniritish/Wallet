@@ -55,8 +55,7 @@ class DPDService
         }
 
         $payload = $this->buildPayload($order, $data);
-        pr($payload); die;
-        try {
+        // try {
             $response = Http::withHeaders([
                 'GeoClient'  => $this->geoClient,
                 'GeoSession' => $geoSession,
@@ -68,7 +67,7 @@ class DPDService
             }
 
             $data = $response->json();
-
+            pr($data); die;
             $tracking = $this->extractTracking($data);
 
             if (!$tracking) {
@@ -81,13 +80,13 @@ class DPDService
                 'raw' => $data
             ];
 
-        } catch (\Throwable $e) {
-            Log::error('DPD Shipment Exception', ['error' => $e->getMessage()]);
+        // } catch (\Throwable $e) {
+        //     Log::error('DPD Shipment Exception', ['error' => $e->getMessage()]);
 
-            return $this->error('Exception occurred', [
-                'message' => $e->getMessage()
-            ]);
-        }
+        //     return $this->error('Exception occurred', [
+        //         'message' => $e->getMessage()
+        //     ]);
+        // }
     }
 
     /**
