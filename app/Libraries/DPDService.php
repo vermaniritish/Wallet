@@ -90,6 +90,51 @@ class DPDService
         }
     }
 
+    public function getLabel(string $shipmentId, string $format = 'text/html')
+    {
+        $geoSession = $this->login();
+
+        if (!$geoSession) {
+            return [
+                'success' => false,
+                'message' => 'DPD login failed'
+            ];
+        }
+
+        try {
+            $response = \Illuminate\Support\Facades\Http::withHeaders([
+                'GeoClient'  => $this->geoClient,
+                'GeoSession' => $geoSession,
+                'Accept'     => $format
+            ])->get($this->baseUrl . "/shipping/shipment/{$shipmentId}/label/");
+
+            if ($response->failed()) {
+                return [
+                    'success' => false,
+                    'message' => 'Failed to fetch label',
+                    'status'  => $response->status(),
+                    'body'    => $response->body()
+                ];
+            }
+
+            return [
+                'success' => true,
+                'content' => $response->body(),
+                'content_type' => $format
+            ];
+
+        } catch (\Throwable $e) {
+            \Log::error('DPD Label Exception', [
+                'error' => $e->getMessage()
+            ]);
+
+            return [
+                'success' => false,
+                'message' => 'Exception occurred',
+            ];
+        }
+    }
+
     /**
      * PAYLOAD BUILDER (uses your schema)
      */

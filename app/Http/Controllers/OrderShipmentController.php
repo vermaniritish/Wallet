@@ -25,7 +25,7 @@ class OrderShipmentController extends Controller
         $response = $this->dpd->createShipment($order, $request->toArray());
         
         if ($response['success']) {
-            
+
             return response()->json([
                 'success' => true,
                 'order_id' => $order->id,
@@ -83,5 +83,34 @@ class OrderShipmentController extends Controller
         }
 
         return response()->json($results);
+    }
+
+    public function downloadLabel(Request $request)
+    {
+        $shipmentId = $request->sn;
+
+        if (!$shipmentId) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Shipment number is required'
+            ], 400);
+        }
+
+        $format = $request->format ?? 'text/html'; 
+        // Options: text/html, application/pdf, etc.
+
+        $result = $this->dpd->getLabel($shipmentId, $format);
+
+        if (!$result['success']) {
+            return response()->json([
+                'success' => false,
+                'message' => $result['message']
+            ], 500);
+        }
+
+        // ✅ Return as downloadable file
+        return response($result['content'])
+            ->header('Content-Type', $result['content_type'])
+            ->header('Content-Disposition', 'inline; filename="dpd-label-' . $shipmentId . '.html"');
     }
 }
