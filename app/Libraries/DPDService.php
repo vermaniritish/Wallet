@@ -34,7 +34,7 @@ class DPDService
                 Log::error('DPD Login Failed', $response->json());
                 return null;
             }
-
+            pr($response->body()); die;
             return $response->json('data.geoSession');
 
         } catch (\Throwable $e) {
