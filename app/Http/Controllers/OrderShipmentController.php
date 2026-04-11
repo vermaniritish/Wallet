@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Order;
+use App\Models\Admin\Orders;
 use App\Libraries\DPDService;
 use Illuminate\Http\Request;
 
@@ -20,7 +20,7 @@ class OrderShipmentController extends Controller
      */
     public function shipOrder($id)
     {
-        $order = Order::with('products')->findOrFail($id);
+        $order = Orders::with('products')->findOrFail($id);
 
         $response = $this->dpd->createShipment($order);
 
