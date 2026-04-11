@@ -1132,6 +1132,7 @@ $('#ship-products').on('click', async function() {
                 },
                 body: JSON.stringify({
                     ids: id,
+                    _token: csrf_token(),
                     parcels: noOfParcels
                 })
             });
