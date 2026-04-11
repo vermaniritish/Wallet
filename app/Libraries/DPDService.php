@@ -95,7 +95,7 @@ class DPDService
      */
     private function buildPayload($order, $data)
     {
-        $postInfo = OrderStatusHistory::find($data['logs']);
+        $postInfo = OrderStatusHistory::find($data['log']);
         $postInfo = $postInfo->shipping_info ? json_decode($postInfo->shipping_info, true) : null;
         $products = OrderProducts::where('order_id', $order->id)->whereIn('id', explode(",",$data['ids']))->get();
 
