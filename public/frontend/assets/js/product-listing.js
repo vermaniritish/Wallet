@@ -228,7 +228,7 @@ if($('#product-page').length)
                     this.editLogo = false;
                     $('body').removeClass('overflow-hidden');
                     this.adding = true;
-                    
+
                     scart = [...scart, ...this.cart];
                     let response = await fetch(site_url + '/api/orders/add-to-cart', {
                         method: 'POST',
@@ -262,7 +262,7 @@ if($('#product-page').length)
                 }
                 else
                 {
-                    this.adding = false;
+                    this.adding = null;
                     set_notification('error', 'Please select color and size to proceed.');
                     return false;
                 }
