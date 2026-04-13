@@ -213,7 +213,7 @@ if($('#product-page').length)
                     return false;
                 }
                 let custmomization = this.customization ? this.customization.filter((v) => v.initial && v.initial.trim()).map((v) => ({cost:v.cost, title: v.title, initial: v.initial})) : null;
-                if (this.customization && this.customization.some(v => !v.initial || !v.initial.trim())) {
+                if (this.customization && this.customization.some(v => (!v.initial || !v.initial.trim()) && v.required )) {
                     set_notification('error', 'Please fill all mandate initials before proceeding.');
                     return;
                 }
