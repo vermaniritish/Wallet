@@ -212,21 +212,23 @@ if($('#product-page').length)
                     set_notification('error', 'Please acknowledge to proceed.');
                     return false;
                 }
-                let custmomization = this.customization ? this.customization.filter((v) => v.initial && v.initial.trim()).map((v) => ({cost:v.cost, title: v.title, initial: v.initial})) : null;
-                if (this.customization && this.customization.some(v => (!v.initial || !v.initial.trim()) && v.required )) {
-                    set_notification('error', 'Please fill all mandate initials before proceeding.');
-                    return;
-                }
-                if(this.adding) return false;
-                this.buyNow = buyNow ? true : false;
-                this.editLogo = false;
-                $('body').removeClass('overflow-hidden');
-                this.adding = true;
+                
                 let scart = this.sizes.filter((item) => {
                     return (item.quantity && (item.quantity*1) > 0)
                 });
                 if(scart.length > 0) 
                 {
+                    let custmomization = this.customization ? this.customization.filter((v) => v.initial && v.initial.trim()).map((v) => ({cost:v.cost, title: v.title, initial: v.initial})) : null;
+                    if (this.customization && this.customization.some(v => (!v.initial || !v.initial.trim()) && v.required )) {
+                        set_notification('error', 'Please fill all mandate initials before proceeding.');
+                        return;
+                    }
+                    if(this.adding) return false;
+                    this.buyNow = buyNow ? true : false;
+                    this.editLogo = false;
+                    $('body').removeClass('overflow-hidden');
+                    this.adding = true;
+                    
                     scart = [...scart, ...this.cart];
                     let response = await fetch(site_url + '/api/orders/add-to-cart', {
                         method: 'POST',
@@ -261,7 +263,7 @@ if($('#product-page').length)
                 else
                 {
                     this.adding = false;
-                    set_notification('error', 'Please select size to proceed.');
+                    set_notification('error', 'Please select color and size to proceed.');
                     return false;
                 }
                 
