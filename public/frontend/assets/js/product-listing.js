@@ -345,7 +345,7 @@ if($('#product-page').length)
         },
         mounted: function() {
             this.nonExchangeable = nonExchange ? true : false;
-            this.customization = $('#customization').length > 0 && $('#customization').text().trim() ? JSON.parse($('#customization').text().trim()) : null;
+            this.customization = $('#customization').length > 0 && $('#customization').text().trim() ? JSON.parse($('#customization').text().trim()) : [];
             this.customization = this.customization.filter((v) => {
                 return v.title !== null && v.title !== '';
             })
