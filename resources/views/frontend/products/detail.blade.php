@@ -200,26 +200,25 @@ $nonExchange = $product->non_exchange || $product->sizes->filter(function ($size
                                             </div>
                                         </div>
                                     </div>
-                                    @if($product->logo_customization)
+                                    <?php
+                                    $customization = $product->logo_customization;
+                                    $customization = $customization ? json_decode($customization, true) : [];
+                                    foreach($customization as $k => $v)
+                                    {
+                                        if(!$v['title'])
+                                        {
+                                            unset($customization[$k]);
+                                        }
+                                    }
+                                    $customization = array_values(array_filter($customization));
+                                    ?>
+                                    @if($customization)
                                     <br>
                                     <div style="padding-bottom:10px;">
                                         <p style="text-brand"><i class="fi-rs-scale mr-5"></i> <strong class="mr-10">Add Personalisation</strong></p>
                                         <small>Please note we do not accept exchanges or refunds for personalised items.</small>
                                         <br><br>
-                                        
-                                        <?php 
-                                        $customization = $product->logo_customization;
-                                        $customization = $customization ? json_decode($customization, true) : [];
-                                        foreach($customization as $k => $v)
-                                        {
-                                            if(!$v['title'])
-                                            {
-                                                unset($customization[$k]);
-                                            }
-                                        }
-                                        $customization = array_values(array_filter($customization));
-                                        echo '<pre id="customization" class="d-none">'.json_encode($customization).'</pre>';
-                                        ?>
+                                        <?php echo '<pre id="customization" class="d-none">'.json_encode($customization).'</pre>';?>
                                         <div style="padding-bottom:10px;" v-for="(c, k) in customization">
                                             <strong> @{{ c.title }} (@{{currency(c.cost)}})</strong> 
                                             <span v-if="c.required" style="color:#ff0000;font-size:14px">*</span>:  
