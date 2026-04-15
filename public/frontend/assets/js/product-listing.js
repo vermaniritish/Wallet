@@ -218,7 +218,7 @@ if($('#product-page').length)
                 });
                 if(scart.length > 0) 
                 {
-                    let custmomization = this.customization ? this.customization.filter((v) => v.initial && v.initial.trim() && v.title).map((v) => ({cost:v.cost, title: v.title, initial: v.initial})) : null;
+                    let custmomization = this.customization ? this.customization.filter((v) => v.initial && v.initial.trim()).map((v) => ({cost:v.cost, title: v.title, initial: v.initial})) : null;
                     if (this.customization && this.customization.some(v => (!v.initial || !v.initial.trim()) && v.required )) {
                         set_notification('error', 'Please fill all mandate initials before proceeding.');
                         return;
@@ -346,6 +346,9 @@ if($('#product-page').length)
         mounted: function() {
             this.nonExchangeable = nonExchange ? true : false;
             this.customization = $('#customization').length > 0 && $('#customization').text().trim() ? JSON.parse($('#customization').text().trim()) : null;
+            this.customization = this.customization.filter((v) => {
+                return v.title !== null && v.title !== '';
+            })
             this.id  = $('#productId').text().trim();
             let cart = localStorage.getItem('cart');
             cart = cart ? JSON.parse(cart) : [];
