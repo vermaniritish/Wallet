@@ -218,7 +218,7 @@ $nonExchange = $product->non_exchange || $product->sizes->filter(function ($size
                                             }
                                         }
                                         $customization = array_values(array_filter($customization));
-                                        echo '<pre id="customization" class="d-none">'.$customization.'</pre>';
+                                        echo '<pre id="customization" class="d-none">'.json_encode($customization).'</pre>';
                                         ?>
                                         <div style="padding-bottom:10px;" v-for="(c, k) in customization">
                                             <strong> @{{ c.title }} (@{{currency(c.cost)}})</strong> 
