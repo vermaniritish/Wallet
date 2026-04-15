@@ -202,7 +202,7 @@ $nonExchange = $product->non_exchange || $product->sizes->filter(function ($size
                                     </div>
                                     @if($product->logo_customization)
                                     <br>
-                                    <div style="padding-bottom:10px;" v-if="customization">
+                                    <div style="padding-bottom:10px;">
                                         <p style="text-brand"><i class="fi-rs-scale mr-5"></i> <strong class="mr-10">Add Personalisation</strong></p>
                                         <small>Please note we do not accept exchanges or refunds for personalised items.</small>
                                         <br><br>
