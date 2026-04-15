@@ -218,7 +218,7 @@ if($('#product-page').length)
                 });
                 if(scart.length > 0) 
                 {
-                    let custmomization = this.customization ? this.customization.filter((v) => v.initial && v.initial.trim()).map((v) => ({cost:v.cost, title: v.title, initial: v.initial})) : null;
+                    let custmomization = this.customization ? this.customization.filter((v) => v.initial && v.initial.trim() && v.title).map((v) => ({cost:v.cost, title: v.title, initial: v.initial})) : null;
                     if (this.customization && this.customization.some(v => (!v.initial || !v.initial.trim()) && v.required )) {
                         set_notification('error', 'Please fill all mandate initials before proceeding.');
                         return;
