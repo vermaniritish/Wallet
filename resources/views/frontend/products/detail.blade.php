@@ -209,7 +209,15 @@ $nonExchange = $product->non_exchange || $product->sizes->filter(function ($size
                                         
                                         <?php 
                                         $customization = $product->logo_customization;
-                                        $customization = $customization ? $customization : null;
+                                        $customization = $customization ? $customization : [];
+                                        foreach($customization $k => $v)
+                                        {
+                                            if(!$customization['title'])
+                                                {
+                                                    unset($customization[$k]);
+                                                }
+                                        }
+                                        $customization = array_values(array_filter($customization));
                                         echo '<pre id="customization" class="d-none">'.$customization.'</pre>';
                                         ?>
                                         <div style="padding-bottom:10px;" v-for="(c, k) in customization">
