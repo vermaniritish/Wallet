@@ -209,6 +209,7 @@ $nonExchange = $product->non_exchange || $product->sizes->filter(function ($size
                                         
                                         <?php 
                                         $customization = $product->logo_customization;
+                                        pr($customization); die;
                                         $customization = $customization ? $customization : [];
                                         foreach($customization as $k => $v)
                                         {
