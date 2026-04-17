@@ -365,6 +365,7 @@ let customization = new Vue({
             });
         },
         removeRow(id) {
+            alert(his.items.length);
             if (this.items.length > 1) {
                 this.items = this.items.filter(i => i.id !== id);
             }
