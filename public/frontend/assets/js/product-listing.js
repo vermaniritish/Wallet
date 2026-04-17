@@ -208,10 +208,7 @@ if($('#product-page').length)
             },
             async addToCart(buyNow) 
             {
-                if(this.nonExchangeable && !this.accept) {
-                    set_notification('error', 'Please acknowledge to proceed.');
-                    return false;
-                }
+                
                 
                 let scart = this.sizes.filter((item) => {
                     return (item.quantity && (item.quantity*1) > 0)
@@ -223,6 +220,11 @@ if($('#product-page').length)
                         set_notification('error', 'Please fill all mandate initials before proceeding.');
                         return;
                     }
+                    if(this.nonExchangeable && !this.accept) {
+                        set_notification('error', 'Please acknowledge to proceed.');
+                        return false;
+                    }
+
                     if(this.adding) return false;
                     this.buyNow = buyNow ? true : false;
                     this.editLogo = false;

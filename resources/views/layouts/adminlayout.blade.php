@@ -5,7 +5,7 @@ $logo = Settings::get('logo');
 $companyName = Settings::get('company_name');
 $googleKey = Settings::get('google_api_key');
 $gstTax = Settings::get('gst');
-$version = 3.5;
+$version = 3.6;
 ?>
 <!DOCTYPE html>
 <html>
