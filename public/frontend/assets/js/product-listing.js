@@ -537,10 +537,7 @@ else if($('#product-cat-page').length)
             },
             async addToCart(buyNow) 
             {
-                if(this.nonExchangeable && !this.accept) {
-                    set_notification('error', 'Please acknowledge to proceed.');
-                    return false;
-                }
+                
                 if(this.adding) return false;
                 this.buyNow = buyNow ? true : false;
                 this.editLogo = false;
@@ -551,6 +548,11 @@ else if($('#product-cat-page').length)
                 });
                 if(scart.length > 0) 
                 {
+                    if(this.nonExchangeable && !this.accept) {
+                        set_notification('error', 'Please acknowledge to proceed.');
+                        return false;
+                    }
+
                     scart = [...scart, ...this.cart];
                     let response = await fetch(site_url + '/api/orders/add-to-cart', {
                         method: 'POST',
@@ -585,7 +587,7 @@ else if($('#product-cat-page').length)
                 else
                 {
                     this.adding = false;
-                    set_notification('error', 'Please select size to proceed.');
+                    set_notification('error', 'Please select color and size to proceed.');
                     return false;
                 }
             },
