@@ -113,7 +113,7 @@ $gstTax = Settings::get('gst'); ?>
                                 $base = $shipping / (1 + ($gstTax / 100));
                                 $shiptax  = $shipping - $base;
                                 ?>
-                                <label class="form-check-label" for="dpd" data-bs-toggle="collapse" data-target="#dpdlabel"  aria-controls="dpdlabel">{{_currency($base)}} - Ship to Address by DPD including VAT {{ _currency($shiptax) }}</label>
+                                <label class="form-check-label" for="dpd" data-bs-toggle="collapse" data-target="#dpdlabel"  aria-controls="dpdlabel">{{_currency($shipping)}} - Ship to Address by DPD including VAT {{ _currency($shiptax) }}</label>
                                 <div class="form-group collapse in" id="dpdlabel">
                                     <p class="text-muted mt-5"></p>
                                 </div>
