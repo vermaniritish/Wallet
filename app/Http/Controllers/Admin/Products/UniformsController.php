@@ -246,7 +246,7 @@ class UniformsController extends AppController
 					'tags.*' => ['string','max:20',],
 					'color_id' => ['nullable', 'array'],
 					'color_id.*' => ['distinct','required', Rule::exists(Colours::class,'id')],
-					'gender' => ['nullable', Rule::in(['Male','Female','Unisex'])],
+					'gender' => ['nullable'],
 					'sku_number' => ['required'],
 					'sizeData' => ['required', 'array']
 	            ]
