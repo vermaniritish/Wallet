@@ -58,7 +58,7 @@ if($('#men').length)
             validate() {
                 const seen = new Set();
                 let hasDuplicate = false;
-
+                let data = [...this.mens];
                 for (const item of data) {
                     const key = `${item.size_title}-${item.length}`;
 
