@@ -177,6 +177,8 @@ let order = new Vue({
                     const bSelected = this.selectedColor.includes(b.id);
                     return bSelected - aSelected; 
                 });
+
+                console.log(`this.allColors`, this.allColors);
                 
             }
             else {
