@@ -171,7 +171,7 @@ let order = new Vue({
                     });
                 }
 
-                this.allColors.sort((a, b) => {
+                allColors.sort((a, b) => {
                     const aSelected = this.selectedColor.includes(a.id);
                     const bSelected = this.selectedColor.includes(b.id);
                     return bSelected - aSelected; 
