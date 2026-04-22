@@ -11,6 +11,7 @@ let order = new Vue({
         subCategories: [],
         selectedGender: '',
         title: '',
+        allColors: [],
         selectedColor: [],
         
         purchase_price: '',
@@ -45,6 +46,7 @@ let order = new Vue({
         this.initEditValues();
         this.mounting = false;
         document.getElementById('product-form').classList.remove('d-none');
+        this.allColors = allColors;
     },
     methods: {
         allowDrop(ev) {
