@@ -46,7 +46,6 @@ let order = new Vue({
         this.initEditValues();
         this.mounting = false;
         document.getElementById('product-form').classList.remove('d-none');
-        this.allColors = allColors;
         
     },
     methods: {
@@ -178,7 +177,7 @@ let order = new Vue({
                     return bSelected - aSelected; 
                 });
 
-                console.log(`this.allColors`, this.allColors, allColors);
+                console.log(`this.allColors`, allColors);
                 
             }
             else {
