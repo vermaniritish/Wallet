@@ -38,10 +38,10 @@ let order = new Vue({
         website_visible: 0,
         size_guide_video: ``
     },
-    mounted: function() {
+    mounted: async function() {
         if(pageId){
             this.selectedProduct = pageId;
-            this.initEditValues();
+            await this.initEditValues();
         }
         this.initBasics();
         this.initTagIt();
@@ -179,6 +179,13 @@ let order = new Vue({
                     });
                 }
                 await sleep(400);
+
+                allColors.sort((a, b) => {
+                    const aSelected = this.selectedColor.includes(String(a.id));
+                    const bSelected = this.selectedColor.includes(String(b.id));
+                    return bSelected - aSelected; 
+                });
+                this.allColors = allColors;
                 $('select').selectpicker('refresh');
             }
         },

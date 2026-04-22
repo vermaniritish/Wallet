@@ -225,18 +225,7 @@
 										<div class="form-group">
 											<label class="form-control-label">Color</label>
 											<select class="form-control no-selectpicker" v-on:change="updateSelectedColor" v-model="selectedColor" name="color_id[]" multiple required>
-												<?php 
-													foreach($colors as $s): 
-													$content = $s->title . ' (' . $s->color_code . ')';
-												?>
-												<option 
-													value="<?php echo $s->id ?>" 
-													<?php echo old('color_id') == $s->id  ? 'selected' : '' ?>
-													data-content="<?php echo $content ?>"
-												>
-													<?php echo $s->name; ?>		
-												</option>
-												<?php endforeach; ?>
+												<option v-for="c in allColors" :value="c.id">@{{ c.title + ' (' + c.color_code + ')' }}</option>
 											</select>
 											@error('colr_id')
 											<small class="text-danger">{{ $message }}</small>
@@ -624,5 +613,6 @@
 @push('scripts')
 <script>
 var pageId = '{{ $product && $product->id ? $product->id : '' }}';
+var allColors = <?php echo $colors->count() > 0 ? json_encode($colors->toArray()) : '[]' ?>
 </script>
 @endpush
