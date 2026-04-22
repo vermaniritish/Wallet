@@ -198,11 +198,10 @@ let order = new Vue({
                 const bSelected = this.selectedColor.includes(String(b.id));
                 return bSelected - aSelected; 
             });
-            console.log(`cccccc`, this.selectedColor, allColors);
             this.allColors = allColors;
 
             await sleep(200);
-            this.initBasics();
+            $('select').selectpicker('refresh');
         },
         updateSelectedSize(colorSelectedId) 
         {
