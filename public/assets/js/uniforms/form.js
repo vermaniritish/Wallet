@@ -188,6 +188,13 @@ let order = new Vue({
                 await sleep(400);
                 $('select').selectpicker('refresh');
             }
+
+            allColors.sort((a, b) => {
+                const aSelected = this.selectedColor.includes(String(a.id));
+                const bSelected = this.selectedColor.includes(String(b.id));
+                return bSelected - aSelected; 
+            });
+            this.allColors = allColors;
         },
         updateSelectedSize(colorSelectedId) 
         {
