@@ -40,7 +40,7 @@ let order = new Vue({
         size_guide_video: ``
     },
     mounted: function() {
-        this.initBasics();
+        
         this.initTagIt();
         init_editor('#product-editor');
         this.initEditValues();
@@ -183,6 +183,7 @@ let order = new Vue({
             else {
                 this.url = admin_url + '/products/add';
             };
+            this.initBasics();
         },
         updateSelectedSize(colorSelectedId) 
         {
