@@ -340,14 +340,17 @@ let customization = new Vue({
       grandTotal: 0
     },
     async mounted() {
-        let response = await fetch(admin_url + '/products/' + order.selectedProduct + '/fetch');
-        response = await response.json();
-        if(response && response.status)
+        if(order.selectedProduct)
         {
-            let data = response.product;
-            this.id = data.id;
-            if(data && data.id && data.logo_customization) {
-                this.items = JSON.parse(data.logo_customization);
+            let response = await fetch(admin_url + '/products/' + order.selectedProduct + '/fetch');
+            response = await response.json();
+            if(response && response.status)
+            {
+                let data = response.product;
+                this.id = data.id;
+                if(data && data.id && data.logo_customization) {
+                    this.items = JSON.parse(data.logo_customization);
+                }
             }
         }
     },
