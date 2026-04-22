@@ -47,12 +47,7 @@ let order = new Vue({
         this.mounting = false;
         document.getElementById('product-form').classList.remove('d-none');
         this.allColors = allColors;
-        this.allColors.sort((a, b) => {
-            const aSelected = this.selectedColor.includes(a.id);
-            const bSelected = this.selectedColor.includes(b.id);
-
-            return bSelected - aSelected; 
-        });
+        
     },
     methods: {
         allowDrop(ev) {
@@ -176,6 +171,12 @@ let order = new Vue({
                         });
                     });
                 }
+
+                this.allColors.sort((a, b) => {
+                    const aSelected = this.selectedColor.includes(a.id);
+                    const bSelected = this.selectedColor.includes(b.id);
+                    return bSelected - aSelected; 
+                });
                 
             }
             else {
