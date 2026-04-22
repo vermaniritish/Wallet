@@ -43,12 +43,6 @@ let order = new Vue({
             this.selectedProduct = pageId;
             await this.initEditValues();
         }
-        allColors.sort((a, b) => {
-            const aSelected = this.selectedColor.includes(String(a.id));
-            const bSelected = this.selectedColor.includes(String(b.id));
-            return bSelected - aSelected; 
-        });
-        this.allColors = allColors;
         await sleep(200);
         this.initBasics();
         this.initTagIt();
@@ -188,6 +182,13 @@ let order = new Vue({
                 await sleep(400);
                 $('select').selectpicker('refresh');
             }
+
+            allColors.sort((a, b) => {
+                const aSelected = this.selectedColor.includes(String(a.id));
+                const bSelected = this.selectedColor.includes(String(b.id));
+                return bSelected - aSelected; 
+            });
+            this.allColors = allColors;
         },
         updateSelectedSize(colorSelectedId) 
         {
