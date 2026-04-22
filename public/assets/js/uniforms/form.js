@@ -189,6 +189,8 @@ let order = new Vue({
                 return bSelected - aSelected; 
             });
             this.allColors = allColors;
+            await sleep(200);
+            this.initBasics();
         },
         updateSelectedSize(colorSelectedId) 
         {
