@@ -3,6 +3,7 @@ let order = new Vue({
     data: {
         mounting: true,
         defaultSizes: [],
+        allColors: [],
         sizes: [],
         selectedSize: {},
         selectedSizeIds: {},
