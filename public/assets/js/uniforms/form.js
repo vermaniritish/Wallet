@@ -43,14 +43,17 @@ let order = new Vue({
             this.selectedProduct = pageId;
             await this.initEditValues();
         }
-        allColors.sort((a, b) => {
-            const aSelected = this.selectedColor.includes(String(a.id));
-            const bSelected = this.selectedColor.includes(String(b.id));
-            return bSelected - aSelected; 
-        });
-        this.allColors = allColors;
-        await sleep(200);
-        this.initBasics();
+        else
+        {
+            allColors.sort((a, b) => {
+                const aSelected = this.selectedColor.includes(String(a.id));
+                const bSelected = this.selectedColor.includes(String(b.id));
+                return bSelected - aSelected; 
+            });
+            this.allColors = allColors;
+            await sleep(200);
+            this.initBasics();
+        }
         this.initTagIt();
         init_editor('#product-editor');
         this.mounting = false;
@@ -195,6 +198,9 @@ let order = new Vue({
                 return bSelected - aSelected; 
             });
             this.allColors = allColors;
+
+            await sleep(200);
+            this.initBasics();
         },
         updateSelectedSize(colorSelectedId) 
         {
