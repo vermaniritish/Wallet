@@ -172,11 +172,10 @@ let order = new Vue({
                 }
 
                 allColors.sort((a, b) => {
-                    const aSelected = this.selectedColor.includes(a.id);
-                    const bSelected = this.selectedColor.includes(b.id);
+                    const aSelected = this.selectedColor.includes(String(a.id));
+                    const bSelected = this.selectedColor.includes(String(b.id));
                     return bSelected - aSelected; 
                 });
-
                 this.allColors = allColors;
                 
             }
