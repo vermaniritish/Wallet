@@ -613,3 +613,6 @@
 	</div>
 </div>
 @endsection
+@push('scripts')
+<script>var allColors = {{ $colors }}</script>
+@endpush
