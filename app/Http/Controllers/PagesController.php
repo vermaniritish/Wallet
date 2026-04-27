@@ -187,7 +187,7 @@ class PagesController extends BaseController
     
     function contactUs(Request $request)
     {
-        $shops = Shops::select(['name', 'address','postcode', 'lat', 'lng'])->where(['status' => 1])->get();
+        $shops = Shops::select(['name', 'address','postcode', 'lat', 'lng'])->where(['status' => 1])->where('allow_pickup', 1)->get();
     	if($request->isMethod('post'))
     	{
     		$data = $request->toArray();

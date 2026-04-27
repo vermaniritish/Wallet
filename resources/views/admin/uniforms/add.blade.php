@@ -585,7 +585,6 @@
 												type="button"
 												class="btn btn-outline-danger btn-sm"
 												@click="removeRow(item.id)"
-												:disabled="items.length === 1"
 												title="Remove row"
 												>
 												Remove

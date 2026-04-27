@@ -15,9 +15,9 @@ $currency = Settings::get('currency_symbol');
 					</div>
 					<div class="col-lg-9 col-5 text-right">
 						<a href="<?php echo route('admin.orders') ?>" class="btn btn-neutral"><i class="fa fa-arrow-left"></i> Back</a>
-						<a href="<?php echo route('admin.orders.download', ['id' => $page->id]) ?>" target="_blank" class="btn btn-neutral"><i class="fa fa-download"></i> Donwload Invoice</a>
-						<a href="<?php echo route('admin.orders.download-checklist', ['id' => $page->id]) ?>" target="_blank" class="btn btn-neutral"><i class="fa fa-download"></i> Donwload Check List</a>
-						<a href="<?php echo route('admin.orders.download-return-policy', ['id' => $page->id]) ?>" target="_blank" class="btn btn-neutral"><i class="fa fa-download"></i> Donwload Return Policy</a>
+						<a href="<?php echo route('admin.orders.download', ['id' => $page->id]) ?>" target="_blank" class="btn btn-neutral"><i class="fa fa-download"></i> Download Invoice</a>
+						<a href="<?php echo route('admin.orders.download-checklist', ['id' => $page->id]) ?>" target="_blank" class="btn btn-neutral"><i class="fa fa-download"></i> Download Check List</a>
+						<a href="<?php echo route('admin.orders.download-return-policy', ['id' => $page->id]) ?>" target="_blank" class="btn btn-neutral"><i class="fa fa-download"></i> Download Return Policy</a>
 					</div>
 				</div>
 			</div>

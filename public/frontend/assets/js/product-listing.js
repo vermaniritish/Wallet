@@ -208,25 +208,29 @@ if($('#product-page').length)
             },
             async addToCart(buyNow) 
             {
-                if(this.nonExchangeable && !this.accept) {
-                    set_notification('error', 'Please acknowledge to proceed.');
-                    return false;
-                }
-                let custmomization = this.customization ? this.customization.filter((v) => v.initial && v.initial.trim()).map((v) => ({cost:v.cost, title: v.title, initial: v.initial})) : null;
-                if (this.customization && this.customization.some(v => !v.initial || !v.initial.trim())) {
-                    set_notification('error', 'Please fill all mandate initials before proceeding.');
-                    return;
-                }
-                if(this.adding) return false;
-                this.buyNow = buyNow ? true : false;
-                this.editLogo = false;
-                $('body').removeClass('overflow-hidden');
-                this.adding = true;
+                
+                
                 let scart = this.sizes.filter((item) => {
                     return (item.quantity && (item.quantity*1) > 0)
                 });
                 if(scart.length > 0) 
                 {
+                    let custmomization = this.customization ? this.customization.filter((v) => v.initial && v.initial.trim()).map((v) => ({cost:v.cost, title: v.title, initial: v.initial})) : null;
+                    if (this.customization && this.customization.some(v => (!v.initial || !v.initial.trim()) && v.required )) {
+                        set_notification('error', 'Please fill all mandate initials before proceeding.');
+                        return;
+                    }
+                    if(this.nonExchangeable && !this.accept) {
+                        set_notification('error', 'Please acknowledge to proceed.');
+                        return false;
+                    }
+
+                    if(this.adding) return false;
+                    this.buyNow = buyNow ? true : false;
+                    this.editLogo = false;
+                    $('body').removeClass('overflow-hidden');
+                    this.adding = true;
+
                     scart = [...scart, ...this.cart];
                     let response = await fetch(site_url + '/api/orders/add-to-cart', {
                         method: 'POST',
@@ -260,8 +264,8 @@ if($('#product-page').length)
                 }
                 else
                 {
-                    this.adding = false;
-                    set_notification('error', 'Please select size to proceed.');
+                    this.adding = null;
+                    set_notification('error', 'Please select color and size to proceed.');
                     return false;
                 }
                 
@@ -533,10 +537,7 @@ else if($('#product-cat-page').length)
             },
             async addToCart(buyNow) 
             {
-                if(this.nonExchangeable && !this.accept) {
-                    set_notification('error', 'Please acknowledge to proceed.');
-                    return false;
-                }
+                
                 if(this.adding) return false;
                 this.buyNow = buyNow ? true : false;
                 this.editLogo = false;
@@ -547,6 +548,11 @@ else if($('#product-cat-page').length)
                 });
                 if(scart.length > 0) 
                 {
+                    if(this.nonExchangeable && !this.accept) {
+                        set_notification('error', 'Please acknowledge to proceed.');
+                        return false;
+                    }
+
                     scart = [...scart, ...this.cart];
                     let response = await fetch(site_url + '/api/orders/add-to-cart', {
                         method: 'POST',
@@ -581,7 +587,7 @@ else if($('#product-cat-page').length)
                 else
                 {
                     this.adding = false;
-                    set_notification('error', 'Please select size to proceed.');
+                    set_notification('error', 'Please select color and size to proceed.');
                     return false;
                 }
             },
@@ -1370,6 +1376,9 @@ var minicart = new Vue({
         walletAmount: null
     },
     methods: {
+        gstVal() {
+            return gstTax();
+        },
         formatMoney(m) {
             return (m*1).toFixed(2);
         },
@@ -1775,6 +1784,9 @@ checkoutPage = new Vue({
         walletAmount: ``
     },
     methods: {
+        gstVal() {
+            return gstTax();
+        },
         initAddressSearch(sel)  {
             $(sel).autocomplete({
                 source: function (request, response) {

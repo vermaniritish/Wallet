@@ -21,7 +21,8 @@
                                 <th scope="col" width="30%">Name</th>
                                 <th scope="col">Price</th>
                                 <th scope="col">Quantity</th>
-                                <th scope="col">Subtotal</th>
+                                <th scope="col">Vat</th>
+                                <th scope="col">Total</th>
                                 <th scope="col">Remove</th>
                             </tr>
                         </thead>
@@ -66,9 +67,14 @@
                                         <a href="javascript:;" v-on:click="increment(c.id)" class="qty-up"><i class="fi-rs-angle-small-up"></i></a>
                                     </div>
                                 </td>
+                                <td class="price" data-title="Price">
+                                    <span v-if="(c.vat*1 > 0) && offerPrice(c).price < (c.quantity * c.price)">£@{{( ( (offerPrice(c).price)*gstVal()/100 ).toFixed(2) )}}</span>
+                                    <span v-else-if="(c.vat*1 > 0)">£@{{( ( (c.price*c.quantity)*gstVal()/100 ).toFixed(2) )}}</span>
+                                    <span v-else>£0.00</span>
+                                </td>
                                 <td class="text-right" data-title="Cart">
-                                    <span class="old-price" v-if="offerPrice(c).price < (c.quantity * c.price)">£@{{(c.quantity * c.price).toFixed(2)}}</span>
-                                    <span v-else>£@{{(c.quantity * c.price).toFixed(2)}}</span>
+                                    <span class="old-price" v-if="offerPrice(c).price < (c.quantity * c.price)">£@{{( (c.quantity * offerPrice(c).price) + ( (offerPrice(c).price)*gstVal()/100 ) ).toFixed(2)}}</span>
+                                    <span v-else>£@{{((c.quantity * c.price) + ( (c.price*c.quantity)*gstVal()/100 )).toFixed(2)}}</span>
                                     <span class="discount-price" v-if="offerPrice(c).price < (c.quantity * c.price)">£@{{(offerPrice(c).price).toFixed(2)}}</span>
                                     <div v-if="offerPrice(c).description" class="pro-details-brand"><span><b>Offer Applied:</b><span class="in-stock text-danger ml-5"> @{{offerPrice(c).description}}</span><span></div>
                                 </td>
@@ -134,7 +140,7 @@
                                             <td class="cart_total_label">Customization Discount <br /><small v-if="calculate().applied_logo_discount > 0" style="color:#ee2761">@{{ `(${calculate().applied_logo_discount} logo(s))`}}</small></td>
                                             <td class="cart_total_amount"><span class="font-lg fw-900 text-brand">- £@{{formatMoney(calculate().logo_discount)}}</span></td>
                                         </tr>
-                                        <tr>
+                                        <tr  v-if="calculate().oneTimeCost > 0">
                                             <td class="cart_total_label">Setup Fee
                                                 <!-- <div v-html="renderOneTimeFeeHtml()"></div> -->
                                             </td>

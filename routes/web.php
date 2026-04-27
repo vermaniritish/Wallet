@@ -3,6 +3,7 @@
 use App\Http\Controllers\PayPalController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\OrdersController;
+use App\Http\Controllers\OrderShipmentController;
 
 
 /*
@@ -50,6 +51,8 @@ Route::prefix('admin')->middleware(['adminAuth'])->group(function () {
 });
 
 Route::middleware(['guest'])->group(function () {
+	Route::get('/orders/dpd-shipment/{id}', [OrderShipmentController::class, 'shipOrder']);
+	Route::get('/shipment/label', [OrderShipmentController::class, 'downloadLabel']);
 	Route::get('/e-invoice/{id}', [OrdersController::class, 'download'])->name('admin.orders.download');
 	Route::get('/e-invoice/checklist/{id}', [OrdersController::class, 'downloadChecklist'])->name('admin.orders.download-checklist');
 	Route::get('/e-invoice/return/policy/{id}', [OrdersController::class, 'downloadReturnpolicy'])->name('admin.orders.download-return-policy');

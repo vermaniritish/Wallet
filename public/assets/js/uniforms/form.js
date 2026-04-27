@@ -368,6 +368,9 @@ let customization = new Vue({
             if (this.items.length > 1) {
                 this.items = this.items.filter(i => i.id !== id);
             }
+            else {
+                this.items = [];
+            }
         },
         calculateGrandTotal() {
             return this.grandTotal = (this.items && this.items.length > 0 ? this.items.reduce(

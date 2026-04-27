@@ -1124,7 +1124,19 @@ $('#ship-products').on('click', async function() {
         let response = null;
         if(shipOption == 'DPD')
         {
-            response = await fetch(shop_url + `/create-dpd-shipment?ids=${id}&parcels=${noOfParcels}`);
+            let response = await fetch(admin_url + `/orders/dpd-shipment/${id}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({
+                    ids: shipped.join(','),
+                    _token: csrf_token(),
+                    parcels: noOfParcels
+                })
+            });
+
             response = await response.json();
         }
         else

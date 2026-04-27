@@ -69,6 +69,7 @@ $shipOptions = Orders::getShippingOptions();?>
     
 </div>
 <?php 
+/*
 $shipped = $page->shipment_tracking;
 // $shipped = Arr::pluck($listing->items(), 'shipment_tracking');
 // $shipped = array_map(function($i) {
@@ -98,4 +99,6 @@ if(!$shipped):
         <button type="button" class="btn btn-primary" id="ship-products">Make Shipment</button>
     </div>
 </div>
-<?php endif; ?>
+<?php endif; 
+
+*/?>

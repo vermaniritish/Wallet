@@ -46,6 +46,7 @@
                 @if($product['max_price'])
                 <span class="old-price">{{_currency($product['max_price'])}}</span>
                 @endif
+                ex. VAT
             </div>
         </div>
     </div>

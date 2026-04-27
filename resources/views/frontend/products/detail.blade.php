@@ -119,9 +119,12 @@ $nonExchange = $product->non_exchange || $product->sizes->filter(function ($size
                                         <div class="product-price primary-color float-left pt-2">
                                             <span class="text-brand h3">{{_currency($product->price) }}</span>
                                             @if($product->max_price > 0)
-                                            <ins><span class="old-price font-md ml-15">{{_currency($product->max_price) }}</span></ins>
+                                            <ins><span class="old-price font-md ml-15">{{_currency($product->max_price) }}</span></ins>ex. VAT
                                             <span class="save-price  font-md color3 ml-15">{{round(($product->max_price/$product->price) * 100)}}% Off</span>
+                                            @else
+                                            ex. VAT
                                             @endif
+                                            
                                         </div>
                                     </div>
                                     <div class="bt-1 border-color-1 mt-15 mb-15"></div>
@@ -180,7 +183,7 @@ $nonExchange = $product->non_exchange || $product->sizes->filter(function ($size
                                                     <li data-active="false" class="ProductSizes-newProductSizesItem-xII" data-test-id="ProductSize" v-for="s in renderSizes()">
                                                         <div class="productsizes" data-stock-status="InStock"><small>@{{ s.size_title }} @{{ s.length ? ` | `+s.length : `` }} </small></div>
                                                         <div class="productsizes-stockinfo1">
-                                                            <small class="productsizes-stockinfo2" style="color:#088178">£@{{s.price}}</small>
+                                                            <small class="productsizes-stockinfo2" style="color:#088178">£@{{s.vat && s.vat*1 > 0 ? ( s.price*1 + ((s.price*gstTax()))/100 ).toFixed(2) : s.price}}</small>
                                                         </div>
                                                         <div class="quantity__box" v-if="s.status">
                                                             <button type="button" class="quantity__value" aria-label="quantity value" value="Decrease Value" v-on:click="decrement(s)">-</button>
@@ -197,18 +200,25 @@ $nonExchange = $product->non_exchange || $product->sizes->filter(function ($size
                                             </div>
                                         </div>
                                     </div>
-                                    @if($product->logo_customization)
+                                    <?php
+                                    $customization = $product->logo_customization;
+                                    $customization = $customization ? json_decode($customization, true) : [];
+                                    foreach($customization as $k => $v)
+                                    {
+                                        if(!$v['title'])
+                                        {
+                                            unset($customization[$k]);
+                                        }
+                                    }
+                                    $customization = array_values(array_filter($customization));
+                                    ?>
+                                    @if($customization)
                                     <br>
                                     <div style="padding-bottom:10px;">
                                         <p style="text-brand"><i class="fi-rs-scale mr-5"></i> <strong class="mr-10">Add Personalisation</strong></p>
                                         <small>Please note we do not accept exchanges or refunds for personalised items.</small>
                                         <br><br>
-                                        
-                                        <?php 
-                                        $customization = $product->logo_customization;
-                                        $customization = $customization ? $customization : null;
-                                        echo '<pre id="customization" class="d-none">'.$customization.'</pre>';
-                                        ?>
+                                        <?php echo '<pre id="customization" class="d-none">'.json_encode($customization).'</pre>';?>
                                         <div style="padding-bottom:10px;" v-for="(c, k) in customization">
                                             <strong> @{{ c.title }} (@{{currency(c.cost)}})</strong> 
                                             <span v-if="c.required" style="color:#ff0000;font-size:14px">*</span>:  

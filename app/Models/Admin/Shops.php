@@ -18,7 +18,7 @@ class Shops extends AppModel
     public $timestamps = false;
 
     /**** ONLY USE FOR MAIN TALBLES NO NEED TO USE FOR RELATION TABLES OR DROPDOWNS OR SMALL SECTIONS ***/
-    use SoftDeletes;
+    // use SoftDeletes;
 
     /**
     * Get resize images

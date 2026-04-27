@@ -120,7 +120,7 @@ class HomeController extends BaseController
 			->leftJoin('schools', 'schools.id', '=', 'products.school_id')
             ->leftJoin('colours', 'colours.id', '=', 'product_sizes.color_id')
             ->where('product_id', $product->id)
-			->orderBy('sizes.sort_order', 'asc')
+			->orderBy('product_sizes.id', 'asc')
 			->get();
 			
 			$sizeTitles = $product->sizes

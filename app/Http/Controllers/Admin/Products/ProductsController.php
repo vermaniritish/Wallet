@@ -265,7 +265,7 @@ class ProductsController extends AppController
 					'tags.*' => ['string','max:20',],
 					'color_id' => ['nullable', 'array'],
 					'color_id.*' => ['distinct','required', Rule::exists(Colours::class,'id')],
-					'gender' => ['required', Rule::in(['Male','Female','Unisex'])],
+					'gender' => ['required'],
 					'sku_number' => ['required', Rule::unique('products')->whereNull('parent_id')],
 					'sizeData' => ['required', 'array']
 	            ]
