@@ -171,17 +171,18 @@ let order = new Vue({
                     });
                 }
 
-                allColors.sort((a, b) => {
-                    const aSelected = this.selectedColor.includes(String(a.id));
-                    const bSelected = this.selectedColor.includes(String(b.id));
-                    return bSelected - aSelected; 
-                });
-                this.allColors = allColors;
+                
                 
             }
             else {
                 this.url = admin_url + '/products/add';
             };
+            allColors.sort((a, b) => {
+                const aSelected = this.selectedColor.includes(String(a.id));
+                const bSelected = this.selectedColor.includes(String(b.id));
+                return bSelected - aSelected; 
+            });
+            this.allColors = allColors;
             this.initBasics();
         },
         updateSelectedSize(colorSelectedId) 
