@@ -102,6 +102,7 @@ class SizeController extends AppController
 				if(!$validator->fails())
 				{
 					$mens = array_values($request->mens);
+					pr($mens); die;
 					foreach($mens as $k => $item) {
 						$sizeId = null;
 						if(isset($item['id']) && $item['id']) {
