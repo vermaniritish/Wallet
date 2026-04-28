@@ -10,5 +10,4 @@
 	</div>
 </div>
 @include('frontend.school.schoolSection')
-schoolSection
 @endsection

@@ -35,6 +35,7 @@
                         </ul>
                     </nav>
                 </div>
+                @include('frontend.school.schoolSection')
             </div>
 			@include('frontend.school.sidebar')        
         </div>
