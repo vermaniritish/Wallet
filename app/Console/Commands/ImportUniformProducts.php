@@ -38,11 +38,28 @@ class ImportUniformProducts extends Command
             $schoolMap[$this->normalize($s->name)] = $s->id;
         }
 
+        $findProducts = DB::table('products')->whereNull('parent_id')->select([
+            'id',
+            'sku_number',
+            'gender',
+            'short_description',
+            'description',
+            'size_file',
+            'size_guide_video',
+            'image',
+            'color_images'
+        ])->get();
         $productMap = [];
-        foreach (DB::table('products')->whereNull('parent_id')->select('id','sku_number','gender')->get() as $p) {
+        foreach ($findProducts as $p) {
             $productMap[$this->normalize($p->sku_number)] = [
                 'id' => $p->id,
-                'gender' => $p->gender
+                'gender' => $p->gender,
+                'short_description' => $p->short_description,
+                'description' => $p->description,
+                'size_file' => $p->size_file,
+                'size_guide_video' => $p->size_guide_video,
+                'image' => $p->image,
+                'color_images' => $p->color_images,
             ];
         }
 
@@ -119,12 +136,16 @@ class ImportUniformProducts extends Command
                     'parent_id' => $parent['id'],
                     'title' => $csv['name'],
                     'slug' => Str::slug($csv['name']),
-                    'description' => $csv['uniform_desc'] ?? null,
-                    'short_description' => $csv['uniform_desc'] ?? null,
                     'price' => $price,
                     'max_price' => $maxPrice,
                     'sku_number' => $skuRaw,
                     'gender' => $parent['gender'],
+                    'short_description' => $parent['short_description'],
+                    'description' => $parent['description'],
+                    'size_file' => $parent['size_file'],
+                    'size_guide_video' => $parent['size_guide_video'],
+                    'image' => $parent['image'],
+                    'color_images' => $parent['color_images'],
                     'is_uniform' => 1,
                     'status' => 1,
                     'created' => now(),
