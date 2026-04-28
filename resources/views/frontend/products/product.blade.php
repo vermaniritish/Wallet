@@ -24,7 +24,7 @@
             <div class="product-price">
                 <span>@{{currency(product.price)}}</span>
                 <span v-if="product.max_price" class="old-price">@{{currency(product.max_price)}}</span>
-                ex. VAT
+                <!-- ex. VAT -->
             </div>
         </div>
     </div>

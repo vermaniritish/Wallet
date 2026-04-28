@@ -14,7 +14,9 @@
                                         <span class="product__items--content__subtitle">{{ $product->category }}</span>
                                         <h3 class="product__items--content__title h4"><a href="{{ url('/' . $product->slug) }}">{{ $product->title }}{{ $product->sku_number ? ' - '.$product->sku_number : '' }}</a></h3>
                                         <div class="product__items--price">
-                                            <span class="current__price"><span style="color:#F96167">{{_currency($product->price)}} - {{_currency($product->max_price)}}</span> ex. VAT</span>
+                                            <span class="current__price"><span style="color:#F96167">{{_currency($product->price)}} - {{_currency($product->max_price)}}</span> 
+                                            <!-- ex. VAT -->
+                                            </span>
                                             <hr />
                                             <small><b>{{$colorCounts && count($colorCounts) > 0 ? (count($colorCounts) > 1 ? count($colorCounts). ' Colours' : '1 Colour' ) : 'No colours'}}</b> available.</small>
                                             

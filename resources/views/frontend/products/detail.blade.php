@@ -119,10 +119,11 @@ $nonExchange = $product->non_exchange || $product->sizes->filter(function ($size
                                         <div class="product-price primary-color float-left pt-2">
                                             <span class="text-brand h3">{{_currency($product->price) }}</span>
                                             @if($product->max_price > 0)
-                                            <ins><span class="old-price font-md ml-15">{{_currency($product->max_price) }}</span></ins>ex. VAT
+                                            <ins><span class="old-price font-md ml-15">{{_currency($product->max_price) }}</span></ins>
+                                            <!-- ex. VAT -->
                                             <span class="save-price  font-md color3 ml-15">{{round(($product->max_price/$product->price) * 100)}}% Off</span>
                                             @else
-                                            ex. VAT
+                                            <!-- ex. VAT -->
                                             @endif
                                             
                                         </div>

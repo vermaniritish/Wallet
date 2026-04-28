@@ -92,7 +92,9 @@
                                                         <span class="product__items--content__subtitle">@{{product.category}}, @{{product.gender}}</span>
                                                         <h3 class="product__items--content__title h4"><a :href="'/'+product.slug">@{{product.title}} - @{{product.sku_number}}</a></h3>
                                                         <div class="product__items--price">
-                                                            <span class="current__price"><span style="color:#F96167">@{{currency(product.price)}} - @{{currency(product.max_price)}}</span> ex. VAT</span>
+                                                            <span class="current__price"><span style="color:#F96167">@{{currency(product.price)}} - @{{currency(product.max_price)}}</span> 
+                                                            <!-- ex. VAT -->
+                                                            </span>
                                                             <hr />
                                                             <small><b>@{{product.colors_count && product.colors_count.length > 0 ? (product.colors_count.length > 1 ? product.colors_count.length + ` Colours` : `1 Colour` ) : `No colours`}}</b> available.</small>
                                                         </div>
