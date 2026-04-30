@@ -198,6 +198,7 @@ $nonExchange = $product->non_exchange || $product->sizes->filter(function ($size
                                                         </div>
                                                     </li>												
                                                 </ul>
+                                                <p v-if="!showAllSizes" class="text-center"><a href="javascript:;" @click="showAllSizes = true">Show all sizes</a></p>
                                             </div>
                                         </div>
                                     </div>

@@ -64,6 +64,7 @@ if($('#product-page').length)
     productDetail = new Vue({
         el: '#product-page',
         data: {
+            showAllSizes: false,
             id: null,
             logoPrices: [],
             editLogo: false,
@@ -117,7 +118,7 @@ if($('#product-page').length)
             },
             renderSizes() {
                 if(this.color) {
-                    return this.sizes.filter((i) => i.color_id == this.color );
+                    return  this.showAllSizes ? this.sizes.filter((i) => i.color_id == this.color ) : this.sizes.filter((i) => i.color_id == this.color ).slice(0, 15);
                 }
                 else {
                     return [];
@@ -385,6 +386,7 @@ else if($('#product-cat-page').length)
     productDetail = new Vue({
         el: '#product-cat-page',
         data: {
+            showAllSizes: false,
             id: null,
             logoPrices: [],
             editLogo: false,
@@ -443,7 +445,7 @@ else if($('#product-cat-page').length)
             },
             renderSizes() {
                 if(this.color) {
-                    return this.sizes.filter((i) => i.color_id == this.color );
+                    return  this.showAllSizes ? this.sizes.filter((i) => i.color_id == this.color ) : this.sizes.filter((i) => i.color_id == this.color ).slice(0, 15);
                 }
                 else {
                     return [];
