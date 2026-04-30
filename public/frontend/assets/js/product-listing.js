@@ -124,6 +124,14 @@ if($('#product-page').length)
                     return [];
                 }
             },
+            renderSizesCount(){
+                if(this.color) {
+                    return  this.sizes.filter((i) => i.color_id == this.color ).length;
+                }
+                else {
+                    return 0;
+                }
+            },
             renderAllAddedSizes() {
                 // return this.sizes;
                 return this.sizes.filter((i) => ((i.quantity*1) > 0) );
@@ -449,6 +457,14 @@ else if($('#product-cat-page').length)
                 }
                 else {
                     return [];
+                }
+            },
+            renderSizesCount(){
+                if(this.color) {
+                    return  this.sizes.filter((i) => i.color_id == this.color ).length;
+                }
+                else {
+                    return 0;
                 }
             },
             renderAllAddedSizes() {
