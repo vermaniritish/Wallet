@@ -198,10 +198,10 @@ $nonExchange = $product->non_exchange || $product->sizes->filter(function ($size
                                                         </div>
                                                     </li>												
                                                 </ul>
-                                                <p v-if="!showAllSizes" class="text-center"><a href="javascript:;" @click="showAllSizes = true">Show all sizes</a></p>
                                             </div>
                                         </div>
                                     </div>
+                                    <p v-if="!showAllSizes && renderSizes().length > 0" class="text-center"><a href="javascript:;" @click="showAllSizes = true">Show all sizes</a></p>
                                     <?php
                                     $customization = $product->logo_customization;
                                     $customization = $customization ? json_decode($customization, true) : [];
