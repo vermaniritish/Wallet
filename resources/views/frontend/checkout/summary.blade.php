@@ -51,7 +51,14 @@ $gstTax = Settings::get('gst'); ?>
                     </td>
                     <td  width="15%">
                         <span class="old-price" v-if="offerPrice(c).price < (c.quantity * c.price)">£@{{( (c.quantity * offerPrice(c).price) + ( (offerPrice(c).price)*gstVal()/100 ) ).toFixed(2)}}</span>
-                        <span v-else>£@{{((c.quantity * c.price) + ( (c.price*c.quantity)*gstVal()/100 )).toFixed(2)}}</span>
+                        <span v-else>
+£@{{
+    (
+        (c.quantity * c.price) +
+        ((c.vat * 1 > 0) ? ((c.price * c.quantity) * gstVal() / 100) : 0)
+    ).toFixed(2)
+}}
+</span>
                         <span class="discount-price" v-if="offerPrice(c).price < (c.quantity * c.price)">£@{{(offerPrice(c).price).toFixed(2)}}</span>
                     </td>
                 </tr>
