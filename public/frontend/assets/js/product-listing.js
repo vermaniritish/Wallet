@@ -103,6 +103,7 @@ if($('#product-page').length)
                 return this.color == id ? `active` : ``;
             },
             selectColor(id, title, code ) {
+                this.showAllSizes = false;
                 this.color = id;
                 this.colorTitle = title;
 				this.colorCode = code;
@@ -437,6 +438,7 @@ else if($('#product-cat-page').length)
                 return this.color == id ? `active` : ``;
             },
             selectColor(id, title, colorCode) {
+                this.showAllSizes = false;
                 this.color = id;
                 this.colorTitle = title;
                 this.colorCode = colorCode;
