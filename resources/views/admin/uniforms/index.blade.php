@@ -168,6 +168,16 @@
 										<i class="fas fa-sort" data-field="uniforms.created"></i>
 										<?php endif; ?>
 									</th>
+									<th class="sort" width="8%" >
+										Sort Order
+										<?php if(isset($_GET['sort']) && $_GET['sort'] == 'products.sort_order' && isset($_GET['direction']) && $_GET['direction'] == 'asc'): ?>
+										<i class="fas fa-sort-down active" data-field="products.sort_order" data-sort="asc"></i>
+										<?php elseif(isset($_GET['sort']) && $_GET['sort'] == 'products.sort_order' && isset($_GET['direction']) && $_GET['direction'] == 'desc'): ?>
+										<i class="fas fa-sort-up active" data-field="products.sort_order" data-sort="desc"></i>
+										<?php else: ?>
+										<i class="fas fa-sort" data-field="products.sort_order"></i>
+										<?php endif; ?>
+									</th>
 									<th width="10%">
 										Actions
 									</th>

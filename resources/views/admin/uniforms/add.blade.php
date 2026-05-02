@@ -205,6 +205,15 @@
 											@enderror
 										</div>
 									</div>
+									<div class="col-lg-6">
+										<div class="form-group">
+											<label class="form-control-label" for="input-first-name">Sort Order</label>
+											<input type="number" class="form-control" v-model="sort_order" name="sort_order" placeholder="Sort Order" value="{{ old('sort_order') }}">
+											@error('sort_order')
+												<small class="text-danger">{{ $message }}</small>
+											@enderror
+										</div>
+									</div>
 								</div>
 							</div>
 							<hr class="my-4" />

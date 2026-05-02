@@ -314,6 +314,24 @@ function switch_action(url, that)
     })
 }
 
+function field_update(url, that)
+{
+    $.ajax({
+        url: url,
+        type: 'post',
+        data: {
+            value: $(that).val(),
+            _token: csrf_token()
+        },
+        success: function(resp){
+            if(resp.status == 'success')
+                set_notification('success', resp.message);
+            else
+                set_notification('error', resp.message);
+        }
+    })
+}
+
 function updateSelectOptions(select, options, value)
 {
     html = '<option value=""></option>';

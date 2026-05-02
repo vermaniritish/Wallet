@@ -298,6 +298,56 @@ class ActionsController extends AppController
 	    }
     }
 
+    /**
+	* To Update any field
+	* @param Request $request
+	* @param $table
+	* @param $field
+	* @param $id
+	*/
+    function fieldUpdate(Request $request, $table, $field, $id)
+    {
+    	$data = $request->toArray();
+
+    	$validator = Validator::make(
+            $request->toArray(),
+            [
+                'value' => 'required'
+            ]
+        );
+
+    	if(!$validator->fails())
+	    {
+	    	$updated  = DB::table($table)
+					->where('id', $id)
+					->update([
+						"{$field}" => $request->get('value')
+					]);
+	    	if($updated)
+	    	{
+	    		return Response()->json([
+			    	'status' => 'success',
+			    	'message' => 'Record updated successfully.'
+			    ]);	
+	    	}
+	    	else
+	    	{
+	    		return Response()->json([
+			    	'status' => 'error',
+			    	'message' => 'Record could not be update.'
+			    ]);		
+	    	}
+	    	
+	    }
+	    else
+	    {
+	    	return Response()->json([
+		    	'status' => 'error',
+		    	'message' => 'Record could not be update.'
+		    ]);
+	    }
+    }
+
 	function logoPrices(Request $request)
 	{
 		$logoprices = LogoPrices::get();

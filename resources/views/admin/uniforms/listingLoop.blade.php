@@ -43,6 +43,15 @@
 	<td>
 		<?php echo _dt($row->created) ?>
 	</td>
+	<td>
+		<input 
+			type="number" 
+			class="form-control form-control-sm" 
+			value="<?php echo $row->sort_order ?>"
+			onchange="field_update('<?php echo route('admin.actions.fieldUpdate', ['relation' => 'products', 'field' => 'sort_order', 'id' => $row->id]) ?>', this)"
+			style="width: 70px;"
+		>
+	</td>
 	<td class="text-left">
 		<div class="dropdown">
 			<a class="btn btn-sm btn-icon-only text-warning" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

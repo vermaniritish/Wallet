@@ -491,6 +491,49 @@ class ProductsController extends AppController
 						{
 							Products::handleColors($product->id, $colors);
 						}
+
+						// update childerns
+	// 					Products::where('parent_id', $id)
+    // ->chunk(100, function ($products) use ($data) {
+    //     foreach ($products as $product) {
+
+    //         $updateData = [
+    //             'price' => $data['price'],
+    //         ];
+
+    //         if (isset($data['size_file'])) {
+    //             $updateData['size_file'] = $data['size_file'];
+    //         }
+
+    //         if (isset($data['size_guide_video'])) {
+    //             $updateData['size_guide_video'] = $data['size_guide_video'];
+    //         }
+
+    //         $product->update($updateData);
+    //     }
+    // });
+
+	$updateData = [
+    'price' => $data['price'],
+];
+
+if (isset($data['size_file'])) {
+    $updateData['size_file'] = $data['size_file'];
+}
+
+if (isset($data['size_guide_video'])) {
+    $updateData['size_guide_video'] = $data['size_guide_video'];
+}
+
+//Products::where('parent_id', $id)->update($updateData);
+
+DB::table('products')
+    ->where('parent_id', $id)
+    ->update($updateData);
+						if (!empty($sizeData)) {
+							Products::syncChildSizePrices($product->id, $sizeData); // child partial update
+						}
+
 		        		$request->session()->flash('success', "Product updated successfully.");
 						return Response()->json([
 							'status' => true,

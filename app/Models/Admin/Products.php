@@ -18,7 +18,12 @@ class Products extends AppModel
     protected $table = 'products';
     protected $primaryKey = 'id';
     public $timestamps = false;
-
+    protected $fillable = [
+        'price',
+        'size_file',
+        'size_guide_video',
+        // add other fields you update
+    ];
 
     /**
      * The attributes that should be cast to native types.
@@ -514,5 +519,123 @@ class Products extends AppModel
             }
         }
     }
+
+//     public static function syncChildSizePrices($parentId, $sizesData)
+// {
+//     $children = Products::where('parent_id', $parentId)->get();
+
+//     foreach ($children as $child) {
+
+//         foreach ($sizesData as $colorId => $sizes) {
+//             if (!$colorId) continue;
+
+//             foreach ($sizes as $sizeData) {
+//                 if (empty($sizeData['id']) || empty($sizeData['price'])) continue;
+
+//                 // Find existing child size record
+//                 $relation = ProductSizeRelation::where('product_id', $child->id)
+//                     ->where('size_id', $sizeData['id'])
+//                     ->where('color_id', $colorId)
+//                     ->first();
+
+//                 // ✅ Only update if exists
+//                 if ($relation) {
+//                     $relation->price = $sizeData['price'];
+//                     $relation->sale_price = $sizeData['sale_price'] ?? $relation->sale_price;
+
+//                     // optional fields
+//                     if (isset($sizeData['status'])) {
+//                         $relation->status = $sizeData['status'];
+//                     }
+
+//                     if (isset($sizeData['non_exchange'])) {
+//                         $relation->non_exchange = $sizeData['non_exchange'];
+//                     }
+
+//                     $relation->save();
+//                 }
+//             }
+//         }
+//     }
+// }
+
+
+public static function syncChildSizePrices($parentId, $sizesData)
+{
+    $childIds = Products::where('parent_id', $parentId)->pluck('id');
+
+    if ($childIds->isEmpty()) return;
+
+    $relations = ProductSizeRelation::whereIn('product_id', $childIds)->get();
+
+    $map = [];
+    foreach ($relations as $rel) {
+        $key = $rel->product_id . '_' . $rel->color_id . '_' . $rel->size_id;
+        $map[$key] = $rel;
+    }
+
+    $updates = [];
+
+    foreach ($childIds as $childId) {
+        foreach ($sizesData as $colorId => $sizes) {
+            if (!$colorId) continue;
+
+            foreach ($sizes as $sizeData) {
+                if (empty($sizeData['id']) || !isset($sizeData['price'])) continue;
+
+                $key = $childId . '_' . $colorId . '_' . $sizeData['id'];
+
+                if (isset($map[$key])) {
+                    $relation = $map[$key];
+
+                    $updates[] = [
+                        'id' => $relation->id,
+                        'price' => (float)$sizeData['price'],
+                        'sale_price' => isset($sizeData['sale_price']) ? (float)$sizeData['sale_price'] : 'NULL',
+                        'status' => isset($sizeData['status']) ? (int)$sizeData['status'] : (int)$relation->status,
+                        'non_exchange' => isset($sizeData['non_exchange']) ? (int)$sizeData['non_exchange'] : (int)$relation->non_exchange,
+                    ];
+                }
+            }
+        }
+    }
+
+    if (empty($updates)) return;
+
+    // 🚀 BULK UPDATE USING CASE WHEN
+    foreach (array_chunk($updates, 500) as $chunk) {
+
+        $ids = [];
+        $casePrice = "";
+        $caseSalePrice = "";
+        $caseStatus = "";
+        $caseNonExchange = "";
+
+        foreach ($chunk as $row) {
+            $id = (int)$row['id'];
+
+            $ids[] = $id;
+
+            $casePrice .= "WHEN $id THEN {$row['price']} ";
+            $caseSalePrice .= "WHEN $id THEN " . ($row['sale_price'] === 'NULL' ? "NULL" : $row['sale_price']) . " ";
+            $caseStatus .= "WHEN $id THEN {$row['status']} ";
+            $caseNonExchange .= "WHEN $id THEN {$row['non_exchange']} ";
+        }
+
+        $idsList = implode(',', $ids);
+
+        $sql = "
+            UPDATE product_sizes
+            SET 
+                price = CASE id $casePrice END,
+                sale_price = CASE id $caseSalePrice END,
+                status = CASE id $caseStatus END,
+                non_exchange = CASE id $caseNonExchange END
+            WHERE id IN ($idsList)
+        ";
+
+        DB::statement($sql);
+    }
+}
     
 }

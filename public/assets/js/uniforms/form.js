@@ -25,6 +25,7 @@ let order = new Vue({
         description: null,
         tags: null,
         sku_number: null,
+        sort_order: 0,
         availableColors: JSON.parse($('#availableColor').text()),
         short_description: '',
         activeColor: null,
@@ -152,6 +153,7 @@ let order = new Vue({
                 this.short_description = data.short_description;
                 this.description = data.description;
                 this.sku_number = data.sku_number;
+                this.sort_order = data.sort_order;
                 this.embroidered_logo = data.embroidered_logo;
                 this.printed_logo = data.printed_logo;
                 this.colorImages = data.color_images ? JSON.parse(data.color_images) : {};
