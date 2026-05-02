@@ -59,7 +59,7 @@
                             <label class="product__view--label">Sort By :</label>
                             <div class="select shop__header--select">
                                 <select class="product__view--select" v-on:change="sortIt">
-                                    <option :selected="!sort_by ? true : false" value="">Sort by latest</option>
+                                    <option :selected="!sort_by || sort_by == 'sort_order' ? true : false" value="sort_order">Featured</option>
                                     <option :selected="sort_by == 'price_asc' ? true : false" value="price_asc">Price (Low - High)</option>
                                     <option :selected="sort_by == 'price_desc' ? true : false" value="price_desc">Price (High - Low)</option>
                                     <option :selected="sort_by == 'a_z' ? true : false" value="a_z">Sort Name (A - Z) </option>

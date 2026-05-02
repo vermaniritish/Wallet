@@ -709,7 +709,7 @@ if ($('#product-listing-vue').length)
             schoolId: null,
             salePage: false,
             listing: [],
-            sort_by: null,
+            sort_by: 'sort_order',
             page: 1,
             maxPages: 1,
             pagination: [],

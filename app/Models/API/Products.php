@@ -106,8 +106,8 @@ class Products extends AdminProducts
     public static function getListing(Request $request, $where = [], $limit = 4)
     {
         $userId = ApiAuth::getLoginId();
-    	$orderBy = 'products.id';
-    	$direction = 'desc';
+    	$orderBy = 'products.sort_order';
+    	$direction = 'asc';
     	$page = $request->get('page') ? $request->get('page') : 1;
     	$limit = $request->get('limit') ? $request->get('limit') : $limit;
     	$offset = ($page - 1) * $limit;
@@ -248,9 +248,14 @@ class Products extends AdminProducts
             case 'a_z':
                 $listing->orderByRaw('products.title asc');
             break;
+
+            case 'sort_order':
+                $listing->orderByRaw('products.sort_order asc');
+            break;
             
             default:
                 $listing->orderBy($orderBy, $direction);
+                $listing->orderBy('products.id', 'desc');
             break;
         }
 
@@ -279,8 +284,8 @@ class Products extends AdminProducts
     public static function getCount(Request $request, $where = [], $gender = null)
     {
         $userId = ApiAuth::getLoginId();
-    	$orderBy = 'products.id';
-    	$direction = 'desc';
+    	$orderBy = 'products.sort_order';
+    	$direction = 'asc';
     	$page = $request->get('page') ? $request->get('page') : 1;
     	   
         $select = [
@@ -403,9 +408,14 @@ class Products extends AdminProducts
             case 'a_z':
                 $listing->orderByRaw('products.title asc');
             break;
+
+            case 'sort_order':
+                $listing->orderByRaw('products.sort_order asc');
+            break;
             
             default:
-                $listing->orderBy($orderBy, $direction);
+                $listing->orderBy('products.sort_order', 'asc');
+                $listing->orderBy('products.id', 'desc');
             break;
         }
 
