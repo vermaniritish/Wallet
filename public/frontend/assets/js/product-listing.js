@@ -1,55 +1,66 @@
-window.offerPrice = function (item) {
-    if (item.offer) {
-        for (let offer of item.offer) {
-            if (offer.type == 'case-2') {
-                if ((offer.offer_total_price * 1) > 0 && item.quantity == offer.quantity) {
-                    return { price: offer.offer_total_price * 1, freeLogo: 0, haveOffer: true, description: offer.description };
+window.offerPrice = function(item) {
+    if(item.offer)
+    {
+        for(let offer of item.offer)
+        {
+            if(offer.type == 'case-2')
+            {
+                if((offer.offer_total_price*1) > 0 && item.quantity == offer.quantity)
+                {
+                    return {price: offer.offer_total_price*1, freeLogo: 0, haveOffer: true, description: offer.description };
                 }
             }
-
-            if (offer.type == 'case-3') {
-                if (item.quantity == offer.quantity) {
-                    return { price: item.quantity * item.price, freeLogo: (offer.free_logo * 1), haveOffer: false, description: offer.description };
+            
+            if(offer.type == 'case-3')
+            {
+                if(item.quantity == offer.quantity)
+                {
+                    return {price: item.quantity*item.price, freeLogo: (offer.free_logo*1), haveOffer: false, description: offer.description  };
                 }
             }
         }
     }
-
-    return { price: item.quantity * item.price, freeLogo: 0, haveOffer: false };
+    
+    return {price: item.quantity*item.price, freeLogo: 0, haveOffer: false };
 }
-const oneTimeProductCost = function (cart) {
+const oneTimeProductCost = function(cart) {
     // return 0;
     let obj = oneTimeProductObject(cart);
     let imageCost = obj.image;
     let txtCost = obj.text;
-    return (imageCost !== null ? imageCost * 1 : 0) + (txtCost !== null ? txtCost * 1 : 0);
+    return (imageCost !== null ? imageCost*1 : 0) +(txtCost !== null ? txtCost*1 : 0);
 }
-const oneTimeProductObject = function (cart) {
+const oneTimeProductObject = function(cart) {
     let imageCost = null;
     let txtCost = null;
-    if (cart && cart.length > 0) {
-        for (let c of cart) {
-            if (c.logo) {
-                for (let l of c.logo) {
+    if(cart && cart.length > 0)
+    {
+        for(let c of cart)
+        {
+            if(c.logo)
+            {
+                for(let l of c.logo)
+                {
                     console.log(l);
-                    if (l.postion && l.category && (c.quantity * 1 > 0) && l.image && l.image.trim() && imageCost == null) {
+                    if(l.postion && l.category && (c.quantity*1 > 0) && l.image && l.image.trim() && imageCost == null) {
                         imageCost = oneTimeLogoCost;
                     }
-                    if (l.postion && l.category && (c.quantity * 1 > 0) && l.text && l.text.trim() && txtCost == null) {
+                    if(l.postion && l.category && (c.quantity*1 > 0) && l.text && l.text.trim() && txtCost == null) {
                         txtCost = oneTimeLogoTxtCost;
                     }
-
+                        
                 }
             }
         }
     }
     return {
-        image: (imageCost !== null ? imageCost * 1 : 0),
-        text: (txtCost !== null ? txtCost * 1 : 0)
+        image: (imageCost !== null ? imageCost*1 : 0),
+        text: (txtCost !== null ? txtCost*1 : 0)
     }
 }
 var productDetail;
-if ($('#product-page').length) {
+if($('#product-page').length)
+{
     productDetail = new Vue({
         el: '#product-page',
         data: {
@@ -60,8 +71,8 @@ if ($('#product-page').length) {
             sizes: [],
             color: null,
             colorTitle: null,
-            colorCode: '',
-            selectedColorId: null,
+			colorCode: '',
+			selectedColorId: null,
             selectedSizes: {},
             uploading: null,
             buyNow: false,
@@ -84,38 +95,39 @@ if ($('#product-page').length) {
             customizationErrors: {},
             nonExchangeable: false
         },
-        methods: {
+        methods: {       
             currency(a) {
-                return '£' + (a * 1).toFixed(2);
+                return '£' + (a*1).toFixed(2);
             },
             renderActiveColor(id) {
                 return this.color == id ? `active` : ``;
             },
-            selectColor(id, title, code) {
+            selectColor(id, title, code ) {
+                this.showAllSizes = false;
                 this.color = id;
                 this.colorTitle = title;
-                this.colorCode = code;
+				this.colorCode = code;
                 this.$nextTick(() => {
-                    const thumb = document.querySelector(
-                        '.slider-thumb[data-item="' + id + '"] img'
-                    );
+					const thumb = document.querySelector(
+						'.slider-thumb[data-item="' + id + '"] img'
+					);
 
-                    if (thumb) {
-                        thumb.click();
-                    }
-                });
+					if (thumb) {
+						thumb.click();
+					}
+				});
             },
             renderSizes() {
-                if (this.color) {
-                    return this.showAllSizes ? this.sizes.filter((i) => i.color_id == this.color) : this.sizes.filter((i) => i.color_id == this.color).slice(0, 15);
+                if(this.color) {
+                    return  this.showAllSizes ? this.sizes.filter((i) => i.color_id == this.color ) : this.sizes.filter((i) => i.color_id == this.color ).slice(0, 15);
                 }
                 else {
                     return [];
                 }
             },
-            renderSizesCount() {
-                if (this.color) {
-                    return this.sizes.filter((i) => i.color_id == this.color).length;
+            renderSizesCount(){
+                if(this.color) {
+                    return  this.sizes.filter((i) => i.color_id == this.color ).length;
                 }
                 else {
                     return 0;
@@ -123,7 +135,7 @@ if ($('#product-page').length) {
             },
             renderAllAddedSizes() {
                 // return this.sizes;
-                return this.sizes.filter((i) => ((i.quantity * 1) > 0));
+                return this.sizes.filter((i) => ((i.quantity*1) > 0) );
             },
             manualQty(e) {
                 let qty = e.target.value;
@@ -140,8 +152,8 @@ if ($('#product-page').length) {
                 let id = sizeObj.id;
                 let index = this.sizes.findIndex((v) => v.id == id);
                 let s = [...this.sizes];
-                if (s[index].quantity && (s[index].quantity * 1) > 0) {
-                    s[index].quantity = (s[index].quantity * 1) + 1;
+                if(s[index].quantity && (s[index].quantity * 1) > 0){
+                    s[index].quantity = (s[index].quantity*1) + 1;
                 }
                 else {
                     s[index].quantity = 1;
@@ -153,9 +165,9 @@ if ($('#product-page').length) {
                 let id = sizeObj.id;
                 let index = this.sizes.findIndex((v) => v.id == id);
                 let s = [...this.sizes];
-
-                if (s[index].quantity && (s[index].quantity * 1) > 0) {
-                    s[index].quantity = (s[index].quantity * 1) - 1;
+                
+                if(s[index].quantity && (s[index].quantity * 1) > 0){
+                    s[index].quantity = (s[index].quantity*1) - 1;
                 }
                 else {
                     s[index].quantity = 0;
@@ -163,11 +175,12 @@ if ($('#product-page').length) {
                 this.setNonExchange(sizeObj, s[index].quantity);
                 this.sizes = JSON.parse(JSON.stringify(s));
             },
-            setNonExchange(sizeObj, qty) {
-                if (sizeObj.non_exchange && (qty > 0)) {
+            setNonExchange(sizeObj, qty)
+            {
+                if(sizeObj.non_exchange && (qty > 0)) {
                     this.nonExchangeable = true;
                 }
-                else if (nonExchange) {
+                else if(nonExchange) {
                     this.nonExchangeable = true;
                 }
                 else {
@@ -175,49 +188,54 @@ if ($('#product-page').length) {
                 }
             },
             handleFileUpload(sizeIndex, logoKey) {
-                this.uploading = { sizeIndex, logoKey };
+                this.uploading = {sizeIndex, logoKey};
                 $('#fileUploadForm input[type=file]').click();
             },
-            uploadFile() {
+            uploadFile() 
+            {
                 $('#fileUploadForm').ajaxSubmit({
-                    beforeSend: function () {
+                    beforeSend: function() {
                     },
-                    uploadProgress: function (event, position, total, percentComplete) {
+                    uploadProgress: function(event, position, total, percentComplete) {
                     },
-                    success: function (response) {
-                        if (response.status == 'success') {
+                    success: function(response) {
+                        if(response.status == 'success')
+                        {
                             productDetail.sizes[productDetail.uploading.sizeIndex].logo[productDetail.uploading.logoKey].image = response.path;
                         }
-                        else {
+                        else
+                        {
                             set_notification('error', response.message);
                         }
                         productDetail.uploading = null;
                     },
-                    complete: function () {
+                    complete: function() {
                     }
                 });
             },
             removeFile(sizeIndex, logoKey) {
                 this.sizes[sizeIndex].logo[logoKey].image = null;
             },
-            async addToCart(buyNow) {
-
-
+            async addToCart(buyNow) 
+            {
+                
+                
                 let scart = this.sizes.filter((item) => {
-                    return (item.quantity && (item.quantity * 1) > 0)
+                    return (item.quantity && (item.quantity*1) > 0)
                 });
-                if (scart.length > 0) {
-                    let custmomization = this.customization ? this.customization.filter((v) => v.initial && v.initial.trim()).map((v) => ({ cost: v.cost, title: v.title, initial: v.initial })) : null;
-                    if (this.customization && this.customization.some(v => (!v.initial || !v.initial.trim()) && v.required)) {
+                if(scart.length > 0) 
+                {
+                    let custmomization = this.customization ? this.customization.filter((v) => v.initial && v.initial.trim()).map((v) => ({cost:v.cost, title: v.title, initial: v.initial})) : null;
+                    if (this.customization && this.customization.some(v => (!v.initial || !v.initial.trim()) && v.required )) {
                         set_notification('error', 'Please fill all mandate initials before proceeding.');
                         return;
                     }
-                    if (this.nonExchangeable && !this.accept) {
+                    if(this.nonExchangeable && !this.accept) {
                         set_notification('error', 'Please acknowledge to proceed.');
                         return false;
                     }
 
-                    if (this.adding) return false;
+                    if(this.adding) return false;
                     this.buyNow = buyNow ? true : false;
                     this.editLogo = false;
                     $('body').removeClass('overflow-hidden');
@@ -229,15 +247,16 @@ if ($('#product-page').length) {
                         headers: {
                             'Content-Type': 'application/json',
                         },
-                        body: JSON.stringify({ cart: scart, customization: custmomization }),
+                        body: JSON.stringify({cart: scart, customization: custmomization}),
                     });
                     response = await response.json();
-                    if (response && response.status) {
+                    if(response && response.status)
+                    {
                         this.cart = response.cart;
                     }
                     let cart = localStorage.getItem('cart');
                     cart = cart ? JSON.parse(cart) : [];
-                    if (cart && cart.length > 0) {
+                    if(cart && cart.length > 0) {
                         cart = cart.filter((item) => {
                             return item.product_id != this.id;
                         })
@@ -253,18 +272,21 @@ if ($('#product-page').length) {
                     this.adding = false;
                     window.location.href = '/cart';
                 }
-                else {
+                else
+                {
                     this.adding = null;
                     set_notification('error', 'Please select color and size to proceed.');
                     return false;
                 }
-
+                
             },
-            async openLogoModal() {
+            async openLogoModal() 
+            {
                 let scart = this.sizes.filter((item) => {
-                    return (item.quantity && (item.quantity * 1) > 0)
+                    return (item.quantity && (item.quantity*1) > 0)
                 });
-                if (scart.length < 1) {
+                if(scart.length < 1)
+                {
                     set_notification('error', 'Please select size to proceed.');
                     return false;
                 }
@@ -273,7 +295,8 @@ if ($('#product-page').length) {
                 $('body').addClass('overflow-hidden');
                 let response = await fetch(site_url + `/api/products/fetch-logo-prices`);
                 response = await response.json();
-                if (response && response.status) {
+                if(response && response.status)
+                {
                     this.logoPrices = response.prices;
                 }
             },
@@ -281,37 +304,43 @@ if ($('#product-page').length) {
                 this.editLogo = false;
                 $('body').removeClass('overflow-hidden');
             },
-            addMoreLogo(k) {
-                let sizes = { ...this.sizes[k] };
+            addMoreLogo(k) 
+            {
+                let sizes = {...this.sizes[k]};
                 let logo = JSON.parse(JSON.stringify(sizes.logo));
                 logo = Object.values(logo);
-                logo.push({ ...this.logo[0] });
+                logo.push({...this.logo[0]});
                 sizes.logo = logo;
                 this.$set(this.sizes, k, sizes);
             },
-            onChange(index, size, category, logoKey) {
+            onChange(index, size, category, logoKey)
+            {
                 let price = 0;
                 let logo = size.logo[logoKey];
-                if (category) {
+                if(category){
                     size.logo[logoKey].category = category;
                 }
-                if (size.logo[logoKey] && size.logo[logoKey].postion && (category || size.logo[logoKey].category)) {
+                if(size.logo[logoKey] && size.logo[logoKey].postion && (category || size.logo[logoKey].category))
+                {
                     category = category ? category : size.logo[logoKey].category;
                     const pos = size.logo[logoKey].postion;
                     logo.category = category;
                     console.log(pos, this.logoPrices);
-                    if (category != 'None') {
+                    if(category != 'None')
+                    {
                         let logoPriceApply = this.logoPrices.filter((val) => {
                             console.log(val.position, this.convertToSlug(pos), val.option, this.convertToSlug(category));
                             return val.position == this.convertToSlug(pos) && val.option == this.convertToSlug(category) && size.quantity >= val.from_quantity && size.quantity <= val.to_quantity;
                         });
-                        logo.price = logoPriceApply && logoPriceApply.length > 0 ? (logoPriceApply[0].price * 1) : 0;
+                        logo.price = logoPriceApply && logoPriceApply.length > 0 ? (logoPriceApply[0].price*1) : 0;
                     }
-                    else {
+                    else
+                    {
                         logo.price = 0;
                     }
                 }
-                else {
+                else
+                {
                     logo.price = 0;
                 }
                 size.logo[logoKey] = logo;
@@ -326,10 +355,10 @@ if ($('#product-page').length) {
                     : '';
             }
         },
-        mounted: function () {
+        mounted: function() {
             this.nonExchangeable = nonExchange ? true : false;
             this.customization = $('#customization').length > 0 && $('#customization').text().trim() ? JSON.parse($('#customization').text().trim()) : null;
-            this.id = $('#productId').text().trim();
+            this.id  = $('#productId').text().trim();
             let cart = localStorage.getItem('cart');
             cart = cart ? JSON.parse(cart) : [];
             this.cart = cart.filter((item) => {
@@ -361,7 +390,8 @@ if ($('#product-page').length) {
         }
     });
 }
-else if ($('#product-cat-page').length) {
+else if($('#product-cat-page').length)
+{
     productDetail = new Vue({
         el: '#product-cat-page',
         data: {
@@ -398,41 +428,42 @@ else if ($('#product-cat-page').length) {
             customization: [],
             customizationErrors: {},
             nonExchangeable: false
-
+            
         },
         methods: {
             currency(a) {
-                return '£' + (a * 1).toFixed(2);
+                return '£' + (a*1).toFixed(2);
             },
             renderActiveColor(id) {
                 return this.color == id ? `active` : ``;
             },
             selectColor(id, title, colorCode) {
+                this.showAllSizes = false;
                 this.color = id;
                 this.colorTitle = title;
                 this.colorCode = colorCode;
-
+                
                 this.$nextTick(() => {
-                    const thumb = document.querySelector(
-                        '.slider-thumb[data-item="' + id + '"] img'
-                    );
+					const thumb = document.querySelector(
+						'.slider-thumb[data-item="' + id + '"] img'
+					);
 
-                    if (thumb) {
-                        thumb.click(); // ✅ ALWAYS correct image
-                    }
-                });
+					if (thumb) {
+						thumb.click(); // ✅ ALWAYS correct image
+					}
+				});
             },
             renderSizes() {
-                if (this.color) {
-                    return this.showAllSizes ? this.sizes.filter((i) => i.color_id == this.color) : this.sizes.filter((i) => i.color_id == this.color).slice(0, 15);
+                if(this.color) {
+                    return  this.showAllSizes ? this.sizes.filter((i) => i.color_id == this.color ) : this.sizes.filter((i) => i.color_id == this.color ).slice(0, 15);
                 }
                 else {
                     return [];
                 }
             },
-            renderSizesCount() {
-                if (this.color) {
-                    return this.sizes.filter((i) => i.color_id == this.color).length;
+            renderSizesCount(){
+                if(this.color) {
+                    return  this.sizes.filter((i) => i.color_id == this.color ).length;
                 }
                 else {
                     return 0;
@@ -440,7 +471,7 @@ else if ($('#product-cat-page').length) {
             },
             renderAllAddedSizes() {
                 // return this.sizes;
-                return this.sizes.filter((i) => ((i.quantity * 1) > 0));
+                return this.sizes.filter((i) => ((i.quantity*1) > 0) );
             },
             manualQty(e) {
                 let qty = e.target.value;
@@ -457,8 +488,8 @@ else if ($('#product-cat-page').length) {
                 let id = sizeObj.id;
                 let index = this.sizes.findIndex((v) => v.id == id);
                 let s = [...this.sizes];
-                if (s[index].quantity && (s[index].quantity * 1) > 0) {
-                    s[index].quantity = (s[index].quantity * 1) + 1;
+                if(s[index].quantity && (s[index].quantity * 1) > 0){
+                    s[index].quantity = (s[index].quantity*1) + 1;
                 }
                 else {
                     s[index].quantity = 1;
@@ -470,9 +501,9 @@ else if ($('#product-cat-page').length) {
                 let id = sizeObj.id;
                 let index = this.sizes.findIndex((v) => v.id == id);
                 let s = [...this.sizes];
-
-                if (s[index].quantity && (s[index].quantity * 1) > 0) {
-                    s[index].quantity = (s[index].quantity * 1) - 1;
+                
+                if(s[index].quantity && (s[index].quantity * 1) > 0){
+                    s[index].quantity = (s[index].quantity*1) - 1;
                 }
                 else {
                     s[index].quantity = 0;
@@ -480,11 +511,12 @@ else if ($('#product-cat-page').length) {
                 this.setNonExchange(sizeObj, s[index].quantity);
                 this.sizes = JSON.parse(JSON.stringify(s));
             },
-            setNonExchange(sizeObj, qty) {
-                if (sizeObj.non_exchange && (qty > 0)) {
+            setNonExchange(sizeObj, qty)
+            {
+                if(sizeObj.non_exchange && (qty > 0)) {
                     this.nonExchangeable = true;
                 }
-                else if (nonExchange) {
+                else if(nonExchange) {
                     this.nonExchangeable = true;
                 }
                 else {
@@ -492,25 +524,28 @@ else if ($('#product-cat-page').length) {
                 }
             },
             handleFileUpload(sizeIndex, logoKey) {
-                this.uploading = { sizeIndex, logoKey };
+                this.uploading = {sizeIndex, logoKey};
                 $('#fileUploadForm input[type=file]').click();
             },
-            uploadFile() {
+            uploadFile() 
+            {
                 $('#fileUploadForm').ajaxSubmit({
-                    beforeSend: function () {
+                    beforeSend: function() {
                     },
-                    uploadProgress: function (event, position, total, percentComplete) {
+                    uploadProgress: function(event, position, total, percentComplete) {
                     },
-                    success: function (response) {
-                        if (response.status == 'success') {
+                    success: function(response) {
+                        if(response.status == 'success')
+                        {
                             productDetail.sizes[productDetail.uploading.sizeIndex].logo[productDetail.uploading.logoKey].image = response.path;
                         }
-                        else {
+                        else
+                        {
                             set_notification('error', response.message);
                         }
                         productDetail.uploading = null;
                     },
-                    complete: function () {
+                    complete: function() {
                     }
                 });
             },
@@ -520,18 +555,20 @@ else if ($('#product-cat-page').length) {
                 this.sizes[sizeIndex].logo[logoKey].text1 = ``;
                 this.sizes[sizeIndex].logo[logoKey].text2 = ``;
             },
-            async addToCart(buyNow) {
-
-                if (this.adding) return false;
+            async addToCart(buyNow) 
+            {
+                
+                if(this.adding) return false;
                 this.buyNow = buyNow ? true : false;
                 this.editLogo = false;
                 $('body').removeClass('overflow-hidden');
                 this.adding = true;
                 let scart = this.sizes.filter((item) => {
-                    return (item.quantity && (item.quantity * 1) > 0)
+                    return (item.quantity && (item.quantity*1) > 0)
                 });
-                if (scart.length > 0) {
-                    if (this.nonExchangeable && !this.accept) {
+                if(scart.length > 0) 
+                {
+                    if(this.nonExchangeable && !this.accept) {
                         set_notification('error', 'Please acknowledge to proceed.');
                         return false;
                     }
@@ -542,15 +579,16 @@ else if ($('#product-cat-page').length) {
                         headers: {
                             'Content-Type': 'application/json',
                         },
-                        body: JSON.stringify({ cart: scart }),
+                        body: JSON.stringify({cart: scart}),
                     });
                     response = await response.json();
-                    if (response && response.status) {
+                    if(response && response.status)
+                    {
                         this.cart = response.cart;
                     }
                     let cart = localStorage.getItem('cart');
                     cart = cart ? JSON.parse(cart) : [];
-                    if (cart && cart.length > 0) {
+                    if(cart && cart.length > 0) {
                         cart = cart.filter((item) => {
                             return item.product_id != this.id;
                         })
@@ -566,17 +604,20 @@ else if ($('#product-cat-page').length) {
                     this.adding = false;
                     window.location.href = '/cart';
                 }
-                else {
+                else
+                {
                     this.adding = false;
                     set_notification('error', 'Please select color and size to proceed.');
                     return false;
                 }
             },
-            async openLogoModal() {
+            async openLogoModal() 
+            {
                 let scart = this.sizes.filter((item) => {
-                    return (item.quantity && (item.quantity * 1) > 0)
+                    return (item.quantity && (item.quantity*1) > 0)
                 });
-                if (scart.length < 1) {
+                if(scart.length < 1)
+                {
                     set_notification('error', 'Please select size to proceed.');
                     return false;
                 }
@@ -586,7 +627,8 @@ else if ($('#product-cat-page').length) {
                 destroySlickZoom();
                 let response = await fetch(site_url + `/api/products/fetch-logo-prices`);
                 response = await response.json();
-                if (response && response.status) {
+                if(response && response.status)
+                {
                     this.logoPrices = response.prices;
                 }
 
@@ -623,35 +665,41 @@ else if ($('#product-cat-page').length) {
                 $('body').removeClass('overflow-hidden');
                 initSlickZoom();
             },
-            addMoreLogo(k) {
-                let sizes = { ...this.sizes[k] };
+            addMoreLogo(k) 
+            {
+                let sizes = {...this.sizes[k]};
                 let logo = JSON.parse(JSON.stringify(sizes.logo));
                 logo = Object.values(logo);
-                logo.push({ ...this.logo[0] });
+                logo.push({...this.logo[0]});
                 sizes.logo = logo;
                 this.$set(this.sizes, k, sizes);
             },
-            onChange(index, size, category, logoKey) {
+            onChange(index, size, category, logoKey)
+            {
                 let price = 0;
                 let logo = size.logo[logoKey];
-                if (category) {
+                if(category){
                     size.logo[logoKey].category = category;
                 }
-                if (size.logo[logoKey] && size.logo[logoKey].postion && (category || size.logo[logoKey].category)) {
+                if(size.logo[logoKey] && size.logo[logoKey].postion && (category || size.logo[logoKey].category))
+                {
                     category = category ? category : size.logo[logoKey].category;
                     const pos = size.logo[logoKey].postion;
                     logo.category = category;
-                    if (category && category != 'None') {
+                    if(category && category != 'None')
+                    {
                         let logoPriceApply = this.logoPrices.filter((val) => {
                             return val.position == this.convertToSlug(pos) && val.option == this.convertToSlug(category) && size.quantity >= val.from_quantity && size.quantity <= val.to_quantity;
                         });
-                        logo.price = logoPriceApply && logoPriceApply.length > 0 ? (logoPriceApply[0].price * 1) : 0;
+                        logo.price = logoPriceApply && logoPriceApply.length > 0 ? (logoPriceApply[0].price*1) : 0;
                     }
-                    else {
+                    else
+                    {
                         logo.price = 0;
                     }
                 }
-                else {
+                else
+                {
                     logo.price = 0;
                 }
                 size.logo[logoKey] = logo;
@@ -666,9 +714,10 @@ else if ($('#product-cat-page').length) {
                     : '';
             }
         },
-        mounted: function () {
+        mounted: function() 
+        {
             this.nonExchangeable = nonExchange ? true : false;
-            this.id = $('#productId').text().trim();
+            this.id  = $('#productId').text().trim();
             let cart = localStorage.getItem('cart');
             cart = cart ? JSON.parse(cart) : [];
             this.cart = cart.filter((item) => {
@@ -685,7 +734,8 @@ else if ($('#product-cat-page').length) {
             //     }
             // }
 
-            for (let i in sizes) {
+            for(let i in sizes)
+            {
                 let exist = this.cart.filter((item) => {
                     return item.id == sizes[i].id
                 });
@@ -701,528 +751,564 @@ else if ($('#product-cat-page').length) {
     });
 }
 
-if ($('#product-listing-vue').length)
-    var productListing = new Vue({
-        // Mount Vue instance to the div with id="app"
-        el: '#product-listing-vue',
-        data: {
-            schoolId: null,
-            salePage: false,
-            listing: [],
-            sort_by: 'sort_order',
-            page: 1,
-            maxPages: 1,
-            pagination: [],
-            fetching: false,
-            priceError: false,
-            paginationMessage: ``,
-            empty: false,
-            searchPage: false,
-            search: ``,
-            filters: {
-                gender: [],
-                categories: [],
-                brands: [],
-                fromPrice: ``,
-                toPrice: ``
-            },
-            counts: {
-                menCount: null,
-                womenCount: null,
-                kidsCount: null,
-                unisexCount: null,
-            },
-            isOpen: false,
-            selectedOption: 50,
-            options: [50, 100, 150, 200, "All"]
+if($('#product-listing-vue').length)
+var productListing = new Vue({
+    // Mount Vue instance to the div with id="app"
+    el: '#product-listing-vue',
+    data: {
+        schoolId: null,
+        salePage: false,
+        listing: [],
+        sort_by: null,
+        page: 1,
+        maxPages: 1,
+        pagination: [],
+        fetching: false,
+        priceError: false,
+        paginationMessage: ``,
+        empty: false,
+        searchPage: false,
+        search: ``,
+        filters: {
+            gender: [],
+            categories: [],
+            brands: [],
+            fromPrice: ``,
+            toPrice: ``
         },
-        methods: {
-            currency: function (amount) {
-                amount = amount * 1;
-                return "£" + (amount && amount > 0 ? amount.toFixed(2) : '0.00');
-            },
-            init: async function () {
-                await this.fetchListing();
-            },
-            toggleDropdown() {
-                this.isOpen = !this.isOpen;
-            },
-            async selectOption(option) {
-                this.selectedOption = option;
-                this.isOpen = false;
-                this.page = 1;
-                await this.fetchListing();
-            },
-            fetchListing: async function () {
-                if (this.fetching) return false;
-                let categoryId = typeof cId !== 'undefined' && cId ? cId : ``;
-                this.fetching = true;
-                this.empty = false;
-                let response = await fetch(site_url + `/api/products/listing?salePage=${this.salePage ? `1` : ``}${this.search ? `&search=${this.search}` : ''}&brands=${brandSlug ? brandSlug : ``}&cId=${categoryId}&categories=${this.filters.categories ? this.filters.categories.join(',') : ``}&gender=${this.filters.gender ? this.filters.gender.join(',') : ``}&price_from=${this.filters.fromPrice ? this.filters.fromPrice : ``}&price_to=${this.filters.toPrice ? this.filters.toPrice : ``}${this.schoolId ? `&school_id=` + this.schoolId : ``}&page=${this.page}&limit=${this.selectedOption}&sort=${this.sort_by ? this.sort_by : ``}`);
-                response = await response.json();
-                if (response && response.status) {
-                    if (this.page == 1 && response.products.length < 1) {
-                        this.empty = true;
-                    }
-                    this.listing = response.products;
-                    this.maxPages = response.maxPage;
-                    this.pagination = Array.from({ length: response.maxPage }, (_, index) => index + 1);
-                    this.paginationMessage = response.paginationMessage;
-                    if (response.count && this.page == 1) {
-                        this.counts = response.count;
-                    }
+        counts: {
+            menCount: null,
+            womenCount: null,
+            kidsCount: null,
+            unisexCount: null,
+        },
+        isOpen: false,
+        selectedOption: 50,
+        options: [50, 100, 150, 200, "All"]
+    },
+    methods: {
+        currency: function(amount) {
+            amount = amount*1;
+            return "£" + (amount && amount > 0 ? amount.toFixed(2) : '0.00');
+        },
+        init: async function() {
+            await this.fetchListing();
+        },
+        toggleDropdown() {
+            this.isOpen = !this.isOpen;
+        },
+        async selectOption(option) {
+            this.selectedOption = option;
+            this.isOpen = false;
+            this.page = 1;
+            await this.fetchListing();
+        },
+        fetchListing: async function() {
+            if(this.fetching) return false;
+            let categoryId = typeof cId !== 'undefined' && cId ? cId : ``;
+            this.fetching = true;
+            this.empty = false; 
+            let response = await fetch(site_url + `/api/products/listing?salePage=${this.salePage ? `1` : ``}${this.search ? `&search=${this.search}` : ''}&brands=${brandSlug ? brandSlug : ``}&cId=${categoryId}&categories=${this.filters.categories ? this.filters.categories.join(',') : ``}&gender=${this.filters.gender ? this.filters.gender.join(',') : ``}&price_from=${this.filters.fromPrice ? this.filters.fromPrice : ``}&price_to=${this.filters.toPrice ? this.filters.toPrice : ``}${this.schoolId ? `&school_id=`+this.schoolId : ``}&page=${this.page}&limit=${this.selectedOption}&sort=${this.sort_by ? this.sort_by : ``}`);
+            response = await response.json();
+            if(response && response.status)
+            {
+                if(this.page == 1 && response.products.length < 1){
+                    this.empty = true; 
                 }
-                this.fetching = false;
-            },
-            clearSearch: async function (e) {
-                this.search = ``;
-                this.page = 1;
-                await this.fetchListing();
-            },
-            sortIt: async function (e) {
-                this.sort_by = e.target.value;
-                this.page = 1;
-                await this.fetchListing();
-            },
-            paginateIt: async function (page) {
-                this.page = page;
-                await this.fetchListing();
-            },
-            genderFilter: async function (g) {
-                let genders = this.filters.gender;
-                let index = genders.findIndex(function (value, index, array) {
-                    return value === g;
-                })
-                if (index > -1) {
-                    genders.splice(index, 1);
+                this.listing = response.products;
+                this.maxPages = response.maxPage;
+                this.pagination = Array.from({ length: response.maxPage }, (_, index) => index + 1);
+                this.paginationMessage = response.paginationMessage;
+                if(response.count && this.page == 1){
+                    this.counts = response.count;
                 }
-                else {
-                    genders.push(g);
-                }
-                this.filters.gender = genders;
-                this.page = 1;
-                await this.fetchListing();
-            },
-            priceFilter: async function () {
-                if ((this.filters.fromPrice * 1) < 1 || (this.filters.toPrice * 1) < 1) return false;
+            }
+            this.fetching = false;
+        },
+        clearSearch: async function(e) {
+            this.search = ``;
+            this.page = 1;
+            await this.fetchListing();
+        },
+        sortIt: async function(e) {
+            this.sort_by = e.target.value;
+            this.page = 1;
+            await this.fetchListing();
+        },
+        paginateIt: async function(page) {
+            this.page = page; 
+            await this.fetchListing();
+        },
+        genderFilter: async function(g) {
+            let genders = this.filters.gender;
+            let index = genders.findIndex(function(value, index, array) {
+                return value === g;
+            })
+            if(index > -1) {
+                genders.splice(index, 1);
+            }
+            else {
+                genders.push(g);
+            }
+            this.filters.gender = genders;
+            this.page = 1;
+            await this.fetchListing();
+        },
+        priceFilter: async function() {
+            if((this.filters.fromPrice*1) < 1 || (this.filters.toPrice*1) < 1) return false;
 
-                if ((this.filters.fromPrice * 1) > 0 && (this.filters.toPrice * 1) > 0 && (this.filters.fromPrice * 1) > (this.filters.toPrice * 1)) {
-                    this.priceError = true;
-                }
-                else {
-                    this.priceError = false;
-                    await this.fetchListing();
-                }
-            },
-            brandFilter: async function (b) {
-                let brands = this.filters.brands;
-                let index = brands.findIndex(function (value, index, array) {
-                    return value === b;
-                })
-                if (index > -1) {
-                    brands.splice(index, 1);
-                }
-                else {
-                    brands.push(b);
-                }
-                this.filters.brands = brands;
-                this.page = 1;
-                await this.fetchListing();
-            },
-            categoryFilter: async function (cat) {
-                if (cat) {
-                    let categories = this.filters.categories;
-                    let index = categories.findIndex(function (value, index, array) {
-                        return value === cat;
-                    })
-                    if (index > -1) {
-                        categories.splice(index, 1);
-                    }
-                    else {
-                        categories.push(cat);
-                    }
-                    this.filters.categories = categories;
-                }
-                else {
-                    this.filters.categories = [];
-                }
-                this.page = 1;
+            if((this.filters.fromPrice*1) > 0 && (this.filters.toPrice*1) > 0 && (this.filters.fromPrice*1) > (this.filters.toPrice*1))
+            {
+                this.priceError = true;
+            }
+            else
+            {
+                this.priceError = false;
                 await this.fetchListing();
             }
         },
-        mounted: function () {
-            if (typeof schoolPageId !== 'undefined' && schoolPageId) {
-                this.schoolId = schoolPageId;
+        brandFilter: async function(b) {
+            let brands = this.filters.brands;
+            let index = brands.findIndex(function(value, index, array) {
+                return value === b;
+            })
+            if(index > -1) {
+                brands.splice(index, 1);
             }
-            else if (!brandPage) {
-                let pathname = window.location.pathname.split('/');
-                if (window.location.pathname.indexOf('/sale') > -1) {
-                    this.salePage = true;
-                }
-                else if (window.location.pathname.indexOf('/search') > -1) {
-                    const urlParams = new URLSearchParams(window.location.search);
-                    this.search = urlParams.get('search') ? urlParams.get('search').trim() : '';
-                    this.searchPage = true;
-                    let brand = urlParams.get('brand') ? urlParams.get('brand').trim() : '';
-                    if (brand)
-                        this.filters = { brands: [brand] };
-                }
-                if (pathname.length > 2) {
-                    this.filters.categories.push(pathname[2]);
-                }
+            else {
+                brands.push(b);
             }
-            this.init()
+            this.filters.brands = brands;
+            this.page = 1;
+            await this.fetchListing();
+        },
+        categoryFilter: async function(cat) {
+            if(cat)
+            {
+                let categories = this.filters.categories;
+                let index = categories.findIndex(function(value, index, array) {
+                    return value === cat;
+                })
+                if(index > -1) {
+                    categories.splice(index, 1);
+                }
+                else {
+                    categories.push(cat);
+                }
+                this.filters.categories = categories;
+            }
+            else
+            {
+                this.filters.categories = [];
+            }
+            this.page = 1;
+            await this.fetchListing();
         }
-    });
+    },
+    mounted: function() {
+        if(typeof schoolPageId !== 'undefined' && schoolPageId)
+        {
+            this.schoolId = schoolPageId;
+        }
+        else if(!brandPage)
+        {
+            let pathname = window.location.pathname.split('/');
+            if(window.location.pathname.indexOf('/sale') > -1)
+            {
+                this.salePage = true;
+            }
+            else if(window.location.pathname.indexOf('/search') > -1)
+            {
+                const urlParams = new URLSearchParams(window.location.search);
+                this.search = urlParams.get('search') ? urlParams.get('search').trim() : '';
+                this.searchPage = true;
+                let brand = urlParams.get('brand') ? urlParams.get('brand').trim() : '';
+                if(brand)
+                this.filters = {brands : [brand]};
+            }
+            if(pathname.length > 2) {
+                this.filters.categories.push(pathname[2]);
+            }
+        }
+        this.init()
+    }
+});
 
-if ($('#header').length)
-    var minicart = new Vue({
-        el: '#header',
-        data: {
-            oneTimeCost: 0,
-            open: false,
-            agree: false,
-            logoPricesDynamix: [],
-            cart: [],
-            gstTax: ``,
-            cartCount: 0,
-            search: '',
-            mobileMenu: false
+if($('#header').length)
+var minicart = new Vue({
+    el: '#header',
+    data: {
+        oneTimeCost: 0,
+        open: false,
+        agree: false,
+        logoPricesDynamix: [],
+        cart: [],
+        gstTax: ``,
+        cartCount: 0,
+        search: '',
+        mobileMenu: false
+    },
+    mounted: async function() {
+        $('#header, main, .mobile-header-active').removeClass('d-none');
+        $('.select-active').select2();
+        this.gstTax = gstTax();
+        this.updateCartCount();
+        this.fetchLogoPrices();
+        this.initSearch('#search-global');
+        this.initSearch('#m-search-global');
+    },
+    methods: {
+        initMobileMenu() {
+            this.mobileMenu = !this.mobileMenu;
         },
-        mounted: async function () {
-            $('#header, main, .mobile-header-active').removeClass('d-none');
-            $('.select-active').select2();
-            this.gstTax = gstTax();
-            this.updateCartCount();
-            this.fetchLogoPrices();
-            this.initSearch('#search-global');
-            this.initSearch('#m-search-global');
-        },
-        methods: {
-            initMobileMenu() {
-                this.mobileMenu = !this.mobileMenu;
-            },
-            initSearch(sel) {
-                $(sel).autocomplete({
-                    source: function (request, response) {
-                        $.ajax({
-                            url: site_url + `/api/products/listing?cId=${$('.select-active').val()}&limit=50`,
-                            type: 'GET',
-                            dataType: 'json',
-                            data: {
-                                search: request.term,
-                                topSerach: '1'
-                            },
-                            success: function (data) {
-                                if (data.status) {
-                                    let products = [];
-                                    let schools = []
-                                    if (data.products) {
-                                        products = $.map(data.products, function (item) {
-                                            return {
-                                                label: item.title,
-                                                value: item.title,
-                                                desc: null,
-                                                id: item.id,
-                                                price: item.price,
-                                                sku: item.sku_number,
-                                                image: item.image?.[0]?.small || '/frontend/assets/imgs/shop/product-2-2.jpg',
-                                                slug: item.slug
-                                            };
-                                        })
-                                    }
-                                    if (data.schools) {
-                                        schools = $.map(data.schools, function (item) {
-                                            return {
-                                                label: item.name,
-                                                value: item.name,
-                                                desc: item.schooltype,
-                                                id: item.id,
-                                                price: null,
-                                                sku: null,
-                                                image: item.logo || '/frontend/assets/imgs/shop/product-2-2.jpg',
-                                                slug: `school/` + item.slug + `/uniforms`
-                                            };
-                                        })
-                                    }
-                                    response([...schools, ...products]);
-                                } else {
-                                    response([]);
+        initSearch(sel)  {
+            $(sel).autocomplete({
+                source: function (request, response) {
+                    $.ajax({
+                        url: site_url + `/api/products/listing?cId=${$('.select-active').val()}&limit=50`,
+                        type: 'GET',
+                        dataType: 'json',
+                        data: {
+                            search: request.term,
+                            topSerach: '1'
+                        },
+                        success: function (data) {
+                            if (data.status) {
+                                let products = [];
+                                let schools = []
+                                if(data.products)
+                                {
+                                    products = $.map(data.products, function (item) {
+                                        return {
+                                            label: item.title,
+                                            value: item.title,
+                                            desc: null,
+                                            id: item.id,
+                                            price: item.price,
+                                            sku: item.sku_number,
+                                            image: item.image?.[0]?.small || '/frontend/assets/imgs/shop/product-2-2.jpg',
+                                            slug: item.slug
+                                        };
+                                    })
                                 }
+                                if(data.schools)
+                                {
+                                    schools = $.map(data.schools, function (item) {
+                                        return {
+                                            label: item.name,
+                                            value: item.name,
+                                            desc: item.schooltype,
+                                            id: item.id,
+                                            price: null,
+                                            sku: null,
+                                            image: item.logo || '/frontend/assets/imgs/shop/product-2-2.jpg',
+                                            slug: `school/`+item.slug+`/uniforms`
+                                        };
+                                    })
+                                }
+                                response([...schools, ...products]);
+                            } else {
+                                response([]);
                             }
-                        });
-                    },
-                    minLength: 2,
-                    select: function (event, ui) {
-                        window.location.href = '/' + ui.item.slug;
-                    }
-                }).data("ui-autocomplete")._renderItem = function (ul, item) {
-                    return $("<li>")
-                        .append(`
+                        }
+                    });
+                },
+                minLength: 2,
+                select: function (event, ui) {
+                    window.location.href = '/' + ui.item.slug;
+                }
+            }).data("ui-autocomplete")._renderItem = function (ul, item) {
+                return $("<li>")
+                    .append(`
                         <div class="ui-menu-item-wrapper d-flex gap-2 align-items-center">
                             <img src="${item.image}" alt="${item.label}">
                             <div>
                                 <div class="autocomplete-product-title">${item.label}</div>
                                 ${item.desc ? `<div class="autocomplete-product-sku">${item.desc}</div>` : ``}
-                                ${item.price ? `<div class="autocomplete-product-price">₹${item.price}</div>` : ``}
+                                ${item.price ? `<div class="autocomplete-product-price">₹${item.price}</div>` :``}
                                 ${item.sku ? `<div class="autocomplete-product-sku">SKU: ${item.sku}</div>` : ``}
                             </div>
                         </div>
                     `)
-                        .appendTo(ul);
-                };
-            },
-            async fetchLogoPrices() {
-                if (this.logoPricesDynamix && this.logoPricesDynamix.length < 1) {
-                    let res = await fetch(site_url + '/api/actions/logo-prices');
-                    res = await res.json();
-                    this.logoPricesDynamix = res.logoprices;
-                }
+                    .appendTo(ul);
+            };
+        },
+        async fetchLogoPrices(){
+            if(this.logoPricesDynamix && this.logoPricesDynamix.length < 1){
+                let res = await fetch(site_url+'/api/actions/logo-prices');
+                res = await res.json();
+                this.logoPricesDynamix = res.logoprices;
+            }
 
-                return this.logoPricesDynamix;
-            },
-            formatMoney(m) {
-                return (m * 1).toFixed(2);
-            },
-            updateCartCount() {
+            return this.logoPricesDynamix;
+        },
+        formatMoney(m) {
+          return (m*1).toFixed(2);  
+        },
+        updateCartCount() {
+            let cart = localStorage.getItem('cart');
+            cart = cart ? JSON.parse(cart) : [];
+            this.cartCount = cart.length;
+        },
+        cartcount(){
+            let cart = localStorage.getItem('cart');
+            cart = cart ? JSON.parse(cart) : [];
+            console.log(cart.length);
+            return cart.length;
+        },
+        initcart() {
+            this.open = !this.open;
+            if(this.open) {
                 let cart = localStorage.getItem('cart');
                 cart = cart ? JSON.parse(cart) : [];
-                this.cartCount = cart.length;
-            },
-            cartcount() {
-                let cart = localStorage.getItem('cart');
-                cart = cart ? JSON.parse(cart) : [];
-                console.log(cart.length);
-                return cart.length;
-            },
-            initcart() {
-                this.open = !this.open;
-                if (this.open) {
-                    let cart = localStorage.getItem('cart');
-                    cart = cart ? JSON.parse(cart) : [];
-                    this.cart = this.handleLogoPrices(cart);
-                }
-            },
-            manualQty(e) {
-                let qty = e.target.value;
-                let dataId = e.target.getAttribute("data-id");
-                let index = this.cart.findIndex((v) => v.id == dataId);
-                let s = [...this.cart];
-                s[index].quantity = qty;
-                this.cart = this.handleLogoPrices(s);
-                this.store();
-            },
-            increment(id) {
-                let index = this.cart.findIndex((v) => v.id == id);
-                let s = [...this.cart];
+                this.cart = this.handleLogoPrices(cart);
+            }
+        },
+        manualQty(e) {
+            let qty = e.target.value;
+            let dataId = e.target.getAttribute("data-id");
+            let index = this.cart.findIndex((v) => v.id == dataId);
+            let s = [...this.cart];
+            s[index].quantity = qty;
+            this.cart = this.handleLogoPrices(s);
+            this.store();
+        },
+        increment(id) {
+            let index = this.cart.findIndex((v) => v.id == id);
+            let s = [...this.cart];
 
-                if (s[index].quantity && (s[index].quantity * 1) > 0) {
-                    s[index].quantity = (s[index].quantity * 1) + 1;
-                }
-                else {
-                    s[index].quantity = 1;
-                }
-                this.cart = this.handleLogoPrices(s);
-                this.store();
-            },
-            decrement(id) {
-                let index = this.cart.findIndex((v) => v.id == id);
-                let s = [...this.cart];
+            if(s[index].quantity && (s[index].quantity * 1) > 0){
+                s[index].quantity = (s[index].quantity*1) + 1;
+            }
+            else {
+                s[index].quantity = 1;
+            }
+            this.cart = this.handleLogoPrices(s);
+            this.store();
+        },
+        decrement(id) {
+            let index = this.cart.findIndex((v) => v.id == id);
+            let s = [...this.cart];
 
-                if (s[index].quantity && (s[index].quantity * 1) > 0) {
-                    s[index].quantity = (s[index].quantity * 1) - 1;
-                }
-                else {
-                    s[index].quantity = 0;
-                }
-                this.cart = this.handleLogoPrices(s);
-                this.store();
-            },
-            handleLogoPrices(s) {
-                for (let i in s) {
-                    for (let k in s[i].logo) {
-                        if (typeof s[i].logo[k].price !== 'undefined') {
-                            let exist = this.logoPricesDynamix.filter((item) => {
+            if(s[index].quantity && (s[index].quantity * 1) > 0){
+                s[index].quantity = (s[index].quantity*1) - 1;
+            }
+            else {
+                s[index].quantity = 0;
+            }
+            this.cart = this.handleLogoPrices(s);
+            this.store();
+        },
+        handleLogoPrices(s){
+            for(let i in s)
+            {
+                for(let k in s[i].logo)
+                {
+                    if(typeof s[i].logo[k].price !== 'undefined')
+                    {
+                        let exist = this.logoPricesDynamix.filter((item) => {
 
-                                return s[i].logo[k].category && s[i].logo[k].category != "None" && s[i].logo[k].postion ? (item.option == (s[i].logo[k].category).toLowerCase().replace(/\s+/g, '-')
-                                    && item.position == (s[i].logo[k].postion).toLowerCase().replace(/\s+/g, '-')
-                                    && (s[i].quantity * 1) >= (item.from_quantity * 1) && (s[i].quantity * 1) <= (item.to_quantity * 1)) : false;
-                            });
-                            console.log(exist);
-                            if (exist && exist.length > 0 && exist[0].price) {
-                                s[i].logo[k].price = exist[0].price;
+                            return s[i].logo[k].category && s[i].logo[k].category != "None" && s[i].logo[k].postion ? (item.option == (s[i].logo[k].category).toLowerCase().replace(/\s+/g , '-')
+                                && item.position == (s[i].logo[k].postion).toLowerCase().replace(/\s+/g , '-')
+                                && (s[i].quantity*1) >= (item.from_quantity*1) && (s[i].quantity*1) <= (item.to_quantity*1)) : false;
+                        });
+                        console.log(exist);
+                        if(exist && exist.length > 0 && exist[0].price)
+                        {
+                            s[i].logo[k].price = exist[0].price;
+                        }
+                    }
+                }
+            }
+            this.oneTimeCost = oneTimeProductCost(s);
+            return s;
+        },
+        remove(id) {
+            let index = this.cart.findIndex((v) => v.id == id);
+            let s = [...this.cart];
+            s.splice(index, 1);
+            this.cart = this.handleLogoPrices(s);
+            this.store();
+        },
+        store() {
+            localStorage.setItem('cart', JSON.stringify(this.cart))
+        },
+        offerPrice(item) {
+            return window.offerPrice(item);
+        },
+        calculate: function(){
+            let t = {
+                subtotal: 0,
+                total: 0,
+                discount: 0,
+                logo_cost: 0,
+                product_cost:0,
+                logo_discount:0,
+                applied_logo_discount: 0
+            }
+
+            let subtotal = this.cart.map((item) => {
+                if(item.offer && item.offer)
+                {
+                    return this.offerPrice(item).price;
+                    // return item.quantity*item.price;
+                }
+                else
+                {
+                    return item.quantity*item.price;
+                }
+            });
+            let total = subtotal;
+            t.total = total.reduce((partialSum, a) => partialSum + a, 0);
+            t.product_cost = subtotal.reduce((partialSum, a) => partialSum + a, 0);
+            
+            t.tax = 0;
+            let logoCost = this.calcaualteLogoCost();
+            t.logo_cost = logoCost.cost;
+            t.logo_discount = (logoCost.logoDiscount*1) > 0 ? (logoCost.logoDiscount*1) : 0;
+            t.applied_logo_discount = (logoCost.appliedDiscount*1) > 0 ? (logoCost.appliedDiscount*1) : 0;
+            let haveLogo =  logoCost.haveLogo;
+            
+            t.oneTimeCost = (t.product_cost*1) > 0 && (this.oneTimeCost*1) > 0 && haveLogo ? (this.oneTimeCost*1) : 0;
+            t.subtotal = t.product_cost + (t.logo_cost - t.logo_discount) + (t.product_cost > 0 ? t.oneTimeCost : 0 );
+            t.discount = 0;
+            t.tax = this.calculateTax(t);
+            t.total = t.subtotal - t.discount + t.tax;
+            return t;
+        },
+        calcaualteLogoCost()
+        {
+            let cost = 0;
+            let haveLogo = 0;
+            let appliedDiscount = 0;
+            let logoDiscount = 0;
+            for(let c of this.cart )
+            {
+                let freeLogo = this.offerPrice(c).freeLogo;
+                if(c.logo)
+                {
+                    for(let item of c.logo)
+                    {
+                        if( (item.image || item.text) && !item.already_uploaded && item.category != 'None' )
+                        {
+                            haveLogo += (c.quantity*1);
+                        }
+                        if(item && item.category != 'None' && (item.price*1) > 0)
+                        {
+                            cost += item.price*c.quantity;
+
+                            if(freeLogo > 0)
+                            {
+                                discountQty = c.quantity > freeLogo ? freeLogo : c.quantity;
+                                appliedDiscount += discountQty;
+                                logoDiscount += item.price*discountQty;
                             }
                         }
                     }
                 }
-                this.oneTimeCost = oneTimeProductCost(s);
-                return s;
-            },
-            remove(id) {
-                let index = this.cart.findIndex((v) => v.id == id);
-                let s = [...this.cart];
-                s.splice(index, 1);
-                this.cart = this.handleLogoPrices(s);
-                this.store();
-            },
-            store() {
-                localStorage.setItem('cart', JSON.stringify(this.cart))
-            },
-            offerPrice(item) {
-                return window.offerPrice(item);
-            },
-            calculate: function () {
-                let t = {
-                    subtotal: 0,
-                    total: 0,
-                    discount: 0,
-                    logo_cost: 0,
-                    product_cost: 0,
-                    logo_discount: 0,
-                    applied_logo_discount: 0
-                }
-
+            }
+            if(appliedDiscount < 1 && haveLogo > 0)
+            {
                 let subtotal = this.cart.map((item) => {
-                    if (item.offer && item.offer) {
+                    if(item.offer && item.offer)
+                    {
                         return this.offerPrice(item).price;
                         // return item.quantity*item.price;
                     }
-                    else {
-                        return item.quantity * item.price;
-                    }
-                });
-                let total = subtotal;
-                t.total = total.reduce((partialSum, a) => partialSum + a, 0);
-                t.product_cost = subtotal.reduce((partialSum, a) => partialSum + a, 0);
-
-                t.tax = 0;
-                let logoCost = this.calcaualteLogoCost();
-                t.logo_cost = logoCost.cost;
-                t.logo_discount = (logoCost.logoDiscount * 1) > 0 ? (logoCost.logoDiscount * 1) : 0;
-                t.applied_logo_discount = (logoCost.appliedDiscount * 1) > 0 ? (logoCost.appliedDiscount * 1) : 0;
-                let haveLogo = logoCost.haveLogo;
-
-                t.oneTimeCost = (t.product_cost * 1) > 0 && (this.oneTimeCost * 1) > 0 && haveLogo ? (this.oneTimeCost * 1) : 0;
-                t.subtotal = t.product_cost + (t.logo_cost - t.logo_discount) + (t.product_cost > 0 ? t.oneTimeCost : 0);
-                t.discount = 0;
-                t.tax = this.calculateTax(t);
-                t.total = t.subtotal - t.discount + t.tax;
-                return t;
-            },
-            calcaualteLogoCost() {
-                let cost = 0;
-                let haveLogo = 0;
-                let appliedDiscount = 0;
-                let logoDiscount = 0;
-                for (let c of this.cart) {
-                    let freeLogo = this.offerPrice(c).freeLogo;
-                    if (c.logo) {
-                        for (let item of c.logo) {
-                            if ((item.image || item.text) && !item.already_uploaded && item.category != 'None') {
-                                haveLogo += (c.quantity * 1);
-                            }
-                            if (item && item.category != 'None' && (item.price * 1) > 0) {
-                                cost += item.price * c.quantity;
-
-                                if (freeLogo > 0) {
-                                    discountQty = c.quantity > freeLogo ? freeLogo : c.quantity;
-                                    appliedDiscount += discountQty;
-                                    logoDiscount += item.price * discountQty;
-                                }
-                            }
-                        }
-                    }
-                }
-                if (appliedDiscount < 1 && haveLogo > 0) {
-                    let subtotal = this.cart.map((item) => {
-                        if (item.offer && item.offer) {
-                            return this.offerPrice(item).price;
-                            // return item.quantity*item.price;
-                        }
-                        else {
-                            return item.quantity * item.price;
-                        }
-                    });
-                    subtotal = subtotal.reduce((partialSum, a) => partialSum + a, 0);
-                    let prices = [];
-                    for (let c of this.cart) {
-                        if (c.logo) {
-                            for (let item of c.logo) {
-                                for (let i = 0; i < (c.quantity * 1); i++)
-                                    prices.push(item.price);
-                            }
-                        }
-                    }
-                    let discount = freeLogoDiscount ? freeLogoDiscount : null;
-                    if (discount && (subtotal * 1) >= (discount.min_cart_price * 1) && prices.length >= discount.quantity) {
-                        const sortedPrices = prices.sort((a, b) => a - b);
-                        const topPrices = sortedPrices.slice(0, discount.quantity);
-
-                        logoDiscount = topPrices.reduce((acc, price) => acc + price, 0);
-                        appliedDiscount = discount.quantity;
-                    }
-                }
-                console.log(`logo`, {
-                    cost,
-                    haveLogo,
-                    logoDiscount,
-                    appliedDiscount
-                });
-                return {
-                    cost,
-                    haveLogo: haveLogo > 0 ? true : false,
-                    logoDiscount,
-                    appliedDiscount
-                };
-            },
-            freeDelivery() {
-                let subtotal = this.cart.map((item) => {
-                    if (item.offer && item.offer) {
-                        return this.offerPrice(item).price;
-                        // return item.quantity*item.price;
-                    }
-                    else {
-                        return item.quantity * item.price;
+                    else
+                    {
+                        return item.quantity*item.price;
                     }
                 });
                 subtotal = subtotal.reduce((partialSum, a) => partialSum + a, 0);
-                let discount = freeDelivery ? freeDelivery : null;
-                if (discount && subtotal >= (discount.min_cart_price * 1)) {
-                    return true;
-                }
-                return false;
-            },
-            calculateTax(t) {
-                let deductedTax = this.cart.map((item) => {
-                    if ((item.vat * 1) > 0) return 0;
-
-                    let amount = 0;
-                    if (item.offer && item.offer) {
-                        amount = this.offerPrice(item).price;
+                let prices = [];
+                for(let c of this.cart )
+                {
+                    if(c.logo)
+                    {
+                        for(let item of c.logo)
+                        {
+                            for(let i = 0; i < (c.quantity*1); i++)
+                            prices.push(item.price);
+                        }
                     }
-                    else {
-                        amount = item.quantity * item.price;
-                    }
-                    let tax = (amount) * (this.gstTax > 0 ? this.gstTax : 0);
-                    tax = (tax > 0 ? tax / 100 : 0);
-                    return tax;
-                });
-                deductedTax = deductedTax.reduce((partialSum, a) => partialSum + a, 0);
-
-                let tax = (t.subtotal - t.discount) * (this.gstTax > 0 ? this.gstTax : 0);
-                tax = (tax > 0 ? tax / 100 : 0);
-                return (tax - deductedTax < 0) ? 0 : tax - deductedTax;
-            },
-            getImagePath(image) {
-                if (image) {
-                    image = JSON.parse(image);
-                    return image[0];
                 }
-                return null;
+                let discount = freeLogoDiscount ? freeLogoDiscount : null;
+                if(discount &&  (subtotal*1) >= (discount.min_cart_price*1) && prices.length >= discount.quantity)
+                {
+                    const sortedPrices = prices.sort((a, b) => a - b);
+                    const topPrices = sortedPrices.slice(0, discount.quantity);
+                
+                    logoDiscount = topPrices.reduce((acc, price) => acc + price, 0);
+                    appliedDiscount = discount.quantity;
+                }
             }
-        }
+            console.log(`logo`, {
+                cost,
+                haveLogo,
+                logoDiscount,
+                appliedDiscount
+            });
+            return {
+                cost,
+                haveLogo: haveLogo > 0 ? true : false,
+                logoDiscount,
+                appliedDiscount
+            };
+        },
+        freeDelivery(){
+            let subtotal = this.cart.map((item) => {
+                if(item.offer && item.offer)
+                {
+                    return this.offerPrice(item).price;
+                    // return item.quantity*item.price;
+                }
+                else
+                {
+                    return item.quantity*item.price;
+                }
+            });
+            subtotal = subtotal.reduce((partialSum, a) => partialSum + a, 0);
+            let discount = freeDelivery ? freeDelivery : null;
+            if(discount && subtotal >= (discount.min_cart_price*1)){
+                return true;
+            }
+            return false;
+        },
+        calculateTax(t) {
+            let deductedTax = this.cart.map((item) => {
+                if((item.vat*1) > 0) return 0;
+                
+                let amount = 0;
+                if(item.offer && item.offer)
+                {
+                    amount = this.offerPrice(item).price;
+                }
+                else
+                {
+                    amount = item.quantity*item.price;
+                }
+                let tax = (amount) * (this.gstTax > 0 ? this.gstTax : 0);
+                tax = (tax > 0 ? tax / 100 : 0);
+                return tax;
+            });
+            deductedTax = deductedTax.reduce((partialSum, a) => partialSum + a, 0);
 
-    });
+            let tax = (t.subtotal - t.discount) * (this.gstTax > 0 ? this.gstTax : 0);
+            tax = (tax > 0 ? tax / 100 : 0);
+            return (tax-deductedTax < 0) ? 0 : tax-deductedTax;
+        },
+        getImagePath(image) {
+            if(image)
+            {
+                image = JSON.parse(image);
+                return image[0];
+            }
+            return null;
+        }
+    }
+    
+});
 
 function renderLogoInfo(c) {
     let html = '';
@@ -1230,31 +1316,33 @@ function renderLogoInfo(c) {
     let totalLogos = 0;
     let totalTxts = 0;
     c.logo.forEach(logo => {
-        if ((logo.price * 1) > 0) {
-            amount += (logo.price * 1) * c.quantity;
-            totalLogos += logo.image && logo.image.trim ? (c.quantity * 1) : 0;
-            totalTxts += !logo.image && (logo.text || logo.text2 || logo.text3) ? (c.quantity * 1) : 0;
+        if((logo.price*1) > 0)
+        {
+            amount += (logo.price*1) * c.quantity;
+            totalLogos += logo.image && logo.image.trim ? (c.quantity*1) : 0;
+            totalTxts += !logo.image && (logo.text || logo.text2 || logo.text3) ? (c.quantity*1) : 0;
         }
 
-        html += (logo.price * 1) > 0 ? `
+        html += (logo.price*1) > 0 ? `
             <tr class="table-borderless">
                 <td></td>
                 <td colspan="4">
                     <div class="d-flex flex-row gap-1">
-                        ${logo.already_uploaded
-                ? `
+                        ${
+                            logo.already_uploaded
+                            ? `
                             <div class="col-sm-3">
                                 <p class="text-danger small">Pinder has already my logo.</p>
                             </div>
                             `
-                : (logo.image && logo.image.trim() ? `
+                            : (logo.image && logo.image.trim() ? `
                             <div class="col-sm-3">
                                 <div style="width:80px;height:80px;border:1px solid #ddd;">
                                     ${`<img src="${logo.image}" style="max-width:100%;max-height:100%;">`}
                                 </div>
                             </div>
                             ` : ``)
-            }
+                        }
 
                         <div class="col-sm-5">
                             <span class="text-muted">Text:</span> ${logo.text || ''}<br />
@@ -1274,8 +1362,9 @@ function renderLogoInfo(c) {
                             <span class="text-muted">Color:</span> ${c.color || ''}<br />
                         </div>
                     </div>
-                    ${logo.notes
-                ? `
+                    ${
+                        logo.notes
+                        ? `
                         <div class="d-flex">
                             <p class="small">
                                 <strong>Note:</strong><br />
@@ -1283,910 +1372,977 @@ function renderLogoInfo(c) {
                             </p>
                         </div>
                         `
-                : ''
-            }
+                        : ''
+                    }
                 </td>
             </tr>` : ``;
     });
 
-    return amount > 0 ? `<span class="text-danger font-xs" style="color:#ee2761">${(amount > 0) ? (`Price for ` + `${((totalLogos * 1 + totalTxts * 1) + (totalTxts > 0 ? ` ${totalTxts > 1 ? ` customizations are ` : ` customization is `} ` : (totalLogos > 1 ? ` customizations are ` : ` customization is `)))} <strong>£${amount.toFixed(2)}</strong>`) : ''}</span><br />` + html : '';
+    return amount > 0 ? `<span class="text-danger font-xs" style="color:#ee2761">${(amount > 0) ? (`Price for ` + `${((totalLogos*1 + totalTxts*1) + (totalTxts > 0 ? ` ${totalTxts > 1 ? ` customizations are ` : ` customization is `} ` : (totalLogos > 1 ? ` customizations are ` : ` customization is `)))} <strong>£${amount.toFixed(2)}</strong>`) : ''}</span><br />`  + html : '';
 }
-if ($('#cart-page').length)
-    var minicart = new Vue({
-        el: '#cart-page',
-        data: {
-            agree: false,
-            cart: [],
-            note: ``,
-            coupon: ``,
-            appliedCoupon: null,
-            couponError: ``,
-            gstTax: ``,
-            oneTimeCost: 0,
-            logoPricesDynamix: [],
-            walletAmount: null
+if($('#cart-page').length)
+var minicart = new Vue({
+    el: '#cart-page',
+    data: {
+        agree: false,
+        cart: [],
+        note: ``,
+        coupon: ``,
+        appliedCoupon: null,
+        couponError: ``,
+        gstTax: ``,
+        oneTimeCost: 0,
+        logoPricesDynamix: [],
+        walletAmount: null
+    },
+    methods: {
+        gstVal() {
+            return gstTax();
         },
-        methods: {
-            gstVal() {
-                return gstTax();
-            },
-            formatMoney(m) {
-                return (m * 1).toFixed(2);
-            },
-            cartcount() {
-                let cart = localStorage.getItem('cart');
-                cart = cart ? JSON.parse(cart) : [];
-                return cart.length;
-            },
-            async initcart() {
-                let cart = localStorage.getItem('cart');
-                cart = cart ? JSON.parse(cart) : [];
-                this.cart = this.handleLogoPrices(cart);
+        formatMoney(m) {
+            return (m*1).toFixed(2);
+        },
+        cartcount(){
+            let cart = localStorage.getItem('cart');
+            cart = cart ? JSON.parse(cart) : [];
+            return cart.length;
+        },
+        async initcart() {
+            let cart = localStorage.getItem('cart');
+            cart = cart ? JSON.parse(cart) : [];
+            this.cart = this.handleLogoPrices(cart);
 
-                let coupon = localStorage.getItem('coupon');
-                coupon = coupon ? JSON.parse(coupon) : null;
-                if (coupon && cart.length > 0) {
-                    this.coupon = coupon.coupon_code;
-                    this.appliedCoupon = coupon;
+            let coupon = localStorage.getItem('coupon');
+            coupon = coupon ? JSON.parse(coupon) : null;
+            if(coupon && cart.length > 0)
+            {
+                this.coupon = coupon.coupon_code;
+                this.appliedCoupon = coupon;
+            }
+        },
+        renderLogoInfo(c) {
+            return renderLogoInfo(c);
+            let amount = 0;
+            let totalLogos = 0;
+            for(let a of c.logo)
+            {
+                if((a.price*1) > 0)
+                {
+                    amount += (a.price*1) * c.quantity;
+                    totalLogos += (c.quantity*1)
                 }
-            },
-            renderLogoInfo(c) {
-                return renderLogoInfo(c);
-                let amount = 0;
-                let totalLogos = 0;
-                for (let a of c.logo) {
-                    if ((a.price * 1) > 0) {
-                        amount += (a.price * 1) * c.quantity;
-                        totalLogos += (c.quantity * 1)
+            }
+
+            return (amount > 0) ? (`Price for ` + `${(totalLogos + (totalLogos > 1 ? ` logos are ` : ` logo is `))} <strong>£${amount.toFixed(2)}</strong>`) : '';
+        },
+        renderOneTimeFeeHtml() {
+            // if(this.cart && this.cart.length > 0)
+            // {
+            //     let obj = oneTimeProductObject(this.cart);
+            //     console.log(`obj`, obj);
+            //     if(obj && obj.image !== null && obj.text !== null && obj.image > 0 && obj.text > 0){
+            //         return `<div class="d-flex flex-row justify-content-between gap-4">
+            //         <span class="cart__content--variant" style="color: rgb(238, 39, 97);">For Logo <strong>£${obj.image.toFixed(2)}</strong></span>
+            //             <span class="cart__content--variant" style="color: rgb(238, 39, 97);">For Text <strong>£${obj.text.toFixed(2)}</strong></span>
+            //         </div>`
+            //     }
+            // }
+            return ``;
+        },
+        manualQty(e) {
+            console.log(e, e.target.value);
+            let qty = e.target.value;
+            let dataId = e.target.getAttribute("data-id");
+            let index = this.cart.findIndex((v) => v.id == dataId);
+            let s = [...this.cart];
+            s[index].quantity = qty;
+            this.cart = this.handleLogoPrices(s);
+            this.store();
+        },
+        increment(id) {
+            let index = this.cart.findIndex((v) => v.id == id);
+            let s = [...this.cart];
+
+            if(s[index].quantity && (s[index].quantity * 1) > 0){
+                s[index].quantity = (s[index].quantity*1) + 1;
+            }
+            else {
+                s[index].quantity = 1;
+            }
+            this.cart = this.handleLogoPrices(s);
+            this.store();
+        },
+        decrement(id) {
+            let index = this.cart.findIndex((v) => v.id == id);
+            let s = [...this.cart];
+
+            if(s[index].quantity && (s[index].quantity * 1) > 0){
+                s[index].quantity = (s[index].quantity*1) - 1;
+            }
+            else {
+                s[index].quantity = 0;
+            }
+            this.cart = this.handleLogoPrices(s);
+            this.store();
+        },
+        handleLogoPrices(s) {
+            for(let i in s)
+            {
+                for(let k in s[i].logo)
+                {
+                    if(typeof s[i].logo[k].price !== 'undefined')
+                    {
+                        let exist = this.logoPricesDynamix.filter((item) => {
+                            return s[i].logo[k].category && s[i].logo[k].category != "None" && s[i].logo[k].postion ? (item.option == (s[i].logo[k].category).toLowerCase().replace(/\s+/g , '-')
+                                && item.position == (s[i].logo[k].postion).toLowerCase().replace(/\s+/g , '-')
+                                && (s[i].quantity*1) >= (item.from_quantity*1) && (s[i].quantity*1) <= (item.to_quantity*1)) : false;
+                        });
+                        if(exist && exist.length > 0 && exist[0].price)
+                        {
+                            s[i].logo[k].price = exist[0].price;
+                        }
                     }
                 }
+            }
+            this.oneTimeCost = oneTimeProductCost(s);
+            return s;
+        },
+        remove(id) {
+            let index = this.cart.findIndex((v) => v.id == id);
+            let s = [...this.cart];
+            s.splice(index, 1);
+            this.cart = this.handleLogoPrices(s);
+            this.store();
+        },
+        store() {
+            localStorage.setItem('cart', JSON.stringify(this.cart))
+        },
+        offerPrice(item) {
+            console.log(window.offerPrice(item));
+            return window.offerPrice(item);
+        },
+        calculate: function(){
+            let t = {
+                subtotal: 0,
+                total: 0,
+                discount: 0,
+                logo_cost: 0,
+                product_cost:0,
+                logo_discount:0,
+                applied_logo_discount: 0
+            }
 
-                return (amount > 0) ? (`Price for ` + `${(totalLogos + (totalLogos > 1 ? ` logos are ` : ` logo is `))} <strong>£${amount.toFixed(2)}</strong>`) : '';
-            },
-            renderOneTimeFeeHtml() {
-                // if(this.cart && this.cart.length > 0)
-                // {
-                //     let obj = oneTimeProductObject(this.cart);
-                //     console.log(`obj`, obj);
-                //     if(obj && obj.image !== null && obj.text !== null && obj.image > 0 && obj.text > 0){
-                //         return `<div class="d-flex flex-row justify-content-between gap-4">
-                //         <span class="cart__content--variant" style="color: rgb(238, 39, 97);">For Logo <strong>£${obj.image.toFixed(2)}</strong></span>
-                //             <span class="cart__content--variant" style="color: rgb(238, 39, 97);">For Text <strong>£${obj.text.toFixed(2)}</strong></span>
-                //         </div>`
-                //     }
-                // }
-                return ``;
-            },
-            manualQty(e) {
-                console.log(e, e.target.value);
-                let qty = e.target.value;
-                let dataId = e.target.getAttribute("data-id");
-                let index = this.cart.findIndex((v) => v.id == dataId);
-                let s = [...this.cart];
-                s[index].quantity = qty;
-                this.cart = this.handleLogoPrices(s);
-                this.store();
-            },
-            increment(id) {
-                let index = this.cart.findIndex((v) => v.id == id);
-                let s = [...this.cart];
+            let subtotal = this.cart.map((item) => {
+                if(item.offer && item.offer)
+                {
+                    return this.offerPrice(item).price;
+                    // return item.quantity*item.price;
+                }
+                else
+                {
+                    return item.quantity*item.price;
+                }
+            });
+            let total = this.cart.map((item) => item.quantity*item.price);
+            t.total = total.reduce((partialSum, a) => partialSum + a, 0);
+            t.product_cost = subtotal.reduce((partialSum, a) => partialSum + a, 0);
+            
+            t.tax = 0;
+            let logoCost = this.calcaualteLogoCost();
+            t.logo_cost = logoCost.cost;
+            t.logo_discount = (logoCost.logoDiscount*1) > 0 ? (logoCost.logoDiscount*1) : 0;
+            t.applied_logo_discount = (logoCost.appliedDiscount*1) > 0 ? (logoCost.appliedDiscount*1) : 0;
+            let haveLogo =  logoCost.haveLogo;
+            
+            t.oneTimeCost = (t.product_cost*1) > 0 && (this.oneTimeCost*1) > 0 && haveLogo ? (this.oneTimeCost*1) : 0;
+            t.subtotal = t.product_cost + (t.logo_cost - t.logo_discount) + (t.product_cost > 0 ? t.oneTimeCost : 0 );
+            t.discount = this.detectDiscount(t.subtotal);
+            t.tax = this.calculateTax(t);
+            t.total = t.subtotal - t.discount + t.tax;
+            t.wallet_applied = t.total > this.walletAmount ? this.walletAmount : t.total;
+            return t;
+        },
+        getCustomizationCost(custom)
+        {
+            return custom ? custom.reduce((sum, item) => sum + item.cost, 0) : 0;
+        },
+        calcaualteLogoCost()
+        {
+            let cost = 0;
+            let haveLogo = 0;
+            let appliedDiscount = 0;
+            let logoDiscount = 0;
+            for(let c of this.cart )
+            {
+                let freeLogo = this.offerPrice(c).freeLogo;
+                if(c.logo)
+                {
+                    for(let item of c.logo)
+                    {
+                        if( (item.image || item.text) && !item.already_uploaded && item.category != 'None' )
+                        {
+                            haveLogo += (c.quantity*1);
+                        }
+                        if(item && item.category != 'None' && (item.price*1) > 0)
+                        {
+                            cost += item.price*c.quantity;
 
-                if (s[index].quantity && (s[index].quantity * 1) > 0) {
-                    s[index].quantity = (s[index].quantity * 1) + 1;
-                }
-                else {
-                    s[index].quantity = 1;
-                }
-                this.cart = this.handleLogoPrices(s);
-                this.store();
-            },
-            decrement(id) {
-                let index = this.cart.findIndex((v) => v.id == id);
-                let s = [...this.cart];
-
-                if (s[index].quantity && (s[index].quantity * 1) > 0) {
-                    s[index].quantity = (s[index].quantity * 1) - 1;
-                }
-                else {
-                    s[index].quantity = 0;
-                }
-                this.cart = this.handleLogoPrices(s);
-                this.store();
-            },
-            handleLogoPrices(s) {
-                for (let i in s) {
-                    for (let k in s[i].logo) {
-                        if (typeof s[i].logo[k].price !== 'undefined') {
-                            let exist = this.logoPricesDynamix.filter((item) => {
-                                return s[i].logo[k].category && s[i].logo[k].category != "None" && s[i].logo[k].postion ? (item.option == (s[i].logo[k].category).toLowerCase().replace(/\s+/g, '-')
-                                    && item.position == (s[i].logo[k].postion).toLowerCase().replace(/\s+/g, '-')
-                                    && (s[i].quantity * 1) >= (item.from_quantity * 1) && (s[i].quantity * 1) <= (item.to_quantity * 1)) : false;
-                            });
-                            if (exist && exist.length > 0 && exist[0].price) {
-                                s[i].logo[k].price = exist[0].price;
+                            if(freeLogo > 0)
+                            {
+                                discountQty = c.quantity > freeLogo ? freeLogo : c.quantity;
+                                appliedDiscount += discountQty;
+                                logoDiscount += item.price*discountQty;
                             }
                         }
                     }
                 }
-                this.oneTimeCost = oneTimeProductCost(s);
-                return s;
-            },
-            remove(id) {
-                let index = this.cart.findIndex((v) => v.id == id);
-                let s = [...this.cart];
-                s.splice(index, 1);
-                this.cart = this.handleLogoPrices(s);
-                this.store();
-            },
-            store() {
-                localStorage.setItem('cart', JSON.stringify(this.cart))
-            },
-            offerPrice(item) {
-                console.log(window.offerPrice(item));
-                return window.offerPrice(item);
-            },
-            calculate: function () {
-                let t = {
-                    subtotal: 0,
-                    total: 0,
-                    discount: 0,
-                    logo_cost: 0,
-                    product_cost: 0,
-                    logo_discount: 0,
-                    applied_logo_discount: 0
-                }
-
+                
+                if(c.customization)
+                cost += this.getCustomizationCost(c.customization)*c.quantity*1;
+            }
+            if(appliedDiscount < 1 && haveLogo > 0)
+            {
                 let subtotal = this.cart.map((item) => {
-                    if (item.offer && item.offer) {
+                    if(item.offer && item.offer)
+                    {
                         return this.offerPrice(item).price;
                         // return item.quantity*item.price;
                     }
-                    else {
-                        return item.quantity * item.price;
-                    }
-                });
-                let total = this.cart.map((item) => item.quantity * item.price);
-                t.total = total.reduce((partialSum, a) => partialSum + a, 0);
-                t.product_cost = subtotal.reduce((partialSum, a) => partialSum + a, 0);
-
-                t.tax = 0;
-                let logoCost = this.calcaualteLogoCost();
-                t.logo_cost = logoCost.cost;
-                t.logo_discount = (logoCost.logoDiscount * 1) > 0 ? (logoCost.logoDiscount * 1) : 0;
-                t.applied_logo_discount = (logoCost.appliedDiscount * 1) > 0 ? (logoCost.appliedDiscount * 1) : 0;
-                let haveLogo = logoCost.haveLogo;
-
-                t.oneTimeCost = (t.product_cost * 1) > 0 && (this.oneTimeCost * 1) > 0 && haveLogo ? (this.oneTimeCost * 1) : 0;
-                t.subtotal = t.product_cost + (t.logo_cost - t.logo_discount) + (t.product_cost > 0 ? t.oneTimeCost : 0);
-                t.discount = this.detectDiscount(t.subtotal);
-                t.tax = this.calculateTax(t);
-                t.total = t.subtotal - t.discount + t.tax;
-                t.wallet_applied = t.total > this.walletAmount ? this.walletAmount : t.total;
-                return t;
-            },
-            getCustomizationCost(custom) {
-                return custom ? custom.reduce((sum, item) => sum + item.cost, 0) : 0;
-            },
-            calcaualteLogoCost() {
-                let cost = 0;
-                let haveLogo = 0;
-                let appliedDiscount = 0;
-                let logoDiscount = 0;
-                for (let c of this.cart) {
-                    let freeLogo = this.offerPrice(c).freeLogo;
-                    if (c.logo) {
-                        for (let item of c.logo) {
-                            if ((item.image || item.text) && !item.already_uploaded && item.category != 'None') {
-                                haveLogo += (c.quantity * 1);
-                            }
-                            if (item && item.category != 'None' && (item.price * 1) > 0) {
-                                cost += item.price * c.quantity;
-
-                                if (freeLogo > 0) {
-                                    discountQty = c.quantity > freeLogo ? freeLogo : c.quantity;
-                                    appliedDiscount += discountQty;
-                                    logoDiscount += item.price * discountQty;
-                                }
-                            }
-                        }
-                    }
-
-                    if (c.customization)
-                        cost += this.getCustomizationCost(c.customization) * c.quantity * 1;
-                }
-                if (appliedDiscount < 1 && haveLogo > 0) {
-                    let subtotal = this.cart.map((item) => {
-                        if (item.offer && item.offer) {
-                            return this.offerPrice(item).price;
-                            // return item.quantity*item.price;
-                        }
-                        else {
-                            return item.quantity * item.price;
-                        }
-                    });
-                    subtotal = subtotal.reduce((partialSum, a) => partialSum + a, 0);
-                    let prices = [];
-
-                    for (let c of this.cart) {
-                        if (c.logo) {
-                            for (let item of c.logo) {
-                                for (let i = 0; i < (c.quantity * 1); i++)
-                                    prices.push(item.price);
-                            }
-                        }
-                    }
-                    let discount = freeLogoDiscount ? freeLogoDiscount : null;
-                    if (discount && (subtotal * 1) >= (discount.min_cart_price * 1) && prices.length >= discount.quantity) {
-                        const sortedPrices = prices.sort((a, b) => a - b);
-                        const topPrices = sortedPrices.slice(0, discount.quantity);
-
-                        logoDiscount = topPrices.reduce((acc, price) => acc + price, 0);
-                        appliedDiscount = discount.quantity;
-                    }
-                }
-                console.log(`logo`, {
-                    cost,
-                    haveLogo,
-                    logoDiscount,
-                    appliedDiscount
-                });
-                return {
-                    cost,
-                    haveLogo: haveLogo > 0 ? true : false,
-                    logoDiscount,
-                    appliedDiscount
-                };
-            },
-            freeDelivery() {
-                let subtotal = this.cart.map((item) => {
-                    if (item.offer && item.offer) {
-                        return this.offerPrice(item).price;
-                        // return item.quantity*item.price;
-                    }
-                    else {
-                        return item.quantity * item.price;
+                    else
+                    {
+                        return item.quantity*item.price;
                     }
                 });
                 subtotal = subtotal.reduce((partialSum, a) => partialSum + a, 0);
-                let discount = freeDelivery ? freeDelivery : null;
-                if (discount && subtotal >= (discount.min_cart_price * 1)) {
-                    return true;
+                let prices = [];
+                
+                for(let c of this.cart )
+                {
+                    if(c.logo)
+                    {
+                        for(let item of c.logo)
+                        {
+                            for(let i = 0; i < (c.quantity*1); i++)
+                            prices.push(item.price);
+                        }
+                    }
                 }
-                return false;
-            },
-            calculateTax(t) {
-                let deductedTax = this.cart.map((item) => {
-                    if ((item.vat * 1) > 0) return 0;
-
-                    let amount = 0;
-                    if (item.offer && item.offer) {
-                        amount = this.offerPrice(item).price;
-                    }
-                    else {
-                        amount = item.quantity * item.price;
-                    }
-                    let tax = (amount) * (this.gstTax > 0 ? this.gstTax : 0);
-                    tax = (tax > 0 ? tax / 100 : 0);
-                    return tax;
-                });
-                deductedTax = deductedTax.reduce((partialSum, a) => partialSum + a, 0);
-
-                let tax = (t.subtotal - t.discount) * (this.gstTax > 0 ? this.gstTax : 0);
+                let discount = freeLogoDiscount ? freeLogoDiscount : null;
+                if(discount &&  (subtotal*1) >= (discount.min_cart_price*1) && prices.length >= discount.quantity)
+                {
+                    const sortedPrices = prices.sort((a, b) => a - b);
+                    const topPrices = sortedPrices.slice(0, discount.quantity);
+                
+                    logoDiscount = topPrices.reduce((acc, price) => acc + price, 0);
+                    appliedDiscount = discount.quantity;
+                }
+            }
+            console.log(`logo`, {
+                cost,
+                haveLogo,
+                logoDiscount,
+                appliedDiscount
+            });
+            return {
+                cost,
+                haveLogo: haveLogo > 0 ? true : false,
+                logoDiscount,
+                appliedDiscount
+            };
+        },
+        freeDelivery(){
+            let subtotal = this.cart.map((item) => {
+                if(item.offer && item.offer)
+                {
+                    return this.offerPrice(item).price;
+                    // return item.quantity*item.price;
+                }
+                else
+                {
+                    return item.quantity*item.price;
+                }
+            });
+            subtotal = subtotal.reduce((partialSum, a) => partialSum + a, 0);
+            let discount = freeDelivery ? freeDelivery : null;
+            if(discount && subtotal >= (discount.min_cart_price*1)){
+                return true;
+            }
+            return false;
+        },
+        calculateTax(t) {
+            let deductedTax = this.cart.map((item) => {
+                if((item.vat*1) > 0) return 0;
+                
+                let amount = 0;
+                if(item.offer && item.offer)
+                {
+                    amount = this.offerPrice(item).price;
+                }
+                else
+                {
+                    amount = item.quantity*item.price;
+                }
+                let tax = (amount) * (this.gstTax > 0 ? this.gstTax : 0);
                 tax = (tax > 0 ? tax / 100 : 0);
-                return (tax - deductedTax < 0) ? 0 : tax - deductedTax;
-            },
-            getImagePath(image) {
-                if (image) {
-                    image = JSON.parse(image);
-                    return image[0];
+                return tax;
+            });
+            deductedTax = deductedTax.reduce((partialSum, a) => partialSum + a, 0);
+
+            let tax = (t.subtotal - t.discount) * (this.gstTax > 0 ? this.gstTax : 0);
+            tax = (tax > 0 ? tax / 100 : 0);
+            return (tax-deductedTax < 0) ? 0 : tax-deductedTax;
+        },
+        getImagePath(image) {
+            if(image)
+            {
+                image = JSON.parse(image);
+                return image[0];
+            }
+            return null;
+        },
+        clearCart() {
+            this.cart = [];
+            localStorage.removeItem('cart');
+        },
+        detectDiscount(subtotal) {
+            if(this.appliedCoupon && this.appliedCoupon.is_percentage > 0 && this.appliedCoupon.amount > 0)
+            {
+                let disc = (subtotal * this.appliedCoupon.amount)/100;
+                return disc.toFixed(2);
+            }
+            else if(this.appliedCoupon && this.appliedCoupon.amount > 0) {
+                return this.appliedCoupon.amount.toFixed(2);
+            }
+            return 0;
+        },
+        async applyCoupon() {
+            if(!this.coupon.trim()) return false;
+            this.couponError = ``;
+            let response  = await fetch(site_url + `/api/coupons?code=` + this.coupon.trim());
+            response = await response.json();
+            console.log(response.coupon);
+            if(response && response.coupon) {
+                if(this.calculate().subtotal >= (response.coupon.min_amount*1))
+                {
+                    this.appliedCoupon = response.coupon;
+                    console.log(this.appliedCoupon);
+                    localStorage.setItem('coupon', JSON.stringify(this.appliedCoupon));
                 }
-                return null;
-            },
-            clearCart() {
-                this.cart = [];
-                localStorage.removeItem('cart');
-            },
-            detectDiscount(subtotal) {
-                if (this.appliedCoupon && this.appliedCoupon.is_percentage > 0 && this.appliedCoupon.amount > 0) {
-                    let disc = (subtotal * this.appliedCoupon.amount) / 100;
-                    return disc.toFixed(2);
-                }
-                else if (this.appliedCoupon && this.appliedCoupon.amount > 0) {
-                    return this.appliedCoupon.amount.toFixed(2);
-                }
-                return 0;
-            },
-            async applyCoupon() {
-                if (!this.coupon.trim()) return false;
-                this.couponError = ``;
-                let response = await fetch(site_url + `/api/coupons?code=` + this.coupon.trim());
-                response = await response.json();
-                console.log(response.coupon);
-                if (response && response.coupon) {
-                    if (this.calculate().subtotal >= (response.coupon.min_amount * 1)) {
-                        this.appliedCoupon = response.coupon;
-                        console.log(this.appliedCoupon);
-                        localStorage.setItem('coupon', JSON.stringify(this.appliedCoupon));
-                    }
-                    else {
-                        this.appliedCoupon = null;
-                        this.couponError = `Coupon is applicable for orders minimum amount of £${this.formatMoney(response.coupon.min_amount)}`;
-                    }
-                }
-                else {
+                else
+                {
                     this.appliedCoupon = null;
-                    this.couponError = `Entered coupon in invalid or expired.`
+                    this.couponError = `Coupon is applicable for orders minimum amount of £${this.formatMoney(response.coupon.min_amount)}`;
                 }
-            },
-            removeCoupon() {
+            }
+            else {
                 this.appliedCoupon = null;
-                this.coupon = null;
-                localStorage.removeItem('coupon');
+                this.couponError = `Entered coupon in invalid or expired.`
             }
         },
-        mounted: async function () {
-            this.gstTax = gstTax();
-            this.logoPricesDynamix = await minicart.fetchLogoPrices();
-            // this.walletAmount = walletAmount * 1;
-            this.walletAmount = 0;
-            this.initcart();
-
+        removeCoupon() {
+            this.appliedCoupon = null;
+            this.coupon = null;
+            localStorage.removeItem('coupon');
         }
-    });
+    },
+    mounted: async function() {
+        this.gstTax = gstTax();
+        this.logoPricesDynamix = await minicart.fetchLogoPrices();
+        // this.walletAmount = walletAmount * 1;
+        this.walletAmount = 0;
+        this.initcart();
+        
+    }
+});
 
 var checkoutPage = null;
-if ($('#checkout-page').length)
-    checkoutPage = new Vue({
-        el: '#checkout-page',
-        data: {
-            orderPlaced: null,
-            errors: {},
-            saving: false,
-            logoPricesDynamix: [],
-            checkout: {
-                email: loginuseremail,
-                phone: loginuserphone,
-                first_name: ``,
-                last_name: ``,
-                last_name: ``,
-                company: ``,
-                address_id: null,
-                address: ``,
-                address2: ``,
-                city: ``,
-                postalcode: ``,
-                saveInfo: false,
-                newsletterSubscribe: false,
-                ship_different_address: false,
-                ship_fname: ``,
-                ship_lname: ``,
-                ship_company: ``,
-                ship_address1: ``,
-                ship_address2: ``,
-                ship_city: ``,
-                ship_state: ``,
-                ship_zip: ``,
-                note: ``,
-                password: ``,
-            },
-            shippingOptions: null,
-            cart: [],
-            coupon: ``,
-            appliedCoupon: null,
-            couponError: ``,
-            gstTax: ``,
-            oneTimeCost: (oneTimeProductCost() * 1) > 0 ? (oneTimeProductCost() * 1) : 0,
-            parcelforceCost: 0,
-            dpdCost: 0,
-            parcelforceEnable: "",
-            dpdEnable: "",
-            walletAmount: ``
+if($('#checkout-page').length)
+checkoutPage = new Vue({
+    el: '#checkout-page',
+    data: {
+        orderPlaced: null,
+        errors: {},
+        saving: false,
+        logoPricesDynamix: [],
+        checkout:{
+            email: loginuseremail,
+            phone: loginuserphone,
+            first_name:``,
+            last_name:``,
+            last_name:``,
+            company:``,
+            address_id: null,
+            address:``,
+            address2:``,
+            city:``,
+            postalcode:``,
+            saveInfo: false,
+            newsletterSubscribe: false,
+            ship_different_address: false,
+            ship_fname: ``,
+            ship_lname: ``,
+            ship_company: ``,
+            ship_address1: ``,
+            ship_address2: ``,
+            ship_city: ``,
+            ship_state: ``,
+            ship_zip: ``,
+            note: ``,
+            password: ``,
         },
-        methods: {
-            gstVal() {
-                return gstTax();
-            },
-            initAddressSearch(sel) {
-                $(sel).autocomplete({
-                    source: function (request, response) {
-                        $.ajax({
-                            url: site_url + `/search-addresses`,
-                            type: 'GET',
-                            dataType: 'json',
-                            data: {
-                                search: request.term
-                            },
-                            success: function (data) {
-                                if (data.status && data.addresses) {
-                                    response($.map(data.addresses, function (item) {
-                                        return {
-                                            ...item, ...{
-                                                label: item.title,
-                                                value: item.title
-                                            }
-                                        };
-                                    }));
-                                } else {
-                                    response([]);
-                                }
+        shippingOptions: null,
+        cart: [],
+        coupon: ``,
+        appliedCoupon: null,
+        couponError: ``,
+        gstTax: ``,
+        oneTimeCost: (oneTimeProductCost()*1) > 0 ? (oneTimeProductCost()*1) : 0,
+        parcelforceCost: 0,
+        dpdCost: 0,
+        parcelforceEnable: "",
+        dpdEnable: "",
+        walletAmount: ``
+    },
+    methods: {
+        gstVal() {
+            return gstTax();
+        },
+        initAddressSearch(sel)  {
+            $(sel).autocomplete({
+                source: function (request, response) {
+                    $.ajax({
+                        url: site_url + `/search-addresses`,
+                        type: 'GET',
+                        dataType: 'json',
+                        data: {
+                            search: request.term
+                        },
+                        success: function (data) {
+                            if (data.status && data.addresses) {
+                                response($.map(data.addresses, function (item) {
+                                    return {...item, ...{
+                                        label: item.title,
+                                        value: item.title
+                                    }};
+                                }));
+                            } else {
+                                response([]);
                             }
-                        });
-                    },
-                    minLength: 2,
-                    search: function () {
-                        checkoutPage.checkout.address_id = null;
-                    },
-                    select: function (event, ui) {
-                        let item = ui.item;
-                        let name = item.title.split(" ");
-                        let lname = JSON.parse(JSON.stringify(name[name.length - 1]));
-                        delete name[name.length - 1];
-                        name = name.join(" ");
-                        checkoutPage.checkout.first_name = name;
-                        checkoutPage.checkout.last_name = lname;
-                        checkoutPage.checkout.address_id = item.id;
-                        checkoutPage.checkout.address = item.address;
-                        checkoutPage.checkout.address2 = item.area;
-                        checkoutPage.checkout.city = item.city;
-                        checkoutPage.checkout.postalcode = item.postcode;
-                    }
-                }).data("ui-autocomplete")._renderItem = function (ul, item) {
-                    return $("<li>")
-                        .append(`
+                        }
+                    });
+                },
+                minLength: 2,
+                search: function() {
+                    checkoutPage.checkout.address_id = null;
+                },
+                select: function (event, ui) {
+                    let item = ui.item;
+                    let name = item.title.split(" ");
+                    let lname = JSON.parse(JSON.stringify(name[name.length-1]));
+                    delete name[name.length-1];
+                    name = name.join(" ");
+                    checkoutPage.checkout.first_name = name;
+                    checkoutPage.checkout.last_name = lname;
+                    checkoutPage.checkout.address_id = item.id;
+                    checkoutPage.checkout.address = item.address;
+                    checkoutPage.checkout.address2 = item.area;
+                    checkoutPage.checkout.city = item.city;
+                    checkoutPage.checkout.postalcode = item.postcode;
+                }
+            }).data("ui-autocomplete")._renderItem = function (ul, item) {
+                return $("<li>")
+                    .append(`
                         <div class="ui-menu-item-wrapper d-flex flex-column gap-0 align-items-start">
                             <div class="autocomplete-product-title strong">${item.title}</div>
                             <div class="autocomplete-product-title small">${item.address}<br />${item.area}<br />${item.postalcode}, ${item.city}</div>
                         </div>
                     `)
-                        .appendTo(ul);
-                };
-            },
-            formatMoney(m) {
-                return (m * 1).toFixed(2);
-            },
-            cartcount() {
-                let cart = localStorage.getItem('cart');
-                cart = cart ? JSON.parse(cart) : [];
-                return cart.length;
-            },
-            initcart() {
-                let cart = localStorage.getItem('cart');
-                cart = cart ? JSON.parse(cart) : [];
-                if (cart && cart.length < 1) {
-                    window.location.href = site_url + '/';
-                }
-                this.cart = this.handleLogoPrices(cart);
+                    .appendTo(ul);
+            };
+        },
+        formatMoney(m) {
+            return (m*1).toFixed(2);
+        },
+        cartcount(){
+            let cart = localStorage.getItem('cart');
+            cart = cart ? JSON.parse(cart) : [];
+            return cart.length;
+        },
+        initcart() {
+            let cart = localStorage.getItem('cart');
+            cart = cart ? JSON.parse(cart) : [];
+            if(cart && cart.length < 1)
+            {
+                window.location.href = site_url + '/';
+            }
+            this.cart = this.handleLogoPrices(cart);
 
-                let coupon = localStorage.getItem('coupon');
-                coupon = coupon ? JSON.parse(coupon) : null;
-                if (coupon && cart.length > 0) {
-                    this.coupon = coupon.coupon_code;
-                    this.appliedCoupon = coupon;
+            let coupon = localStorage.getItem('coupon');
+            coupon = coupon ? JSON.parse(coupon) : null;
+            if(coupon && cart.length > 0)
+            {
+                this.coupon = coupon.coupon_code;
+                this.appliedCoupon = coupon;
+            }
+        },
+        renderLogoInfo(c) {
+            return renderLogoInfo(c);
+            let amount = 0;
+            let totalLogos = 0;
+            for(let a of c.logo)
+            {
+                if((a.price*1) > 0)
+                {
+                    amount += (a.price*1) * c.quantity;
+                    totalLogos += (c.quantity*1)
                 }
-            },
-            renderLogoInfo(c) {
-                return renderLogoInfo(c);
-                let amount = 0;
-                let totalLogos = 0;
-                for (let a of c.logo) {
-                    if ((a.price * 1) > 0) {
-                        amount += (a.price * 1) * c.quantity;
-                        totalLogos += (c.quantity * 1)
-                    }
-                }
+            }
 
-                return (amount > 0) ? (`Price for ` + `${(totalLogos + (totalLogos > 1 ? ` logos are ` : ` logo is `))} <strong>£${amount.toFixed(2)}</strong>`) : '';
-            },
-            renderOneTimeFeeHtml() {
-                // if(this.cart && this.cart.length > 0)
-                // {
-                //     let obj = oneTimeProductObject(this.cart);
-                //     console.log(`obj`, obj);
-                //     if(obj && obj.image !== null && obj.text !== null && obj.image > 0 && obj.text > 0){
-                //         return `<div class="d-flex flex-row gap-4">
-                //         <span class="cart__content--variant" style="color: rgb(238, 39, 97);">For Logo <strong>£${obj.image.toFixed(2)}</strong></span>
-                //             <span class="cart__content--variant" style="color: rgb(238, 39, 97);">For Text <strong>£${obj.text.toFixed(2)}</strong></span>
-                //         </div>`
-                //     }
-                // }
-                return ``;
-            },
-            manualQty(e) {
-                let qty = e.target.value;
-                let dataId = e.target.getAttribute("data-id");
-                let index = this.cart.findIndex((v) => v.id == dataId);
-                let s = [...this.cart];
-                s[index].quantity = qty;
-                this.cart = this.handleLogoPrices(s);
-                this.store();
-            },
-            increment(id) {
-                let index = this.cart.findIndex((v) => v.id == id);
-                let s = [...this.cart];
+            return (amount > 0) ? (`Price for ` + `${(totalLogos + (totalLogos > 1 ? ` logos are ` : ` logo is `))} <strong>£${amount.toFixed(2)}</strong>`) : '';
+        },
+        renderOneTimeFeeHtml() {
+            // if(this.cart && this.cart.length > 0)
+            // {
+            //     let obj = oneTimeProductObject(this.cart);
+            //     console.log(`obj`, obj);
+            //     if(obj && obj.image !== null && obj.text !== null && obj.image > 0 && obj.text > 0){
+            //         return `<div class="d-flex flex-row gap-4">
+            //         <span class="cart__content--variant" style="color: rgb(238, 39, 97);">For Logo <strong>£${obj.image.toFixed(2)}</strong></span>
+            //             <span class="cart__content--variant" style="color: rgb(238, 39, 97);">For Text <strong>£${obj.text.toFixed(2)}</strong></span>
+            //         </div>`
+            //     }
+            // }
+            return ``;
+        },
+        manualQty(e) {
+            let qty = e.target.value;
+            let dataId = e.target.getAttribute("data-id");
+            let index = this.cart.findIndex((v) => v.id == dataId);
+            let s = [...this.cart];
+            s[index].quantity = qty;
+            this.cart = this.handleLogoPrices(s);
+            this.store();
+        },
+        increment(id) {
+            let index = this.cart.findIndex((v) => v.id == id);
+            let s = [...this.cart];
 
-                if (s[index].quantity && (s[index].quantity * 1) > 0) {
-                    s[index].quantity = (s[index].quantity * 1) + 1;
-                }
-                else {
-                    s[index].quantity = 1;
-                }
-                this.cart = this.handleLogoPrices(s);
-                this.store();
-            },
-            decrement(id) {
-                let index = this.cart.findIndex((v) => v.id == id);
-                let s = [...this.cart];
+            if(s[index].quantity && (s[index].quantity * 1) > 0){
+                s[index].quantity = (s[index].quantity*1) + 1;
+            }
+            else {
+                s[index].quantity = 1;
+            }
+            this.cart = this.handleLogoPrices(s);
+            this.store();
+        },
+        decrement(id) {
+            let index = this.cart.findIndex((v) => v.id == id);
+            let s = [...this.cart];
 
-                if (s[index].quantity && (s[index].quantity * 1) > 0) {
-                    s[index].quantity = (s[index].quantity * 1) - 1;
-                }
-                else {
-                    s[index].quantity = 0;
-                }
-                this.cart = this.handleLogoPrices(s);
-                this.store();
-            },
-            handleLogoPrices(s) {
-                for (let i in s) {
-                    for (let k in s[i].logo) {
-                        if (typeof s[i].logo[k].price !== 'undefined') {
-                            let exist = this.logoPricesDynamix.filter((item) => {
-                                return s[i].logo[k].category && s[i].logo[k].category != "None" && s[i].logo[k].postion ? (item.option == (s[i].logo[k].category).toLowerCase().replace(/\s+/g, '-')
-                                    && item.position == (s[i].logo[k].postion).toLowerCase().replace(/\s+/g, '-')
-                                    && (s[i].quantity * 1) >= (item.from_quantity * 1) && (s[i].quantity * 1) <= (item.to_quantity * 1)) : false;
-                            });
-                            if (exist && exist.length > 0 && exist[0].price) {
-                                s[i].logo[k].price = exist[0].price;
-                            }
+            if(s[index].quantity && (s[index].quantity * 1) > 0){
+                s[index].quantity = (s[index].quantity*1) - 1;
+            }
+            else {
+                s[index].quantity = 0;
+            }
+            this.cart = this.handleLogoPrices(s);
+            this.store();
+        },
+        handleLogoPrices(s){
+            for(let i in s)
+            {
+                for(let k in s[i].logo)
+                {
+                    if(typeof s[i].logo[k].price !== 'undefined')
+                    {
+                        let exist = this.logoPricesDynamix.filter((item) => {
+                            return s[i].logo[k].category && s[i].logo[k].category != "None" && s[i].logo[k].postion ? (item.option == (s[i].logo[k].category).toLowerCase().replace(/\s+/g , '-')
+                                && item.position == (s[i].logo[k].postion).toLowerCase().replace(/\s+/g , '-')
+                                && (s[i].quantity*1) >= (item.from_quantity*1) && (s[i].quantity*1) <= (item.to_quantity*1)) : false;
+                        });
+                        if(exist && exist.length > 0 && exist[0].price)
+                        {
+                            s[i].logo[k].price = exist[0].price;
                         }
                     }
                 }
-                this.oneTimeCost = oneTimeProductCost(s);
-                return s;
-            },
-            handleShipping(e) {
-                let option = e.target.value;
-                if (option == 'parcelforce')
-                    this.shippingOptions = { value: "Parcel Force", price: this.parcelforceCost };
-                else if (option == 'dpd')
-                    this.shippingOptions = { value: "DPD", price: this.dpdCost };
+            }
+            this.oneTimeCost = oneTimeProductCost(s);
+            return s;
+        },
+        handleShipping(e) {
+            let option = e.target.value;
+            if(option == 'parcelforce')
+                this.shippingOptions = { value: "Parcel Force", price: this.parcelforceCost };
+            else if(option == 'dpd')
+                this.shippingOptions = { value: "DPD", price: this.dpdCost };
+            else
+                this.shippingOptions = { value: option, price: 0 };
+        },
+        remove(id) {
+            let index = this.cart.findIndex((v) => v.id == id);
+            let s = [...this.cart];
+            s.splice(index, 1);
+            this.cart = this.handleLogoPrices(s);
+            this.store();
+        },
+        store() {
+            localStorage.setItem('cart', JSON.stringify(this.cart))
+        },
+        offerPrice(item) {
+            return window.offerPrice(item);
+        },
+        calculate: function(){
+            let t = {
+                subtotal: 0,
+                total: 0,
+                discount: 0,
+                logo_cost: 0,
+                product_cost:0,
+                logo_discount:0,
+                applied_logo_discount: 0,
+                shipping_cost: 0
+            }
+
+            let subtotal = this.cart.map((item) => {
+                if(item.offer && item.offer)
+                {
+                    return this.offerPrice(item).price;
+                    // return item.quantity*item.price;
+                }
                 else
-                    this.shippingOptions = { value: option, price: 0 };
-            },
-            remove(id) {
-                let index = this.cart.findIndex((v) => v.id == id);
-                let s = [...this.cart];
-                s.splice(index, 1);
-                this.cart = this.handleLogoPrices(s);
-                this.store();
-            },
-            store() {
-                localStorage.setItem('cart', JSON.stringify(this.cart))
-            },
-            offerPrice(item) {
-                return window.offerPrice(item);
-            },
-            calculate: function () {
-                let t = {
-                    subtotal: 0,
-                    total: 0,
-                    discount: 0,
-                    logo_cost: 0,
-                    product_cost: 0,
-                    logo_discount: 0,
-                    applied_logo_discount: 0,
-                    shipping_cost: 0
+                {
+                    return item.quantity*item.price;
                 }
+            });
+            let total = this.cart.map((item) => item.quantity*item.price);
+            t.total = total.reduce((partialSum, a) => partialSum + a, 0);
+            t.product_cost = subtotal.reduce((partialSum, a) => partialSum + a, 0);
+            
+            t.tax = 0;
+            let logoCost = this.calcaualteLogoCost();
+            t.logo_cost = logoCost.cost;
+            t.logo_discount = (logoCost.logoDiscount*1) > 0 ? (logoCost.logoDiscount*1) : 0;
+            t.applied_logo_discount = (logoCost.appliedDiscount*1) > 0 ? (logoCost.appliedDiscount*1) : 0;
+            let haveLogo =  logoCost.haveLogo;
+            
+            t.oneTimeCost = (t.product_cost*1) > 0 && (this.oneTimeCost*1) > 0 && haveLogo ? (this.oneTimeCost*1) : 0;
+            t.subtotal = t.product_cost + (t.logo_cost - t.logo_discount) + (t.product_cost > 0 ? t.oneTimeCost : 0 );
+            t.discount = this.detectDiscount(t.subtotal);
+            t.tax = this.calculateTax(t);
+            t.shipping_cost = ( this.shippingOptions && this.shippingOptions.price * 1 > 0 ? this.shippingOptions.price * 1 : 0 );
+            t.total = t.subtotal - t.discount + t.tax + t.shipping_cost;
+            t.wallet_applied = t.total > this.walletAmount ? this.walletAmount : t.total;
+            return t;
+        },
+        getCustomizationCost(custom)
+        {
+            return custom ? custom.reduce((sum, item) => sum + item.cost, 0) : 0;
+        },
+        calcaualteLogoCost()
+        {
+            let cost = 0;
+            let haveLogo = 0;
+            let appliedDiscount = 0;
+            let logoDiscount = 0;
+            for(let c of this.cart )
+            {
+                let freeLogo = this.offerPrice(c).freeLogo;
+                if(c.logo)
+                {
+                    for(let item of c.logo)
+                    {
+                        if( (item.image || item.text) && !item.already_uploaded && item.category != 'None' )
+                        {
+                            haveLogo += (c.quantity*1);
+                        }
 
+                        if(item && item.category != 'None' && (item.price*1) > 0)
+                        {
+                            cost += item.price*c.quantity;
+
+                            if(freeLogo > 0)
+                            {
+                                discountQty = c.quantity > freeLogo ? freeLogo : c.quantity;
+                                appliedDiscount += discountQty;
+                                logoDiscount += item.price*discountQty;
+                            }
+                        }
+                    }
+                }
+                if(c.customization)
+                cost += this.getCustomizationCost(c.customization)*c.quantity*1;
+            }
+            if(appliedDiscount < 1 && haveLogo > 0)
+            {
                 let subtotal = this.cart.map((item) => {
-                    if (item.offer && item.offer) {
+                    if(item.offer && item.offer)
+                    {
                         return this.offerPrice(item).price;
                         // return item.quantity*item.price;
                     }
-                    else {
-                        return item.quantity * item.price;
-                    }
-                });
-                let total = this.cart.map((item) => item.quantity * item.price);
-                t.total = total.reduce((partialSum, a) => partialSum + a, 0);
-                t.product_cost = subtotal.reduce((partialSum, a) => partialSum + a, 0);
-
-                t.tax = 0;
-                let logoCost = this.calcaualteLogoCost();
-                t.logo_cost = logoCost.cost;
-                t.logo_discount = (logoCost.logoDiscount * 1) > 0 ? (logoCost.logoDiscount * 1) : 0;
-                t.applied_logo_discount = (logoCost.appliedDiscount * 1) > 0 ? (logoCost.appliedDiscount * 1) : 0;
-                let haveLogo = logoCost.haveLogo;
-
-                t.oneTimeCost = (t.product_cost * 1) > 0 && (this.oneTimeCost * 1) > 0 && haveLogo ? (this.oneTimeCost * 1) : 0;
-                t.subtotal = t.product_cost + (t.logo_cost - t.logo_discount) + (t.product_cost > 0 ? t.oneTimeCost : 0);
-                t.discount = this.detectDiscount(t.subtotal);
-                t.tax = this.calculateTax(t);
-                t.shipping_cost = (this.shippingOptions && this.shippingOptions.price * 1 > 0 ? this.shippingOptions.price * 1 : 0);
-                t.total = t.subtotal - t.discount + t.tax + t.shipping_cost;
-                t.wallet_applied = t.total > this.walletAmount ? this.walletAmount : t.total;
-                return t;
-            },
-            getCustomizationCost(custom) {
-                return custom ? custom.reduce((sum, item) => sum + item.cost, 0) : 0;
-            },
-            calcaualteLogoCost() {
-                let cost = 0;
-                let haveLogo = 0;
-                let appliedDiscount = 0;
-                let logoDiscount = 0;
-                for (let c of this.cart) {
-                    let freeLogo = this.offerPrice(c).freeLogo;
-                    if (c.logo) {
-                        for (let item of c.logo) {
-                            if ((item.image || item.text) && !item.already_uploaded && item.category != 'None') {
-                                haveLogo += (c.quantity * 1);
-                            }
-
-                            if (item && item.category != 'None' && (item.price * 1) > 0) {
-                                cost += item.price * c.quantity;
-
-                                if (freeLogo > 0) {
-                                    discountQty = c.quantity > freeLogo ? freeLogo : c.quantity;
-                                    appliedDiscount += discountQty;
-                                    logoDiscount += item.price * discountQty;
-                                }
-                            }
-                        }
-                    }
-                    if (c.customization)
-                        cost += this.getCustomizationCost(c.customization) * c.quantity * 1;
-                }
-                if (appliedDiscount < 1 && haveLogo > 0) {
-                    let subtotal = this.cart.map((item) => {
-                        if (item.offer && item.offer) {
-                            return this.offerPrice(item).price;
-                            // return item.quantity*item.price;
-                        }
-                        else {
-                            return item.quantity * item.price;
-                        }
-                    });
-                    subtotal = subtotal.reduce((partialSum, a) => partialSum + a, 0);
-                    let prices = [];
-                    for (let c of this.cart) {
-                        if (c.logo) {
-                            for (let item of c.logo) {
-                                for (let i = 0; i < (c.quantity * 1); i++)
-                                    prices.push(item.price);
-                            }
-                        }
-                    }
-                    let discount = freeLogoDiscount ? freeLogoDiscount : null;
-                    if (discount && (subtotal * 1) >= (discount.min_cart_price * 1) && prices.length >= discount.quantity) {
-                        const sortedPrices = prices.sort((a, b) => a - b);
-                        const topPrices = sortedPrices.slice(0, discount.quantity);
-
-                        logoDiscount = topPrices.reduce((acc, price) => acc + price, 0);
-                        appliedDiscount = discount.quantity;
-                    }
-                }
-                return {
-                    cost,
-                    haveLogo: haveLogo > 0 ? true : false,
-                    logoDiscount,
-                    appliedDiscount
-                };
-            },
-            freeDelivery() {
-                let subtotal = this.cart.map((item) => {
-                    if (item.offer && item.offer) {
-                        return this.offerPrice(item).price;
-                        // return item.quantity*item.price;
-                    }
-                    else {
-                        return item.quantity * item.price;
+                    else
+                    {
+                        return item.quantity*item.price;
                     }
                 });
                 subtotal = subtotal.reduce((partialSum, a) => partialSum + a, 0);
-                let discount = freeDelivery ? freeDelivery : null;
-                if (discount && subtotal >= (discount.min_cart_price * 1)) {
-                    return true;
-                }
-                return false;
-            },
-            calculateTax(t) {
-                let deductedTax = this.cart.map((item) => {
-                    if ((item.vat * 1) > 0) return 0;
-
-                    let amount = 0;
-                    if (item.offer && item.offer) {
-                        amount = this.offerPrice(item).price;
-                    }
-                    else {
-                        amount = item.quantity * item.price;
-                    }
-                    let tax = (amount) * (this.gstTax > 0 ? this.gstTax : 0);
-                    tax = (tax > 0 ? tax / 100 : 0);
-                    return tax;
-                });
-                deductedTax = deductedTax.reduce((partialSum, a) => partialSum + a, 0);
-
-                let tax = (t.subtotal - t.discount) * (this.gstTax > 0 ? this.gstTax : 0);
-                tax = (tax > 0 ? tax / 100 : 0);
-                return (tax - deductedTax < 0) ? 0 : tax - deductedTax;
-            },
-            getImagePath(image) {
-                if (image) {
-                    image = JSON.parse(image);
-                    return image[0];
-                }
-                return null;
-            },
-            clearCart() {
-                this.cart = [];
-                localStorage.removeItem('cart');
-            },
-            detectDiscount(subtotal) {
-                if (this.appliedCoupon && this.appliedCoupon.is_percentage > 0 && this.appliedCoupon.amount > 0) {
-                    let disc = (subtotal * this.appliedCoupon.amount) / 100;
-                    return disc;
-                }
-                else if (this.appliedCoupon && this.appliedCoupon.amount > 0) {
-                    return this.appliedCoupon.amount > subtotal ? subtotal : this.appliedCoupon.amount;
-                }
-                return 0;
-            },
-            async applyCoupon() {
-                if (!this.coupon.trim()) return false;
-                this.couponError = ``;
-                let response = await fetch(site_url + `/api/coupons?code=` + this.coupon.trim());
-                response = await response.json();
-                console.log(response.coupon);
-                if (response && response.coupon) {
-                    this.appliedCoupon = response.coupon;
-                    console.log(this.appliedCoupon);
-                    localStorage.setItem('coupon', JSON.stringify(this.appliedCoupon));
-                }
-                else {
-                    this.appliedCoupon = null;
-                    this.couponError = `Entered coupon in invalid or expired.`
-                }
-            },
-            removeCoupon() {
-                this.appliedCoupon = null;
-                this.coupon = null;
-                localStorage.removeItem('coupon');
-            },
-            applyPayMethod(method) {
-                if (method == 'wallet') {
-                    this.walletAmount = walletAmount * 1;
-                }
-                else {
-                    this.walletAmount = 0;
-                }
-            },
-            async submit() {
-                if (this.checkout.saveInfo) {
-                    localStorage.setItem('addressInfo', JSON.stringify(this.checkout));
-                }
-                if (this.saving) return false;
-                let haveErrors = false;
-
-
-                if (!this.shippingOptions) {
-                    set_notification('error', 'Please select the shipping and delivery option.')
-                    haveErrors = true;
-                }
-
-                let errs = {};
-                let checkout = JSON.parse(JSON.stringify(this.checkout));
-                for (let e in checkout) {
-                    let skips = ['company', 'ship_company', 'note'];
-                    if (skips.includes(e)) continue;
-                    if (!checkout['ship_different_address'] && (['ship_fname', 'ship_lname', 'ship_company', 'ship_address1', 'ship_address2', 'ship_city', 'ship_state', 'ship_zip']).includes(e)) continue;
-                    if (!checkout['saveInfo'] && (['password']).includes(e)) continue;
-
-                    if (checkout[e] === ``) {
-                        errs[e] = ``;
-                        haveErrors = true;
-                    }
-                }
-                if (!haveErrors) {
-                    this.errors = {};
-                    let walletApplied = this.calculate().wallet_applied;
-                    let data = { ...checkout, ...{ coupon: this.appliedCoupon, shipping_gateway: (this.shippingOptions && this.shippingOptions.value ? this.shippingOptions.value : null), shipping: (this.shippingOptions && this.shippingOptions.price ? this.shippingOptions.price : 0), cart: this.cart, token: $('#checkout-page').attr('data-token') }, walletApplied: walletApplied };
-                    this.saving = true;
-                    data.lastId = localStorage.getItem('orderId') ? localStorage.getItem('orderId') : null;
-                    let response = await fetch(site_url + '/api/orders/booking', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify(data),
-                    });
-                    response = await response.json();
-                    if (response && response.status) {
-                        if (response.amount * 1 < 1 && response.walletApplied && response.id) {
-                            return fetch(site_url + '/paypal/capture-order', {
-                                method: 'post',
-                                headers: {
-                                    'content-type': 'application/json',
-                                    'X-CSRF-TOKEN': csrf_token()
-                                },
-                                body: JSON.stringify({
-                                    orderId: response.id,
-                                    wallet: 1
-                                })
-                            }).then(res => res.json())
-                                .then(details => {
-                                    if (details?.status && details?.id) {
-                                        // alert('yes');
-                                        localStorage.removeItem('cart');
-                                        localStorage.removeItem('coupon');
-                                        window.location.href = site_url + "/paypal/success?id=" + details.id;
-                                    } else {
-                                        if (details && !details.status && details.message) {
-                                            set_notification('error', details.message);
-                                        }
-                                        setTimout(function () {
-                                            window.location.href = site_url + "/paypal/error";
-                                        }, 1000);
-                                    }
-                                });
+                let prices = [];
+                for(let c of this.cart )
+                {
+                    if(c.logo)
+                    {
+                        for(let item of c.logo)
+                        {
+                            for(let i = 0; i < (c.quantity*1); i++)
+                            prices.push(item.price);
                         }
-                        // localStorage.setItem('orderId', response.orderId);
-                        // this.orderPlaced = response.orderId;
-                        // await sleep(400);
-                        // window.scrollTo(0,0)
                     }
-                    else if (response && response.message) {
-                        set_notification('error', response.message)
-                    }
-                    else {
-                        set_notification('error', 'Something went wrong. Order could not be placed.')
-                    }
-                    this.saving = false;
+                }
+                let discount = freeLogoDiscount ? freeLogoDiscount : null;
+                if(discount &&  (subtotal*1) >= (discount.min_cart_price*1) && prices.length >= discount.quantity)
+                {
+                    const sortedPrices = prices.sort((a, b) => a - b);
+                    const topPrices = sortedPrices.slice(0, discount.quantity);
+                
+                    logoDiscount = topPrices.reduce((acc, price) => acc + price, 0);
+                    appliedDiscount = discount.quantity;
+                }
+            }
+            return {
+                cost,
+                haveLogo: haveLogo > 0 ? true : false,
+                logoDiscount,
+                appliedDiscount
+            };
+        },
+        freeDelivery(){
+            let subtotal = this.cart.map((item) => {
+                if(item.offer && item.offer)
+                {
+                    return this.offerPrice(item).price;
+                    // return item.quantity*item.price;
+                }
+                else
+                {
+                    return item.quantity*item.price;
+                }
+            });
+            subtotal = subtotal.reduce((partialSum, a) => partialSum + a, 0);
+            let discount = freeDelivery ? freeDelivery : null;
+            if(discount && subtotal >= (discount.min_cart_price*1)){
+                return true;
+            }
+            return false;
+        },
+        calculateTax(t) {
+            let deductedTax = this.cart.map((item) => {
+                if((item.vat*1) > 0) return 0;
+                
+                let amount = 0;
+                if(item.offer && item.offer)
+                {
+                    amount = this.offerPrice(item).price;
+                }
+                else
+                {
+                    amount = item.quantity*item.price;
+                }
+                let tax = (amount) * (this.gstTax > 0 ? this.gstTax : 0);
+                tax = (tax > 0 ? tax / 100 : 0);
+                return tax;
+            });
+            deductedTax = deductedTax.reduce((partialSum, a) => partialSum + a, 0);
 
-                    return response;
-                }
-                else {
-                    console.log(errs);
-                    this.errors = errs;
-                }
+            let tax = (t.subtotal - t.discount) * (this.gstTax > 0 ? this.gstTax : 0);
+            tax = (tax > 0 ? tax / 100 : 0);
+            return (tax-deductedTax < 0) ? 0 : tax-deductedTax;
+        },
+        getImagePath(image) {
+            if(image)
+            {
+                image = JSON.parse(image);
+                return image[0];
+            }
+            return null;
+        },
+        clearCart() {
+            this.cart = [];
+            localStorage.removeItem('cart');
+        },
+        detectDiscount(subtotal) {
+            if(this.appliedCoupon && this.appliedCoupon.is_percentage > 0 && this.appliedCoupon.amount > 0)
+            {
+                let disc = (subtotal * this.appliedCoupon.amount)/100;
+                return disc;
+            }
+            else if(this.appliedCoupon && this.appliedCoupon.amount > 0) {
+                return this.appliedCoupon.amount > subtotal ? subtotal : this.appliedCoupon.amount;
+            }
+            return 0;
+        },
+        async applyCoupon() {
+            if(!this.coupon.trim()) return false;
+            this.couponError = ``;
+            let response  = await fetch(site_url + `/api/coupons?code=` + this.coupon.trim());
+            response = await response.json();
+            console.log(response.coupon);
+            if(response && response.coupon) {
+                this.appliedCoupon = response.coupon;
+                console.log(this.appliedCoupon);
+                localStorage.setItem('coupon', JSON.stringify(this.appliedCoupon));
+            }
+            else {
+                this.appliedCoupon = null;
+                this.couponError = `Entered coupon in invalid or expired.`
             }
         },
-        mounted: async function () {
-            this.walletAmount = 0;
-            if (billingAddress) {
-                let item = billingAddress;
-                let name = item.title.split(" ");
-                let lname = JSON.parse(JSON.stringify(name[name.length - 1]));
-                delete name[name.length - 1];
-                name = name.join(" ");
-                this.checkout.first_name = name;
-                this.checkout.last_name = lname;
-                this.checkout.address_id = item.id;
-                this.checkout.address = item.address;
-                this.checkout.address2 = item.area;
-                this.checkout.city = item.city;
-                this.checkout.postalcode = item.postcode;
+        removeCoupon() {
+            this.appliedCoupon = null;
+            this.coupon = null;
+            localStorage.removeItem('coupon');
+        },
+        applyPayMethod(method) {
+            if(method == 'wallet') {
+                this.walletAmount = walletAmount * 1;
             }
-            this.parcelforceEnable = parcelforceEnable;
-            this.dpdEnable = dpdEnable;
-            this.parcelforceCost = parcelforceCost * 1;
-            this.dpdCost = dpdCost * 1;
-            this.gstTax = gstTax();
-            this.logoPricesDynamix = await minicart.fetchLogoPrices();
-            this.initcart();
-            this.initAddressSearch('#fname');
-            this.initAddressSearch('#lname');
-            this.initAddressSearch('#address');
-            this.initAddressSearch('#address2');
-            await sleep(1000);
-            initPaypal();
-            // let addressInfo = localStorage.getItem('addressInfo');
-            // if(addressInfo) {
-            //     addressInfo = JSON.parse(addressInfo);
-            //     this.checkout = {...this.checkout, ...addressInfo}
-            // }
+            else {
+                this.walletAmount = 0;
+            }
+        },
+        async submit() {
+            if(this.checkout.saveInfo) {
+                localStorage.setItem('addressInfo', JSON.stringify(this.checkout));
+            }
+            if(this.saving) return false;
+            let haveErrors = false;
+
+            
+            if(!this.shippingOptions) {
+                set_notification('error', 'Please select the shipping and delivery option.')
+                haveErrors = true;
+            }
+
+            let errs = {};
+            let checkout = JSON.parse(JSON.stringify(this.checkout));
+            for(let e in checkout) {
+                let skips = ['company', 'ship_company', 'note'];
+                if(skips.includes(e)) continue;
+                if(!checkout['ship_different_address'] && (['ship_fname', 'ship_lname', 'ship_company', 'ship_address1', 'ship_address2', 'ship_city', 'ship_state', 'ship_zip']).includes(e)) continue;
+                if(!checkout['saveInfo'] && (['password']).includes(e)) continue;
+                
+                if(checkout[e] === ``) {
+                    errs[e] = ``;
+                    haveErrors = true;
+                }
+            }
+            if(!haveErrors)
+            {
+                this.errors = {};
+                let walletApplied = this.calculate().wallet_applied;
+                let data = {...checkout, ...{coupon: this.appliedCoupon, shipping_gateway: ( this.shippingOptions && this.shippingOptions.value ? this.shippingOptions.value : null ), shipping: ( this.shippingOptions && this.shippingOptions.price ? this.shippingOptions.price : 0 ), cart: this.cart, token: $('#checkout-page').attr('data-token')}, walletApplied: walletApplied };
+                this.saving = true;
+                data.lastId = localStorage.getItem('orderId') ? localStorage.getItem('orderId') : null;
+                let response = await fetch(site_url + '/api/orders/booking', {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+					},
+					body: JSON.stringify(data),
+				});
+				response = await response.json();
+                if(response && response.status)
+                {
+                    if(response.amount *1 < 1 && response.walletApplied && response.id)
+                    {
+                        return fetch(site_url+'/paypal/capture-order', {
+                            method: 'post',
+                            headers: {
+                                'content-type': 'application/json',
+                                'X-CSRF-TOKEN': csrf_token()
+                            },
+                            body: JSON.stringify({
+                                orderId: response.id,
+                                wallet: 1
+                            })
+                        }).then(res => res.json())
+                        .then(details => {
+                            if(details?.status && details?.id) {
+                                // alert('yes');
+                                localStorage.removeItem('cart');
+                                localStorage.removeItem('coupon');
+                                window.location.href = site_url + "/paypal/success?id=" + details.id;
+                            } else {
+                                if(details && !details.status && details.message) {
+                                    set_notification('error', details.message);
+                                }
+                                setTimout(function() {
+                                    window.location.href = site_url + "/paypal/error";
+                                }, 1000);
+                            }
+                        });
+                    }
+                    // localStorage.setItem('orderId', response.orderId);
+                    // this.orderPlaced = response.orderId;
+                    // await sleep(400);
+                    // window.scrollTo(0,0)
+                }
+                else if(response && response.message)
+                {
+                    set_notification('error', response.message)
+                }
+                else
+                {
+                    set_notification('error', 'Something went wrong. Order could not be placed.')
+                }
+                this.saving = false;
+
+                return response;
+            }
+            else
+            {
+                console.log(errs);
+                this.errors = errs;
+            }
         }
-    });
+    },
+    mounted: async function() {
+        this.walletAmount = 0;
+        if(billingAddress) {
+            let item = billingAddress;
+            let name = item.title.split(" ");
+            let lname = JSON.parse(JSON.stringify(name[name.length-1]));
+            delete name[name.length-1];
+            name = name.join(" ");
+            this.checkout.first_name = name;
+            this.checkout.last_name = lname;
+            this.checkout.address_id = item.id;
+            this.checkout.address = item.address;
+            this.checkout.address2 = item.area;
+            this.checkout.city = item.city;
+            this.checkout.postalcode = item.postcode;
+        }
+        this.parcelforceEnable = parcelforceEnable;
+        this.dpdEnable = dpdEnable;
+        this.parcelforceCost = parcelforceCost*1;
+        this.dpdCost = dpdCost*1;
+        this.gstTax = gstTax();
+        this.logoPricesDynamix = await minicart.fetchLogoPrices();
+        this.initcart();
+        this.initAddressSearch('#fname');
+        this.initAddressSearch('#lname');
+        this.initAddressSearch('#address');
+        this.initAddressSearch('#address2');
+        await sleep(1000);
+        initPaypal();
+        // let addressInfo = localStorage.getItem('addressInfo');
+        // if(addressInfo) {
+        //     addressInfo = JSON.parse(addressInfo);
+        //     this.checkout = {...this.checkout, ...addressInfo}
+        // }
+    }
+});
 
 
 var customizeProductPage = new Vue({
@@ -2205,9 +2361,10 @@ var customizeProductPage = new Vue({
                 await this.initSlider('customzise-sub');
             }, 300);
         },
-        initSlider(sliderID) {
-            var appendArrowsClassName = '#' + sliderID + '-arrows';
-            $('#' + sliderID).slick({
+        initSlider(sliderID)
+        {
+            var appendArrowsClassName = '#'+sliderID+'-arrows';
+            $('#'+sliderID).slick({
                 dots: false,
                 infinite: true,
                 speed: 1000,
@@ -2242,18 +2399,19 @@ var customizeProductPage = new Vue({
                 ],
                 prevArrow: '<span class="slider-btn slider-prev"><i class="fi-rs-angle-left"></i></span>',
                 nextArrow: '<span class="slider-btn slider-next"><i class="fi-rs-angle-right"></i></span>',
-                appendArrows: (appendArrowsClassName),
+                appendArrows:  (appendArrowsClassName),
             });
         },
     },
-    mounted: function () {
+    mounted: function() {
         setTimeout(async () => {
             await this.initSlider('customzise-p');
         }, 300);
     }
 });
 
-if ($("#gift-voucher").length > 0) {
+if($("#gift-voucher").length > 0)
+{
     var voucherApp = new Vue({
         el: "#gift-voucher",
         data: {
@@ -2276,7 +2434,7 @@ if ($("#gift-voucher").length > 0) {
         },
         methods: {
             decimal(v) {
-                return (v * 1).toFixed(2);
+                return (v*1).toFixed(2);
             },
             validateForm() {
                 this.errors = {};
@@ -2311,21 +2469,20 @@ if ($("#gift-voucher").length > 0) {
 
                 this.loading = true;
 
-                const response = await fetch(site_url + "/voucher-submit", {
+                const response = await fetch(site_url+"/voucher-submit", {
                     method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
+                    headers: { "Content-Type": "application/json",
                         "X-CSRF-TOKEN": csrf_token()
                     },
-                    body: JSON.stringify({ ...this.form, ...{ applied: this.appliedAmount() } })
+                    body: JSON.stringify({...this.form, ...{applied: this.appliedAmount()}})
                 });
 
                 const data = await response.json();
 
                 if (data.status) {
-                    if (data.paid == 'paid') {
+                    if(data.paid == 'paid') {
                         voucherApp.paid = true;
-                        window.scrollTo(0, 0);
+                        window.scrollTo(0,0);
                     }
                     else {
                         return data;
@@ -2342,12 +2499,12 @@ if ($("#gift-voucher").length > 0) {
                 let payable = this.walletAmount >= amount ? 0 : (amount - this.walletAmount);
                 return {
                     amount: amount,
-                    applied: amount - payable,
+                    applied: amount-payable,
                     pay: payable
                 }
             },
             applyPayMethod(method) {
-                if (method == 'wallet') {
+                if(method == 'wallet') {
                     this.walletAmount = walletAmount * 1;
                 }
                 else {
@@ -2355,7 +2512,7 @@ if ($("#gift-voucher").length > 0) {
                 }
             },
         },
-        mounted: async function () {
+        mounted: async function() {
             await sleep(1000);
             this.walletAmount = 0;
             initPaypal();
