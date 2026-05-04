@@ -471,6 +471,16 @@
 												<label class="custom-control-label">Embroidered Logo</label>
 											</div>
 											@endif
+											@if(isset($product) && $product->id)
+											<div class="custom-control">
+												<label class="custom-toggle">
+													<input type="hidden" name="update_variants" value="0">
+													<input type="checkbox" name="update_variants" v-model="update_variants" value="1">
+													<span class="custom-toggle-slider rounded-circle" data-label-off="No" data-label-on="Yes"></span>
+												</label>
+												<label class="custom-control-label">Update all variants ?</label>
+											</div>
+											@endif
 										</div>
 									</div>
 								</div>

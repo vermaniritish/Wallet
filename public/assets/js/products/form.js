@@ -37,7 +37,8 @@ let order = new Vue({
         non_exchange: 0,
         shop_visible: 0,
         website_visible: 0,
-        size_guide_video: ``
+        size_guide_video: ``,
+        update_variants: 0
     },
     mounted: function() {
         
