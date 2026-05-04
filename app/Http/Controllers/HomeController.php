@@ -88,7 +88,7 @@ class HomeController extends BaseController
 
     public function listing(Request $request, $category, $subCategory = null)
     {
-        $product = Products::select(['id'])->where('slug', 'LIKE', $category)->where('status', 1)->limit(1)->first();
+        $product = Products::select(['id'])->where('slug', 'LIKE', $category)->where('status', 1)->where('website_visible', 1)->limit(1)->first();
         if($product)
         {
             $product = Products::select([
