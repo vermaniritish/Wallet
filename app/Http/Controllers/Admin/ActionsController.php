@@ -304,13 +304,14 @@ class ActionsController extends AppController
 		if($request->ids)
 		{
 			$ids = $request->ids ? explode(",", $request->ids) : [-1];
-			$school = DB::table('products')
+			$schoolRecords = DB::table('products')
 				->join('schools', 'products.school_id', '=', 'schools.id')
 				->whereIn('products.id', $ids)
 				->whereNotNull('products.school_id')
 				->select('schools.shops', 'schools.id')
-				->get()
-				->map(function ($item) {
+				->get();
+			
+			$school = $schoolRecords->map(function ($item) {
 					$shops = json_decode($item->shops, true) ?? [];
 
 					// remove null values
@@ -326,12 +327,13 @@ class ActionsController extends AppController
 				->first();
 
 			$shopSlugs = $school ? $school['shops'] : [];
+			pr($schoolRecords->count());
 			pr($shopSlugs); die;
 		}
 
 		return Response()->json([
 			'status' => 'success',
-			'logoprices' => $logoprices
+			'logoprices' => $logoprices,
 			'shopSlugs' => $shopSlugs
 		]);
 	}
