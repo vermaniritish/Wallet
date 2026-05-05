@@ -134,7 +134,7 @@ $gstTax = Settings::get('gst'); ?>
                             </div>
                             <template v-if="!isSchoolUniform || shopsAllowed.length > 0">
                             @foreach($shops as $k => $s)
-                            <div class="custome-radio">
+                            <div class="custome-radio" v-if="!isSchoolUniform || shopsAllowed.includes(`{{ $s->slug }}`)">
                                 <input class="form-check-input" required="" type="radio" name="shipping_option" id="exampleRadios3a{{$k}}" @change="handleShipping" value="Collect From {{$s->name}}">
                                 <label class="form-check-label" for="exampleRadios3a{{$k}}" data-bs-toggle="collapse" data-target="#collectfromaston{{$k}}" aria-controls="collectfromaston{{$k}}">£0.00 - Collect From {{$s->name}}</label>
                                 <div class="form-group collapse in" id="collectfromaston">
