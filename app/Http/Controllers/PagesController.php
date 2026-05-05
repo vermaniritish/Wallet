@@ -50,7 +50,7 @@ class PagesController extends BaseController
     public function checkout(Request $request) 
     {
         $user = $request->session()->get('user');
-        $shops = Shops::select(['name'])->where('allow_pickup', 1)->where('status', 1)->get();
+        $shops = Shops::select(['name', 'slug'])->where('allow_pickup', 1)->where('status', 1)->get();
         return view('frontend.checkout.index', [
             'page' => null,
             'user' => $user ? Users::find($user->id) : null,

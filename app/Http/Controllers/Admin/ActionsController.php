@@ -351,9 +351,39 @@ class ActionsController extends AppController
 	function logoPrices(Request $request)
 	{
 		$logoprices = LogoPrices::get();
+		if($request->ids)
+		{
+			$ids = $request->ids ? explode(",", $request->ids) : [-1];
+			$schoolRecords = DB::table('products')
+				->join('schools', 'products.school_id', '=', 'schools.id')
+				->whereIn('products.id', $ids)
+				->whereNotNull('products.school_id')
+				->select('schools.shops', 'schools.id')
+				->get();
+			
+			$school = $schoolRecords->map(function ($item) {
+					$shops = json_decode($item->shops, true) ?? [];
+
+					// remove null values
+					$filtered = array_values(array_filter($shops));
+
+					return [
+						'school_id' => $item->id,
+						'shops' => $filtered,
+						'count' => count($filtered)
+					];
+				})
+				->sortByDesc('count')
+				->first();
+
+			$shopSlugs = $school ? $school['shops'] : [];
+		}
+
 		return Response()->json([
 			'status' => 'success',
-			'logoprices' => $logoprices
+			'logoprices' => $logoprices,
+			'isSchoolUniform' => $schoolRecords->count() > 0,
+			'shopSlugs' =>  $shopSlugs 
 		]);
 	}
 }

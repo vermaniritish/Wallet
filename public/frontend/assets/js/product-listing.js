@@ -1035,7 +1035,10 @@ var minicart = new Vue({
         },
         async fetchLogoPrices(){
             if(this.logoPricesDynamix && this.logoPricesDynamix.length < 1){
-                let res = await fetch(site_url+'/api/actions/logo-prices');
+                let cart = localStorage.getItem('cart');
+                cart = cart ? JSON.parse(cart) : [];    
+                let ids = cart.map(c => c.product_id);
+                let res = await fetch(site_url+'/api/actions/logo-prices?ids='+(ids ? ids.join(',') : ``));
                 res = await res.json();
                 this.logoPricesDynamix = res.logoprices;
             }
@@ -1760,6 +1763,8 @@ if($('#checkout-page').length)
 checkoutPage = new Vue({
     el: '#checkout-page',
     data: {
+        shopsAllowed: [],
+        isSchoolUniform: true,
         orderPlaced: null,
         errors: {},
         saving: false,
@@ -2328,7 +2333,14 @@ checkoutPage = new Vue({
         this.parcelforceCost = parcelforceCost*1;
         this.dpdCost = dpdCost*1;
         this.gstTax = gstTax();
-        this.logoPricesDynamix = await minicart.fetchLogoPrices();
+        let cart = localStorage.getItem('cart');
+        cart = cart ? JSON.parse(cart) : [];    
+        let ids = cart.map(c => c.product_id);
+        let res = await fetch(site_url+'/api/actions/logo-prices?ids='+(ids ? ids.join(',') : ``));
+        res = await res.json();
+        this.logoPricesDynamix = res.logoprices;
+        this.isSchoolUniform = res.isSchoolUniform;
+        this.shopsAllowed = res.shopSlugs;
         this.initcart();
         this.initAddressSearch('#fname');
         this.initAddressSearch('#lname');
