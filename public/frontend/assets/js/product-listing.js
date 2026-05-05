@@ -1035,7 +1035,10 @@ var minicart = new Vue({
         },
         async fetchLogoPrices(){
             if(this.logoPricesDynamix && this.logoPricesDynamix.length < 1){
-                let res = await fetch(site_url+'/api/actions/logo-prices');
+                let cart = localStorage.getItem('cart');
+                cart = cart ? JSON.parse(cart) : [];    
+                let ids = cart.map(c => c.product_id);
+                let res = await fetch(site_url+'/api/actions/logo-prices?ids='+(ids ? ids.join(',') : ``));
                 res = await res.json();
                 this.logoPricesDynamix = res.logoprices;
             }
