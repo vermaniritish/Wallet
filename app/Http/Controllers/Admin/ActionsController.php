@@ -301,11 +301,12 @@ class ActionsController extends AppController
 	function logoPrices(Request $request)
 	{
 		$logoprices = LogoPrices::get();
-		if($request->get('ids'))
+		if($request->ids)
 		{
+			$ids = $request->ids ? explode(",", $request->ids) : [-1];
 			$school = DB::table('products')
 				->join('schools', 'products.school_id', '=', 'schools.id')
-				->whereIn('products.id', $request->get('ids'))
+				->whereIn('products.id', $ids)
 				->whereNotNull('products.school_id')
 				->select('schools.shops', 'schools.id')
 				->get()
