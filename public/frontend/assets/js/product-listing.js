@@ -1763,6 +1763,8 @@ if($('#checkout-page').length)
 checkoutPage = new Vue({
     el: '#checkout-page',
     data: {
+        shopsAllowed: [],
+        isSchoolUniform: true,
         orderPlaced: null,
         errors: {},
         saving: false,

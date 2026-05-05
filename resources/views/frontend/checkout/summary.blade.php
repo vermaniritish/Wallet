@@ -132,6 +132,7 @@ $gstTax = Settings::get('gst'); ?>
                                     <p class="text-muted mt-5"></p>
                                 </div>
                             </div>
+                            <template v-if="!isSchoolUniform || shopsAllowed.length > 0">
                             @foreach($shops as $k => $s)
                             <div class="custome-radio">
                                 <input class="form-check-input" required="" type="radio" name="shipping_option" id="exampleRadios3a{{$k}}" @change="handleShipping" value="Collect From {{$s->name}}">
@@ -141,6 +142,7 @@ $gstTax = Settings::get('gst'); ?>
                                 </div>
                             </div>
                             @endforeach
+                            </template>
                         </div>
                     </td>
                 </tr>
