@@ -474,6 +474,7 @@ class ProductsController extends AppController
 					unset($data['sub_category']);
 					$data['category_id'] = $data['category'];
 					unset($data['category']);
+					unset($data['update_variants']);
 		        	if(Products::modify($id, $data))
 		        	{
 						if (!empty($sizeData)) {
