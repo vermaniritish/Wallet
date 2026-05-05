@@ -305,7 +305,7 @@ class ActionsController extends AppController
 		{
 			$school = DB::table('products')
 				->join('schools', 'products.school_id', '=', 'schools.id')
-				->whereIn('products.id', $ids)
+				->whereIn('products.id', $request->ids)
 				->whereNotNull('products.school_id')
 				->select('schools.shops', 'schools.id')
 				->get()
