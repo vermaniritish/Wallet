@@ -327,14 +327,13 @@ class ActionsController extends AppController
 				->first();
 
 			$shopSlugs = $school ? $school['shops'] : [];
-			pr($schoolRecords->count());
-			pr($shopSlugs); die;
 		}
 
 		return Response()->json([
 			'status' => 'success',
 			'logoprices' => $logoprices,
-			'shopSlugs' => $shopSlugs
+			'isSchoolUniform' => $schoolRecords->count() > 0,
+			'shopSlugs' =>  $shopSlugs 
 		]);
 	}
 }
