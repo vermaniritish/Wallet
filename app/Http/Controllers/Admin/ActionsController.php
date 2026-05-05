@@ -309,13 +309,6 @@ class ActionsController extends AppController
 				->whereIn('products.id', $ids)
 				->whereNotNull('products.school_id')
 				->select('schools.shops', 'schools.id')
-				->get();
-			pr($school->toArray()); die;
-			$school = DB::table('products')
-				->join('schools', 'products.school_id', '=', 'schools.id')
-				->whereIn('products.id', $ids)
-				->whereNotNull('products.school_id')
-				->select('schools.shops', 'schools.id')
 				->get()
 				->map(function ($item) {
 					$shops = json_decode($item->shops, true) ?? [];
@@ -339,6 +332,7 @@ class ActionsController extends AppController
 		return Response()->json([
 			'status' => 'success',
 			'logoprices' => $logoprices
+			'shopSlugs' => $shopSlugs
 		]);
 	}
 }
