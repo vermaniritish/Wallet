@@ -320,7 +320,7 @@ class PagesController extends AppController
 		}
 
 		$categories = ProductCategories::select(['id', 'image', 'title'])->where('status', 1)->whereNull('parent_id')->orderBy('title', 'desc')->get();
-		$products = Products::select(['id', 'parent_id', 'title'])->where('status', 1)->where('website_visible', 1)->groupByRaw('title')->orderBy('title', 'desc')->get();
+		$products = Products::select(['id', 'parent_id', 'title'])->where('status', 1)->where('website_visible', 1)->groupByRaw('parent_id, title')->orderBy('title', 'desc')->get();
 		return view("admin/pages/homepage", ['products' => $products, 'categories' => $categories]);
     }
 
