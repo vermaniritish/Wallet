@@ -119,6 +119,19 @@ let order = new Vue({
             this.price = p > 0 ? p.toFixed(2) : ``;
             
         },
+        syncSizeField: function(colorId, sizeObj, field) {
+            // Only sync if the current color is the first color selected
+            if (colorId == this.selectedColor[0]) {
+                for (let otherColorId in this.selectedSize) {
+                    if (otherColorId != colorId) {
+                        let targetSize = this.selectedSize[otherColorId].find(s => s.id == sizeObj.id);
+                        if (targetSize) {
+                            targetSize[field] = sizeObj[field];
+                        }
+                    }
+                }
+            }
+        },
         initEditValues: function () {
             this.sizes = $('#availableSizes').text() ? JSON.parse($('#availableSizes').text()) : [];
             if ($('#edit-form').length > 0) {
