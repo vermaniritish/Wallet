@@ -261,8 +261,8 @@
 															@{{ size.from_cm }} - @{{ size.to_cm }} cm
 															<br />Length: @{{ size.length }}
 														</td>
-														<td><input required type="number" v-model="size.price" min="0"></td>
-														<td><input type="number" v-model="size.sale_price" min="0"></td>
+														<td><input required type="number" v-model="size.price" min="0" @input="syncSizeField(colorSelectedId, size, 'price')"></td>
+														<td><input type="number" v-model="size.sale_price" min="0" @input="syncSizeField(colorSelectedId, size, 'sale_price')"></td>
 														<td>
 															<div class="custom-control">
 																<label class="custom-toggle">

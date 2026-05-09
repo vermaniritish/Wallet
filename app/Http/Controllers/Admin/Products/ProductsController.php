@@ -474,61 +474,70 @@ class ProductsController extends AppController
 					unset($data['sub_category']);
 					$data['category_id'] = $data['category'];
 					unset($data['category']);
+					$update_variants = $request->get('update_variants');
 					unset($data['update_variants']);
-		        	if(Products::modify($id, $data))
-		        	{
+					if ($update_variants) {
+						$updateData = [
+							'price' => $data['price'],
+							'short_description' => $data['short_description'],
+							'description' => $data['description'],
+						];
+
+						if (isset($data['size_file'])) {
+							$updateData['size_file'] = $data['size_file'];
+						}
+
+						if (isset($data['size_guide_video'])) {
+							$updateData['size_guide_video'] = $data['size_guide_video'];
+						}
+
+						DB::table('products')
+							->where('parent_id', $id)
+							->update($updateData);
 						if (!empty($sizeData)) {
-							Products::handleSizes($product->id, $sizeData);
-						}
-						if(!empty($brands))
-		        		{
-		        			Products::handleBrands($product->id, $brands);
-		        		}
-						if(!empty($subCategory) || !empty($data['category_id']))
-						{
-							Products::handleSubCategory($product->id, $data['category_id'], $subCategory);
-						}
-						if(!empty($colors))
-						{
-							Products::handleColors($product->id, $colors);
+							Products::syncChildSizePrices($product->id, $sizeData); // child partial update
 						}
 
-						if ($request->get('update_variants')) {
-							$updateData = [
-								'price' => $data['price'],
-							];
-
-							if (isset($data['size_file'])) {
-								$updateData['size_file'] = $data['size_file'];
-							}
-
-							if (isset($data['size_guide_video'])) {
-								$updateData['size_guide_video'] = $data['size_guide_video'];
-							}
-
-							DB::table('products')
-								->where('parent_id', $id)
-								->update($updateData);
-							if (!empty($sizeData)) {
-								Products::syncChildSizePrices($product->id, $sizeData); // child partial update
-							}
-						}
-						
-
-		        		$request->session()->flash('success', "Product updated successfully.");
+						$request->session()->flash('success', "Variants updated successfully.");
 						return Response()->json([
 							'status' => true,
-							'message' => "Product created successfully.",
+							'message' => "Variants updated successfully.",
 							'id' => $product->id
 						]);
-		        	}
-		        	else
-		        	{
-						return Response()->json([
-							'status' => false,
-							'message' => 'Product could not be saved. Please try again.'
-						], 400);
-		        	}
+					} else {
+						if(Products::modify($id, $data))
+						{
+							if (!empty($sizeData)) {
+								Products::handleSizes($product->id, $sizeData);
+							}
+							if(!empty($brands))
+							{
+								Products::handleBrands($product->id, $brands);
+							}
+							if(!empty($subCategory) || !empty($data['category_id']))
+							{
+								Products::handleSubCategory($product->id, $data['category_id'], $subCategory);
+							}
+							if(!empty($colors))
+							{
+								Products::handleColors($product->id, $colors);
+							}
+
+							$request->session()->flash('success', "Product updated successfully.");
+							return Response()->json([
+								'status' => true,
+								'message' => "Product updated successfully.",
+								'id' => $product->id
+							]);
+						}
+						else
+						{
+							return Response()->json([
+								'status' => false,
+								'message' => 'Product could not be saved. Please try again.'
+							], 400);
+						}
+					}
 			    }
 			    else
 			    {
