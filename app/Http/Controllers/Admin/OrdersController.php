@@ -434,9 +434,29 @@ class OrdersController extends AppController
 				'margin_top' => 10,
 				'margin_bottom' => 10,
 			]);
+
 			$mpdf->showImageErrors = true;
+
 			$mpdf->WriteHTML($html);
-            $mpdf->Output('Order-'.$page->prefix_id.'.pdf','I');
+
+			// Folder path
+			$folder = public_path('/uploads/orders');
+
+			// Create folder if not exists
+			if (!file_exists($folder)) {
+				mkdir($folder, 0777, true);
+			}
+
+			// File path
+			$fileName = 'Order-' . $page->prefix_id . '.pdf';
+
+			$filePath = $folder . '/' . $fileName;
+
+			// Save PDF
+			$mpdf->Output($filePath, 'F');
+
+			// Download response
+			return response()->download($filePath);
 		}
 		else
 		{
