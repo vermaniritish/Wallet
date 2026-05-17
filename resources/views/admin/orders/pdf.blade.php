@@ -294,3 +294,5 @@ $currency = Settings::get('currency_symbol');
     </p>
 
 </div>
+
+<?php die;?>
