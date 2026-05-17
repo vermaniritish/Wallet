@@ -32,7 +32,9 @@ class OrderProductRelation extends AppModel
         
         $listing = OrderProductRelation::select([
                 'order_products.*',
+                'products.color_images',
             ])
+            ->leftJoin('products', 'products.id', '=', 'order_products.product_id')
             ->orderBy($orderBy, $direction);
 
         if(!empty($where))
@@ -69,12 +71,7 @@ class OrderProductRelation extends AppModel
             $colorCode  = trim($color[1] ?? '');
 
             // Find matching product_colors row
-            $productColor = ProductColors::where('product_id', $item->product_id)
-                ->where(function ($q) use ($colorTitle, $colorCode) {
-                    $q->where('color_title', $colorTitle)
-                    ->Where('color_code', $colorCode);
-                })
-                ->first();
+            $productColor = Colours::select(['id'])->where('colours.title', $colorTitle)->where('colours.code', $colorCode)->limit(1)->first();
 
             if ($productColor && !empty($item->color_images)) {
 
@@ -82,9 +79,9 @@ class OrderProductRelation extends AppModel
 
                 if (
                     is_array($images) &&
-                    isset($images[$productColor->color_id]['path'])
+                    isset($images[$productColor->id]['path'])
                 ) {
-                    $item->image = $images[$productColor->color_id]['path'];
+                    $item->image = $images[$productColor->id]['path'];
                 }
             }
 
