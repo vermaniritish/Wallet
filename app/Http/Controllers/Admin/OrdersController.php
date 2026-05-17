@@ -451,7 +451,6 @@ class OrdersController extends AppController
 			$fileName = 'Order-' . $page->prefix_id . '.pdf';
 
 			$filePath = $folder . '/' . $fileName;
-			echo $filePath; die;
 			// Save PDF
 			$mpdf->Output($filePath, 'F');
 
