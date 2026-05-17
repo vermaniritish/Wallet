@@ -87,7 +87,7 @@ class OrderProductRelation extends AppModel
 
             return $item;
         });
-
+        pr($listing->toArray()); die;
         return $listing;
     }
 
