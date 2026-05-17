@@ -452,7 +452,7 @@ class OrdersController extends AppController
 
 			$filePath = $folder . '/' . $fileName;
 			// Save PDF
-			$mpdf->Output($filePath, 'F');
+			$mpdf->Output($filePath, \Mpdf\Output\Destination::FILE);
 
 			// Download response
 			return response()->download(
