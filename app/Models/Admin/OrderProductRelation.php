@@ -69,11 +69,10 @@ class OrderProductRelation extends AppModel
             $colorCode  = trim($color[1] ?? '');
 
             // Find matching product_colors row
-            $productColor = DB::table('product_colors')
-                ->where('product_id', $item->product_id)
+            $productColor = ProductColors::where('product_id', $item->product_id)
                 ->where(function ($q) use ($colorTitle, $colorCode) {
                     $q->where('color_title', $colorTitle)
-                    ->orWhere('color_code', $colorCode);
+                    ->Where('color_code', $colorCode);
                 })
                 ->first();
 
@@ -83,9 +82,9 @@ class OrderProductRelation extends AppModel
 
                 if (
                     is_array($images) &&
-                    isset($images[$productColor->id]['path'])
+                    isset($images[$productColor->color_id]['path'])
                 ) {
-                    $item->image = $images[$productColor->id]['path'];
+                    $item->image = $images[$productColor->color_id]['path'];
                 }
             }
 
