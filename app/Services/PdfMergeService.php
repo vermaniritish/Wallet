@@ -78,6 +78,7 @@ class PdfMergeService
      */
     public function mergeOrderPdfs($orders, $outputFileName = null)
     {
+        pr($orders); die;
         $pdfPaths = [];
 
         foreach ($orders as $page) {
