@@ -60,10 +60,9 @@ if($('#men').length)
                 let hasDuplicate = false;
                 let data = [...this.mens];
                 for (const item of data) {
-                    const key = `${item.size_title}-${item.length}`;
+                    const key = `${item.size_title}-${item.length}-${item.vat}`;
 
                     if (seen.has(key)) {
-                        alert(key);
                         hasDuplicate = true;
                         break; // stop immediately when duplicate found
                     }
