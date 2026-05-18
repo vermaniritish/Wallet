@@ -76,7 +76,7 @@ class PdfMergeService
      *
      * @throws \Exception
      */
-    public function mergeOrderPdfs(array $orders, ?string $outputFileName = null): string
+    public function mergeOrderPdfs($orders, $outputFileName = null)
     {
         $pdfPaths = [];
 
