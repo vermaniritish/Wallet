@@ -1468,7 +1468,7 @@ EOL;
 
 	public function downloadMerged(Request $request, PdfMergeService $pdfMergeService)
 	{
-		$orders = Orders::whereIn('id', $request->get('ids'))->get();
+		$orders = Orders::select(['id', 'prefix_id'])->whereIn('id', $request->get('ids'))->get();
 
 		$mergedPdf = $pdfMergeService->mergeOrderPdfs($orders);
 
