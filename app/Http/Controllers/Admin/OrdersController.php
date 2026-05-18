@@ -42,6 +42,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Storage;
+use App\Services\PdfMergeService;
 
 class OrdersController extends AppController
 {
@@ -1470,4 +1471,13 @@ EOL;
 
         return response()->stream($callback, 200, $headers);
     }
+
+	public function downloadMerged(Request $request, PdfMergeService $pdfMergeService)
+	{
+		$orders = Orders::whereIn('id', $request->get('ids'))->get();
+
+		$mergedPdf = $pdfMergeService->mergeOrderPdfs($orders);
+
+		return response()->download($mergedPdf)->deleteFileAfterSend(true);
+	}
 }
