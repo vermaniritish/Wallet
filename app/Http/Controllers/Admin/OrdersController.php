@@ -456,13 +456,7 @@ class OrdersController extends AppController
 			$mpdf->Output($filePath, \Mpdf\Output\Destination::FILE);
 
 			// Download response
-			return response()->download(
-				$filePath,
-				$fileName,
-				[
-					'Content-Type' => 'application/pdf',
-				]
-			);
+			return redirect("/uploads/orders/Order-{$page->prefix_id}.pdf");
 		}
 		else
 		{
