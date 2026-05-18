@@ -315,6 +315,7 @@ if($('#kidkid').length)
                     const key = `${item.size_title}-${item.length}`;
 
                     if (seen.has(key)) {
+                        alert(key);
                         hasDuplicate = true;
                         break; // stop immediately when duplicate found
                     }
