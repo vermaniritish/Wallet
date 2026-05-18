@@ -144,7 +144,7 @@ if($('#women').length)
                 let hasDuplicate = false;
 
                 for (const item of data) {
-                    const key = `${item.size_title}-${item.length}`;
+                    const key = `${item.size_title}-${item.length}-${item.vat}`;
 
                     if (seen.has(key)) {
                         hasDuplicate = true;
@@ -228,7 +228,7 @@ if($('#uni').length)
                 let hasDuplicate = false;
 
                 for (const item of data) {
-                    const key = `${item.size_title}-${item.length}`;
+                    const key = `${item.size_title}-${item.length}-${item.vat}`;
 
                     if (seen.has(key)) {
                         hasDuplicate = true;
@@ -312,7 +312,7 @@ if($('#kidkid').length)
                 let hasDuplicate = false;
 
                 for (const item of data) {
-                    const key = `${item.size_title}-${item.length}`;
+                    const key = `${item.size_title}-${item.length}-${item.vat}`;
 
                     if (seen.has(key)) {
                         hasDuplicate = true;
