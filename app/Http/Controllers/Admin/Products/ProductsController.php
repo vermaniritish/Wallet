@@ -376,6 +376,7 @@ class ProductsController extends AppController
 	    			'sizes.from_cm',
 	    			'sizes.to_cm',
 	    			'sizes.length',
+	    			'sizes.vat',
 	    		],
 	    	    [
 				],
@@ -599,6 +600,7 @@ class ProductsController extends AppController
 	    			'sizes.from_cm',
 	    			'sizes.to_cm',
 	    			'sizes.length',
+	    			'sizes.vat',
 	    		],
 	    	    [
 				],
@@ -684,7 +686,7 @@ class ProductsController extends AppController
 	{
 		$sizes = Sizes::select(['id',
 			'size_title',
-			'from_cm','to_cm', 'length'])->whereType($gender)->orderBy('sort_order', 'asc')->get();
+			'from_cm','to_cm', 'length', 'vat'])->whereType($gender)->orderBy('sort_order', 'asc')->get();
 		return response()->json([
 			'status' => true,
 			'sizes' => $sizes,

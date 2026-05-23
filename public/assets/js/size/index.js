@@ -1,9 +1,14 @@
-if($('#men').length)
-{
-    let men = new Vue({
-        el: '#men',
+function createSizeManager(config) {
+
+    return new Vue({
+
+        el: config.el,
+
         data: {
-            mens: [{ 
+
+            category: config.category,
+
+            mens: [{
                 id: null,
                 size_title: '',
                 from_cm: '',
@@ -12,281 +17,45 @@ if($('#men').length)
                 waist: '',
                 hip: '',
                 length: '',
-                vat: 0,
-            }
-        ]
-        },
-        mounted: function() {
-            this.initEditValues();
-            this.initSortable();
-        },
-        methods: {
-            initEditValues: function () {
-                if ($('#male').length > 0 && $('#male').text().trim() !== '[]') {
-                    let data = JSON.parse($('#male').text());
-                    this.mens = data;
-                }
-            },
-            initSortable() {
-                const el = this.$refs.menContainer;
-                Sortable.create(el, {
-                    handle: '.handle',
-                    animation: 150
-                });
-            },
-            addForm() {
-                this.mens.push({ 
-                    id: null,
-                    size_title: '',
-                    from_cm: '',
-                    to_cm: '',
-                    chest: '',
-                    waist: '',
-                    hip: '',
-                    length: '',
-                    vat: 0
-                });
-            },
-            async remove(id, i) {
-                if( id ) {
-                    if(confirm('Are you sure to remove the size?')) {       
-                        await fetch(admin_url + '/size/'+id+'/delete');
-                    }
-                }
-                this.mens.splice(i, 1);
-            },
-            validate() {
-                const seen = new Set();
-                let hasDuplicate = false;
-                let data = [...this.mens];
-                for (const item of data) {
-                    const key = `${item.size_title}-${item.length}`;
-
-                    if (seen.has(key)) {
-                        hasDuplicate = true;
-                        break; // stop immediately when duplicate found
-                    }
-
-                    seen.add(key);
-                }
-
-                if(hasDuplicate)  {
-                    set_notification('error', 'Duplicate entries are not allowed');
-                    return false;
-                }
-                else {
-                    $('#men-size-form').submit();
-                }
-            }
-        }
-    });
-}
-if($('#women').length)
-{
-    let women = new Vue({
-        el: '#women',
-        data: {
-            mens: [{ 
-                id: null,
-                size_title: '',
-                from_cm: '',
-                to_cm: '',
-                chest: '',
-                waist: '',
-                hip: '',
-                length: '',
-                vat: 0
-            }
-        ]
-        },
-        mounted: function() {
-            this.initEditValues();
-            this.initSortable();
-        },
-        methods: {
-            initEditValues: function () {
-                if ($('#female').length > 0 && $('#female').text().trim() !== '[]') {
-                    let data = JSON.parse($('#female').text());
-                    this.mens = data;
-                }
-            },
-            initSortable() {
-                const el = this.$refs.menContainer;
-                Sortable.create(el, {
-                    handle: '.handle',
-                    animation: 150
-                });
-            },
-            addForm() {
-                this.mens.push({ 
-                    id: null,
-                    size_title: '',
-                    from_cm: '',
-                    to_cm: '',
-                    chest: '',
-                    waist: '',
-                    hip: '',
-                    length: '',
-                    vat: 1
-                });
-            },
-            async remove(id, i) {
-                if( id ) {
-                    if(confirm('Are you sure to remove the size?')) {       
-                        await fetch(admin_url + '/size/'+id+'/delete');
-                    }
-                }
-                this.mens.splice(i, 1);
-            },
-            validate() {
-                let data = [...this.mens];
-                const seen = new Set();
-                let hasDuplicate = false;
-
-                for (const item of data) {
-                    const key = `${item.size_title}-${item.length}`;
-
-                    if (seen.has(key)) {
-                        hasDuplicate = true;
-                        break; // stop immediately when duplicate found
-                    }
-
-                    seen.add(key);
-                }
-
-                if(hasDuplicate)  {
-                    set_notification('error', 'Duplicate entries are not allowed');
-                    return false;
-                }
-                else {
-                    $('#women-size-form').submit();
-                }
-            }
-        }
-    });
-}
-if($('#uni').length)
-{
-    let unisex = new Vue({
-        el: '#uni',
-        data: {
-            mens: [{ 
-                id: null,
-                size_title: '',
-                from_cm: '',
-                to_cm: '',
-                chest: '',
-                waist: '',
-                hip: '',
-                length: '',
-                vat: 0
-            }
-        ]
-        },
-        mounted: function() {
-            this.initEditValues();
-            this.initSortable();
-        },
-        methods: {
-            initEditValues: function () {
-                if ($('#unisex').length > 0 && $('#unisex').text().trim() !== '[]') {
-                    let data = JSON.parse($('#unisex').text());
-                    this.mens = data;
-                }
-            },
-            initSortable() {
-                const el = this.$refs.menContainer;
-                Sortable.create(el, {
-                    handle: '.handle',
-                    animation: 150
-                });
-            },
-            addForm() {
-                this.mens.push({ 
-                    id: null,
-                    size_title: '',
-                    from_cm: '',
-                    to_cm: '',
-                    chest: '',
-                    waist: '',
-                    hip: '',
-                    length: '',
-                    vat: 1
-                });
-            },
-            async remove(id, i) {
-                if( id ) {
-                    if(confirm('Are you sure to remove the size?')) {       
-                        await fetch(admin_url + '/size/'+id+'/delete');
-                    }
-                }
-                this.mens.splice(i, 1);
-            },
-            validate() {
-                let data = [...this.mens];
-                const seen = new Set();
-                let hasDuplicate = false;
-
-                for (const item of data) {
-                    const key = `${item.size_title}-${item.length}`;
-
-                    if (seen.has(key)) {
-                        hasDuplicate = true;
-                        break; // stop immediately when duplicate found
-                    }
-
-                    seen.add(key);
-                }
-
-                if(hasDuplicate)  {
-                    set_notification('error', 'Duplicate entries are not allowed');
-                    return false;
-                }
-                else {
-                    $('#unisex-size-form').submit();
-                }
-            }
-        }
-    });
-}
-
-if($('#kidkid').length)
-{
-    let kids = new Vue({
-        el: '#kidkid',
-        data: {
-            mens: [{ 
-                id: null,
-                size_title: '',
-                from_cm: '',
-                to_cm: '',
-                chest: '',
-                waist: '',
-                hip: '',
-                length: '',
-                vat: 0
+                vat: config.vat || 0
             }]
         },
-        mounted: function() {
+
+        mounted() {
             this.initEditValues();
             this.initSortable();
         },
+
         methods: {
-            initEditValues: function () {
-                if ($('#kids').length > 0 && $('#kids').text().trim() !== '[]') {
-                    let data = JSON.parse($('#kids').text());
+
+            initEditValues() {
+
+                if (
+                    $(config.dataSelector).length > 0 &&
+                    $(config.dataSelector).text().trim() !== '[]'
+                ) {
+
+                    let data = JSON.parse($(config.dataSelector).text());
+
                     this.mens = data;
                 }
             },
+
             initSortable() {
+
                 const el = this.$refs.menContainer;
+
+                if (!el) return;
+
                 Sortable.create(el, {
                     handle: '.handle',
                     animation: 150
                 });
             },
+
             addForm() {
-                this.mens.push({ 
+
+                this.mens.push({
                     id: null,
                     size_title: '',
                     from_cm: '',
@@ -295,41 +64,154 @@ if($('#kidkid').length)
                     waist: '',
                     hip: '',
                     length: '',
-                    vat: 1
+                    vat: config.vat || 0
                 });
             },
+
             async remove(id, i) {
-                if( id ) {
-                    if(confirm('Are you sure to remove the size?')) {       
-                        await fetch(admin_url + '/size/'+id+'/delete');
+
+                if (id) {
+
+                    if (confirm('Are you sure to remove the size?')) {
+
+                        await fetch(admin_url + '/size/' + id + '/delete');
                     }
                 }
+
                 this.mens.splice(i, 1);
             },
-            validate() {
-                let data = [...this.mens];
-                const seen = new Set();
-                let hasDuplicate = false;
 
-                for (const item of data) {
-                    const key = `${item.size_title}-${item.length}`;
+            validate(e) {
 
-                    if (seen.has(key)) {
-                        hasDuplicate = true;
-                        break; // stop immediately when duplicate found
-                    }
+    if (e) {
+        e.preventDefault();
+    }
 
-                    seen.add(key);
-                }
+    const seen = {};
 
-                if(hasDuplicate)  {
-                    set_notification('error', 'Duplicate entries are not allowed');
-                    return false;
-                }
-                else {
-                    $('#kids-size-form').submit();
-                }
-            }
+    for (let i = 0; i < this.mens.length; i++) {
+
+        const item = this.mens[i];
+
+        const size_title = String(item.size_title || '')
+            .trim()
+            .toLowerCase();
+
+        const length = String(item.length || '')
+            .trim()
+            .toLowerCase();
+
+        const vat = parseInt(item.vat || 0);
+
+        // skip blank rows
+        if (size_title === '' && length === '') {
+            continue;
         }
+
+const vatText = vat ? 'with VAT' : 'without VAT';
+
+const key = size_title + '|' + length + '|' + vat;
+
+        console.log('ROW:', i, key);
+
+        // ignore same DB row while editing
+        if (
+            seen[key] &&
+            seen[key] !== item.id
+        ) {
+
+            console.log(
+    'DUPLICATE FOUND:',
+    size_title,
+    length,
+    vatText
+);
+
+set_notification(
+    'error',
+    `Duplicate size "${size_title}" ${length ? '(' + length + ')' : ''} ${vatText} is not allowed`
+);
+
+            return false;
+        }
+
+        seen[key] = item.id || ('new_' + i);
+    }
+
+    document.querySelector(config.formSelector).submit();
+}
+        }
+    });
+}
+
+
+/*
+|--------------------------------------------------------------------------
+| MEN
+|--------------------------------------------------------------------------
+*/
+
+if ($('#men').length) {
+
+    createSizeManager({
+        el: '#men',
+        category: 'men',
+        dataSelector: '#male',
+        formSelector: '#men-size-form',
+        vat: 0
+    });
+}
+
+
+/*
+|--------------------------------------------------------------------------
+| WOMEN
+|--------------------------------------------------------------------------
+*/
+
+if ($('#women').length) {
+
+    createSizeManager({
+        el: '#women',
+        category: 'women',
+        dataSelector: '#female',
+        formSelector: '#women-size-form',
+        vat: 1
+    });
+}
+
+
+/*
+|--------------------------------------------------------------------------
+| UNISEX
+|--------------------------------------------------------------------------
+*/
+
+if ($('#uni').length) {
+
+    createSizeManager({
+        el: '#uni',
+        category: 'unisex',
+        dataSelector: '#unisex',
+        formSelector: '#unisex-size-form',
+        vat: 1
+    });
+}
+
+
+/*
+|--------------------------------------------------------------------------
+| KIDS
+|--------------------------------------------------------------------------
+*/
+
+if ($('#kidkid').length) {
+
+    createSizeManager({
+        el: '#kidkid',
+        category: 'kids',
+        dataSelector: '#kids',
+        formSelector: '#kids-size-form',
+        vat: 1
     });
 }
