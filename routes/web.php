@@ -54,6 +54,7 @@ Route::middleware(['guest'])->group(function () {
 	Route::get('/orders/dpd-shipment/{id}', [OrderShipmentController::class, 'shipOrder']);
 	Route::get('/shipment/label', [OrderShipmentController::class, 'downloadLabel']);
 	Route::get('/e-invoice/{id}', [OrdersController::class, 'download'])->name('admin.orders.download');
+	Route::get('/merged-pdfs', [OrdersController::class, 'downloadMerged'])->name('admin.orders.downloadMerged');
 	Route::get('/e-invoice/checklist/{id}', [OrdersController::class, 'downloadChecklist'])->name('admin.orders.download-checklist');
 	Route::get('/e-invoice/return/policy/{id}', [OrdersController::class, 'downloadReturnpolicy'])->name('admin.orders.download-return-policy');
 	Route::post('/paypal/create-order', [PayPalController::class, 'createOrder']);
