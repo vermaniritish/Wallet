@@ -365,7 +365,7 @@ class ProductsController extends AppController
 	    		],
 	    	    [
 				],
-	    		'colours.color_code desc'
+	    		'colours.title asc'
 	    	);
 
 		$sizes = Sizes::getAll(
@@ -376,7 +376,6 @@ class ProductsController extends AppController
 	    			'sizes.from_cm',
 	    			'sizes.to_cm',
 	    			'sizes.length',
-	    			'sizes.vat',
 	    		],
 	    	    [
 				],
@@ -482,6 +481,7 @@ class ProductsController extends AppController
 							'price' => $data['price'],
 							'short_description' => $data['short_description'],
 							'description' => $data['description'],
+							'gender' => $data['gender']
 						];
 
 						if (isset($data['size_file'])) {
@@ -590,7 +590,7 @@ class ProductsController extends AppController
 	    		],
 	    	    [
 				],
-	    		'colours.color_code desc'
+	    		'colours.title asc'
 	    	);
 			$sizes = Sizes::getAll(
 	    		[
@@ -600,7 +600,6 @@ class ProductsController extends AppController
 	    			'sizes.from_cm',
 	    			'sizes.to_cm',
 	    			'sizes.length',
-	    			'sizes.vat',
 	    		],
 	    	    [
 				],
@@ -686,7 +685,7 @@ class ProductsController extends AppController
 	{
 		$sizes = Sizes::select(['id',
 			'size_title',
-			'from_cm','to_cm', 'length', 'vat'])->whereType($gender)->orderBy('sort_order', 'asc')->get();
+			'from_cm','to_cm', 'length'])->whereType($gender)->orderBy('sort_order', 'asc')->get();
 		return response()->json([
 			'status' => true,
 			'sizes' => $sizes,

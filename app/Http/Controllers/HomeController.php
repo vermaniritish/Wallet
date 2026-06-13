@@ -88,7 +88,7 @@ class HomeController extends BaseController
 
     public function listing(Request $request, $category, $subCategory = null)
     {
-        $product = Products::select(['id'])->where('slug', 'LIKE', $category)->where('status', 1)->limit(1)->first();
+        $product = Products::select(['id'])->where('slug', 'LIKE', $category)->where('status', 1)->where('website_visible', 1)->limit(1)->first();
         if($product)
         {
             $product = Products::select([
@@ -106,22 +106,25 @@ class HomeController extends BaseController
 			if(!$product) {
 				abort('404');
 			}
-            $product->sizes = ProductSizeRelation::select([
-				'product_sizes.*', 
-				'sizes.vat', 
-				'products.title as title', 
+           $product->sizes = ProductSizeRelation::select([
+				'product_sizes.*',
+				'sizes.vat',
+				'products.title as title',
 				'products.slug',
 				DB::raw('(CASE WHEN products.image is NOT NULL THEN products.image ELSE parent_product.image END) as image'),
-				'products.sku_number', 'colours.title as color'
+				'products.sku_number',
+				'colours.title as color'
 			])
 			->leftJoin('sizes', 'sizes.id', '=', 'product_sizes.size_id')
-            ->leftJoin('products', 'products.id', '=', 'product_sizes.product_id')
+			->leftJoin('products', 'products.id', '=', 'product_sizes.product_id')
 			->leftJoin('products as parent_product', 'parent_product.id', '=', 'products.parent_id')
 			->leftJoin('schools', 'schools.id', '=', 'products.school_id')
-            ->leftJoin('colours', 'colours.id', '=', 'product_sizes.color_id')
-            ->where('product_id', $product->id)
+			->leftJoin('colours', 'colours.id', '=', 'product_sizes.color_id')
+			->where('product_id', $product->id)
+			->orderBy('colours.title', 'asc')
 			->orderBy('product_sizes.id', 'asc')
 			->get();
+
 			
 			$sizeTitles = $product->sizes
 				->pluck('size_title')
@@ -185,6 +188,9 @@ class HomeController extends BaseController
 				$logooption = ["Embroidered Logo"];
 			else
 				$logooption = null;
+			$product->colors = $product->colors
+    ->sortBy('title', SORT_NATURAL | SORT_FLAG_CASE)
+    ->values();
             return view('frontend.products.detail', [
                 'product' => $product,
 				'isUniformPage' => $product->school_id,

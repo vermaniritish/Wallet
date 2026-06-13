@@ -48,6 +48,19 @@ Route::get('/orders/export', [OrdersController::class, 'exportOrders'])
 Route::get('/orders/export/logos', [OrdersController::class, 'exportLogos'])
     ->name('admin.orders.exportLogos');
 
+Route::get('/orders/export/school-skus', [OrdersController::class, 'exportSchoolSKU'])
+    ->name('admin.orders.exportSchoolSKU');
+Route::get(
+    '/orders/get-product-export-data/{id}',
+    [OrdersController::class, 'getProductExportData']
+);
+
+Route::get(
+    '/orders/get-product-export-data-excel/{id}',
+    [OrdersController::class, 'downloadProductExportExcel']
+);
+
+
 Route::post('/orders/export-data', [OrdersController::class, 'export'])
     ->name('admin.orders.export');
 

@@ -38,7 +38,13 @@ let order = new Vue({
         non_exchange: 0,
         shop_visible: 0,
         website_visible: 0,
-        size_guide_video: ``
+        size_guide_video: ``,
+        selectedProductData: [],
+        loadingTable: false,
+        currentPage: 1,
+        perPage: 20,
+        hasMoreData: true,
+        fetchingMore: false,
     },
     mounted: async function() {
         if(pageId){
@@ -204,7 +210,137 @@ let order = new Vue({
 
             await sleep(200);
             $('select').selectpicker('refresh');
+
+            if(!this.selectedProduct){
+                this.selectedProductData = [];
+                return;
+            }
+           this.currentPage = 1;
+            this.selectedProductData = [];
+            this.hasMoreData = true;
+
+            await this.fetchProductExportData();
         },
+        downloadExcel() {
+
+    if(!this.selectedProduct){
+        return;
+    }
+
+    window.open(
+        '/admin/orders/get-product-export-data-excel/' +
+        this.selectedProduct,
+        '_blank'
+    );
+},
+        downloadExcel12() {
+
+    if(!this.selectedProductData.length){
+        return;
+    }
+
+    let html = `
+        <table border="1">
+            <tr>
+                <th>School name</th>
+                <th>Colors</th>
+                <th>Uniform Title</th>
+            </tr>
+    `;
+
+    this.selectedProductData.forEach(row => {
+
+        html += `
+            <tr>
+                <td>${row.name ?? ''}</td>
+                <td>${row.colors ?? ''}</td>
+                <td>${row.uniform_title ?? ''}</td>
+            </tr>
+        `;
+
+    });
+
+    html += `</table>`;
+
+    let blob = new Blob(
+        ['\ufeff' + html],
+        {
+            type: 'application/vnd.ms-excel'
+        }
+    );
+
+    let url = URL.createObjectURL(blob);
+
+    let link = document.createElement('a');
+
+    link.href = url;
+
+    link.download = 'school-sku-report.xls';
+
+    document.body.appendChild(link);
+
+    link.click();
+
+    document.body.removeChild(link);
+},
+async fetchProductExportData() {
+
+    if(!this.hasMoreData){
+        return;
+    }
+
+    if(this.currentPage === 1){
+        this.loadingTable = true;
+    } else {
+        this.fetchingMore = true;
+    }
+
+    try {
+
+        let response = await fetch(
+            '/admin/orders/get-product-export-data/' +
+            this.selectedProduct +
+            '?page=' + this.currentPage +
+            '&per_page=' + this.perPage
+        );
+
+        response = await response.json();
+
+        if(response.data.length < this.perPage){
+            this.hasMoreData = false;
+        }
+
+        this.selectedProductData = [
+            ...this.selectedProductData,
+            ...response.data
+        ];
+
+        this.currentPage++;
+
+    } catch(error){
+
+        console.log(error);
+
+    } finally {
+
+        this.loadingTable = false;
+        this.fetchingMore = false;
+
+    }
+},
+
+handleScroll(event) {
+
+    let element = event.target;
+
+    let bottomReached =
+        element.scrollTop + element.clientHeight >=
+        element.scrollHeight - 20;
+
+    if(bottomReached && !this.fetchingMore){
+        this.fetchProductExportData();
+    }
+},
         updateSelectedSize(colorSelectedId) 
         {
             if (Array.isArray(this.defaultSizes)) {

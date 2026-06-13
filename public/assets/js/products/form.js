@@ -92,14 +92,14 @@ let order = new Vue({
             if($('#edit-form').length > 0) 
             {
                 this.activeColor = id;
-                this.updateSelectedSize(id);
+                //this.updateSelectedSize(id);
             }
             else
             {
                 if(this.defaultSizes.length > 0)
                 {
                     this.activeColor = id;
-                    this.updateSelectedSize(id);
+                    //this.updateSelectedSize(id);
                 }
                 else   
                     set_notification('error', 'Please select sizes to proceed.')

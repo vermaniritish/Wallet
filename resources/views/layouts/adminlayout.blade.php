@@ -140,5 +140,7 @@ $version = 3.9;
 		<?php elseif( (strpos($action, '/add') > -1 || strpos($action, '/edit') > -1)  && file_exists(public_path('assets/js/'.$controller.'/form.js')) ): ?>
 		<script src="<?php echo url('assets/js/'.$controller.'/form.js?v=' . $version) ?>"></script>
 		<?php endif; ?>
+		@yield('mcontent')
+		
 </body>
 </html>

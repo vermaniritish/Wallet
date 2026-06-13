@@ -31,6 +31,7 @@ use App\Models\Admin\OrderProductRelation;
 use App\Models\Admin\Orders;
 use App\Models\Admin\OrderStatusHistory;
 use App\Models\Admin\ProductCategories;
+use App\Models\Admin\ProductSubCategories;
 use App\Models\Admin\Products;
 use App\Models\Admin\Colours;
 use App\Models\Admin\Sizes;
@@ -1178,6 +1179,165 @@ EOL;
         ]);
     }
 
+	public function exportSchoolSKU($unifromId = null)
+    {
+		$categories = $brands = $schools = [];
+		if(!$unifromId)
+		{
+			$categories = ProductCategories::getAll(
+					[
+						'product_categories.id',
+						'product_categories.title'
+					],
+					[
+						'status' => 1,
+					],
+					'product_categories.title desc'
+				);
+
+			
+			$brands = Brands::getAll(
+					[
+						'brands.id',
+						'brands.title'
+					],
+					[
+						'status' => 1, 
+					],
+					'brands.title desc'
+				);
+
+			$schools = Schools::orderBy('name', 'asc')->get();
+		}
+		
+		$colors = Colours::getAll(
+			[
+				'colours.id',
+				'colours.color_code',
+				'colours.title',
+			],
+			[
+			],
+			'colours.color_code desc'
+		);
+
+		$sizes = Sizes::getAll(
+	    		[
+	    			'sizes.id',
+	    			'sizes.type',
+	    			'sizes.size_title',
+	    			'sizes.from_cm',
+	    			'sizes.to_cm',
+	    			'sizes.length',
+	    			'sizes.vat',
+	    		],
+	    	    [
+				],
+	    		'sizes.size_title desc'
+	    	);
+			
+		return view("admin/orders/exportSchoolSKU", [
+			'categories' => $categories,
+			'brands' => $brands,
+			'colors' => $colors,
+			'sizes' => $sizes,
+			'schools' => $schools,
+			'product' => $unifromId ? Products::find($unifromId)  : null,
+			'uniformPage' => true
+		]);
+
+		// // Only provide category, sub-category and school products for this export
+		// $categories = ProductCategories::select(['id', 'title'])->orderBy('title', 'asc')->get();
+		// $subCategories = ProductSubCategories::select(['id', 'title', 'category_id'])->orderBy('title', 'asc')->get();
+		// $skuNumbers = Products::leftJoin('product_sub_category_relation', 'products.id', '=', 'product_sub_category_relation.product_id')
+		// 	->whereNotNull('products.school_id')
+		// 	->groupBy('products.id')
+		// 	->select([
+		// 		'products.id',
+		// 		'products.title',
+		// 		'products.sku_number',
+		// 		'products.category_id',
+		// 		DB::raw("GROUP_CONCAT(product_sub_category_relation.sub_category_id) as sub_category_ids")
+		// 	])
+		// 	->orderBy('products.sku_number')
+		// 	->get();
+
+		// return view("admin/orders/exportSchoolSKU", [
+		// 	'skuNumbers' => $skuNumbers,
+		// 	'categories' => $categories,
+		// 	'subCategories' => $subCategories,
+		// ]);
+    }
+
+	public function getProductExportData(Request $request, $id)
+{
+    $perPage = $request->per_page ?? 20;
+
+    $rows = DB::table('products')
+        ->leftJoin('schools', 'schools.id', '=', 'products.school_id')
+        ->leftJoin('product_colors', 'product_colors.product_id', '=', 'products.id')
+        ->leftJoin('colours', 'colours.id', '=', 'product_colors.color_id')
+        ->where('products.parent_id', $id)
+        ->select(
+            'schools.name',
+            'products.title as uniform_title',
+            DB::raw("GROUP_CONCAT(colours.title SEPARATOR ', ') as colors")
+        )
+        ->groupBy(
+            'schools.name',
+            'products.title'
+        )
+        ->paginate($perPage);
+
+    return response()->json($rows);
+}
+
+public function downloadProductExportExcel($id)
+{
+    $rows = DB::table('products')
+        ->leftJoin('schools', 'schools.id', '=', 'products.school_id')
+        ->leftJoin('product_colors', 'product_colors.product_id', '=', 'products.id')
+        ->leftJoin('colours', 'colours.id', '=', 'product_colors.color_id')
+        ->where('products.parent_id', $id)
+        ->select(
+            'schools.name',
+            'products.title as uniform_title',
+            DB::raw("GROUP_CONCAT(colours.title SEPARATOR ', ') as colors")
+        )
+        ->groupBy(
+            'schools.name',
+            'products.title'
+        )
+        ->get();
+
+    $filename = 'school-sku-report.xls';
+
+    header("Content-Type: application/vnd.ms-excel");
+    header("Content-Disposition: attachment; filename=\"$filename\"");
+
+    echo '
+    <table border="1">
+        <tr>
+            <th>School Name</th>
+            <th>Colors</th>
+            <th>Uniform Title</th>
+        </tr>';
+
+    foreach($rows as $row)
+    {
+        echo '
+        <tr>
+            <td>'.$row->name.'</td>
+            <td>'.$row->colors.'</td>
+            <td>'.$row->uniform_title.'</td>
+        </tr>';
+    }
+
+    echo '</table>';
+
+    exit;
+}
+
     function export(Request $request)
     {
         $data = $request->toArray();
@@ -1232,6 +1392,17 @@ EOL;
         if (!empty($data['categories'])) {
             $query->whereIn('products.category_id', $data['categories']);
         }
+
+		// Filter by product sub-categories (if provided)
+		if (!empty($data['subcategories'])) {
+			$subcats = $data['subcategories'];
+			$query->whereExists(function($q) use ($subcats) {
+				$q->select(DB::raw(1))
+					->from('product_sub_category_relation')
+					->whereRaw('product_sub_category_relation.product_id = products.id')
+					->whereIn('product_sub_category_relation.sub_category_id', $subcats);
+			});
+		}
 
         if (!empty($data['brands'])) {
 			$brands = $data['brands'];

@@ -492,6 +492,7 @@ class Products extends AppModel
 
     public static function handleSizes($id, $sizesData)
     {
+        //echo $id;dd($sizesData);
         ProductSizeRelation::where('product_id', $id)->delete();
         foreach ($sizesData as $colorId => $sizes) {
             if(!$colorId) continue;

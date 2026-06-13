@@ -295,6 +295,14 @@
                         </span>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="<?php echo route('admin.orders.exportSchoolSKU') ?>">
+                        <span class="badge badge-dot mr-4">
+                            <i class="bg-pink"></i>
+                            <span class="status">School Wise SKU's</span>
+                        </span>
+                    </a>
+                </li>
 
             </ul>
         </li>

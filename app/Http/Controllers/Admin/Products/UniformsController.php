@@ -382,7 +382,7 @@ class UniformsController extends AppController
 					'brands.title desc'
 				);
 
-			$schools = Schools::orderBy('name', 'asc')->get();
+			$schools = Schools::where('status',1)->orderBy('name', 'asc')->get();
 		}
 		
 		$colors = Colours::getAll(
@@ -393,7 +393,7 @@ class UniformsController extends AppController
 			],
 			[
 			],
-			'colours.color_code desc'
+			'colours.title asc'
 		);
 
 		$sizes = Sizes::getAll(
@@ -404,7 +404,6 @@ class UniformsController extends AppController
 	    			'sizes.from_cm',
 	    			'sizes.to_cm',
 	    			'sizes.length',
-	    			'sizes.vat',
 	    		],
 	    	    [
 				],
@@ -486,7 +485,7 @@ class UniformsController extends AppController
 
 	public function getSize($gender)
 	{
-		$sizes = Sizes::select(['id','size_title','from_cm','to_cm', 'length', 'vat'])->whereType($gender)->get();
+		$sizes = Sizes::select(['id','size_title','from_cm','to_cm', 'length'])->whereType($gender)->get();
 		return response()->json([
 			'status' => true,
 			'sizes' => $sizes,

@@ -175,7 +175,7 @@
 											@enderror
 										</div>
 									</div>
-									<div class="col-lg-6">
+									<!--div class="col-lg-6">
 										<div class="form-group">
 											<label class="form-control-label" for="input-first-name">Max Price</label>
 											<input type="number" class="form-control" v-model="maxPrice" name="max_price" <?php echo (old('status')) ?> placeholder="Max Price" value="{{ old('max_price') }}">
@@ -183,7 +183,7 @@
 												<small class="text-danger">{{ $message }}</small>
 											@enderror
 										</div>
-									</div>
+									</div-->
 								</div>
 								<div id="size-form" class="row">
 									
