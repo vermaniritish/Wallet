@@ -33,10 +33,18 @@
 						<p v-if="mounting" class="text-center big" style="padding: 15%"><i style="font-size: 30px" class="fa fa-spin fa-spinner"></i></p>
 						<form id="product-form" method="post" action="<?php echo route('admin.products.add') ?>" class="form-validation d-none">
 							@if (isset($product) && $product->id)
-								<pre id="edit-form" class="d-none">{{ $product }}</pre>
-							@endif
-							<pre id="availableColor" class="d-none">{{ $colors }}</pre>
-							<pre id="availableSizes" class="d-none">{{ $sizes }}</pre>
+    <script type="application/json" id="edit-form">
+        {!! json_encode($product) !!}
+    </script>
+@endif
+
+<script type="application/json" id="availableColor">
+    {!! json_encode($colors) !!}
+</script>
+
+<script type="application/json" id="availableSizes">
+    {!! json_encode($sizes) !!}
+</script>
 							<!--!! CSRF FIELD !!-->
 							{{ @csrf_field() }}
 							<h6 class="heading-small text-muted mb-4">Product information</h6>
@@ -227,7 +235,7 @@
 										<div class="form-group">
 											<label class="form-control-label">Select Size For</label> <br />
 												<span v-for="(color, i) in availableColors" 
-													v-if="selectedColor.includes(color.id.toString())"
+													v-if="selectedColor.includes(color.id) || selectedColor.includes(String(color.id))"
 													:style="{ backgroundColor: color.color_code, color: color.color_code.includes('#FFF') || color.color_code.includes('#fff') ? '#444' : '#FFF' }" :class="`mx-1 badge badge-lg badge-secondary ` + (color.id == activeColor ? 'active' : '' )" v-on:click="markActiveColor(color.id)">@{{ color.code ? color.code : color.title }}
 											</span>
 											

@@ -38,7 +38,8 @@ let order = new Vue({
         shop_visible: 0,
         website_visible: 0,
         size_guide_video: ``,
-        update_variants: 0
+        update_variants: 0,
+        removedSizes: {},
     },
     mounted: function() {
         
@@ -92,14 +93,14 @@ let order = new Vue({
             if($('#edit-form').length > 0) 
             {
                 this.activeColor = id;
-                //this.updateSelectedSize(id);
+                this.updateSelectedSize(id);
             }
             else
             {
                 if(this.defaultSizes.length > 0)
                 {
                     this.activeColor = id;
-                    //this.updateSelectedSize(id);
+                    this.updateSelectedSize(id);
                 }
                 else   
                     set_notification('error', 'Please select sizes to proceed.')
@@ -119,21 +120,9 @@ let order = new Vue({
             this.price = p > 0 ? p.toFixed(2) : ``;
             
         },
-        syncSizeField: function(colorId, sizeObj, field) {
-            // Only sync if the current color is the first color selected
-            if (colorId == this.selectedColor[0]) {
-                for (let otherColorId in this.selectedSize) {
-                    if (otherColorId != colorId) {
-                        let targetSize = this.selectedSize[otherColorId].find(s => s.id == sizeObj.id);
-                        if (targetSize) {
-                            targetSize[field] = sizeObj[field];
-                        }
-                    }
-                }
-            }
-        },
         initEditValues: function () {
             this.sizes = $('#availableSizes').text() ? JSON.parse($('#availableSizes').text()) : [];
+            console.log('Available Sizes:', this.sizes);
             if ($('#edit-form').length > 0) {
                 let data = JSON.parse($('#edit-form').text());
                 console.log(data.sizes);
@@ -180,7 +169,8 @@ let order = new Vue({
                             length: size.length,
                             price: parseFloat(size.price),
                             sale_price: size.sale_price && (size.sale_price*1) > 0 ? parseFloat(size.sale_price) : ``,
-                            status: size.status
+                            status: size.status,
+                            vat: size.vat,
                         });
                     });
                 }
@@ -207,50 +197,101 @@ let order = new Vue({
                 // }
                 let original = JSON.parse(JSON.stringify(this.selectedSize));
                 let selectedSizes = original[colorSelectedId] && original[colorSelectedId].length > 0 ? original[colorSelectedId] : [];
-                for (let sizeId of this.defaultSizes) {
-                    let size = this.sizes.find(size => size.id === sizeId);
-                    if (size) {
+                // for (let sizeId of this.defaultSizes) {
+                //     let size = this.sizes.find(size => size.id === sizeId);
+                //     if (size) {
                         
-                        let existingSize = selectedSizes.find(selected => selected.id === size.id);
-                        if (!existingSize) {
-                            console.log({
-                                id: size.id,
-                                size_title: size.size_title,
-                                from_cm: size.from_cm,
-                                to_cm: size.to_cm,
-                                length: size.length,
-                                price: this.price > 0 ? this.price : 0,
-                                sale_price: this.maxPrice > 0 ? this.maxPrice : ``,
-                                status: !this.id ? true : (typeof size.status !== 'undefined' && size.status !== "" && size.status !== null ? size.status : true),
-                            });
-                            selectedSizes.push({
-                                id: size.id,
-                                size_title: size.size_title,
-                                from_cm: size.from_cm,
-                                length: size.length,
-                                to_cm: size.to_cm,
-                                price: this.price > 0 ? this.price : 0,
-                                sale_price: this.maxPrice > 0 ? this.maxPrice : ``,
-                                status: !this.id ? true : (typeof size.status !== 'undefined' && size.status !== "" && size.status !== null ? size.status : true),
-                            });
-                        }
-                    } 
-                }
+                //         let existingSize = selectedSizes.find(selected => selected.id === size.id);
+                //         if (!existingSize) {
+                //             console.log({
+                //                 id: size.id,
+                //                 size_title: size.size_title,
+                //                 from_cm: size.from_cm,
+                //                 to_cm: size.to_cm,
+                //                 length: size.length,
+                //                 price: this.price > 0 ? this.price : 0,
+                //                 sale_price: this.maxPrice > 0 ? this.maxPrice : ``,
+                //                 status: !this.id ? true : (typeof size.status !== 'undefined' && size.status !== "" && size.status !== null ? size.status : true),
+                //             });
+                //             selectedSizes.push({
+                //                 id: size.id,
+                //                 size_title: size.size_title,
+                //                 from_cm: size.from_cm,
+                //                 length: size.length,
+                //                 to_cm: size.to_cm,
+                //                 price: this.price > 0 ? this.price : 0,
+                //                 sale_price: this.maxPrice > 0 ? this.maxPrice : ``,
+                //                 status: !this.id ? true : (typeof size.status !== 'undefined' && size.status !== "" && size.status !== null ? size.status : true),
+                //             });
+                //         }
+                //     } 
+                // }
+                for (let sizeId of this.defaultSizes) {
+
+    if (
+        this.removedSizes[colorSelectedId] &&
+        this.removedSizes[colorSelectedId].includes(sizeId)
+    ) {
+        continue;
+    }
+
+    let size = this.sizes.find(size => size.id === sizeId);
+
+    if (size) {
+
+        let existingSize = selectedSizes.find(
+            selected => selected.id === size.id
+        );
+
+        if (!existingSize) {
+            selectedSizes.push({
+                id: size.id,
+                size_title: size.size_title,
+                from_cm: size.from_cm,
+                to_cm: size.to_cm,
+                length: size.length,
+                price: this.price > 0 ? this.price : 0,
+                sale_price: this.maxPrice > 0 ? this.maxPrice : '',
+                status: !this.id
+                    ? true
+                    : (
+                        typeof size.status !== 'undefined' &&
+                        size.status !== '' &&
+                        size.status !== null
+                    )
+                    ? size.status
+                    : true
+            });
+        }
+    }
+}
                 original[colorSelectedId] = selectedSizes;
                 this.selectedSize = original;
                 this.$set(original, colorSelectedId, selectedSizes);
             }
         },
          
-        removeSize(colorSelectedId, sizeIndex) 
-        {
-            let allSizes = {...this.selectedSize};
-            this.selectedSize = [];
-            let selectedSizes = allSizes[colorSelectedId];
-            selectedSizes.splice(sizeIndex, 1);
-            allSizes[colorSelectedId] = selectedSizes;
-            this.selectedSize = allSizes;
-        },       
+        // removeSize(colorSelectedId, sizeIndex) 
+        // {
+        //     let allSizes = {...this.selectedSize};
+        //     this.selectedSize = [];
+        //     let selectedSizes = allSizes[colorSelectedId];
+        //     selectedSizes.splice(sizeIndex, 1);
+        //     allSizes[colorSelectedId] = selectedSizes;
+        //     this.selectedSize = allSizes;
+        // },  
+        removeSize(colorSelectedId, sizeIndex)
+{
+    let removedSize = this.selectedSize[colorSelectedId][sizeIndex];
+
+    if (!this.removedSizes[colorSelectedId]) {
+        this.$set(this.removedSizes, colorSelectedId, []);
+    }
+
+    this.removedSizes[colorSelectedId].push(removedSize.id);
+
+    this.selectedSize[colorSelectedId].splice(sizeIndex, 1);
+},     
         updateSizes: async function() 
         {
             let response = await fetch(admin_url + "/products/getSize/" + this.selectedGender);
