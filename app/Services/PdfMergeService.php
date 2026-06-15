@@ -84,7 +84,16 @@ class PdfMergeService
             $path = public_path(
                 'uploads/orders/Order-' . $page->prefix_id . '.pdf'
             );
+            $pdfPaths[] = $path;
 
+            $path = public_path(
+                'uploads/orders/Order-Checklist-' . $page->prefix_id . '.pdf'
+            );
+            $pdfPaths[] = $path;
+
+            $path = public_path(
+                'uploads/orders/Order-Return-' . $page->prefix_id . '.pdf'
+            );
             $pdfPaths[] = $path;
         }
 
