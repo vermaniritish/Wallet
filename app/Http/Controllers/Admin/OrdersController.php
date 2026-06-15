@@ -494,7 +494,24 @@ class OrdersController extends AppController
 			]);
 			$mpdf->showImageErrors = true;
 			$mpdf->WriteHTML($html);
-            $mpdf->Output('Order-'.$page->prefix_id.'.pdf','I');
+            
+			// Folder path
+			$folder = public_path('/uploads/orders');
+
+			// Create folder if not exists
+			if (!file_exists($folder)) {
+				mkdir($folder, 0777, true);
+			}
+
+			// File path
+			$fileName = 'Order-Checklist-' . $page->prefix_id . '.pdf';
+
+			$filePath = $folder . '/' . $fileName;
+			// Save PDF
+			$mpdf->Output($filePath, \Mpdf\Output\Destination::FILE);
+
+			// Download response
+			return redirect("/uploads/orders/$fileName");
 		}
 		else
 		{
@@ -524,7 +541,24 @@ class OrdersController extends AppController
 		]);
 		$mpdf->showImageErrors = true;
 		$mpdf->WriteHTML($html);
-		$mpdf->Output('Order-'.$page->prefix_id.'.pdf','I');
+
+		// Folder path
+		$folder = public_path('/uploads/orders');
+
+		// Create folder if not exists
+		if (!file_exists($folder)) {
+			mkdir($folder, 0777, true);
+		}
+
+		// File path
+		$fileName = 'Order-Return-' . $page->prefix_id . '.pdf';
+
+		$filePath = $folder . '/' . $fileName;
+		// Save PDF
+		$mpdf->Output($filePath, \Mpdf\Output\Destination::FILE);
+
+		// Download response
+		return redirect("/uploads/orders/$fileName");
 		
     }
 
