@@ -137,7 +137,8 @@ class Products extends AdminProducts
     	$listing = Products::distinct()->select($select)
             ->leftJoin('schools as schools', 'schools.id', '=', 'products.school_id')
             ->leftJoin('products as parent_product', 'parent_product.id', '=', 'products.parent_id')
-            ->leftJoin('product_categories', 'product_categories.id', '=', 'products.category_id');
+            ->leftJoin('product_categories', 'product_categories.id', '=', 'products.category_id')
+            ->where('products.website_visible', 1);
 
         $pIds = [];
 
@@ -539,6 +540,7 @@ class Products extends AdminProducts
         $userId = ApiAuth::getLoginId();
         $record = Products::select(['products.*', 'users_wishlist.id as wishlist_id'])
             ->where('slug', 'LIKE', $slug)
+            ->where('products.website_visible', 1)
             ->whereRaw('(status = 1 or products.user_id = '.($userId ? $userId : 0).')')
             ->leftJoin('users_wishlist', function($join) use ($userId) {
                 $join->on('users_wishlist.product_id', '=', 'products.id');

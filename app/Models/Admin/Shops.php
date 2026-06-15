@@ -215,9 +215,9 @@ class Shops extends AppModel
 
 	    if($shop->save())
 	    {
-            if(isset($data['title']) && $data['title'])
+            if(isset($data['name']) && $data['name'])
             {
-                $shop->slug = Str::slug($shop->title) . '-' . General::encode($shop->id);
+                $shop->slug = Str::slug($shop->name) . '-' . General::encode($shop->id);
                 $shop->save();
             }
 
@@ -245,9 +245,9 @@ class Shops extends AppModel
     	$shop->modified = date('Y-m-d H:i:s');
 	    if($shop->save())
 	    {
-            if(isset($data['title']) && $data['title'])
+            if(isset($data['name']) && $data['name'])
             {
-                $shop->slug = Str::slug($shop->title) . '-' . General::encode($shop->id);
+                $shop->slug = Str::slug($shop->name) . '-' . General::encode($shop->id);
                 $shop->save();
             }
 

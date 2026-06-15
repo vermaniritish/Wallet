@@ -43,6 +43,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Storage;
+use App\Services\PdfMergeService;
 
 class OrdersController extends AppController
 {
@@ -435,9 +436,28 @@ class OrdersController extends AppController
 				'margin_top' => 10,
 				'margin_bottom' => 10,
 			]);
+
 			$mpdf->showImageErrors = true;
+
 			$mpdf->WriteHTML($html);
-            $mpdf->Output('Order-'.$page->prefix_id.'.pdf','I');
+
+			// Folder path
+			$folder = public_path('/uploads/orders');
+
+			// Create folder if not exists
+			if (!file_exists($folder)) {
+				mkdir($folder, 0777, true);
+			}
+
+			// File path
+			$fileName = 'Order-' . $page->prefix_id . '.pdf';
+
+			$filePath = $folder . '/' . $fileName;
+			// Save PDF
+			$mpdf->Output($filePath, \Mpdf\Output\Destination::FILE);
+
+			// Download response
+			return redirect("/uploads/orders/Order-{$page->prefix_id}.pdf");
 		}
 		else
 		{
@@ -1616,4 +1636,16 @@ public function downloadProductExportExcel($id)
 
         return response()->stream($callback, 200, $headers);
     }
+
+	public function downloadMerged(Request $request, PdfMergeService $pdfMergeService)
+	{
+		if(!$request->get('ids')){
+			abort(404);
+		}
+		$orders = Orders::select(['id', 'prefix_id'])->whereIn('id', explode(",",$request->get('ids')))->get();
+
+		$mergedPdf = $pdfMergeService->mergeOrderPdfs($orders);
+
+		return response()->download($mergedPdf)->deleteFileAfterSend(true);
+	}
 }

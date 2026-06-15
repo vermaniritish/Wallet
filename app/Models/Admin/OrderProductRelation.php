@@ -32,7 +32,9 @@ class OrderProductRelation extends AppModel
         
         $listing = OrderProductRelation::select([
                 'order_products.*',
+                'products.color_images',
             ])
+            ->leftJoin('products', 'products.id', '=', 'order_products.product_id')
             ->orderBy($orderBy, $direction);
 
         if(!empty($where))
@@ -57,6 +59,34 @@ class OrderProductRelation extends AppModel
 
         $listing = $listing->paginate($limit);
 
+        // Match color image
+        $listing->getCollection()->transform(function ($item) {
+
+            $item->image = null;
+
+            // order_products.color = Black|BLK
+            $color = explode('|', $item->color);
+
+            $colorTitle = trim($color[0] ?? '');
+            $colorCode  = trim($color[1] ?? '');
+
+            // Find matching product_colors row
+            $productColor = Colours::select(['id'])->where('colours.title', $colorTitle)->where('colours.code', $colorCode)->limit(1)->first();
+
+            if ($productColor && !empty($item->color_images)) {
+
+                $images = json_decode($item->color_images, true);
+
+                if (
+                    is_array($images) &&
+                    isset($images[$productColor->id]['path'])
+                ) {
+                    $item->image = $images[$productColor->id]['path'];
+                }
+            }
+
+            return $item;
+        });
         return $listing;
     }
 
