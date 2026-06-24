@@ -7,6 +7,7 @@
 <meta property="og:type" content="">
 <meta property="og:url" content="">
 <meta property="og:image" content="">
+@endpush
 @section('content')
 
 <section class="home-slider position-relative pt-25 pb-20">
