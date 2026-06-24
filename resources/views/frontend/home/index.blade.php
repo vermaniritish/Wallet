@@ -1,5 +1,12 @@
 <?php use App\Models\Admin\HomePage; ?>
 @extends('layouts.frontendlayout')
+@push('meta')
+<title>{{$s->label ? $s->label : "Pinders Schoolwear"}}</title>
+<meta name="description" content="<?php echo $s->heading ? nl2br($s->heading) : '' ?>">
+<meta property="og:title" content="">
+<meta property="og:type" content="">
+<meta property="og:url" content="">
+<meta property="og:image" content="">
 @section('content')
 
 <section class="home-slider position-relative pt-25 pb-20">
