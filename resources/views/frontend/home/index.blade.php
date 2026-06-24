@@ -1,8 +1,8 @@
 <?php use App\Models\Admin\HomePage; ?>
 @extends('layouts.frontendlayout')
 @push('meta')
-<title>{{$s->label ? $s->label : "Pinders Schoolwear"}}</title>
-<meta name="description" content="<?php echo $s->heading ? nl2br($s->heading) : '' ?>">
+<title>Pinders Schoolwear</title>
+<meta name="description" content="Pinders Schoolwear">
 <meta property="og:title" content="">
 <meta property="og:type" content="">
 <meta property="og:url" content="">
