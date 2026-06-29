@@ -35,6 +35,7 @@ class SchoolController extends BaseController
             $schools->where('name', 'LIKE', $slug . '%');
         }
         $schools = $schools->orderBy('name', 'asc')->get();
+        //dd($title);
         return view('frontend.school.index', [
             'schools' => $schools,
             'title' => $title

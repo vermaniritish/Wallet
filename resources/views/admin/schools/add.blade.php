@@ -43,6 +43,14 @@
 					            @enderror
 					        </div>
 
+					        <div class="form-group">
+					            <label class="form-control-label" for="message">Message</label>
+					            <textarea class="form-control" id="editor1" name="message" rows="4" placeholder="Enter message">{{ old('message') }}</textarea>
+					            @error('message')
+					                <small class="text-danger">{{ $message }}</small>
+					            @enderror
+					        </div>
+
 					        {{-- School Type --}}
 					        <div class="form-group">
 					            <label class="form-control-label" for="schooltype">School Type</label>

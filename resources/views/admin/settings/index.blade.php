@@ -250,6 +250,17 @@
 								</div>
 							</div>
 						</div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="form-control-label" for="input-first-name">School Common Message</label>
+                                        <textarea rows="5" id="editor1" class="form-control" name="school_common_message" placeholder="School Common Message">{{ Settings::get('school_common_message') }}</textarea>
+                                        @error('school_common_message')
+                                            <small class="text-danger">{{ $message }}</small>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
 						<hr class="my-4" />
 						<button href="#" class="btn btn-sm py-2 px-3 btn-primary float-right">
 							<i class="fa fa-save"></i> Submit

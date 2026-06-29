@@ -20,9 +20,13 @@
                         @endif
                     </div>
                     <div class="sort-by-product-area">
-                        <p><strong class="text-brand">All garments come with the school logo unless otherwise stated</strong></p>
+                        @php $schoolNotice = trim(\App\Models\Admin\Settings::get('school_common_message')); @endphp
+                        @if($schoolNotice)
+                            <div class="text-brand">{!! $schoolNotice !!}</div>
+                        @endif
                     </div>
                 </div>
+                {!! $school->message !!}
                 <div class="row product-grid-3">
                     @include('frontend.products.product')
                 </div>

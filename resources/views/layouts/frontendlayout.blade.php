@@ -23,6 +23,11 @@ $version = '2.9';
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
     
     <script src="https://www.paypal.com/sdk/js?client-id=AcHH3SOCSzLpPXioPVl5m15be29_PrHru6j0v6aVpcQdx9padzQ3EXfXVPkBStFVx-7FZZ4ZJzDNKxKh&currency=GBP"></script>
+	<style>
+	.main-menu.main-menu-padding-1 > nav > ul > li {
+  padding: 0 12px !important;
+}
+</style>
 </head>
 
 <body>
