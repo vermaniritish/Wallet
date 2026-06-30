@@ -1,12 +1,11 @@
 <?php use App\Models\Admin\HomePage; ?>
 @extends('layouts.frontendlayout')
 @push('meta')
-<title>Pinders Schoolwear</title>
-<meta name="description" content="Pinders Schoolwear">
-<meta property="og:title" content="">
-<meta property="og:type" content="">
-<meta property="og:url" content="">
-<meta property="og:image" content="">
+<title>Pinders Schoolwear | Official School Uniforms Online</title>
+<meta name="description" content="Shop official school uniforms online at Pinders Schoolwear. Trusted by hundreds of schools across Sheffield, Rotherham and Chesterfield. Find your school and order today.">
+<meta property="og:title" content="Pinders Schoolwear | Official School Uniforms Online">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.pindersschoolwear.com/">
 @endpush
 @section('content')
 

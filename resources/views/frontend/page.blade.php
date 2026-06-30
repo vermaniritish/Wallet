@@ -1,4 +1,10 @@
 @extends('layouts.frontendlayout')
+@push('meta')
+<title>{{$page->meta_title}}</title>
+<meta name="description" content="{{$page->meta_description}}">
+<meta property="og:title" content="{{$page->meta_title}}">
+<meta property="og:type" content="website">
+@endpush
 @section('content')
 
 <div class="page-header breadcrumb-wrap">
