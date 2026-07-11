@@ -1,3 +1,9 @@
+@push('meta')
+<title>Login to Your Account | Pinders Schoolwear</title>
+<meta name="description" content="Sign in to your Pinders Schoolwear account to view past orders, manage returns, check delivery status and quickly reorder school uniform for the next term.">
+<meta property="og:title" content="Login to Your Account | Pinders Schoolwear">
+<meta property="og:type" content="website">
+@endpush
 <div v-if="showLoginForm" id="loginform" class="panel-collapse login_form collapse show" style="">
     <div class="panel-body">
         <h2 class="">Login</h2>

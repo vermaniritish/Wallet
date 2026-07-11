@@ -204,7 +204,7 @@ class HomeController extends BaseController
         }
         else
         {
-            $category = ProductCategories::select(['id','title', 'slug', 'description', 'image'])
+            $category = ProductCategories::select(['id','title', 'slug', 'description', 'image', 'meta_title', 'meta_description'])
 				->where('slug', 'LIKE', $category)
 				->where('status', 1)
 				->limit(1)->first();

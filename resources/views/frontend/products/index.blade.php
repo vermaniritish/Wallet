@@ -1,4 +1,10 @@
 @extends('layouts.frontendlayout')
+@push('meta')
+<title>{{$category->meta_title}}</title>
+<meta name="description" content="{{$category->meta_description}}">
+<meta property="og:title" content="{{$category->meta_title}}">
+<meta property="og:type" content="website">
+@endpush
 @section('content')
 <div id="product-listing-vue">
     <div class="page-header breadcrumb-wrap">

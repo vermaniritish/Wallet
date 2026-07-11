@@ -1,4 +1,10 @@
 @extends('layouts.frontendlayout')
+@push('meta')
+<title>Your Shopping Basket | Pinders Schoolwear</title>
+<meta name="description" content="Review your school uniform items before checkout. Pinders Schoolwear offers secure online shopping with fast UK delivery. Check quantities, sizes and totals before you complete your order.">
+<meta property="og:title" content="Your Shopping Basket | Pinders Schoolwear">
+<meta property="og:type" content="website">
+@endpush
 @section('content')
 <div class="page-header breadcrumb-wrap">
     <div class="container">
