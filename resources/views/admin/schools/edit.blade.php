@@ -233,6 +233,31 @@
 					    </div>
 
 					    <hr class="my-4" />
+						<h6 class="heading-small text-muted mb-4">SEO Meta Information</h6>
+						<div class="pl-lg-4">
+							<div class="form-group">
+								<label class="form-control-label" for="input-first-name">Meta Title</label>
+								<input type="text" class="form-control" name="meta_title" placeholder="Meta Title" value="<?php echo $page->meta_title ?>">
+								@error('meta_title')
+								    <small class="text-danger">{{ $message }}</small>
+								@enderror
+							</div>
+							<div class="form-group">
+								<label class="form-control-label">Meta Description</label>
+								<textarea rows="2" class="form-control" placeholder="Your description" name="meta_description"><?php echo $page->meta_description ?></textarea>
+								@error('meta_description')
+								    <small class="text-danger">{{ $message }}</small>
+								@enderror
+							</div>
+							<div class="form-group">
+								<label class="form-control-label" for="input-first-name">Meta Keywords</label>
+								<input type="text" class="form-control" name="meta_keywords" placeholder="Meta Keywords" value="<?php echo $page->meta_keywords ?>">
+								@error('meta_keywords')
+								    <small class="text-danger">{{ $message }}</small>
+								@enderror
+							</div>
+						</div>
+						
 					    <div class="pl-lg-4 mt-4">
 					        <button type="submit" class="btn btn-sm py-2 px-3 btn-primary float-right">
 					            <i class="fa fa-save"></i> Submit
