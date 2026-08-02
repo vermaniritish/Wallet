@@ -186,6 +186,14 @@ $nonExchange = $product->non_exchange || $product->sizes->filter(function ($size
                                                         <div class="productsizes-stockinfo1">
                                                             <small class="productsizes-stockinfo2" style="color:#088178">£@{{s.vat && s.vat*1 > 0 ? ( s.price*1 + ((s.price*gstTax()))/100 ).toFixed(2) : s.price}}</small>
                                                         </div>
+                                                        <!-- Waiting for Stock -->
+                                                        <div class="quantity__box" v-if="s.waiting_stock == 1">
+                                                            <button type="button" class="quantity__value" style="width:100%;padding:8px 0;">
+                                                                <small style="font-size:80%;color:#ff9800;font-weight:600;">
+                                                                    Waiting for Stock
+                                                                </small>
+                                                            </button>
+                                                        </div>
                                                         <div class="quantity__box" v-if="s.status">
                                                             <button type="button" class="quantity__value" aria-label="quantity value" value="Decrease Value" v-on:click="decrement(s)">-</button>
                                                             <label>

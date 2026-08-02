@@ -170,6 +170,7 @@ let order = new Vue({
                             price: parseFloat(size.price),
                             sale_price: size.sale_price && (size.sale_price*1) > 0 ? parseFloat(size.sale_price) : ``,
                             status: size.status,
+                            waiting_stock: size.waiting_stock,
                             vat: size.vat,
                         });
                     });
@@ -260,7 +261,8 @@ let order = new Vue({
                         size.status !== null
                     )
                     ? size.status
-                    : true
+                    : true,
+                waiting_stock: false
             });
         }
     }

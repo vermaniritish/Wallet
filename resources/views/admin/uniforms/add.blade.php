@@ -268,6 +268,7 @@
 														<th>Sale Price</th>
 														<th>In Stock</th>
 														<th>Non Exchange</th>
+														<th>Waiting Stock</th>
 														<th>Remove Item</th>
 													</tr>
 												</thead>
@@ -293,6 +294,14 @@
 															<div class="custom-control">
 																<label class="custom-toggle">
 																	<input type="checkbox" v-model="size.non_exchange">
+																	<span class="custom-toggle-slider rounded-circle" data-label-off="OFF" data-label-on="ON"></span>
+																</label>
+															</div>
+														</td>
+														<td>
+															<div class="custom-control">
+																<label class="custom-toggle">
+																	<input type="checkbox" v-model="size.waiting_stock">
 																	<span class="custom-toggle-slider rounded-circle" data-label-off="OFF" data-label-on="ON"></span>
 																</label>
 															</div>
