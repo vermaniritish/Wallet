@@ -106,6 +106,19 @@
 										<p>Product: <strong>{{ $product && $product->parent ? $product->parent->title . ' - ' . $product->sku_number : '' }}</strong> </p>
 									</div>
 								<?php endif; ?>
+								<div class="form-group">
+									<label class="form-control-label" for="offerDropdown">Offer</label>
+									<select id="offerDropdown" v-model="selectedOffer" class="form-control no-selectpicker" name="offer_id" :disabled="!selectedProduct">
+										<option value="">No offer</option>
+										<option v-for="offer in offers" :key="offer.id" :value="String(offer.id)">
+											@{{ offer.title }}
+										</option>
+									</select>
+									<small v-if="selectedProduct && !offers.length" class="text-muted">No active offers are available for this product.</small>
+									@error('offer_id')
+										<small class="text-danger">{{ $message }}</small>
+									@enderror
+								</div>
 								<div class="row">
 									<div class="col-md-6">
 										<div class="form-group">
@@ -175,7 +188,7 @@
 											@enderror
 										</div>
 									</div>
-									<!--div class="col-lg-6">
+									<div class="col-lg-6">
 										<div class="form-group">
 											<label class="form-control-label" for="input-first-name">Max Price</label>
 											<input type="number" class="form-control" v-model="maxPrice" name="max_price" <?php echo (old('status')) ?> placeholder="Max Price" value="{{ old('max_price') }}">
@@ -183,7 +196,7 @@
 												<small class="text-danger">{{ $message }}</small>
 											@enderror
 										</div>
-									</div-->
+									</div>
 								</div>
 								<div id="size-form" class="row">
 									

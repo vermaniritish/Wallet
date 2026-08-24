@@ -10,6 +10,9 @@ Route::get('/uniforms/add', '\App\Http\Controllers\Admin\Products\UniformsContro
 Route::post('/uniforms/add', '\App\Http\Controllers\Admin\Products\UniformsController@add')
     ->name('admin.uniforms.add');
 
+Route::get('/uniforms/product/{productId}/offers', [UniformsController::class, 'getOffers'])
+    ->name('admin.uniforms.product.offers');
+
 Route::get('/uniforms/{id}/view', '\App\Http\Controllers\Admin\Products\UniformsController@view')
     ->name('admin.uniforms.view');
 

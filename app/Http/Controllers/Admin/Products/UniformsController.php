@@ -27,6 +27,7 @@ use App\Models\Admin\ProductSizeRelation;
 use App\Models\Admin\ProductSubCategories;
 use App\Models\Admin\ProductSubCategoryRelation;
 use App\Models\Admin\Sizes;
+use App\Models\Admin\Offers;
 
 class UniformsController extends AppController
 {
@@ -248,7 +249,17 @@ class UniformsController extends AppController
 					'color_id.*' => ['distinct','required', Rule::exists(Colours::class,'id')],
 					'gender' => ['nullable'],
 					'sku_number' => ['required'],
-					'sizeData' => ['required', 'array']
+	                'sizeData' => ['required', 'array'],
+	                'offer_id' => [
+	                	'nullable',
+	                	Rule::exists(Offers::class, 'id')->where(function ($query) use ($data, $unifromId) {
+	                		$productId = $unifromId
+	                			? Products::where('id', $unifromId)->value('parent_id')
+	                			: ($data['product'] ?? null);
+
+	                		return $query->where('product_id', $productId)->where('status', 1);
+	                	}),
+	                ]
 	            ]
 	        );
 
@@ -420,6 +431,20 @@ class UniformsController extends AppController
 			'uniformPage' => true
 		]);
     }
+
+	public function getOffers($productId)
+	{
+		$offers = Offers::select(['id', 'title', 'type', 'quantity', 'offer_total_price'])
+			->where('product_id', $productId)
+			->where('status', 1)
+			->orderBy('title', 'asc')
+			->get();
+
+		return response()->json([
+			'status' => true,
+			'offers' => $offers,
+		]);
+	}
 
 
     function delete(Request $request, $id)

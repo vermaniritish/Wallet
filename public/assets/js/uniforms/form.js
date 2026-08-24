@@ -10,6 +10,8 @@ let order = new Vue({
         selectedCategory: ``,
         selectedSubCategory: ``,
         selectedProduct: null,
+        selectedOffer: '',
+        offers: [],
         selectedColor: [],
         subCategories: [],
         products: [],
@@ -168,6 +170,8 @@ let order = new Vue({
                 this.website_visible = data.website_visible;
                 this.shop_visible = data.shop_visible;
                 this.size_guide_video = data.size_guide_video;
+                await this.updateOffers(data.parent_id || this.selectedProduct);
+                this.selectedOffer = data.offer_id ? String(data.offer_id) : '';
                 if(!pageId && data.size_file)
                 {
                     let fname = data.size_file.split("/");
@@ -221,6 +225,21 @@ let order = new Vue({
             this.hasMoreData = true;
 
             await this.fetchProductExportData();
+        },
+        updateOffers: async function (productId) {
+            this.offers = [];
+            this.selectedOffer = '';
+            if (!productId) {
+                $('#offerDropdown').selectpicker('refresh');
+                return;
+            }
+
+            let response = await fetch(admin_url + '/uniforms/product/' + productId + '/offers');
+            response = await response.json();
+            if (response && response.status) {
+                this.offers = response.offers;
+            }
+            $('#offerDropdown').selectpicker('refresh');
         },
         downloadExcel() {
 

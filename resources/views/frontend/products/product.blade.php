@@ -8,6 +8,9 @@
                     <div class="offer-icon" v-if="product.offer">
                         <img src="{{url('/frontend/assets/imgs/offer2.png')}}" alt="Offer">
                     </div>
+                    <div class="offer-icon" v-if="product.offer_id">
+                        <img src="{{url('/frontend/assets/imgs/offer2.png')}}" alt="Offer">
+                    </div>
                 </a>
             </div>
             

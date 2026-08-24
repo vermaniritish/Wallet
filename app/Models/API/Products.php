@@ -122,6 +122,7 @@ class Products extends AdminProducts
             DB::raw('(CASE WHEN products.image is NOT NULL THEN products.image ELSE parent_product.image END) as image'),
             'products.max_price',
             'products.gender',
+            'products.offer_id',
             'product_categories.title as category',
             'schools.name as school',
             DB::raw('(Select sale_price from product_sizes where product_sizes.status = 1 and product_sizes.product_id = products.id order by sale_price desc limit 1) as sale_price'),
